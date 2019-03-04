@@ -1,4 +1,27 @@
 module.exports = [
+  // 发起咨询
+  {
+    path: 'pages/startConsult/index',
+    config: {
+      navigationBarTitleText: '发起咨询',
+      usingComponents: {
+        "van-steps": "/static/vant/steps/index",
+        "van-field":"/static/vant/field/index",
+        "van-cell-group":"/static/vant/cell-group/index",
+        "van-dialog": "/static/vant/dialog/index"
+      }
+    }
+  },
+  // 专家详情
+  {
+    path: 'pages/expertDetail/index',
+    config: {
+      navigationBarTitleText: '专家详情',
+      usingComponents: {
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
   // 选择好友
   {
     path: 'pages/selectFriend/index',
@@ -58,31 +81,6 @@ module.exports = [
       }
     },
 
-  // 修改资料
-  {
-    path: 'pages/baseMsg/index',
-    config: {
-      navigationBarTitleText: '修改资料',
-      usingComponents: {
-        "van-field":"/static/vant/field/index",
-        "van-cell-group":"/static/vant/cell-group/index",
-        "van-dialog": "/static/vant/dialog/index"
-      }
-    }
-  },
- 
-   // 专家详情
-   {
-    path: 'pages/expertDetail/index',
-    config: {
-      navigationBarTitleText: '专家详情',
-      usingComponents: {
-        "van-action-sheet": "/static/vant/action-sheet/index"
-      }
-    }
-  },
-
-  
   // 银行卡
   {
     path: 'pages/bankCard/index',

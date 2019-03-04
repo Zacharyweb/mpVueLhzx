@@ -5,12 +5,12 @@
         <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
         <div class="top_block_right">
           <div class="experts_msg1">
-            <span class="experts_name">朱两边</span>
+            <div class="experts_name">朱两边<span>(高级财务专家)</span></div>
             <span class="consult_msg">10个好友已咨询</span>
           </div>
           <div class="experts_msg2">
-            <span class="experts_position">高级财务专家</span>
-            <span class="consult_status">已咨询</span>
+            <span class="respond_time"><span>5</span>分钟内回应，最快<span>12</span>小时作答</span>
+            <span class="consult_status">营业中</span>
           </div>
           <div class="experts_msg3">
             <div class="experts_location">
@@ -297,7 +297,7 @@ export default {
           display: flex;
           align-items: center;
           padding:0 10px;
-          color: #666;
+          color: #999;
           border:1px solid #999;
           border-radius: 10px;
         }
@@ -337,5 +337,25 @@ export default {
 }
 
 
-  
+
+// 专家列表
+.experts_name{
+  font-size: 16px;
+  color: #333;
+  span{
+    font-size: 13px;
+    margin-left: 5px;
+    color: #666;
+  }
+}
+.experts_msg2{
+  .respond_time{
+    font-size: 13px;
+    color: #444;
+    span{
+      font-weight: bold;
+    }
+
+  }
+}
 </style>
