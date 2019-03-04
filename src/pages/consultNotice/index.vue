@@ -238,11 +238,11 @@ export default {
 }
 .consult_notice p{
   color: #666;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
 }
 .consult_notice p+p{
- margin-top: 2px;
+ margin-top: 6px;
 }
 
 .block_title{
