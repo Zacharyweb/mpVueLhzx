@@ -3,10 +3,10 @@ export default {
   loading: {
     limitTime: 200, // 接口请求在xxxms内完成则不展示loading
     loadingShow: () => {
-      wx.showLoading({
-        title: '加载中',
-        mask: true
-      })
+      // wx.showLoading({
+      //   title: '加载中',
+      //   mask: true
+      // })
     },
     loadingHide: () => {
       wx.hideLoading()

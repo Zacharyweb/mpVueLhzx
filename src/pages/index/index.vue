@@ -145,39 +145,39 @@ export default {
 
     // 接口调用案例
     // get请求
-    this.$http.request({
-      url:'getProvince',
-      flyConfig:{
-        'content-type': 'application/json'
-      },
-      config:{
-        showLoaing:true // 不传默认就是true
-      }
-    }).then(res => {
+    // this.$http.request({
+    //   url:'getProvince',
+    //   flyConfig:{
+    //     'content-type': 'application/json'
+    //   },
+    //   config:{
+    //     showLoaing:true // 不传默认就是true
+    //   }
+    // }).then(res => {
     
-    })
+    // })
     
     // post请求
-    this.$http.request({
-      url:'test',
-      data: {
-        'categoryType': 'SaleGoodsType@sim',
-        'streamNo': 'web_bss153570682909641893',
-        'reqSource': 'MALL_H5',
-        'appid': 'string',
-        'timestamp': 1535706829096,
-        'sign': 'string'
-      },
-      flyConfig:{
-        method: 'post',
-        baseURL: 'https://rmall.ukelink.net'
-      },
-      config:{
-        showLoaing:true
-      }
-    }).then(res => {
-      // console.log(res)
-    })
+    // this.$http.request({
+    //   url:'test',
+    //   data: {
+    //     'categoryType': 'SaleGoodsType@sim',
+    //     'streamNo': 'web_bss153570682909641893',
+    //     'reqSource': 'MALL_H5',
+    //     'appid': 'string',
+    //     'timestamp': 1535706829096,
+    //     'sign': 'string'
+    //   },
+    //   flyConfig:{
+    //     method: 'post',
+    //     baseURL: 'https://rmall.ukelink.net'
+    //   },
+    //   config:{
+    //     showLoaing:true
+    //   }
+    // }).then(res => {
+      
+    // })
   }
 }
 </script>

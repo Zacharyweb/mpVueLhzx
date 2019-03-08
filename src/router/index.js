@@ -1,22 +1,20 @@
 module.exports = [
   // 发起咨询
   {
-    path: 'pages/consultNotice/index',
+    path: 'pages/startConsult/index',
     config: {
-      navigationBarTitleText: '咨询步骤',
+      navigationBarTitleText: '发起咨询',
       usingComponents: {
-        "van-steps": "/static/vant/steps/index",
         "van-field":"/static/vant/field/index",
-        "van-cell-group":"/static/vant/cell-group/index",
-        "van-dialog": "/static/vant/dialog/index"
+        "van-stepper": "/static/vant/stepper/index"
       }
     }
   },
   // 发起咨询
   {
-    path: 'pages/startConsult/index',
+    path: 'pages/consultNotice/index',
     config: {
-      navigationBarTitleText: '发起咨询',
+      navigationBarTitleText: '咨询步骤',
       usingComponents: {
         "van-steps": "/static/vant/steps/index",
         "van-field":"/static/vant/field/index",
