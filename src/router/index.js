@@ -1,4 +1,15 @@
 module.exports = [
+   // 问候聊天室
+   {
+    path: 'pages/chatRoom/index',
+    config: {
+      navigationBarTitleText: '咨询室',
+      usingComponents: {
+        "van-field":"/static/vant/field/index",
+        "van-stepper": "/static/vant/stepper/index"
+      }
+    }
+  },
   // 发起咨询
   {
     path: 'pages/startConsult/index',
