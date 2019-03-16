@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="chat_room">
+    <div class="chat_room"> 
+      <div class="consult_tips_panel">
+        <span class="tips_text">初步咨询满意的话可下单咨询哦~</span>
+        <span class="consule_btn">马上咨询 40元/节</span>
+      </div>
 
       <scroll-view scroll-y  :scroll-top="sTop" class="chat_content">
         <div id='chat-ref'>
@@ -87,11 +91,36 @@ export default {
   width: 100%;
   background-color: #f5f7f9;
   position: fixed;
-  top: 0;
+  top: 30px;
   bottom: 54px;
   left: 0;
   z-index: 1;
   display: flex;
+}
+.consult_tips_panel{
+  box-sizing: border-box;
+  width: 100%;
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  height: 30px;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:0 15px;
+  .tips_text{
+    color: #fff;
+    font-size: 13px;
+  }
+  .consule_btn{
+    color: #fff;
+    font-size: 12px;
+    padding:2px 6px;
+    border:1px solid #fff;
+    border-radius: 2px;
+  }
 }
 .chat_content{
   // box-sizing: border-box;
@@ -106,6 +135,7 @@ export default {
       text-align: center;
       font-size: 12px;
       margin-bottom: 10px;
+      color: #666;
     }
     .content_body{
       display: flex;

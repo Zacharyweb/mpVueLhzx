@@ -1,4 +1,28 @@
 module.exports = [
+
+   // 咨询详情/订单详情
+   {
+    path: 'pages/consultDetail/index',
+    config: {
+      navigationBarTitleText: '咨询详情',
+      usingComponents: {
+        "van-tag": "/static/vant/tag/index",
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
+  // 咨询订单列表
+  {
+    path: 'pages/consult/index',
+    config: {
+      navigationBarTitleText: '咨询平台',
+      usingComponents: {
+        "van-tag": "/static/vant/tag/index",
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
+ 
    // 问候聊天室
    {
     path: 'pages/chatRoom/index',
@@ -195,18 +219,7 @@ module.exports = [
       }
     }
   },
-  // 咨询 
-  {
-    path: 'pages/consult/index',
-    config: {
-      navigationBarTitleText: '咨询平台',
-      usingComponents: {
-        "van-tag": "/static/vant/tag/index",
-        "van-action-sheet": "/static/vant/action-sheet/index"
-      }
-    }
-  },
- 
+
   // 收藏的专家
   {
     path: 'pages/collectExpert/index',

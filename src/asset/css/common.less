@@ -242,6 +242,10 @@ page{
         .experts_name{
           font-size: 16px;
           color: #333;
+          span{
+            font-size: 14px;
+            color: #999;
+          }
         }
         .experts_position{
           color: #333;
@@ -268,6 +272,23 @@ page{
 
         }
       }
+      .order_msg3{
+        font-size: 14px;
+        color: #333;
+        .order_response{
+          margin-top: 8px;
+        }
+        .order_deadline{
+          margin-top: 8px;
+        }
+        .order_class{
+          margin-top: 8px;
+          span{
+            font-size: 13px;
+            color: #999;
+          }
+        }
+      }
 
     }
   }
@@ -282,6 +303,27 @@ page{
       color: #333;
       font-weight: bold;
     }
+    .question_files{
+      padding-top: 10px;
+      display: flex;
+      .question_files_title{
+        white-space: nowrap;
+        color: #333;
+        font-weight: bold;
+      }
+      .img_block{
+        display: flex;
+        flex-wrap: wrap;
+        img{
+          margin-right: 5px;
+          margin-bottom: 5px;
+          width: 50px;
+          height: 50px;
+           
+        }
+      }
+
+    }
     .order_time{
       text-align: right;
       color: #999;
@@ -290,6 +332,31 @@ page{
       padding-right: 10px;
     }
 
+  }
+  .bottom_block + .bottom_block{
+    border-top:1px solid #e6e8eb;
+  }
+  .action_btn{
+    height: 28px;
+    padding:0 10px;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #1fb7b6;
+    border: 1px solid #1fb7b6;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+  .action_btn2{
+    height: 28px;
+    padding:0 10px;
+    border-radius: 4px;
+    color: #1fb7b6;
+    background-color: #fff;
+    border: 1px solid #1fb7b6;
+    display: flex;
+    align-items: center;  
+    margin-left: 10px;
   }
   .other_msg_block{
     border-top:1px solid #e6e8eb;
@@ -302,15 +369,17 @@ page{
      font-size: 12px;
      color: #666;
     }
-    .action_btn{
-      height: 28px;
-      padding:0 10px;
-      border-radius: 4px;
-      color: #fff;
-      background-color: #1fb7b6;
-      display: flex;
-      align-items: center;   
-    }
+  }
+
+  .ex_action_block{
+    border-top:1px solid #e6e8eb;
+    padding:10px 0;
+  }
+  .action_btn_bar{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 3px;
   }
 }
 
