@@ -6,8 +6,11 @@ module.exports = [
     config: {
       navigationBarTitleText: '咨询详情',
       usingComponents: {
-        "van-tag": "/static/vant/tag/index",
-        "van-action-sheet": "/static/vant/action-sheet/index"
+        "van-action-sheet": "/static/vant/action-sheet/index",
+        "van-radio": "/static/vant/radio/index",
+        "van-radio-group": "/static/vant/radio-group/index",
+        "van-stepper": "/static/vant/stepper/index",
+        "van-datetime-picker": "/static/vant/datetime-picker/index"
       }
     }
   },
