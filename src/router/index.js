@@ -1,4 +1,49 @@
 module.exports = [
+   // 专家详情
+   {
+    path: 'pages/expertDetail/index',
+    config: {
+      navigationBarTitleText: '专家详情',
+      usingComponents: {
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
+    // 咨询订单列表
+    {
+      path: 'pages/consult/index',
+      config: {
+        navigationBarTitleText: '咨询平台',
+        usingComponents: {
+          "van-tag": "/static/vant/tag/index",
+          "van-action-sheet": "/static/vant/action-sheet/index"
+        }
+      }
+    },
+    // 结算支付
+    {
+      path: 'pages/pay/index',
+      config: {
+        navigationBarTitleText: '结算支付',
+        usingComponents: {
+          "van-tag": "/static/vant/tag/index",
+          "van-action-sheet": "/static/vant/action-sheet/index"
+        }
+      }
+    },
+ 
+   // 专家作答
+   {
+    path: 'pages/answer/index',
+    config: {
+      navigationBarTitleText: '作答',
+      usingComponents: {
+        "van-tag": "/static/vant/tag/index",
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
+
 
    // 咨询详情/订单详情
    {
@@ -14,17 +59,7 @@ module.exports = [
       }
     }
   },
-  // 咨询订单列表
-  {
-    path: 'pages/consult/index',
-    config: {
-      navigationBarTitleText: '咨询平台',
-      usingComponents: {
-        "van-tag": "/static/vant/tag/index",
-        "van-action-sheet": "/static/vant/action-sheet/index"
-      }
-    }
-  },
+ 
  
    // 问候聊天室
    {
@@ -61,16 +96,7 @@ module.exports = [
       }
     }
   },
-  // 专家详情
-  {
-    path: 'pages/expertDetail/index',
-    config: {
-      navigationBarTitleText: '专家详情',
-      usingComponents: {
-        "van-action-sheet": "/static/vant/action-sheet/index"
-      }
-    }
-  },
+ 
   // 选择好友
   {
     path: 'pages/selectFriend/index',

@@ -11,13 +11,15 @@
       </div>
     </div>
     <div class="custom_tabs">
-      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">待接单(2)</div>
-      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">待回复(2)</div>
+      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">我的咨询(2)</div>
+      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">客户咨询(2)</div>
       <span class="active_bar" :class="{'move':currentTab == 1}"></span>
     </div>
+    <div style="height:91px;"></div>
 
-    <div class="orders_list">
-      <div class="order_item">
+    <div class="orders_list" v-show="currentTab == 0">
+      <!-- 待接单 -->
+      <div class="order_item" @click="toOrderDetail(1,'u')">
         <div class="top_block">
           <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
           <div class="top_block_right">
@@ -37,12 +39,326 @@
           </div>
           <div class="order_time">2018-12-14 00:00:00</div>
         </div>
+     
+      </div>
+
+      <!-- 待重新确认 -->
+      <div class="order_item"  @click="toOrderDetail(2,'u')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">待重新确认</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+       
+      </div>
+
+     <!-- 待作答 -->
+      <div class="order_item" @click="toOrderDetail(3,'u')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">待作答</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+       
+      </div>
+
+      <!-- 待支付 -->
+      <div class="order_item" @click="toOrderDetail(4,'u')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">已作答/待支付</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
         <div class="other_msg_block">
           <span class="other_msg">3次问答，合计120元，待支付80元</span>
           <span class="action_btn">前往支付</span>
         </div>
       </div>
+
+      <!-- 待评价 -->
+      <div class="order_item" @click="toOrderDetail(5,'u')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">已作答/待评价</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+   
+      </div>
+
+      <!-- 已完成 -->
+      <div class="order_item" @click="toOrderDetail(6,'u')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status grey">已完成</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+    
+      </div>
+
+       <!-- 已关闭 -->
+      <div class="order_item" @click="toOrderDetail(7,'u')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status grey">已关闭</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+    
+      </div>
+      
     </div>
+
+    <div class="orders_list" v-show="currentTab == 1">
+      <!-- 待接单 -->
+      <div class="order_item" @click="toOrderDetail(1,'e')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">待接单</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+      </div>
+
+      <!-- 待重新确认 -->
+      <div class="order_item"  @click="toOrderDetail(2,'e')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">待重新确认</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+      </div>
+
+     <!-- 待作答 -->
+      <div class="order_item" @click="toOrderDetail(3,'e')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">待作答</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+       
+      </div>
+
+      <!-- 待支付 -->
+      <div class="order_item" @click="toOrderDetail(4,'e')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">已作答/待支付</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+      </div>
+
+      <!-- 待评价 -->
+      <div class="order_item" @click="toOrderDetail(5,'e')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status">已作答/待评价</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+     
+      </div>
+
+      <!-- 已完成 -->
+      <div class="order_item" @click="toOrderDetail(6,'e')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status grey">已完成</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+     
+      </div>
+
+       <!-- 已关闭 -->
+      <div class="order_item" @click="toOrderDetail(7,'e')">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">高级财务专家</span>
+            </div>
+            <div class="order_msg2">
+              <span class="order_status grey">已关闭</span>
+              <span class="consult_price">￥66/节</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
 
     <van-action-sheet
       :show="actionSheetShow"
@@ -101,6 +417,15 @@ export default {
       };
       this.actionSheetShow = false;
     },
+    changeTab(num){
+      if(this.currentTab == num){
+        return;
+      }
+      this.currentTab = num;
+    },
+    toOrderDetail(status,id){
+      this.$router.push({path:'/pages/consultDetail/index',query:{status:status,id:id}});
+    }
   },
   created () {
   
@@ -110,6 +435,10 @@ export default {
 <style lang="less" scoped>
 
   .expert_bar{
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 0;
     padding:15px;
     background-color:#fff;
     display: flex;
@@ -143,6 +472,13 @@ export default {
 
     }
 
+
+  }
+  .custom_tabs{
+    position: fixed;
+    top:51px;
+    left: 0;
+    right: 0;
 
   }
 </style>

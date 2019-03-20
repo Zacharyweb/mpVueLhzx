@@ -94,6 +94,9 @@
       </div>
     </div>
 
+    <div class="to_chat_btn" @click="toChatRoom">
+        <img class="bounceIn" src="../../../static/img/chat_circle_icon.png">
+    </div>
     <div class="bottom_fixed">
       <div class="icon_btns">
         <div class="icon_btn" v-if="!collected" @click="collected = true">
@@ -189,6 +192,9 @@ export default {
       };
       this.actionSheetShow = false;
     },
+    toChatRoom(){
+      this.$router.push({path:'/pages/chatRoom/index',query:{id:1}})
+    }
   },
   onShow(){
     this.currentTab = 0;
@@ -329,11 +335,6 @@ export default {
     
 
   }
-  .action_btn1{
-    background-color: #f3fbfb;
-  
-  }
-
 }
 
 
@@ -355,7 +356,24 @@ export default {
     span{
       font-weight: bold;
     }
-
+  }
+}
+.to_chat_btn{
+  position: fixed;
+  bottom: 60px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border:1px solid #1fb7b6;
+  background-color: #f3fbfb;
+  img{
+    width: 22px;
+    height: 22px;
   }
 }
 </style>
