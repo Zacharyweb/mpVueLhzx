@@ -831,7 +831,6 @@ export default {
             height: 10px;
             background-color: #1fb7b6;
             border-radius: 50%;
-
           }
 
         }

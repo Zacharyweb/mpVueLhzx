@@ -1,4 +1,50 @@
 module.exports = [
+  // 个人中心
+  {
+    path: 'pages/myClient/index',
+    config: {
+      navigationBarTitleText: '我的客户',
+      usingComponents: {
+        "van-search": "/static/vant/search/index",
+        "van-tab": "/static/vant/tab/index",
+        "van-tabs": "/static/vant/tabs/index",
+        "van-dialog": "/static/vant/dialog/index",
+        "van-field": "/static/vant/field/index",
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
+  // 个人中心
+  {
+    path: 'pages/mine/index',
+    config: {
+      navigationBarTitleText: '我的',
+      usingComponents: {
+        "van-button": "/static/vant/button/index",
+      }
+    }
+  },
+  // 专家名片
+  {
+    path: 'pages/expertCard/index',
+    config: {
+      navigationBarTitleText: '专家名片',
+      usingComponents: {
+        "van-button": "/static/vant/button/index",
+      }
+    }
+  },
+ 
+  // 成为专家
+  {
+    path: 'pages/becomeExpert/index',
+    config: {
+      navigationBarTitleText: '成为专家',
+      usingComponents: {
+        "van-area": "/static/vant/area/index"
+      }
+    }
+  },
    // 专家详情
    {
     path: 'pages/expertDetail/index',
@@ -45,8 +91,8 @@ module.exports = [
   },
 
 
-   // 咨询详情/订单详情
-   {
+  // 咨询详情/订单详情
+  {
     path: 'pages/consultDetail/index',
     config: {
       navigationBarTitleText: '咨询详情',
@@ -213,16 +259,7 @@ module.exports = [
       }
     }
   },
-  // 个人中心
-  {
-    path: 'pages/mine/index',
-    config: {
-      navigationBarTitleText: '我的',
-      usingComponents: {
-        "van-button": "/static/vant/button/index",
-      }
-    }
-  },
+ 
   // 我的订单
   {
     path: 'pages/myOrders/index',

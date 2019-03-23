@@ -52,10 +52,19 @@
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/bankCard/index')">
+      <!-- <li class="router_item" @click="linkTo('/pages/bankCard/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon3.png">
           银行卡
+        </div>
+        <div class="item_right">
+          <img  src="../../../static/img/arrow_right.png">
+        </div>
+      </li> -->
+      <li class="router_item" @click="linkTo('/pages/becomeExpert/index')">
+        <div class="item_left">
+          <img src="../../../static/img/center_icon3.png">
+          成为专家
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
