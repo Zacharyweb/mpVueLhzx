@@ -18,7 +18,7 @@
             </div>
             <span class="devide_line"></span>
             <div class="experts_experience">
-              <img src="../../../static/img/time_icon.png">3-5年工作经验
+              <img src="../../../static/img/time_icon.png">3-5年从业经验
             </div>
           </div>
         
@@ -28,8 +28,9 @@
     </div>
     <div class="custom_tabs">
       <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">介绍</div>
-      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">好友评价(2)</div>
-      <span class="active_bar" :class="{'move':currentTab == 1}"></span>
+      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">相关作品</div>
+      <div class="tab_item" :class="{'active':currentTab == 2}" @click="changeTab(2)">好友评价(2)</div>
+      <span class="active_bar" :class="{'active1':currentTab == 1,'active2':currentTab == 2}"></span>
     </div>
 
     <div class="introduce_panel" v-show="currentTab == 0">
@@ -40,14 +41,18 @@
         </div>
       </div>
       <div class="panle_block">
-        <div class="block_title">擅长领域</div>
+        <div class="block_title">专业信息</div>
         <div class="base_msg">
-           <span class="msg_name">税收筹划/国际税收/税务风险</span>
-           <span class="msg_content">10年经验</span>
+           <span class="msg_name">领域</span>
+           <span class="msg_content">所得税、个人所得税、房产税收、美国税</span>
         </div>
         <div class="base_msg">
-           <span class="msg_name">税务管理</span>
-           <span class="msg_content">5年经验</span>
+           <span class="msg_name">细分</span>
+           <span class="msg_content">运输企业、房地产、互联网、股权激励、出口退税、VIE结构、跨境并购</span>
+        </div>
+        <div class="base_msg">
+           <span class="msg_name">擅长业务</span>
+           <span class="msg_content">申请高新企业税收优惠</span>
         </div>
       </div>
       <div class="panle_block nb">
@@ -55,8 +60,33 @@
         <div class="block_content">朱先生，是美国南太平洋大学的博士，现任中国葛洲坝集团国际工程有限公司的税务专家 (集团全球税务负责人）。他是经济学硕士（税务专业）、工商管理博士（税务方向），高级经济师，中国注册税务师，国家税务总局《中国税网》 税务专家顾问。</div>
       </div>
     </div>
+    <div class="introduce_panel" v-show="currentTab == 1">
 
-    <div class="comment_panel" v-show="currentTab == 1">
+      <div class="panle_block">
+        <div class="block_title">心得解读</div>
+        <div class="block_content">7号公告对美元基金的影响...</div>
+      </div>
+     
+
+      <div class="panle_block nb">
+        <div class="block_title">作品链接</div>
+        <div class="base_msg no_name">
+           <span class="msg_name"></span>
+           <span class="msg_content">《作品一名称》</span>
+        </div>
+        <div class="base_msg no_name">
+           <span class="msg_name"></span>
+           <span class="msg_content">《作品二名称》</span>
+        </div>
+        <div class="base_msg no_name">
+           <span class="msg_name"></span>
+           <span class="msg_content">《作品三名称》</span>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="comment_panel" v-show="currentTab == 2">
       <div class="comment_item">
         <img class="user_avatar" src="../../../static/img/avatar.jpeg">
         <div class="comment_content">
@@ -216,7 +246,7 @@ export default {
     background-color: #fff;
     font-size: 14px;
   .panle_block{
-    padding:25px 15px;
+    padding:20px 15px;
     border-bottom: 1px solid #e6e8eb;
   }
   .panle_block.nb{
@@ -226,17 +256,29 @@ export default {
     font-size: 16px;
     color: #333;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 17px;
   }
   .base_msg{
     font-size: 13px;
-    height: 20px;
+    min-height: 20px;
     color: #777;
     display: flex;
-    align-items: center;
+    &+.base_msg{
+      margin-top: 8px;
+    }
+   
     .msg_name{
        position: relative;
        padding-left: 12px;
+       width: 64px;
+    }
+    &.no_name{
+      .msg_name{
+        width: 0px;
+      }
+      .msg_content{
+        margin-left: 5px;
+      }
     }
     .msg_name::before{
       content:'';
@@ -249,7 +291,8 @@ export default {
       top:6px;
     }
     .msg_content{
-      margin-left: 20px;
+      flex: 1;
+      margin-left: 10px;
       color: #333;
     }
   }

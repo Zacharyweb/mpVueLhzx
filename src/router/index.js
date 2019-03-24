@@ -1,4 +1,37 @@
 module.exports = [
+   // 专家详情
+   {
+    path: 'pages/expertDetail/index',
+    config: {
+      navigationBarTitleText: '专家详情',
+      usingComponents: {
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
+    // 首页
+    {
+      path: 'pages/index/index',
+      config: {
+        navigationBarTitleText: '联合咨询',
+        usingComponents: {
+          "van-search": "/static/vant/search/index",
+          "van-tag": "/static/vant/tag/index",
+          "van-tab": "/static/vant/tab/index",
+          "van-tabs": "/static/vant/tabs/index"
+        }
+      }
+    },
+     // 基础信息
+     {
+      path: 'pages/baseMsg/index',
+      config: {
+        navigationBarTitleText: '基础信息',
+        usingComponents: {
+        
+        }
+      }
+    },
   // 个人中心
   {
     path: 'pages/myClient/index',
@@ -45,16 +78,7 @@ module.exports = [
       }
     }
   },
-   // 专家详情
-   {
-    path: 'pages/expertDetail/index',
-    config: {
-      navigationBarTitleText: '专家详情',
-      usingComponents: {
-        "van-action-sheet": "/static/vant/action-sheet/index"
-      }
-    }
-  },
+  
     // 咨询订单列表
     {
       path: 'pages/consult/index',
@@ -164,19 +188,7 @@ module.exports = [
       }
     }
   },
-   // 首页
-   {
-    path: 'pages/index/index',
-    config: {
-      navigationBarTitleText: '联合咨询',
-      usingComponents: {
-        "van-search": "/static/vant/search/index",
-        "van-tag": "/static/vant/tag/index",
-        "van-tab": "/static/vant/tab/index",
-        "van-tabs": "/static/vant/tabs/index"
-      }
-    }
-  },
+ 
   // 修改手机
   {
     path: 'pages/editMobile1/index',

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 const state = {
   count: 0,
+  isX:false,
+  userData:null
 }
 
 const mutations = {
@@ -11,7 +13,15 @@ const mutations = {
   DECREMENT: (state) => {
     const obj = state
     obj.count -= 1
-  }
+  },
+  UPDATEISX: (state,flag) => {
+    const obj = state
+    obj.isX = flag;
+  },
+  UPDATEUSER: (state,data) => {
+    const obj = state;
+    obj.userData = data;
+  },
 }
 
 const actions = {
@@ -20,7 +30,13 @@ const actions = {
   },
   decrement ({commit}) {
     commit('DECREMENT')
-  }
+  },
+  updateIsX ({commit},flag) {
+    commit('UPDATEISX',flag)
+  },
+  updateUserMsg({commit},data) {
+    commit('UPDATEUSER',data)
+  },
 }
 
 export default {

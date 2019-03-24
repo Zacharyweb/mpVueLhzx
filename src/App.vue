@@ -1,12 +1,28 @@
 <script>
+import store from './store'
+import { mapState, mapActions } from 'vuex'
 export default {
+  computed: {
+  
+  },
   created () {
-    // 调用API从本地缓存中获取数据
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    console.log('app created and cache logs by setStorageSync')
+    // 调用API获取机型信息
+    let that = this;
+    wx.getSystemInfo({
+      success:  res=>{
+        let modelmes = res.model;
+        if (modelmes.search('iPhone X') != -1) {
+          that.updateIsX(true);
+        }
+      }
+    });
+    that.updateUserMsg({type:'e'});
+  },
+   methods: {
+    ...mapActions('counter', [
+      'updateIsX',
+      'updateUserMsg'
+    ]),
   }
 }
 </script>

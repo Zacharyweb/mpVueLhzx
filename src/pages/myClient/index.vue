@@ -388,15 +388,16 @@ export default {
       this.actionSheetShow = false;
     },
     deleteFriend(p){
-      var that = this;
-      Dialog.confirm({
-        title: '确认解除关系？',
-        message: '解除关系后，您将从对方的关系户中删除'
-      }).then(() => {
-        // on confirm
-      }).catch(() => {
-        // on cancel
-      });
+      this.addViewPanelShow = true;
+      // var that = this;
+      // Dialog.confirm({
+      //   title: '确认解除关系？',
+      //   message: '解除关系后，您将从对方的关系户中删除'
+      // }).then(() => {
+       
+      // }).catch(() => {
+        
+      // });
     },
 
     extendExperts(index){
