@@ -1,13 +1,5 @@
 <template>
   <div class="container">
-
-    <!-- <div class="wx_msg">
-      <img class="wx_avatar" src="../../../static/img/avatar.jpeg">
-      <span class="wx_name">朱两边</span>
-    </div> -->
-
-
-
     <div class="order_form_panel">
       <div class="panle_block">
         <div class="block_title">基础信息</div>
@@ -104,45 +96,45 @@
           </li>
 
   
-          <li class="form_item required">
+          <li class="form_item required textarea_item">
             <div class="item_name">一句话说专业</div>
             <div class="item_content">
-              <textarea placeholder="例：税务检查，攻守有道" :disabled="isChecked == 'Y'"></textarea>
+              <textarea placeholder="20字以内。例：税务检查，攻守有道"  maxlength='20' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
-          <li class="form_item required">
+          <li class="form_item required textarea_item">
             <div class="item_name">领域</div>
             <div class="item_content">
-              <textarea placeholder="例：个人所得税、房产税收..." :disabled="isChecked == 'Y'"></textarea>
+              <textarea placeholder="150字以内。例：个人所得税、房产税收..." maxlength='150' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
-          <li class="form_item required">
+          <li class="form_item required textarea_item">
             <div class="item_name">细分</div>
             <div class="item_content">
-              <textarea placeholder="例：运输企业、房地产、互联网..." :disabled="isChecked == 'Y'"></textarea>
+              <textarea placeholder="150字以内。例：运输企业、房地产、互联网..." maxlength='150' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
-          <li class="form_item required">
+          <li class="form_item required textarea_item">
             <div class="item_name">擅长业务</div>
             <div class="item_content">
-              <textarea placeholder="例：申请高新企业税收优惠... " :disabled="isChecked == 'Y'"></textarea>
+              <textarea placeholder="150字以内。例：申请高新企业税收优惠... " maxlength='150' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
-          <li class="form_item required">
+          <li class="form_item required textarea_item">
             <div class="item_name">心得解读</div>
             <div class="item_content">
-              <textarea placeholder="例：7号公告对美元基金的影响..." :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" placeholder="例：7号公告对美元基金的影响..." maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
-          <li class="form_item required">
+          <li class="form_item required textarea_item">
             <div class="item_name">关于专家</div>
             <div class="item_content">
-              <textarea placeholder="请输入自我介绍信息"  :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
@@ -185,12 +177,11 @@
         <div class="problem_content">
           <div class="files_group">
               <div class="title">相关照片</div>
-              <div class="img_file_item">
-               <img class="img_file" src="../../../static/img/avatar.jpeg" alt="">
-               <img class="delete_icon" src="../../../static/img/delete_icon3.png" alt="">
+              <div class="img_file_item" v-for="(item,index) in photosList" :key="index">
+               <img class="img_file" :src="item">
+               <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
               </div>
-             
-              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
+              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
           </div>
         </div>
       </div>
@@ -248,13 +239,12 @@
         <div class="problem_content">
           <div class="files_group">
               <span class="title required">收款码</span>
-
-              <div class="img_file_item">
-               <img class="img_file" src="../../../static/img/avatar.jpeg" alt="">
-               <img class="delete_icon" src="../../../static/img/delete_icon3.png" alt="">
+            
+              <div class="img_file_item" v-for="(item,index) in paymentCodeList" :key="index">
+               <img class="img_file" :src="item">
+               <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePaymentCode(index)">
               </div>
-             
-              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
+              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="paymentCodeList.length < 1" @click="upLoadPaymentCode">
           </div>
         </div>
       </div>
@@ -337,89 +327,78 @@ import AreaList from '../../../static/js/area.js';
 export default {
   data(){
     return{
-      classNum:1,
-      currentTab:0,
-      collected:false,
-      actionSheetShow:false,
-      actions:[
-        {
-          targetId:1,
-          name: '在线问答',
-          subname: '￥40',
-        },
-        {
-          targetId:2,
-          name: '电话约谈',
-          subname: '￥40/15分钟',
-        },
-        {
-          targetId:3,
-          name: '咨询疑问'
-        }
-      ],
-    
       provice:'',
       city:'',
       areaBlock:'',
       areaList:AreaList,
       areaSelectPanelShow:false,
       isChecked:'N', // 当前是否是超级管理员审核状态
+      photosList:[],
+
+      paymentCodeList:[]
     }
   },
   computed: {
     ...mapState({
-      count: state => state.counter.count
+
     })
   },
   mounted(){
 
   },
   methods: {
-    ...mapActions('counter', [
-      'increment',
-      'decrement',
-      'getProvince'
-    ]),
-    onClassNumChange(e){
-      console.log(e.mp.detail);
-
-    },
+  
     linkTo(path){
       this.$router.push(path);
     },
-    changeTab(num){
-      if(this.currentTab == num){
-        return;
-      }
-      this.currentTab = num;
-    },
-    toContact(){
-      this.actionSheetShow = true;
-    },
-    onCloseActionSheet(){
-       this.actionSheetShow = false;
-    },
-    onSelectAction(data){
-      if(data.mp.detail.targetId == 1){
-        
-      }else if(data.mp.detail.targetId == 2){
-        
-      }else{
-
-      };
-      this.actionSheetShow = false;
-    },
+  
     confirmArea(e){
       let result = e.mp.detail.values;
       this.provice = result[0].name;
       this.city = result[1].name;
       this.areaBlock = result[2].name;
       this.areaSelectPanelShow = false;
+    },
+    upLoadPhoto(){
+      let that = this;
+      wx.chooseImage({
+        count: 5 - that.photosList.length,
+        success(res) {
+          const tempFilePaths = res.tempFilePaths;
+          that.photosList = [...that.photosList,...res.tempFilePaths];
+          console.log(res);
+          // wx.uploadFile({
+          //   url: 'https://example.weixin.qq.com/upload',
+          //   filePath: tempFilePaths[0],
+          //   name: 'file',
+          //   formData: {
+          //     user: 'test'
+          //   },
+          //   success(res) {
+          //     const data = res.data
+          //   }
+          // })
+        }
+      })
+    },
+    deletePhoto(index){
+      this.photosList.splice(index,1);
+    },
+    upLoadPaymentCode(){
+      let that = this;
+      wx.chooseImage({
+        count: 1 - that.paymentCodeList.length,
+        success(res) {
+          const tempFilePaths = res.tempFilePaths;
+          that.paymentCodeList = [...that.paymentCodeList,...res.tempFilePaths];
+        }
+      })
+    },
+    deletePaymentCode(){
+      this.paymentCodeList = [];
     }
   },
-  onShow(){
-    this.currentTab = 0;
-  }
+  
 }
 </script>
 
@@ -429,24 +408,6 @@ export default {
   padding-bottom: 20px;
 }
 
-.wx_msg{
-  padding:0 15px;
-  font-size: 14px;
-  display: flex;
-  margin-bottom: 10px;
-  .wx_avatar{
-    width: 50px;
-    height: 50px;
-    border-radius:50%;
-    border:3px solid #e6e8eb;
-    margin-right:20px;
-  }
-  .wx_name{
-    padding-top: 10px;
-
-  }
-
-} 
 .btn_block{
   margin-top: 10px;
   display: flex;
@@ -456,10 +417,6 @@ export default {
     height: 45px;
   }
 }
-
-
-
-
 
 .order_form_panel{
     padding:0 15px;
@@ -474,7 +431,6 @@ export default {
     }
   }
 
- 
   .block_title{
     font-size: 16px;
     color: #333;
@@ -486,37 +442,11 @@ export default {
       color: #666;
       margin-left: 10px;
       font-weight: normal;
-     
-    }
-   
-  }
-
-  .class_num_block{
-    display: flex;
-    align-items: flex-end;
-    .cost_tips{
-      font-size: 14px;
-      margin-left: 10px;
-      color: #666;
-      span{
-        color: #1fb7b6;
-      }
+      padding-top: 2px;
     }
   }
 
   .problem_content{
-    textarea{
-      border:1px solid #eee;
-      background-color: #fefefe;
-      border-radius: 4px;
-      width: 100%;
-      height: 100px;
-      padding:15px;
-      box-sizing: border-box;
-      font-size: 14px;
-      color: #666;
-      line-height: 1.5;
-    }
     .files_group{
       padding-left: 85px;
       display: flex;
@@ -567,36 +497,6 @@ export default {
   }
 }
 
-.bottom_fixed{
-  justify-content: space-between;
-  .icon_btns{
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-    .icon_btn{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-right: 30px;
-      img{
-        width: 24px;
-        height: 24px;
-      }
-      span{
-        font-size: 12px;
-        margin-top: 2px;
-      }
-    }
-    
-
-  }
-  .action_btn1{
-    background-color: #f3fbfb;
-
-  }
-
-}
 
 .form_list{
   background-color: #fff;
@@ -631,10 +531,7 @@ export default {
       input{
         width: 100%;
       }
-      textarea{
-        width: 100%;
-        height: 72px;   
-      }
+     
       .item_tags{
         display: flex;
         flex-wrap: wrap;
@@ -659,7 +556,24 @@ export default {
       .select_tips{
         color: #888;
       }
- 
+    }
+    &.textarea_item{
+      flex-direction: column;
+      .item_content{
+        padding-top: 5px;
+        textarea{
+          width: 100%;
+          height: 72px; 
+          background-color: #fbfbfb;
+          border: #ebedf0;
+          border-radius: 4px;
+          padding:10px;
+        }
+        textarea.more_height{
+           height: 120px; 
+        }
+      }
+
     }
   }
   .explain_item{
@@ -669,6 +583,7 @@ export default {
     line-height: 18px;
   }
 }
+
 .area_select_block{
   .mask{
     position: fixed;
@@ -693,6 +608,7 @@ export default {
     transform: translateY(0);
   }
 }
+
 .link_list{
   .link_item{
     margin-top: 10px;

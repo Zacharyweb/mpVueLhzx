@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :class="{'m_bottom':isX}">
     <div class="experts_item">
       <div class="top_block">
         <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
@@ -124,10 +124,10 @@
       </div>
     </div>
 
-    <div class="to_chat_btn" @click="toChatRoom">
+    <div class="to_chat_btn" @click="toChatRoom" :class="{'m_top':isX}">
         <img class="bounceIn" src="../../../static/img/chat_circle_icon.png">
     </div>
-    <div class="bottom_fixed">
+    <div class="bottom_fixed" :class="{'isX':isX}">
       <div class="icon_btns">
         <div class="icon_btn" v-if="!collected" @click="collected = true">
           <img  src="../../../static/img/collect_icon.png">
@@ -139,10 +139,10 @@
           <span style="color:#1fb7b6;">收藏</span>
         </div>
 
-        <div class="icon_btn">
+        <button open-type="share" class="icon_btn btn_reset">
           <img src="../../../static/img/share_icon.png">
           <span>分享</span>
-        </div>
+        </button>
       </div>
        <span class="action_btn1" @click="toContact">马上咨询&nbsp;￥40</span>
     </div>
@@ -185,11 +185,18 @@ export default {
   },
   computed: {
     ...mapState({
-      count: state => state.counter.count
+      isX: state => state.counter.isX
     })
   },
   mounted(){
 
+  },
+  onShareAppMessage(obj){
+      console.log(obj);
+      return {
+        title:'分享测试',
+        path:'/pages/expertCard/index?mineId=2019&uId=2018',
+      }
   },
   methods: {
     ...mapActions('counter', [
@@ -235,6 +242,9 @@ export default {
 <style lang="less">
 .container{
   padding-bottom: 50px;
+  &.m_bottom{
+    padding-bottom: 82px;
+  }
 }
 .experts_item{
   margin-bottom: 0;
@@ -373,6 +383,7 @@ export default {
       span{
         font-size: 12px;
         margin-top: 2px;
+        line-height: 1.5;
       }
     }
     
@@ -414,6 +425,9 @@ export default {
   justify-content: center;
   border:1px solid #1fb7b6;
   background-color: #f3fbfb;
+  &.m_top{
+    bottom: 92px;
+  }
   img{
     width: 22px;
     height: 22px;

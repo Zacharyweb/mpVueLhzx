@@ -60,6 +60,9 @@ export default {
   mounted(){
 
   },
+  onLoad(options){
+        console.log(options);
+  },
   methods: {
     ...mapActions('counter', [
       'increment',

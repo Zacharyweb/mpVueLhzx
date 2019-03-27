@@ -1,4 +1,28 @@
 module.exports = [
+   
+  // 成为专家
+  {
+    path: 'pages/becomeExpert/index',
+    config: {
+      navigationBarTitleText: '成为专家',
+      usingComponents: {
+        "van-area": "/static/vant/area/index"
+      }
+    }
+  },
+   // 首页
+   {
+    path: 'pages/index/index',
+    config: {
+      navigationBarTitleText: '联合咨询',
+      usingComponents: {
+        "van-search": "/static/vant/search/index",
+        "van-tag": "/static/vant/tag/index",
+        "van-tab": "/static/vant/tab/index",
+        "van-tabs": "/static/vant/tabs/index"
+      }
+    }
+  },
    // 专家详情
    {
     path: 'pages/expertDetail/index',
@@ -9,44 +33,17 @@ module.exports = [
       }
     }
   },
-    // 首页
-    {
-      path: 'pages/index/index',
-      config: {
-        navigationBarTitleText: '联合咨询',
-        usingComponents: {
-          "van-search": "/static/vant/search/index",
-          "van-tag": "/static/vant/tag/index",
-          "van-tab": "/static/vant/tab/index",
-          "van-tabs": "/static/vant/tabs/index"
-        }
-      }
-    },
-     // 基础信息
-     {
-      path: 'pages/baseMsg/index',
-      config: {
-        navigationBarTitleText: '基础信息',
-        usingComponents: {
-        
-        }
-      }
-    },
-  // 个人中心
+  // 基础信息
   {
-    path: 'pages/myClient/index',
+    path: 'pages/baseMsg/index',
     config: {
-      navigationBarTitleText: '我的客户',
+      navigationBarTitleText: '基础信息',
       usingComponents: {
-        "van-search": "/static/vant/search/index",
-        "van-tab": "/static/vant/tab/index",
-        "van-tabs": "/static/vant/tabs/index",
-        "van-dialog": "/static/vant/dialog/index",
-        "van-field": "/static/vant/field/index",
-        "van-action-sheet": "/static/vant/action-sheet/index"
+      
       }
     }
   },
+
   // 个人中心
   {
     path: 'pages/mine/index',
@@ -67,17 +64,7 @@ module.exports = [
       }
     }
   },
- 
-  // 成为专家
-  {
-    path: 'pages/becomeExpert/index',
-    config: {
-      navigationBarTitleText: '成为专家',
-      usingComponents: {
-        "van-area": "/static/vant/area/index"
-      }
-    }
-  },
+
   
     // 咨询订单列表
     {
@@ -282,18 +269,16 @@ module.exports = [
       }
     }
   },
-   // 我的关系户
-   {
-    path: 'pages/myFriends/index',
+ 
+  // 我的关系
+  {
+    path: 'pages/myRelation/index',
     config: {
-      navigationBarTitleText: '我的关系户',
+      navigationBarTitleText: '我的关系',
       usingComponents: {
-        "van-search": "/static/vant/search/index",
         "van-tab": "/static/vant/tab/index",
         "van-tabs": "/static/vant/tabs/index",
         "van-dialog": "/static/vant/dialog/index",
-        "van-field": "/static/vant/field/index",
-        "van-action-sheet": "/static/vant/action-sheet/index"
       }
     }
   },

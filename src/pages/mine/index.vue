@@ -32,7 +32,7 @@
 
     <ul class="router_list">
 
-      <li class="router_item" @click="linkTo('/pages/myClient/index')">
+      <li class="router_item" @click="linkTo('/pages/myRelation/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon1.png">
           我的关系

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="chat_room"> 
+    <div class="chat_room" :class="{'isX':isX}"> 
       <div class="consult_tips_panel">
         <span class="tips_text">初步咨询满意的话可下单咨询哦~</span>
         <span class="consule_btn">马上咨询 40元/节</span>
@@ -21,7 +21,7 @@
           </div>
         </div>
       </scroll-view>
-      <div class="input_panel">
+      <div class="input_panel" :class="{'isX':isX}">
         <div class="left">
           <img src="../../../static/img/home_icon.png">
           <span>首页</span>
@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     ...mapState({
-      count: state => state.counter.count
+      isX: state => state.counter.isX
     })
   },
 
@@ -96,6 +96,9 @@ export default {
   left: 0;
   z-index: 1;
   display: flex;
+  &.isX {
+    bottom: 86px;
+  }
 }
 .consult_tips_panel{
   box-sizing: border-box;
@@ -158,7 +161,7 @@ export default {
            content: '';
            position: absolute;
            top: 10px;
-           left: -18px;
+           left: -16px;
            border-width: 5px 9px;
            border-style: solid;
            border-color: transparent;
@@ -176,7 +179,7 @@ export default {
       .content_panel{
          &::after{
            left: auto;
-           right: -18px;
+           right: -16px;
            border-right-color: transparent;
            border-left-color: #fff;
          }
@@ -189,16 +192,19 @@ export default {
 
       
 .input_panel{
-  box-sizing: border-box;
+  box-sizing: content-box;
   position: fixed;
-  width: 100%;
   bottom: 0;
   left: 0;
+  right: 0;
   display: flex;
   padding:0 15px;
   height: 54px;
   background-color: #fff; 
   align-items: center;
+  &.isX{
+    padding-bottom: 32px;
+  }
   .left{
     display: flex;
     flex-direction: column;
@@ -217,17 +223,22 @@ export default {
     flex: 1;
     margin:0 15px;
     margin-right: 10px;
+    border:1px solid #eee;
+    background-color: #f5f7f9;
+    border-radius: 4px;
+    height: 32px;
+    
+
     input{
       box-sizing: border-box;
       width: 100%;
-      height: 30px;
-      border:1px solid #eee;
-      background-color: #f5f7f9;
-      border-radius: 4px;
+      height: 50px;
+      // border:1px solid #eee;
+      // background-color: #f5f7f9;
+      // border-radius: 4px;
       font-size: 14px;
-      padding:0 15px;
-
-
+      padding:0 10px;
+      margin-top: -9px;
     }
   }
   .right{
