@@ -4,18 +4,18 @@
       <div class="panle_block">
         <div class="block_title">基础信息</div>
         <ul class="form_list">
-          <li class="form_item required">
-            <div class="item_name">昵称(平台上用)</div>
+          <li class="form_item">
+            <div class="item_name">昵称</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入昵称" :disabled="isChecked == 'Y'">
+              <input type="text" placeholder="请输入昵称，用于平台展示" :disabled="isChecked == 'Y'">
             </div>
           </li>
-          <li class="form_item required">
+          <!-- <li class="form_item required">
             <div class="item_name">姓名</div>
             <div class="item_content">
               <input type="text" placeholder="请输入姓名" :disabled="isChecked == 'Y'">
             </div>
-          </li>
+          </li> -->
           <li class="form_item required">
             <div class="item_name">手机号</div>
             <div class="item_content">
@@ -67,7 +67,7 @@
         <div class="block_title">专业信息</div>
         <ul class="form_list">
 
-          <li class="form_item required tags_item">
+          <li class="form_item required tags_item textarea_item">
             <div class="item_name">专业(单选)</div>
             <div class="item_content">
               <div class="item_tags">
@@ -83,27 +83,53 @@
           
           
 
-          <li class="form_item required tags_item">
+          <li class="form_item required tags_item textarea_item">
             <div class="item_name">从事年限(单选)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item">5年以下</span>
                 <span class="tag_item">5-10年</span>
-                <span class="tag_item">10-20年</span>
+                <span class="tag_item">10-15年</span>
+                <span class="tag_item">15-20年</span>
                 <span class="tag_item active">20年以上</span>
               </div>
             </div>
           </li>
 
-  
           <li class="form_item required textarea_item">
+            <div class="item_name">领域(可多选，最多5项，最少选一项)</div>
+            <div class="item_content">
+              <div class="item_tags">
+                <span class="tag_item">企业所得税</span>
+                <span class="tag_item">个人所得税</span>
+                <span class="tag_item">货劳税收</span>
+                <span class="tag_item">出口退税</span>
+                <span class="tag_item">国际税收</span>
+                <span class="tag_item">征收管理</span>
+                <span class="tag_item">清税注销</span>
+                <span class="tag_item">运输企业</span>
+                <span class="tag_item">房地产企业</span>
+                <span class="tag_item">互联网</span>
+                <span class="tag_item">行政复议</span>
+                <span class="tag_item">税务检查</span>
+                <span class="tag_item">电子商务</span>
+                <span class="tag_item">小微企业税收</span>
+                <span class="tag_item">能源企业</span>
+                <span class="tag_item">金融企业</span>
+                <span class="tag_item active">合伙企业</span>
+              </div>
+            </div>
+          </li>
+
+
+  
+          <!-- <li class="form_item required textarea_item">
             <div class="item_name">一句话说专业</div>
             <div class="item_content">
               <textarea placeholder="20字以内。例：税务检查，攻守有道"  maxlength='20' :disabled="isChecked == 'Y'"></textarea>
             </div>
-          </li>
+          </li> -->
 
-          <li class="form_item required textarea_item">
+          <!-- <li class="form_item required textarea_item">
             <div class="item_name">领域</div>
             <div class="item_content">
               <textarea placeholder="150字以内。例：个人所得税、房产税收..." maxlength='150' :disabled="isChecked == 'Y'"></textarea>
@@ -115,21 +141,59 @@
             <div class="item_content">
               <textarea placeholder="150字以内。例：运输企业、房地产、互联网..." maxlength='150' :disabled="isChecked == 'Y'"></textarea>
             </div>
-          </li>
+          </li> -->
 
-          <li class="form_item required textarea_item">
-            <div class="item_name">擅长业务</div>
-            <div class="item_content">
-              <textarea placeholder="150字以内。例：申请高新企业税收优惠... " maxlength='150' :disabled="isChecked == 'Y'"></textarea>
+          <li class="form_item required textarea_item textarea_item">
+            <div class="item_name">擅长业务(最多填五项，最少填一项)</div>
+            <div class="item_content input_group_item">
+              <span class="input_index">1、</span> <input placeholder="例：申请高新企业税收优惠... " maxlength='150' :disabled="isChecked == 'Y'"></input>
+            </div>
+            <div class="item_content input_group_item">
+              <span class="input_index">2、</span> <input placeholder="例：税收检查攻略，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
+            </div>
+            <div class="item_content input_group_item">
+              <span class="input_index">3、</span> <input placeholder="例：VIE结构，..." maxlength='150' :disabled="isChecked == 'Y'"></input>
+            </div>
+            <div class="item_content input_group_item">
+              <span class="input_index">4、</span> <input placeholder="例：总部费用分摊税收，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
+            </div>
+            <div class="item_content input_group_item">
+              <span class="input_index">5、</span> <input placeholder="例：股权激励规划，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
             </div>
           </li>
 
           <li class="form_item required textarea_item">
-            <div class="item_name">心得解读</div>
+            <div class="item_name">专业心得</div>
             <div class="item_content">
               <textarea class="more_height" placeholder="例：7号公告对美元基金的影响..." maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
+
+          <div class="panle_block hb">
+            <div class="block_title">
+              <span>外部链接</span>
+              <div class="more_explain">
+                <p>作品链接等</p>
+              </div>
+            </div>
+            <ul class="link_list">
+              <li class="link_item">
+                <div class="item_left">
+                   <span>链接名称</span> 
+                   <input placeholder="请输入链接名称">
+                </div>
+                <div class="item_right">
+                   <span>链接地址</span> 
+                   <input placeholder="请输入链接地址">
+                </div>
+                <img class="delete_icon" src="../../../static/img/delete_icon.png">
+              </li>
+              
+              <li class="add_item">
+                <img src="../../../static/img/add_icon.png">
+              </li>
+            </ul>
+          </div>
 
           <li class="form_item required textarea_item">
             <div class="item_name">关于专家</div>
@@ -141,32 +205,6 @@
         </ul>
       </div>
       
-      <div class="panle_block hb">
-        <div class="block_title">
-          <span>相关链接</span>
-          <div class="more_explain">
-            <p>作品链接等</p>
-          </div>
-        </div>
-        <ul class="link_list">
-          <!-- <li class="link_item">
-            <div class="item_left">
-               <span>链接名称</span> 
-               <input placeholder="请输入链接名称">
-            </div>
-            <div class="item_right">
-               <span>链接地址</span> 
-               <input placeholder="请输入链接地址">
-            </div>
-            <img class="delete_icon" src="../../../static/img/delete_icon.png">
-          </li> -->
-          
-          <li class="add_item">
-            <img src="../../../static/img/add_icon.png">
-          </li>
-        </ul>
-      </div>
-
       <div class="panle_block hb">
         <div class="block_title">
           <span>上传照片</span>
@@ -189,6 +227,13 @@
       <div class="panle_block">
         <div class="block_title">实名信息</div>
         <ul class="form_list">
+          <li class="form_item required">
+            <div class="item_name">真实姓名</div>
+            <div class="item_content">
+              <input type="text" placeholder="请输入真实姓名"  :disabled="isChecked == 'Y'">
+            </div>
+          </li>
+
           <li class="form_item required tags_item">
             <div class="item_name">证件类型</div>
             <div class="item_content">
@@ -210,24 +255,30 @@
       </div>
 
       <div class="panle_block">
-        <div class="block_title">咨询费用信息</div>
+        <div class="block_title"> <span>咨询设置</span>
+          <div class="more_explain">
+            <p>咨询是按次收费的。</p>
+            <p>每次约占用您15-30分钟的时间。</p>
+            <p>收费标准由您自行设置。</p>
+          </div>
+        </div>
         <ul class="form_list">
-          <li class="form_item required">
-            <div class="item_name">每节(15分钟)收费金额</div>
+          <li class="form_item required textarea_item">
+            <div class="item_name">每次收费人民币(元)</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入每节收费金额，单位(元/节)"  :disabled="isChecked == 'Y'">
+              <input type="text" placeholder="请输入每节收费金额"  :disabled="isChecked == 'Y'">
             </div>
           </li>
-          <li class="form_item">
+          <li class="form_item textarea_item">
             <div class="item_name">支付方式</div>
             <div class="item_content">
-              <span>咨询结束后，用户不经平台，直接扫描您的微信收款码转账支付。</span>
+              <span>咨询结束后，用户扫描您的微信收款二维码，向您直接支付，不经平台。</span>
             </div>
           </li>
-          <li class="form_item">
+          <li class="form_item textarea_item">
             <div class="item_name">免单优惠</div>
             <div class="item_content">
-              <span>咨询结束后，如果您认为有需要，可在结算前免除咨询费，作为优待客户的一种方式。</span>
+              <span>这是您向用户提供优惠的一种方式。如您认为有需要，可在确认收款前免除用户该次咨询费。</span>
             </div>
           </li>
         </ul>
@@ -252,14 +303,14 @@
       <div class="panle_block">
         <div class="block_title">
           <span>咨询承诺</span>
-          <div class="more_explain">
+          <!-- <div class="more_explain">
             <p>接单承诺：在收到订单后回应是否接单的时间。</p>
             <p>作答承诺：在接单后能交付作答的时间。</p>
-          </div>
+          </div> -->
         </div>
         <ul class="form_list">
-           <li class="form_item required tags_item">
-            <div class="item_name">接单承诺(单选)</div>
+           <li class="form_item required tags_item textarea_item">
+            <div class="item_name">接单承诺(在收到订单后的多少时间内回应是否同意接单)</div>
             <div class="item_content">
               <div class="item_tags">
                 <span class="tag_item">1分钟</span>
@@ -273,8 +324,8 @@
               </div>
             </div>
           </li>
-          <li class="form_item required tags_item">
-            <div class="item_name">作答承诺(单选)</div>
+          <li class="form_item required tags_item textarea_item">
+            <div class="item_name">作答承诺(在同意接单后的多少时间内完成作答)</div>
             <div class="item_content">
               <div class="item_tags">
                 <span class="tag_item">30分钟</span>
@@ -288,30 +339,60 @@
               </div>
             </div>
           </li>
-          <li class="explain_item">在接到订单看到问题后，需要更多时间作答的，可修改订单信息发送给客户，用户同意修改后的订单后，将按修改后的时间作答。</li>
+          <li class="explain_item">注意：在接到订单看到问题后，需要更多时间作答的，可修改订单信息发送给客户，用户同意修改后的订单后，将按修改后的时间作答。</li>
         </ul>
       </div>
 
-       
+
       <div class="panle_block">
         <div class="block_title">
-          <span>营业状态</span>
-          <div class="more_explain">
-            <p>营业中：接收和按时回应。</p>
-            <p>休息中：不接收任何咨询。</p>
-          </div>
+          <span>服务状态</span>
         </div>
         <ul class="form_list">
-          
-          <li class="explain_item">除20:00 - 8:00默认为休息状态外，其他时间均默认为营业状态。专家可随时登入切换状态。</li>
+           <li class="form_item tags_item textarea_item">
+            <div class="item_name">营业中：</div>
+            <div class="item_content">每天早上8:00点至晚上8:00点为坐堂时间。接收订单后，需在您设置的时间内回应是否接单。</div>
+          </li>
+          <li class="form_item tags_item textarea_item">
+            <div class="item_name">休息中：</div>
+            <div class="item_content">每天晚上8:00点至明早8:00点为休息时间，不接收订单。</div>
+          </li>
+          <li class="explain_item">注意：您可随时在我的设置里更改您的状态。</li>
         </ul>
+      </div>
+
+
+      <div class="panle_block">
+        <div class="block_title">
+          <span>郑重声明：</span>
+        </div>
+        <ul class="form_list">
+           <li class="form_item tags_item all_text_item">
+              <p>平台与您不存在任何雇佣或劳务关系。</p>
+              <p>您通过平台给予的作答或意见，只作户参考之用。</p>
+              <p>平台对您的一切作答或意见均不承担任何责任。</p>
+              <p>任何用户因采用了您的作答或意见而产生的后果一律与平台无关。</p>
+              <p>如用户需要您发表监（见）证意见，请另行与用户商议。</p>
+              <p>不得通过平台进行任何有违国家法律法规的操作，包括但不限于各种在平台上的非法违规问答和支付。</p>
+              <p>如有发现违法违规行为，请及时举报。</p>
+              <p>申诉和举报的电邮地址：xxxxxxxx</p>
+          </li>
+        </ul>
+
+      </div>
+        
+      <div class="agree_bar">
+        <span class="custom_checkbox active" style="margin-right:20px;">阅读并同意专家的使用规则</span>
       </div>
 
     </div>
+
+    
 
     <div class="btn_block">
       <div class="btn green large">提交审核</div>
     </div>
+    <div class="check_time_tips">平台将在24小时内完成验证，请耐心等待</div>
     <div class="area_select_block">
       <div class="mask" @click="areaSelectPanelShow = false" v-show="areaSelectPanelShow"></div>
       <div class="area_select_panel" :class="{'show':areaSelectPanelShow}">
@@ -417,6 +498,12 @@ export default {
     height: 45px;
   }
 }
+.check_time_tips{
+  padding:10px;
+  font-size: 12px;
+  text-align: center;
+  color: #999;
+}
 
 .order_form_panel{
     padding:0 15px;
@@ -437,6 +524,7 @@ export default {
     margin-bottom: 10px;
     font-weight: bold;
     display: flex;
+    white-space: nowrap;
     .more_explain{
       font-size: 12px;
       color: #666;
@@ -544,7 +632,7 @@ export default {
           color: #ccc;
           border-radius: 4px;
           font-size: 13px;
-          margin-right: 8px;
+          margin-right: 6px;
           margin-bottom: 10px;
           &.active{
             border-color: #1fb7b6;
@@ -556,9 +644,25 @@ export default {
       .select_tips{
         color: #888;
       }
+      &.input_group_item{
+        display: flex;
+        margin-bottom: 5px;
+        align-items: center;
+        .input_index{
+          font-size: 13px;
+        }
+        input{
+           background-color: #fbfbfb;
+           padding: 10px;
+           border-radius: 3px;
+        }
+      }
     }
     &.textarea_item{
       flex-direction: column;
+      .item_name{
+        width: 100%;
+      }
       .item_content{
         padding-top: 5px;
         textarea{
@@ -575,12 +679,18 @@ export default {
       }
 
     }
+    &.all_text_item{
+      flex-direction: column;
+      padding: 10px;
+      padding-bottom: 20px;
+    }
   }
   .explain_item{
     padding: 10px 15px;
-    font-size: 12px;
+    font-size: 13px;
     border-bottom: 1px solid #ebedf0;
     line-height: 18px;
+    color: #666;
   }
 }
 
@@ -663,5 +773,12 @@ export default {
     }
   }
 
+}
+.agree_bar{
+  padding-left: 10px;
+  margin-top: 10px;
+  .custom_checkbox{
+    padding-left: 16px;
+  }
 }
 </style>

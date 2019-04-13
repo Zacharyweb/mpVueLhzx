@@ -1,15 +1,4 @@
 module.exports = [
-   
-  // 成为专家
-  {
-    path: 'pages/becomeExpert/index',
-    config: {
-      navigationBarTitleText: '成为专家',
-      usingComponents: {
-        "van-area": "/static/vant/area/index"
-      }
-    }
-  },
    // 首页
    {
     path: 'pages/index/index',
@@ -33,6 +22,45 @@ module.exports = [
       }
     }
   },
+
+   // 发起咨询
+   {
+    path: 'pages/useNotice/index',
+    config: {
+      navigationBarTitleText: '使用说明',
+      usingComponents: {
+        "van-steps": "/static/vant/steps/index",
+        "van-field":"/static/vant/field/index",
+        "van-cell-group":"/static/vant/cell-group/index",
+        "van-dialog": "/static/vant/dialog/index"
+      }
+    }
+  },
+ 
+   // 咨询订单列表
+   {
+    path: 'pages/consult/index',
+    config: {
+      navigationBarTitleText: '咨询订单',
+      usingComponents: {
+        "van-tag": "/static/vant/tag/index",
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
+
+  // 成为专家
+  {
+    path: 'pages/becomeExpert/index',
+    config: {
+      navigationBarTitleText: '成为专家',
+      usingComponents: {
+        "van-area": "/static/vant/area/index"
+      }
+    }
+  },
+
+  
   // 基础信息
   {
     path: 'pages/baseMsg/index',
@@ -65,18 +93,6 @@ module.exports = [
     }
   },
 
-  
-    // 咨询订单列表
-    {
-      path: 'pages/consult/index',
-      config: {
-        navigationBarTitleText: '咨询平台',
-        usingComponents: {
-          "van-tag": "/static/vant/tag/index",
-          "van-action-sheet": "/static/vant/action-sheet/index"
-        }
-      }
-    },
     // 结算支付
     {
       path: 'pages/pay/index',

@@ -5,12 +5,12 @@
         <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
         <div class="top_block_right">
           <div class="experts_msg1">
-            <div class="experts_name">朱两边<span>(高级财务专家)</span></div>
-            <span class="consult_msg">10个好友已咨询</span>
+            <div class="experts_name">朱两边<span class="status">营业中</span></div>
+            <span class="consult_msg">10人已关注</span>
           </div>
           <div class="experts_msg2">
-            <span class="respond_time"><span>5</span>分钟内回应，最快<span>12</span>小时作答</span>
-            <span class="consult_status">营业中</span>
+            <span class="respond_time"><span>5</span>分钟内回应，<span>12</span>小时内作答</span>
+            <span class="order_num">20人已咨询</span>
           </div>
           <div class="experts_msg3">
             <div class="experts_location">
@@ -27,44 +27,60 @@
       
     </div>
     <div class="custom_tabs">
-      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">介绍</div>
-      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">相关作品</div>
+      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">专业信息</div>
+      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">介绍信息</div>
       <div class="tab_item" :class="{'active':currentTab == 2}" @click="changeTab(2)">好友评价(2)</div>
       <span class="active_bar" :class="{'active1':currentTab == 1,'active2':currentTab == 2}"></span>
     </div>
 
+  
+
     <div class="introduce_panel" v-show="currentTab == 0">
       <div class="panle_block">
+         <div class="base_msg">
+          <span class="msg_name">担任职位</span>
+          <span class="msg_content">前所得税副处</span>
+        </div>
         <div class="base_msg">
-          <span class="msg_name">就职公司</span>
-          <span class="msg_content">XXX公司</span>
+          <span class="msg_name">任职企业</span>
+          <span class="msg_content">杭州市税局大企业处</span>
+        </div>
+        <div class="base_msg">
+          <span class="msg_name">工作年限</span>
+          <span class="msg_content">20年</span>
         </div>
       </div>
       <div class="panle_block">
-        <div class="block_title">专业信息</div>
+        <!-- <div class="block_title">领域与擅长业务</div> -->
         <div class="base_msg">
            <span class="msg_name">领域</span>
-           <span class="msg_content">所得税、个人所得税、房产税收、美国税</span>
+           <span class="msg_content">企业所得税、金融企业、出口退税、行政复议</span>
         </div>
-        <div class="base_msg">
-           <span class="msg_name">细分</span>
-           <span class="msg_content">运输企业、房地产、互联网、股权激励、出口退税、VIE结构、跨境并购</span>
-        </div>
+     
         <div class="base_msg">
            <span class="msg_name">擅长业务</span>
-           <span class="msg_content">申请高新企业税收优惠</span>
+           <span class="msg_content">税收检查应对、发票风险管理实务、转攻房地产税务难题</span>
         </div>
       </div>
-      <div class="panle_block nb">
-        <div class="block_title">自我介绍</div>
-        <div class="block_content">朱先生，是美国南太平洋大学的博士，现任中国葛洲坝集团国际工程有限公司的税务专家 (集团全球税务负责人）。他是经济学硕士（税务专业）、工商管理博士（税务方向），高级经济师，中国注册税务师，国家税务总局《中国税网》 税务专家顾问。</div>
+      
+       <div class="panle_block nb">
+        <div class="block_title">专业见解</div>
+        <div class="block_content">7号公告对美元基金的影响...</div>
       </div>
     </div>
     <div class="introduce_panel" v-show="currentTab == 1">
 
       <div class="panle_block">
-        <div class="block_title">心得解读</div>
-        <div class="block_content">7号公告对美元基金的影响...</div>
+        <div class="block_title">自我介绍</div>
+        <div class="block_content">朱先生，是美国南太平洋大学的博士，现任中国葛洲坝集团国际工程有限公司的税务专家 (集团全球税务负责人）。他是经济学硕士（税务专业）、工商管理博士（税务方向），高级经济师，中国注册税务师，国家税务总局《中国税网》 税务专家顾问。</div>
+      </div>
+
+      <div class="panle_block">
+        <div class="block_title">相关照片</div>
+        <div class="block_content">
+          <img class="intro_img"  v-for="(item,index) in imgUrls" :src="item" :key="index" @click="showImgSwiper(index)">
+
+        </div>
       </div>
      
 
@@ -130,12 +146,12 @@
     <div class="bottom_fixed" :class="{'isX':isX}">
       <div class="icon_btns">
         <div class="icon_btn" v-if="!collected" @click="collected = true">
-          <img  src="../../../static/img/collect_icon.png">
-          <span>收藏</span>
+          <img src="../../../static/img/collect_icon.png">
+          <span>关注</span>
         </div>
 
         <div class="icon_btn" v-if="collected" @click="collected = false">
-          <img  src="../../../static/img/collect_icon2.png">
+          <img src="../../../static/img/collect_icon2.png">
           <span style="color:#1fb7b6;">收藏</span>
         </div>
 
@@ -153,7 +169,23 @@
       @close="onCloseActionSheet"
       @select="onSelectAction"
     />
+    
+    <swiper class="imgs_swiper"
+      v-if="imgSwiperShow"
+      :indicator-dots="true"
+      :current="swiperCurrent"
+      :autoplay="false"
+      :duration="1000"
+      indicator-color="rgba(255,255,255,0.6)"
+      indicator-active-color="#fff"
+    >
 
+      <block v-for="(item,index) in imgUrls" :key="index">
+        <swiper-item class="img_item" @click="imgSwiperShow = false">
+          <image :src="item" mode="widthFix" class="slide-image"/>
+        </swiper-item>
+      </block>
+    </swiper>
   </div>
 </template>
 
@@ -180,7 +212,18 @@ export default {
           targetId:3,
           name: '咨询疑问'
         }
-      ]
+      ],
+      imgUrls: [
+        'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
+        'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
+        'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
+        'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
+        'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
+      ],
+      imgSwiperShow: false,
+  
+
+      swiperCurrent:2,
     }
   },
   computed: {
@@ -214,7 +257,8 @@ export default {
       this.currentTab = num;
     },
     toContact(){
-      this.actionSheetShow = true;
+      // this.actionSheetShow = true;
+      this.$router.push({path:'/pages/startConsult/index'});
     },
     onCloseActionSheet(){
        this.actionSheetShow = false;
@@ -231,6 +275,11 @@ export default {
     },
     toChatRoom(){
       this.$router.push({path:'/pages/chatRoom/index',query:{id:1}})
+    },
+    showImgSwiper(index){
+
+      this.swiperCurrent = index;
+      this.imgSwiperShow = true;
     }
   },
   onShow(){
@@ -309,6 +358,11 @@ export default {
   .block_content{
      font-size: 13px;
      color: #777;
+     .intro_img{
+       width: 50px;
+       height: 50px;
+       margin-left: 5px;
+     }
   }
 }
 .comment_panel{
@@ -433,4 +487,26 @@ export default {
     height: 22px;
   }
 }
+.imgs_swiper{
+  position: fixed;
+  top:0;
+  left: 0;
+  background-color: #000;
+  z-index: 9;
+  height: 100%;
+  width: 100%;
+
+  .img_item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    image{
+      width: 375px;
+    }
+
+  }
+
+}
+
+ 
 </style>

@@ -164,10 +164,38 @@ button.btn_reset{
         .experts_name{
           font-size: 16px;
           color: #333;
+          position: relative;
+          .status{
+            font-size: 12px;
+            color: #1fb7b6;
+            position: absolute;
+            top:0;
+            right: 0;
+            transform: translate(120%,0%);
+            padding: 1px 3px;
+            border:1px solid #1fb7b6;
+            border-radius: 3px;
+            white-space: nowrap;
+          }
+          .status.grey{
+            color: #999;
+            border-color: #999;
+          }
         }
         .consult_msg{
           font-size: 12px;
           color: #999;
+        }
+        .experts_location{
+          display: flex;
+          align-items: center;
+          img{
+            width: 15px;
+            height: 15px;
+            margin-right: 2px;
+          }
+          color: #d4d7da;
+          font-size: 12px;
         }
       }
       .experts_msg2{
@@ -177,12 +205,16 @@ button.btn_reset{
         display: flex;
         justify-content: space-between;
         .experts_position{
-          
+          font-size: 12px;
         }
         .consult_price{
 
         }
         .consult_status{
+          color: #1fb7b6;
+        }
+        .order_num{
+          font-size: 12px;
           color: #1fb7b6;
         }
       }
@@ -248,13 +280,39 @@ button.btn_reset{
   font-size: 14px;
   background-color: #fff;
   margin-bottom: 10px;
+  .order_msg0{
+    display: flex;
+    justify-content: space-between;
+    height: 36px;
+    align-items: center;
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+    .order_no{
+      color: #999;
+    }
+    .order_status{
+      .time_count{
+        
+      }
+      .status_text{
+        margin-left: 15px;
+        color: #1fb7b6;
+      }
+      .status_text.grey{
+        color: #ccc;
+      }
+   
+    }
+  
+  }
   .top_block{
-     height: 96px;
+     height: 80px;
      display: flex;
      align-items: center;
+     border-bottom: 1px solid #eee;
     .experts_avatar{
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       border: 3px solid #e6e8eb; 
       margin-right: 10px;
@@ -269,13 +327,23 @@ button.btn_reset{
           font-size: 16px;
           color: #333;
           span{
-            font-size: 14px;
+            font-size: 12px;
             color: #999;
+            width: 195px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin-left: 5px;
           }
         }
+
         .experts_position{
           color: #333;
         }
+        .consult_msg{
+          font-size: 12px;
+        }
+
       }
       .order_msg2{
         margin-top: 13px;
@@ -298,6 +366,16 @@ button.btn_reset{
           color: #ccc;
           border: 1px solid #ccc;
         }
+
+        .experts_position{
+          color: #666;
+          font-size: 12px;
+          width: 200px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
         .order_status.red{
           
         }
@@ -321,15 +399,14 @@ button.btn_reset{
         .order_deadline{
           margin-top: 8px;
         }
-        .order_class{
+        .order_cost{
           margin-top: 8px;
           span{
             font-size: 13px;
-            color: #999;
           }
         }
+        
       }
-
     }
   }
   .bottom_block{
@@ -509,6 +586,12 @@ button.btn_reset{
   }
   .active_bar.active2{
     left: 83%;
+  }
+  .active_bar.active25{
+    left: 25%;
+  }
+  .active_bar.active75{
+    left: 75%;
   }
 }
 

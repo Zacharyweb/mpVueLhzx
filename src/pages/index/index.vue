@@ -3,7 +3,7 @@
 
     <van-search  background="#fff" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
 
-    <div class="relation_experts_block">
+    <!-- <div class="relation_experts_block">
       <div class="relation_expert" @click="toExpertList('/pages/collectExpert/index')">
         <div class="expert_num">
           <img src="../../../static/img/index_icon1.png" alt="">
@@ -43,9 +43,9 @@
         </div>
         <div class="expert_cate">好友推荐专家</div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="msg_block">
+    <!-- <div class="msg_block">
       <div class="block_top">
         <img src="../../../static/img/notice_icon1.png">
         <span>您有3条未查看消息。</span>
@@ -56,7 +56,7 @@
         </div>
         <div class="msg_time">2018-11-28 00:00:00</div>
       </div>
-    </div>
+    </div> -->
 
     <div class="tab_fix_wrap" v-show="tabFixedFlag">
        <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">

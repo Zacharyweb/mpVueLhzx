@@ -3,6 +3,7 @@
     <div class="order_base_msg">
       <div class="order_no">订单号：20190316010203</div>
       <div class="order_status">
+        <span class="time_count" v-if="orderStatus == 1 || orderStatus == 3">00:05:45</span>
         <span class="status" v-if="orderStatus == 1">待接单</span>
         <span class="status" v-if="orderStatus == 2">待重新确认</span>
         <span class="status" v-if="orderStatus == 3">待作答</span>
@@ -19,12 +20,12 @@
           <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
           <div class="top_block_right">
             <div class="order_msg1">
-              <div class="experts_name">朱两边 <span>(高级财务专家)</span></div>
+              <div class="experts_name">朱两边 <span>前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span></div>
             </div>
             <div class="order_msg3">
               <div  class="order_response" v-if="orderStatus == 1 || orderStatus == 7">接单截至时间：2019-03-16 12:00:00</div>
               <div  class="order_deadline" v-if="orderStatus*1 >= 2 && orderStatus != 7">作答截至时间：2019-03-16 12:00:00</div>
-              <div  class="order_class">作答节数：1节<span>(66元/节)</span></div>
+              <div  class="order_cost"><span>费用：66元</span></div>
             </div>
           </div>
         </div>
@@ -492,6 +493,10 @@ export default {
 </script>
 <style lang="less" scoped>
 
+
+  .order_item .top_block {
+    height: 96px;
+  }
   .order_base_msg{
     padding:15px;
     background-color:#fff;
@@ -505,6 +510,11 @@ export default {
     .order_status{
        display: flex;
        align-items: center;
+       .time_count{
+         font-size: 14px;
+         color: #333;
+         margin-right: 10px;
+       }
       .status{
         font-size: 14px;
         color:#1fb7b6;
