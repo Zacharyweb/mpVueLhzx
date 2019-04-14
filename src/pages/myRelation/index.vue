@@ -173,7 +173,7 @@ export default {
 
         ],
       sTop:0,
-      selectedFriendList:[],
+ 
       addViewPanelShow:false
     }
   },
@@ -397,112 +397,112 @@ export default {
       }
     }
   }
-  .add_view_panel{
-    position: fixed;
-    top:0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: #fff;
-    z-index: 10;
-    transform: translateX(100%);
-    transition: all 0.3s;
-    &.show{
-      transform: translateX(0);
-    }
-    .panel_top{
-      display: flex;
-      align-items: center;
-      height: 40px;
-      padding:0 10px;
-      border-bottom: 1px solid #e6e8eb;
-      .cancel_btn{
-        width: 60px;
-        font-size: 13px;
-        color: #333;
-      }
-      .title{
-        flex: 1;
-        font-size: 15px;
-        text-align: center;
-        color: #333;
-      }
-      .submit_btn{
-        width: 60px;
-        height: 24px;
-        border-radius: 3px;
-        font-size: 13px;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #1fb7b6;
-      }
-    }
-    .select_list{
-      background-color: #fff;
-      height: 64px;
-      border-bottom: 1px solid #e6e8eb;
-      .friend_avatar_list{
-        display: flex;
-        padding:0 9px;
-        flex-wrap: wrap;
-        img{
-          width: 36px;
-          height: 36px;
-          border-radius: 4px;
-          margin: 6px;
-        }
-      }
-    }
-    .friend_list_wrap{
-      position: absolute;
-      top:110px;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-    .friend_list_wrap.less_top{
-      top:48px;
-    }
-    .friend_list{
-      .friend_item{
-        height: 48px;
-        display: flex;
-        align-items: center;
-        padding-left: 15px;
-        .select_icon{
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          border:1px solid #e6e8eb;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-right: 12px;
-          .selcet_fill{
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #1fb7b6;
-          }
-        }
-      }
-      .friend_avatar{
-        width: 36px;
-        height: 36px;
-        border-radius: 4px;
-        margin-right: 8px;
-      }
-      .friend_name{
-        flex: 1;
-        height: 47px;
-        font-size: 14px;
-        color: #333;
-        display: flex;
-        align-items: center;
-        border-bottom: 1px solid #e6e8eb;
-      }
-    }
-  }
+  // .add_view_panel{
+  //   position: fixed;
+  //   top:0;
+  //   left: 0;
+  //   bottom: 0;
+  //   right: 0;
+  //   background-color: #fff;
+  //   z-index: 10;
+  //   transform: translateX(100%);
+  //   transition: all 0.3s;
+  //   &.show{
+  //     transform: translateX(0);
+  //   }
+  //   .panel_top{
+  //     display: flex;
+  //     align-items: center;
+  //     height: 40px;
+  //     padding:0 10px;
+  //     border-bottom: 1px solid #e6e8eb;
+  //     .cancel_btn{
+  //       width: 60px;
+  //       font-size: 13px;
+  //       color: #333;
+  //     }
+  //     .title{
+  //       flex: 1;
+  //       font-size: 15px;
+  //       text-align: center;
+  //       color: #333;
+  //     }
+  //     .submit_btn{
+  //       width: 60px;
+  //       height: 24px;
+  //       border-radius: 3px;
+  //       font-size: 13px;
+  //       color: #fff;
+  //       display: flex;
+  //       align-items: center;
+  //       justify-content: center;
+  //       background-color: #1fb7b6;
+  //     }
+  //   }
+  //   .select_list{
+  //     background-color: #fff;
+  //     height: 64px;
+  //     border-bottom: 1px solid #e6e8eb;
+  //     .friend_avatar_list{
+  //       display: flex;
+  //       padding:0 9px;
+  //       flex-wrap: wrap;
+  //       img{
+  //         width: 36px;
+  //         height: 36px;
+  //         border-radius: 4px;
+  //         margin: 6px;
+  //       }
+  //     }
+  //   }
+  //   .friend_list_wrap{
+  //     position: absolute;
+  //     top:110px;
+  //     bottom: 0;
+  //     left: 0;
+  //     right: 0;
+  //   }
+  //   .friend_list_wrap.less_top{
+  //     top:48px;
+  //   }
+  //   .friend_list{
+  //     .friend_item{
+  //       height: 48px;
+  //       display: flex;
+  //       align-items: center;
+  //       padding-left: 15px;
+  //       .select_icon{
+  //         width: 16px;
+  //         height: 16px;
+  //         border-radius: 50%;
+  //         border:1px solid #e6e8eb;
+  //         display: flex;
+  //         align-items: center;
+  //         justify-content: center;
+  //         margin-right: 12px;
+  //         .selcet_fill{
+  //           width: 12px;
+  //           height: 12px;
+  //           border-radius: 50%;
+  //           background-color: #1fb7b6;
+  //         }
+  //       }
+  //     }
+  //     .friend_avatar{
+  //       width: 36px;
+  //       height: 36px;
+  //       border-radius: 4px;
+  //       margin-right: 8px;
+  //     }
+  //     .friend_name{
+  //       flex: 1;
+  //       height: 47px;
+  //       font-size: 14px;
+  //       color: #333;
+  //       display: flex;
+  //       align-items: center;
+  //       border-bottom: 1px solid #e6e8eb;
+  //     }
+  //   }
+  // }
 </style>

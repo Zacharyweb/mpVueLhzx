@@ -169,6 +169,10 @@
           </div>
           <div class="order_time">2018-12-14 00:00:00</div>
         </div>
+        <div class="other_msg_block">
+          <span class="other_msg">订单已完成，可对专家进行评价</span>
+          <span class="action_btn" @click="toComment">去评价</span>
+        </div>
    
       </div>
 
@@ -508,6 +512,9 @@ export default {
     },
     toOrderDetail(status,id){
       this.$router.push({path:'/pages/consultDetail/index',query:{status:status,id:id}});
+    },
+    toComment(){
+       this.$router.push({path:'/pages/comment/index',query:{orderId:1}});
     }
   },
   created () {

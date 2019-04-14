@@ -125,7 +125,7 @@
              <span class="other_msg">您已完成支付，可进行评价或追问~</span>
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(2)">追问</span>
-                 <span class="action_btn" @click="commentPanelShow = true">立即评价</span>
+                 <span class="action_btn" @click="toComment">立即评价</span>
              </div>
            </div>
         </div>
@@ -166,7 +166,7 @@
     </div>
 
     <!-- 用户评论组件 -->
-    <div class="comment_panel" :class="{'show': commentPanelShow}">
+    <!-- <div class="comment_panel" :class="{'show': commentPanelShow}">
       <div class="panel_top">
         <span class="cancel_btn" @click="commentPanelShow = false">取消</span>
         <span class="title">发表评价</span>
@@ -210,7 +210,7 @@
          </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- 专家拒绝原因组件 -->
     <div class="order_reject_panel" :class="{'show': rejectPanelShow}">
@@ -311,7 +311,7 @@
      
     </div>
 
-    <van-action-sheet
+    <!-- <van-action-sheet
       :show="actionSheet1Show"
       :actions="actions1"
       @close="closeActionSheet1"
@@ -328,7 +328,7 @@
       :actions="actions3"
       @close="closeActionSheet3"
       @select="selectAction3"
-    />
+    /> -->
   </div>
 </template>
 <script>
@@ -345,47 +345,47 @@ export default {
       commentPanelShow: false,
       rejectPanelShow: false,
       orderEditPanelShow: false,
-      actionSheet1Show: false,
       timePickerShow:false,
       friendsListShow:false,
-      actions1:[
-        {
-          targetId:1,
-          name: '满意',
-        },
-        {
-          targetId:2,
-          name: '一般'
-        },
-        {
-          targetId:3,
-          name: '不满意'
-        }
-      ],
+      // actionSheet1Show: false,
+      // actions1:[
+      //   {
+      //     targetId:1,
+      //     name: '满意',
+      //   },
+      //   {
+      //     targetId:2,
+      //     name: '一般'
+      //   },
+      //   {
+      //     targetId:3,
+      //     name: '不满意'
+      //   }
+      // ],
 
-      actionSheet2Show:false,
-      actions2:[
-        {
-          targetId:1,
-          name: '仅自己',
-        },
-        {
-          targetId:2,
-          name: '选中关系户可见'
-        }
-      ],
+      // actionSheet2Show:false,
+      // actions2:[
+      //   {
+      //     targetId:1,
+      //     name: '仅自己',
+      //   },
+      //   {
+      //     targetId:2,
+      //     name: '选中关系户可见'
+      //   }
+      // ],
 
-      actionSheet3Show:false,
-      actions3:[
-        {
-          targetId:1,
-          name: '可见',
-        },
-        {
-          targetId:2,
-          name: '不可见'
-        }
-      ],
+      // actionSheet3Show:false,
+      // actions3:[
+      //   {
+      //     targetId:1,
+      //     name: '可见',
+      //   },
+      //   {
+      //     targetId:2,
+      //     name: '不可见'
+      //   }
+      // ],
       classNum:1,
       minDate: new Date().getTime(),
       maxDate: new Date(2030, 10, 1).getTime(),
@@ -399,54 +399,52 @@ export default {
   },
 
   methods: {
-    showActionSheet1(){
-      this.actionSheet1Show = true;
-    },
-    showActionSheet2(){
-      this.actionSheet2Show = true;
-    },
-    showActionSheet3(){
-      this.actionSheet3Show = true;
-    },
-    closeActionSheet1(){
-      this.actionSheet1Show = false;
-    },
-    closeActionSheet2(){
-      this.actionSheet2Show = false;
-    },
-    closeActionSheet3(){
-      this.actionSheet3Show = false;
-    },
+    // showActionSheet1(){
+    //   this.actionSheet1Show = true;
+    // },
+    // showActionSheet2(){
+    //   this.actionSheet2Show = true;
+    // },
+    // showActionSheet3(){
+    //   this.actionSheet3Show = true;
+    // },
+    // closeActionSheet1(){
+    //   this.actionSheet1Show = false;
+    // },
+    // closeActionSheet2(){
+    //   this.actionSheet2Show = false;
+    // },
+    // closeActionSheet3(){
+    //   this.actionSheet3Show = false;
+    // },
    
-    selectAction1(data){
-      if(data.mp.detail.targetId == 1){
+    // selectAction1(data){
+    //   if(data.mp.detail.targetId == 1){
 
-      }else{
+    //   }else{
        
-      };
-      this.actionSheet1Show = false;
-    },
-    selectAction2(data){
-      if(data.mp.detail.targetId == 2){
-          // this.$router.push('/pages/editMobile1/index');
-      }else{
+    //   };
+    //   this.actionSheet1Show = false;
+    // },
+    // selectAction2(data){
+    //   if(data.mp.detail.targetId == 2){
+        
+    //   }else{
        
-      };
-      this.actionSheet2Show = false;
-    },
-    selectAction3(data){
-      if(data.mp.detail.targetId == 1){
+    //   };
+    //   this.actionSheet2Show = false;
+    // },
+    // selectAction3(data){
+    //   if(data.mp.detail.targetId == 1){
 
-      }else{
+    //   }else{
        
-      };
-      this.actionSheet3Show = false;
-    },
-
+    //   };
+    //   this.actionSheet3Show = false;
+    // },
+  
     rejectResonChange(data){
- 
       this.rejectResonId = data.mp.detail;
-
     },
     onClassNumChange(){
 
@@ -457,6 +455,10 @@ export default {
 
     toPay(){
       this.$router.push({path:'/pages/pay/index',query:{orderId:1}})
+    },
+
+    toComment(){
+      this.$router.push({path:'/pages/comment/index',query:{orderId:1}})
     },
 
     // 追问

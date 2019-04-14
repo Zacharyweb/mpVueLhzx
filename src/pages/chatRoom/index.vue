@@ -3,7 +3,7 @@
     <div class="chat_room" :class="{'isX':isX}"> 
       <div class="consult_tips_panel">
         <span class="tips_text">初步咨询满意的话可下单咨询哦~</span>
-        <span class="consule_btn">马上咨询 40元/节</span>
+        <span class="consule_btn">马上咨询 40元/次</span>
       </div>
 
       <scroll-view scroll-y  :scroll-top="sTop" class="chat_content">

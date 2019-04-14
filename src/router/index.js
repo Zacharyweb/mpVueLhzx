@@ -1,17 +1,28 @@
 module.exports = [
-   // 首页
-   {
-    path: 'pages/index/index',
+     // 首页
+     {
+      path: 'pages/index/index',
+      config: {
+        navigationBarTitleText: '联合咨询',
+        usingComponents: {
+          "van-search": "/static/vant/search/index",
+          "van-tag": "/static/vant/tag/index",
+          "van-tab": "/static/vant/tab/index",
+          "van-tabs": "/static/vant/tabs/index"
+        }
+      }
+    },
+  // 评价
+  {
+    path: 'pages/comment/index',
     config: {
-      navigationBarTitleText: '联合咨询',
+      navigationBarTitleText: '评价',
       usingComponents: {
-        "van-search": "/static/vant/search/index",
-        "van-tag": "/static/vant/tag/index",
-        "van-tab": "/static/vant/tab/index",
-        "van-tabs": "/static/vant/tabs/index"
+        "van-action-sheet": "/static/vant/action-sheet/index",
       }
     }
   },
+
    // 专家详情
    {
     path: 'pages/expertDetail/index',
@@ -181,16 +192,7 @@ module.exports = [
       }
     }
   },
-   // 评价
-   {
-    path: 'pages/comment/index',
-    config: {
-      navigationBarTitleText: '评价',
-      usingComponents: {
-        
-      }
-    }
-  },
+ 
  
   // 修改手机
   {

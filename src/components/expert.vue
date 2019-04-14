@@ -4,7 +4,7 @@
       <img class="experts_avatar" src="../../static/img/avatar.jpeg">
       <div class="top_block_right">
         <div class="experts_msg1">
-          <div class="experts_name">朱两边<span class="status">暂停接单</span></div>
+          <div class="experts_name">朱两边<span class="status">营业中</span></div>
           <span class="consult_msg">5位关系户已咨询过</span>
         </div>
         <div class="experts_msg2">
