@@ -2,7 +2,8 @@ import Vue from 'vue'
 const state = {
   count: 0,
   isX:false,
-  userData:null
+  userData:null,
+  consultListTab:0
 }
 
 const mutations = {
@@ -22,6 +23,10 @@ const mutations = {
     const obj = state;
     obj.userData = data;
   },
+  UPDATECONSULTLISTTAB: (state,num) => {
+    const obj = state;
+    obj.consultListTab = num;
+  },
 }
 
 const actions = {
@@ -37,6 +42,9 @@ const actions = {
   updateUserMsg({commit},data) {
     commit('UPDATEUSER',data)
   },
+  updateConsultListTab({commit},num){
+    commit('UPDATECONSULTLISTTAB',num)
+  }
 }
 
 export default {

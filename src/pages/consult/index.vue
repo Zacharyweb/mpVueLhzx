@@ -440,12 +440,17 @@
   </div>
 </template>
 <script>
-
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
       currentTab:0,
     }
+  },
+  computed:{
+    ...mapState({
+      consultListTab: state => state.counter.consultListTab
+    })
   },
 
   components: {
@@ -453,7 +458,7 @@ export default {
   },
 
   methods: {
- 
+
     changeTab(num){
       if(this.currentTab == num){
         return;
@@ -469,7 +474,11 @@ export default {
   },
   created () {
   
-  }
+  },
+  onLoad: function (options) {
+     console.log(options)
+     this.currentTab = this.consultListTab;
+  },
 }
 </script>
 <style lang="less" scoped>

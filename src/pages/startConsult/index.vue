@@ -5,11 +5,11 @@
         <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
         <div class="top_block_right">
           <div class="experts_msg1">
-            <div class="experts_name">朱两边<span>(高级财务专家)</span></div>
-            <span class="consult_msg"><img class="query_icon" src="../../../static/img/query_icon.png">咨询流程</span>
+            <div class="experts_name">朱两边<span class="sub_position_text">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span></div>
+            <!-- <span class="consult_msg"><img class="query_icon" src="../../../static/img/query_icon.png">咨询流程</span> -->
           </div>
           <div class="experts_msg2">
-            <span class="respond_time"><span>5</span>分钟内回应，最快<span>12</span>小时作答</span>
+            <span class="respond_time"><span>5</span>分钟内回应，<span>12</span>小时内作答</span>
           </div>
           <div class="experts_msg3">
             <div class="experts_location">
@@ -17,7 +17,7 @@
             </div>
             <span class="devide_line"></span>
             <div class="experts_experience">
-              <img src="../../../static/img/time_icon.png">3-5年工作经验
+              <img src="../../../static/img/time_icon.png">20年工作经验
             </div>
           </div>
         </div>
@@ -26,8 +26,9 @@
 
     <div class="order_form_panel">
       <div class="panle_block">
-        <div class="block_title">选择节数<span>(首次咨询建议选择1节)</span></div>
-        <div class="class_num_block">
+        <div class="block_title mb0">预计费用&nbsp;<span class="cost_text">40</span>&nbsp;元</div>
+
+        <!-- <div class="class_num_block">
           <van-stepper
             :value="classNum"
             integer
@@ -39,18 +40,18 @@
           <div class="cost_tips">
             预计费用<span>{{40*classNum}}</span>元
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="panle_block">
-        <div class="block_title">问题内容</div>
+        <div class="block_title"><span class="require_icon">*</span>问题内容</div>
         <div class="problem_content">
           <textarea  cols="30" rows="10" placeholder="请输入咨询问题内容"></textarea>
         </div>
       </div>
       <div class="panle_block">
-        <div class="block_title">其他备注</div>
+        <div class="block_title">其他介绍</div>
         <div class="problem_content">
-          <textarea  cols="30" rows="10" placeholder="请输入相关备注，帮助专家理解问题"></textarea>
+          <textarea  cols="30" rows="10" placeholder="可填写相关介绍一下，例如您的自我介绍信息，让专家更了解您或您的问题。"></textarea>
         </div>
       </div>
       <div class="panle_block npb">
@@ -66,7 +67,7 @@
              
               <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
           </div>
-          <div class="files_group" style="padding-top: 15px;">
+          <!-- <div class="files_group" style="padding-top: 15px;">
              <span class="title" style="top:22px;">文件</span>
 
               <div class="pdf_file_item">
@@ -76,13 +77,13 @@
               </div>
           
              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
 
     <div class="btn_block">
-      <div class="btn green large">提交订单</div>
+      <div class="btn green large" @click="submitOrder">提交订单</div>
     </div>
   </div>
 </template>
@@ -93,30 +94,11 @@ export default {
   data(){
     return{
       classNum:1,
-      currentTab:0,
-      collected:false,
-      actionSheetShow:false,
-      actions:[
-        {
-          targetId:1,
-          name: '在线问答',
-          subname: '￥40',
-        },
-        {
-          targetId:2,
-          name: '电话约谈',
-          subname: '￥40/15分钟',
-        },
-        {
-          targetId:3,
-          name: '咨询疑问'
-        }
-      ]
     }
   },
   computed: {
     ...mapState({
-      count: state => state.counter.count
+     
     })
   },
   mounted(){
@@ -124,39 +106,22 @@ export default {
   },
   methods: {
     ...mapActions('counter', [
-      'increment',
-      'decrement',
-      'getProvince'
+      'updateConsultListTab'
     ]),
+  
     onClassNumChange(e){
       console.log(e.mp.detail);
-
     },
     linkTo(path){
       this.$router.push(path);
     },
-    changeTab(num){
-      if(this.currentTab == num){
-        return;
-      }
-      this.currentTab = num;
-    },
-    toContact(){
-      this.actionSheetShow = true;
-    },
-    onCloseActionSheet(){
-       this.actionSheetShow = false;
-    },
-    onSelectAction(data){
-      if(data.mp.detail.targetId == 1){
-        
-      }else if(data.mp.detail.targetId == 2){
-        
-      }else{
-
-      };
-      this.actionSheetShow = false;
-    },
+    submitOrder(){
+      // 控制咨询列表页Tab
+      // this.updateConsultListTab(1);
+      wx.switchTab({
+        url: '/pages/consult/index'
+      });
+    }
   },
   onShow(){
     this.currentTab = 0;
@@ -244,9 +209,28 @@ export default {
     font-size: 16px;
     color: #333;
     margin-bottom: 10px;
+    &.mb0{
+      margin-bottom: 0px;
+    }
     span{
       font-size: 12px;
       color: #666;
+      margin-left: 10px;
+    }
+    span.require_icon{
+      font-size: 16px;
+      color: #f44;
+      margin-left: 0px;
+      margin-right: 5px;
+    }
+    span.cost_text{
+      font-size: 16px;
+      color: #1fb7b6;
+      margin-left: 10px;
+    }
+    span.time_text{
+      font-size: 14px;
+      color: #999;
       margin-left: 10px;
     }
   }
