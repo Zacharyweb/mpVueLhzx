@@ -120,8 +120,6 @@
             </div>
           </li>
 
-
-  
           <!-- <li class="form_item required textarea_item">
             <div class="item_name">一句话说专业</div>
             <div class="item_content">
@@ -585,7 +583,6 @@ export default {
   }
 }
 
-
 .form_list{
   background-color: #fff;
   .form_item{
@@ -777,8 +774,5 @@ export default {
 .agree_bar{
   padding-left: 10px;
   margin-top: 10px;
-  .custom_checkbox{
-    padding-left: 16px;
-  }
 }
 </style>

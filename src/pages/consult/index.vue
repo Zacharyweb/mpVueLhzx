@@ -1,21 +1,11 @@
 <template>
   <div class="container">
-    <div class="expert_bar">
-      <div class="expert_msg">
-        <span class="name">朱两边</span>
-        <span class="position">高级财务专家</span>
-      </div>
-      <div class="expert_status" @click="changeStatus">
-        <span class="status">营业中</span>
-        <img src="../../../static/img/arrow_down2.png" alt="">
-      </div>
-    </div>
     <div class="custom_tabs">
       <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">我的咨询(2)</div>
       <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">客户咨询(2)</div>
       <span class="active_bar active25" :class="{'active75':currentTab == 1}"></span>
     </div>
-    <div style="height:91px;"></div>
+    <div style="height:45px;"></div>
 
     <div class="orders_list" v-show="currentTab == 0">
       <!-- 待接单 -->
@@ -251,11 +241,11 @@
           <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
           <div class="top_block_right">
             <div class="order_msg1">
-              <span class="experts_name">朱两边</span>
+              <span class="experts_name">客户1</span>
               <span class="consult_msg">预计作答时间：接单后确认</span>
             </div>
             <div class="order_msg2">
-              <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+              <span class="customer_info">客户1相关自我介绍相关自我介绍相关自我介绍相关自我介绍相关自我介绍</span>
               <span class="consult_price">￥66</span>
             </div>
           </div>
@@ -280,11 +270,11 @@
           <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
           <div class="top_block_right">
             <div class="order_msg1">
-              <span class="experts_name">朱两边</span>
+              <span class="experts_name">客户2</span>
               <span class="consult_msg">预计作答时间：接单后确认</span>
             </div>
             <div class="order_msg2">
-              <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+              <span class="customer_info">客户2相关自我介绍相关自我介绍相关自我介绍相关自我介绍相关自我介绍</span>
               <span class="consult_price">￥66</span>
             </div>
           </div>
@@ -310,11 +300,11 @@
           <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
           <div class="top_block_right">
             <div class="order_msg1">
-              <span class="experts_name">朱两边</span>
+              <span class="experts_name">客户3</span>
               <span class="consult_msg">预计作答时间：2019/04/13 19:30</span>
             </div>
             <div class="order_msg2">
-              <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+              <span class="customer_info">客户3相关自我介绍相关自我介绍相关自我介绍相关自我介绍相关自我介绍</span>
               <span class="consult_price">￥66</span>
             </div>
           </div>
@@ -340,11 +330,11 @@
           <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
           <div class="top_block_right">
             <div class="order_msg1">
-              <span class="experts_name">朱两边</span>
+              <span class="experts_name">客户4</span>
               <span class="consult_msg">作答时间：2019/04/13 19:30</span>
             </div>
             <div class="order_msg2">
-              <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+              <span class="customer_info">客户4相关自我介绍相关自我介绍相关自我介绍相关自我介绍相关自我介绍</span>
               <span class="consult_price">￥66</span>
             </div>
           </div>
@@ -369,11 +359,11 @@
           <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
           <div class="top_block_right">
             <div class="order_msg1">
-              <span class="experts_name">朱两边</span>
+              <span class="experts_name">客户5</span>
               <span class="consult_msg">作答时间：2019/04/13 19:30</span>
             </div>
             <div class="order_msg2">
-              <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+              <span class="customer_info">客户5相关自我介绍相关自我介绍相关自我介绍相关自我介绍相关自我介绍</span>
               <span class="consult_price">￥66</span>
             </div>
           </div>
@@ -399,11 +389,11 @@
           <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
           <div class="top_block_right">
             <div class="order_msg1">
-              <span class="experts_name">朱两边</span>
+              <span class="experts_name">客户6</span>
               <span class="consult_msg">作答时间：2019/04/13 19:30</span>
             </div>
             <div class="order_msg2">
-              <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+              <span class="customer_info">客户6相关自我介绍相关自我介绍相关自我介绍相关自我介绍相关自我介绍</span>
               <span class="consult_price">￥66</span>
             </div>
           </div>
@@ -432,7 +422,7 @@
               <span class="experts_name">朱两边</span>
             </div>
             <div class="order_msg2">
-              <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+              <span class="customer_info">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
               <span class="consult_price">￥66</span>
             </div>
           </div>
@@ -447,14 +437,6 @@
       
     </div>
 
-    
-
-    <van-action-sheet
-      :show="actionSheetShow"
-      :actions="actions"
-      @close="onCloseActionSheet"
-      @select="onSelectAction"
-    />
   </div>
 </template>
 <script>
@@ -463,25 +445,6 @@ export default {
   data () {
     return {
       currentTab:0,
-      actionSheetShow:false,
-      actions:[
-        {
-          targetId:1,
-          name: '营业中',
-          disabled: true
-        },
-        {
-          targetId:2,
-          name: '休息中',
-          subname: '休息至下次登入',
-        },
-        {
-          targetId:3,
-          name: '休息中',
-          subname: '休息明早8:00',
-        }
-      ]
-
     }
   },
 
@@ -490,20 +453,7 @@ export default {
   },
 
   methods: {
-    changeStatus(){
-      this.actionSheetShow = true;
-    },
-    onCloseActionSheet(){
-      this.actionSheetShow = false;
-    },
-    onSelectAction(data){
-      if(data.mp.detail.targetId == 1){
-         
-      }else{
-       
-      };
-      this.actionSheetShow = false;
-    },
+ 
     changeTab(num){
       if(this.currentTab == num){
         return;
@@ -523,52 +473,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
-  .expert_bar{
-    position: fixed;
-    top:0;
-    left: 0;
-    right: 0;
-    padding:15px;
-    background-color:#fff;
-    display: flex;
-    justify-content: space-between;
-    .expert_msg{
-      display: flex;
-      align-items: flex-end;
-      .name{
-        font-size: 16px;
-        color: #333;
-        font-weight: bold;
-      }
-      .position{
-         margin-left: 10px;
-         font-size: 13px;
-         color: #999;
-      }
-    }
-    .expert_status{
-       display: flex;
-       align-items: center;
-      .status{
-        font-size: 13px;
-        color: #777;
-      }
-      img{
-        margin-left: 5px;
-        width: 12px;
-        height: 9px;
-      }
-
-    }
-
-
-  }
   .custom_tabs{
     position: fixed;
-    top:51px;
+    top: 0;
     left: 0;
     right: 0;
-
   }
 </style>

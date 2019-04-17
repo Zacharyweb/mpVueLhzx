@@ -7,16 +7,19 @@
          <div class="mine_txt_msg">
            <div class="mine_txt_line">
               <span class="mine_nick">朱两边</span>
-              <span class="mine_position">高级财务专家</span>
+              <!-- <span class="mine_position">高级财务专家</span> -->
            </div>
-           <div class="mine_txt_line mt-10">
-             <span class="mine_status">等待客户中</span>
+           <!-- <div class="mine_txt_line mt-10" @click="actionSheetShow = true">
+             <span class="mine_status">{{statusText}}</span>
              <img class="arrow_icon" src="../../../static/img/arrow_down.png">
+           </div> -->
+           <div class="mine_txt_line mt-10">
+             <span class="mine_status">普通用户</span>
            </div>
          </div>
-         <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png">
+         <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
       </div>
-      <div class="mine_account">
+      <!-- <div class="mine_account">
         <div class="mine_amount">
           <div class="amount">
             <span>￥</span>2300
@@ -27,43 +30,53 @@
           <div class="action_btn" @click="linkTo('/pages/cash/index')">提现</div>
           <div class="action_btn" @click="linkTo('/pages/billList/index')">账单明细</div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <ul class="router_list">
+      <li class="router_item" @click="linkTo('/pages/baseMsg/index')">
+        <div class="item_left">
+          <img src="../../../static/img/center_icon6.png">
+          基础信息
+        </div>
+        <div class="item_right">
+          <img  src="../../../static/img/arrow_right.png">
+        </div>
+      </li>
 
       <li class="router_item" @click="linkTo('/pages/myRelation/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon1.png">
-          我的关系
+          我的关系户
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/myOrders/index')">
+      <li class="router_item" @click="linkTo('/pages/myCustomer/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon2.png">
-          全部订单
+          我的客户
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
 
-      <!-- <li class="router_item" @click="linkTo('/pages/bankCard/index')">
+      <li class="router_item" @click="linkTo('/pages/myExpert/index')">
         <div class="item_left">
-          <img src="../../../static/img/center_icon3.png">
-          银行卡
+          <img src="../../../static/img/center_icon1.png">
+          我的专家
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
-      </li> -->
+      </li>
+
       <li class="router_item" @click="linkTo('/pages/becomeExpert/index')">
         <div class="item_left">
-          <img src="../../../static/img/center_icon3.png">
+          <img src="../../../static/img/center_icon4.png">
           成为专家
         </div>
         <div class="item_right">
@@ -71,36 +84,86 @@
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/myFriends/index')">
+      <li class="router_item" @click="linkTo('/pages/set/index')">
         <div class="item_left">
-          <img src="../../../static/img/center_icon4.png">
-          通用
+          <img src="../../../static/img/center_icon5.png">
+          设置
+        </div>
+        <div class="item_right">
+          <img  src="../../../static/img/arrow_right.png">
+        </div>
+      </li>
+
+      
+      <li class="router_item" @click="linkTo('/pages/useNotice/index')">
+        <div class="item_left">
+          <img src="../../../static/img/center_icon7.png">
+          使用说明
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
     </ul>
+
+    <van-action-sheet
+      :show="actionSheetShow"
+      :actions="actions"
+      @close="onCloseActionSheet"
+      @select="onSelectAction"
+    />
+
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
+ data () {
+    return {
+      actionSheetShow:false,
+      statusText:'营业中',
+      actions:[
+        {
+          targetId:1,
+          name: '营业中',
+        },
+        {
+          targetId:2,
+          name: '休息中',
+          subname: '休息至下次登入',
+        },
+        {
+          targetId:3,
+          name: '休息中',
+          subname: '休息至明早8:00',
+        }
+      ]
+
+    }
+  },
   computed: {
     ...mapState({
-      count: state => state.counter.count
+    
     })
   },
   mounted(){
 
   },
   methods: {
-    ...mapActions('counter', [
-      'increment',
-      'decrement',
-      'getProvince'
-    ]),
+    onCloseActionSheet(){
+      this.actionSheetShow = false;
+    },
+    onSelectAction(data){
+      if(data.mp.detail.targetId == 2){
+        this.statusText = '休息至下次登入';
+      }else if(data.mp.detail.targetId == 3){
+        this.statusText = '休息至明早8:00';
+      }else{
+        this.statusText = '营业中';
+      }
+      this.actionSheetShow = false;
+    },
     linkTo(path){
       this.$router.push(path);
     }
@@ -110,13 +173,13 @@ export default {
 
 <style lang="less">
 .mine_top_block {
-  height: 207px;
+  height: 126px;
   font-size: 14px;
   color: #fff;
   position: relative;
   .bg_img{
     width: 375px;
-    height: 207px;
+    height: 126px;
   }
   .mine_msg{
     position: absolute;
