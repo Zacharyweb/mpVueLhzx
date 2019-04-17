@@ -26,7 +26,7 @@
               <div class="order_response" v-if="orderStatus == 1">预计作答时间：接单后确认</div>
               <div class="order_response" v-if="orderStatus == 7">预计作答时间：--</div>
               <div class="order_deadline" v-if="orderStatus*1 >= 2 && orderStatus != 7">预计作答时间：2019-03-16 12:00:00</div>
-              <div class="order_cost"><span>费用：66元</span></div>
+              <div class="order_cost"><span>费用：66元</span><span class="sub_text">5分钟内回应&nbsp;|&nbsp;12小时内作答</span></div>
             </div>
           </div>
         </div>
