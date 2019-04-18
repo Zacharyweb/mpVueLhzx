@@ -82,6 +82,10 @@
       </div>
     </div>
 
+    <div class="agree_bar">
+      <span class="custom_checkbox active" style="margin-right:20px;">阅读并同意专家的使用规则</span>
+    </div>
+
     <div class="btn_block">
       <div class="btn green large" @click="submitOrder">提交订单</div>
     </div>
@@ -363,5 +367,8 @@ export default {
 
 }
 
-
+.agree_bar{
+  padding-left: 20px;
+  margin-top: 10px;
+}
 </style>

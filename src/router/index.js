@@ -4,7 +4,7 @@ module.exports = [
   {
     path: 'pages/index/index',
     config: {
-      navigationBarTitleText: '联合咨询',
+      navigationBarTitleText: '咨询堂',
       usingComponents: {
         "van-search": "/static/vant/search/index",
         "van-tag": "/static/vant/tag/index",

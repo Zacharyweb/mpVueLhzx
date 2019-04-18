@@ -145,9 +145,11 @@ button.btn_reset{
   background-color: #fff;
   margin-bottom: 10px;
   .top_block{
-     height: 108px;
+    //  min-height: 108px;
+     min-height: 86px;
      display: flex;
-     align-items: center;
+    //  align-items: center;
+     padding: 11px 0;
     .experts_avatar{
       width: 80px;
       height: 80px;
@@ -158,6 +160,7 @@ button.btn_reset{
     .top_block_right{
       flex: 1;
       .experts_msg1{
+        margin-top: 6px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -210,7 +213,7 @@ button.btn_reset{
         }
       }
       .experts_msg2{
-        margin-top: 13px;
+        margin-top: 8px;
         font-size: 14px;
         color: #333;
         display: flex;
@@ -233,7 +236,7 @@ button.btn_reset{
         display: flex;
         align-items: center;
         height: 16px;
-        margin-top: 13px;
+        margin-top: 8px;
         .experts_location{
           display: flex;
           align-items: center;
@@ -265,6 +268,24 @@ button.btn_reset{
       }
     }
   }
+
+  .good_at_area{
+    display: flex;
+    flex-wrap: wrap;
+
+    margin-top: 8px;
+    .good_at_item{
+      width: 48%;
+      margin-right: 2%;
+      font-size: 12px;
+      color: #333;
+      margin-bottom: 5px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
   .bottom_block{
     border-top:1px solid #e6e8eb;
     height: 55px;

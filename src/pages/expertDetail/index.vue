@@ -29,7 +29,7 @@
     <div class="custom_tabs">
       <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">专业信息</div>
       <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">介绍信息</div>
-      <div class="tab_item" :class="{'active':currentTab == 2}" @click="changeTab(2)">好友评价(2)</div>
+      <div class="tab_item" :class="{'active':currentTab == 2}" @click="changeTab(2)">关系户评价(2)</div>
       <span class="active_bar" :class="{'active1':currentTab == 1,'active2':currentTab == 2}"></span>
     </div>
 

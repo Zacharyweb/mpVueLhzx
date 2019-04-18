@@ -42,7 +42,7 @@
              </div>
           </div>
           <div class="question" style="margin-top:5px">
-              <span class="question_title">相关备注：</span>我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注
+              <span class="question_title">相关介绍：</span>我是备注我是备注我是备注我是备注我是备注我是备注我是备注我是备注
           </div>
           <div class="order_time">咨询发起时间：2018-12-14 00:00:00</div>
         </div>

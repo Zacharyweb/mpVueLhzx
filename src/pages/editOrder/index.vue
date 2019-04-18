@@ -10,15 +10,17 @@
       <div class="edit_list">
 
         <div class="edit_item">
-          <span class="item_name">作答节数：</span>
-          <van-stepper
-            :value="classNum"
+          <span class="item_name">作答费用：</span>
+          <!-- <van-stepper
+            :value="amount"
             integer
             min="1"
-            max="99"
+            max="9999"
             step="1"
-            @change="onClassNumChange"
-          />
+            @change="onAmountChange"
+          /> -->
+          <input class="amount_input" v-model="amount" type="number">
+          <span class="item_unit">元</span>
         </div>
 
         <div class="edit_item">
@@ -93,7 +95,7 @@ export default {
       timePickerShow:false,
       friendsListShow:false,
 
-      classNum:1,
+      amount:1,
       
       minDate: new Date().getTime(),
       maxDate: new Date(2030, 10, 1).getTime(),
@@ -167,11 +169,25 @@ export default {
       padding:15px;
       .edit_item{
         display: flex;
-        height: 40px;
+        align-items: center;
+        height: 45px;
         .item_name{
           margin-right: 5px;
           font-size: 14px;
           color: #333;
+        }
+        .amount_input{
+          padding:0;
+          border-bottom:  1px solid #bbb;
+          width: 60px; 
+          text-align: center;
+          font-size: 16px;
+          color: #000;
+        }
+        .item_unit{
+          font-size: 14px;
+          color: #333;
+          margin-left: 5px;
         }
         .item_content{
           font-size: 14px;
@@ -218,6 +234,7 @@ export default {
       background-color: #fff;
       transform: translateY(100%);
       transition: all 0.3s;
+      z-index: 9;
       &.show{
          transform: translateY(0);
       }
