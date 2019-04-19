@@ -487,26 +487,26 @@ export default {
     height: 22px;
   }
 }
-.imgs_swiper{
-  position: fixed;
-  top:0;
-  left: 0;
-  background-color: #000;
-  z-index: 9;
-  height: 100%;
-  width: 100%;
+// .imgs_swiper{
+//   position: fixed;
+//   top:0;
+//   left: 0;
+//   background-color: #000;
+//   z-index: 9;
+//   height: 100%;
+//   width: 100%;
 
-  .img_item{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    image{
-      width: 375px;
-    }
+//   .img_item{
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     image{
+//       width: 375px;
+//     }
 
-  }
+//   }
 
-}
+// }
 
  
 </style>

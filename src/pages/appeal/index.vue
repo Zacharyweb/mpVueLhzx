@@ -2,31 +2,32 @@
   <div class="container">
     <div class="order_form_panel">
       <div class="panle_block nb">
-        <div class="block_title">作答内容</div>
+        <div class="block_title">申诉内容</div>
         <div class="problem_content">
-          <textarea  maxlength="2000" placeholder="请输入作答内容"></textarea>
+          <textarea  maxlength="2000" placeholder="请输入申诉内容"></textarea>
         </div>
       </div>
-      <div class="panle_block npb">
+
+      <!-- <div class="panle_block npb">
         <div class="block_title">图片附件</div>
         <div class="problem_content">
-          
           <div class="files_group">
-              <div class="title">图片</div>
-              <div class="img_file_item" v-for="(item,index) in photosList" :key="index">
-                <img class="img_file" :src="item">
-                <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
+              <span class="title">图片</span>
+
+              <div class="img_file_item">
+               <img class="img_file" src="../../../static/img/avatar.jpeg" alt="">
+               <img class="delete_icon" src="../../../static/img/delete_icon3.png" alt="">
               </div>
-              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
+              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
           </div>
         
         </div>
-      </div>
+      </div> -->
+        <div class="appeal_tips">需要申诉的，请说明情况和原因。平台在收到申诉和咨询款后的48小时内将作出全部、部分、或者不退款的决定。</div>
     </div>
-
     <div class="btn_block">
-      <div class="btn green plain">保存</div>
-      <div class="btn green">提交作答</div>
+      <!-- <div class="btn green plain">保存</div> -->
+      <div class="btn green" @click="submit">提交申诉</div>
     </div>
   </div>
 </template>
@@ -36,36 +37,23 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data(){
     return{
-      photosList:[],
     }
   },
   computed: {
     ...mapState({
-      
+   
     })
   },
   mounted(){
 
   },
   methods: {
-    upLoadPhoto(){
-      let that = this;
-      wx.chooseImage({
-        count: 5 - that.photosList.length,
-        success(res) {
-          const tempFilePaths = res.tempFilePaths;
-          that.photosList = [...that.photosList,...res.tempFilePaths];
-          console.log(res);
-        }
-      })
-    },
-    deletePhoto(index){
-      this.photosList.splice(index,1);
+    submit(){
+      this.$router.go(-1);
     }
   },
   onShow(){
-
- 
+   
   }
 }
 </script>
@@ -74,6 +62,11 @@ export default {
 .container{
   background-color: #fff;
   padding-bottom: 20px;
+}
+.appeal_tips{
+  font-size: 12px;
+  color: #666;
+  line-height: 20px;
 }
 .btn_block{
   margin-top: 10px;
@@ -93,7 +86,7 @@ export default {
     background-color: #fff;
     font-size: 14px;
   .panle_block{
-    padding:10px 5px 20px 5px;
+    padding:10px 5px;
     border-top: 1px solid #e6e8eb;
   }
   .panle_block.npb{

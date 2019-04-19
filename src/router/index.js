@@ -1,14 +1,15 @@
 module.exports = [
-  // 首页
-  {
-    path: 'pages/login/index',
-    config: {
-      navigationBarTitleText: '登录',
-      usingComponents: {
+ 
+  // 登录
+  // {
+  //   path: 'pages/login/index',
+  //   config: {
+  //     navigationBarTitleText: '登录',
+  //     usingComponents: {
 
-      }
-    }
-  },
+  //     }
+  //   }
+  // },
 
   // 首页
   {
@@ -162,8 +163,18 @@ module.exports = [
     config: {
       navigationBarTitleText: '作答',
       usingComponents: {
-        "van-tag": "/static/vant/tag/index",
-        "van-action-sheet": "/static/vant/action-sheet/index"
+   
+      }
+    }
+  },
+
+  // 用户申诉
+  {
+    path: 'pages/appeal/index',
+    config: {
+      navigationBarTitleText: '申诉',
+      usingComponents: {
+        
       }
     }
   },

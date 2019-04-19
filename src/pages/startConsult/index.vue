@@ -57,16 +57,16 @@
       <div class="panle_block npb">
         <div class="block_title">问题附件</div>
         <div class="problem_content">
+          
           <div class="files_group">
-              <span class="title">图片</span>
-
-              <div class="img_file_item">
-               <img class="img_file" src="../../../static/img/avatar.jpeg" alt="">
-               <img class="delete_icon" src="../../../static/img/delete_icon3.png" alt="">
+              <div class="title">图片</div>
+              <div class="img_file_item" v-for="(item,index) in photosList" :key="index">
+                <img class="img_file" :src="item">
+                <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
               </div>
-             
-              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
+              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
           </div>
+
           <!-- <div class="files_group" style="padding-top: 15px;">
              <span class="title" style="top:22px;">文件</span>
 
@@ -98,6 +98,7 @@ export default {
   data(){
     return{
       classNum:1,
+      photosList:[],
     }
   },
   computed: {
@@ -125,6 +126,20 @@ export default {
       wx.switchTab({
         url: '/pages/consult/index'
       });
+    },
+    upLoadPhoto(){
+      let that = this;
+      wx.chooseImage({
+        count: 5 - that.photosList.length,
+        success(res) {
+          const tempFilePaths = res.tempFilePaths;
+          that.photosList = [...that.photosList,...res.tempFilePaths];
+          console.log(res);
+        }
+      })
+    },
+    deletePhoto(index){
+      this.photosList.splice(index,1);
     }
   },
   onShow(){

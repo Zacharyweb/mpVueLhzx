@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <van-search  background="#fff" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
 
     <!-- <div class="relation_experts_block">
@@ -65,7 +64,11 @@
           <van-tab title="工商"></van-tab>
           <van-tab title="海关"></van-tab>
         </van-tabs>
+        <div class="top_tips" @click="toConsultList">
+           <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
+        </div>
     </div>
+
     <div id="tabStaticWrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
         <van-tab title="税务"></van-tab>
@@ -73,6 +76,10 @@
         <van-tab title="工商"></van-tab>
         <van-tab title="海关"></van-tab>
       </van-tabs>
+    </div>
+
+    <div class="top_tips" @click="toConsultList">
+       <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
     </div>
 
     <div class="experts_list">
@@ -85,20 +92,25 @@
 </template>
 <script>
 import expert from '@/components/expert'
+import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
       userInfo: {},
-      currentTab:2,
+      currentTab:0,
       tabFixedFlag:false
     }
   },
+  
 
   components: {
     expert
   },
 
   methods: {
+    ...mapActions('counter', [
+      'updateConsultListTab'
+    ]),
     getUserInfo () {
       // 调用登录接口
       wx.login({
@@ -119,6 +131,14 @@ export default {
     },
     onSearchFocus(){
       this.$router.push('/pages/search/index')
+    },
+    toConsultList(){
+      // 控制咨询列表页Tab
+      // this.updateConsultListTab(1);
+    
+      wx.switchTab({
+        url: '/pages/consult/index'
+      });
     }
   },
   onPageScroll() {
@@ -260,6 +280,20 @@ export default {
   top:0;
   left: 0;
   z-index: 2;
+}
+.top_tips{
+  background-color: #f3fbfb;
+  height: 28px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  padding:0 15px;
+  color: #1fb7b6;
+  img{
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+  }
 }
 .experts_list{
   

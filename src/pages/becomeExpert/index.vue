@@ -7,7 +7,7 @@
           <li class="form_item">
             <div class="item_name">昵称</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入昵称，用于平台展示" :disabled="isChecked == 'Y'">
+              <input type="text" v-model="nickName" placeholder="请输入昵称，用于平台展示" :disabled="isChecked == 'Y'">
             </div>
           </li>
           <!-- <li class="form_item required">
@@ -19,13 +19,13 @@
           <li class="form_item required">
             <div class="item_name">手机号</div>
             <div class="item_content">
-              <input type="tel" placeholder="请输入手机号"  :disabled="isChecked == 'Y'">
+              <input type="number" v-model="mobile" placeholder="请输入手机号"  :disabled="isChecked == 'Y'">
             </div>
           </li>
           <li class="form_item required">
             <div class="item_name">电子邮箱</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入电子邮箱" :disabled="isChecked == 'Y'" >
+              <input type="text" v-model="email" placeholder="请输入电子邮箱" :disabled="isChecked == 'Y'" >
             </div>
           </li>
           <li class="form_item required tags_item">
@@ -214,8 +214,8 @@
           <div class="files_group">
               <div class="title">相关照片</div>
               <div class="img_file_item" v-for="(item,index) in photosList" :key="index">
-               <img class="img_file" :src="item">
-               <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
+                <img class="img_file" :src="item">
+                <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
               </div>
               <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
           </div>
@@ -380,7 +380,7 @@
       </div>
         
       <div class="agree_bar">
-        <span class="custom_checkbox active" style="margin-right:20px;">阅读并同意专家的使用规则</span>
+        <span class="custom_checkbox" :class="{'active':agreeRule}" @click="agreeRule = !agreeRule" style="margin-right:20px;">阅读并同意专家的使用规则</span>
       </div>
 
     </div>
@@ -406,15 +406,36 @@ import AreaList from '../../../static/js/area.js';
 export default {
   data(){
     return{
+      nickName:'',
+      mobile:'',
+      email:'',
+      language:'',
       provice:'',
       city:'',
       areaBlock:'',
+      company:'',
+      position:'',
+      majorType:'',
+      workYearsType:'',
+      workFieldType:'',
+      gootAtList:['','','','',''],
+      majorExperience:'',
+      outLink:[{name:'',link:''}],
+      introduce:'',
+      photosList:[],
+      realName:'',
+      certificateType:'',
+      certificateNo:'',
+      charge:'',
+      paymentCodeList:[],
+      ReceiptTimeType:'',
+      answerTimeType:'',
+      agreeRule:true,
       areaList:AreaList,
       areaSelectPanelShow:false,
       isChecked:'N', // 当前是否是超级管理员审核状态
-      photosList:[],
-
-      paymentCodeList:[]
+   
+     
     }
   },
   computed: {

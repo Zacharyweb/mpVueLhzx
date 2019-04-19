@@ -35,7 +35,7 @@
     <!-- 用户评论组件 -->
     <div class="comment_panel show">
       <div class="input_block">
-        <textarea class="text_area" placeholder="请输入评价内容"></textarea>
+        <textarea class="text_area" placeholder="请输入评价内容" v-if="!visiblePanelShow"></textarea>
       </div>
       
       <div class="select_list">
@@ -100,7 +100,7 @@
 
     <div class="visible_panel" :class="{'show':visiblePanelShow}">
       <div class="panel_top">
-        <span class="cancel_btn" @click="commentPanelShow = false">取消</span>
+        <span class="cancel_btn" @click="visiblePanelShow = false">取消</span>
         <span class="title">设置可见性</span>
         <span class="submit_btn">提交</span>
       </div>
@@ -331,7 +331,7 @@ export default {
    
   },
   onShow(){
- 
+    this.visiblePanelShow = false;
   }
 }
 </script>
@@ -518,7 +518,7 @@ export default {
     width: 100%;
     height: 100%;
     background-color: #fff;
-    z-index: 2;
+    z-index: 9;
     &.show{
       transform: translateX(0);
     }

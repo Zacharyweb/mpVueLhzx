@@ -96,11 +96,46 @@
           </div>
           <div class="order_time">2018-12-14 00:00:00</div>
         </div>
-       
       </div>
 
+      
+    <!-- 待用户确认 -->
+    <div class="order_item" @click="toOrderDetail(4,'u')">
+      <div class="order_msg0">
+        <span class="order_no">订单编号：2019041323w23212</span>
+        <div class="order_status">
+          <span class="status_text">已作答/待确认</span>  
+        </div>
+      </div>
+      <div class="top_block">
+        <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+        <div class="top_block_right">
+          <div class="order_msg1">
+            <span class="experts_name">朱两边</span>
+            <span class="consult_msg">作答时间：2019/04/13 19:30</span>
+          </div>
+          <div class="order_msg2">
+            <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+            <span class="consult_price">￥66</span>
+          </div>
+        </div>
+      </div>
+      <div class="bottom_block">
+        <div class="question">
+            <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+        </div>
+        <div class="order_time">2018-12-14 00:00:00</div>
+      </div>
+      <div class="other_msg_block">
+        <span class="other_msg">专家已作答，请确认是否满意作答~</span>
+        <span class="action_btn">前往确认</span>
+      </div>
+    </div>
+
+      
+
       <!-- 待支付 -->
-      <div class="order_item" @click="toOrderDetail(4,'u')">
+      <div class="order_item" @click="toOrderDetail(5,'u')">
         <div class="order_msg0">
           <span class="order_no">订单编号：2019041323w23212</span>
           <div class="order_status">
@@ -133,7 +168,7 @@
       </div>
 
       <!-- 待评价 -->
-      <div class="order_item" @click="toOrderDetail(5,'u')">
+      <div class="order_item" @click="toOrderDetail(6,'u')">
         <div class="order_msg0">
           <span class="order_no">订单编号：2019041323w23212</span>
           <div class="order_status">
@@ -167,7 +202,7 @@
       </div>
 
       <!-- 已完成 -->
-      <div class="order_item" @click="toOrderDetail(6,'u')">
+      <div class="order_item" @click="toOrderDetail(7,'u')">
         <div class="order_msg0">
           <span class="order_no">订单编号：2019041323w23212</span>
           <div class="order_status">
@@ -196,8 +231,37 @@
     
       </div>
 
-       <!-- 已关闭 -->
-      <div class="order_item" @click="toOrderDetail(7,'u')">
+      <!-- 申诉中 -->
+      <div class="order_item" @click="toOrderDetail(8,'u')">
+        <div class="order_msg0">
+          <span class="order_no">订单编号：2019041323w23212</span>
+          <div class="order_status">
+            <span class="status_text red">申诉中</span>  
+          </div>
+        </div>
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">朱两边</span>
+              <span class="consult_msg">作答时间：2019/04/13 19:30</span>
+            </div>
+            <div class="order_msg2">
+              <span class="experts_position">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span>
+              <span class="consult_price">￥66</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+      </div>
+
+      <!-- 已关闭 -->
+      <div class="order_item" @click="toOrderDetail(9,'u')">
         <div class="order_msg0">
           <span class="order_no">订单编号：2019041323w23212</span>
           <div class="order_status">
@@ -222,7 +286,6 @@
           </div>
           <div class="order_time">2018-12-14 00:00:00</div>
         </div>
-    
       </div>
       
     </div>
@@ -318,8 +381,37 @@
        
       </div>
 
-      <!-- 待支付 -->
+      <!-- 待客户确认 -->
       <div class="order_item" @click="toOrderDetail(4,'e')">
+        <div class="order_msg0">
+          <span class="order_no">订单编号：2019041323w23212</span>
+          <div class="order_status">
+            <span class="status_text">已作答/待确认</span>  
+          </div>
+        </div>
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">客户4</span>
+              <span class="consult_msg">作答时间：2019/04/13 19:30</span>
+            </div>
+            <div class="order_msg2">
+              <span class="customer_info">客户4相关自我介绍相关自我介绍相关自我介绍相关自我介绍相关自我介绍</span>
+              <span class="consult_price">￥66</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+      </div>
+
+      <!-- 待支付 -->
+      <div class="order_item" @click="toOrderDetail(5,'e')">
         <div class="order_msg0">
           <span class="order_no">订单编号：2019041323w23212</span>
           <div class="order_status">
@@ -348,7 +440,7 @@
       </div>
 
       <!-- 待评价 -->
-      <div class="order_item" @click="toOrderDetail(5,'e')">
+      <div class="order_item" @click="toOrderDetail(6,'e')">
         <div class="order_msg0">
           <span class="order_no">订单编号：2019041323w23212</span>
           <div class="order_status">
@@ -378,7 +470,7 @@
       </div>
 
       <!-- 已完成 -->
-      <div class="order_item" @click="toOrderDetail(6,'e')">
+      <div class="order_item" @click="toOrderDetail(7,'e')">
         <div class="order_msg0">
           <span class="order_no">订单编号：2019041323w23212</span>
           <div class="order_status">
@@ -407,8 +499,39 @@
      
       </div>
 
+
+      <!-- 申诉中 -->
+      <div class="order_item" @click="toOrderDetail(8,'e')">
+        <div class="order_msg0">
+          <span class="order_no">订单编号：2019041323w23212</span>
+          <div class="order_status">
+            <span class="status_text red">申诉中</span>  
+          </div>
+        </div>
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <span class="experts_name">客户6</span>
+              <span class="consult_msg">作答时间：2019/04/13 19:30</span>
+            </div>
+            <div class="order_msg2">
+              <span class="customer_info">客户6相关自我介绍相关自我介绍相关自我介绍相关自我介绍相关自我介绍</span>
+              <span class="consult_price">￥66</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom_block">
+          <div class="question">
+              <span class="question_title">问题：</span>发票违法被处罚后再次出现同样的问题，是否还要进行处罚，再次处罚是否违反一事不二罚的原则？
+          </div>
+          <div class="order_time">2018-12-14 00:00:00</div>
+        </div>
+     
+      </div>
+
        <!-- 已关闭 -->
-      <div class="order_item" @click="toOrderDetail(7,'e')">
+      <div class="order_item" @click="toOrderDetail(9,'e')">
         <div class="order_msg0">
           <span class="order_no">订单编号：2019041323w23212</span>
           <div class="order_status">

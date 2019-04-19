@@ -2,6 +2,7 @@
   <div class="container">
     <div class="user_avatar_panel">
         <img class="user_avatar" src="../../../static/img/avatar.jpeg">
+        <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
     </div>
     <div class="base_msg_panel">
 
@@ -72,6 +73,9 @@ export default {
       wx.switchTab({
         url: '/pages/index/index'
       });
+    },
+    toUseNotice(){
+       this.$router.push('/pages/useNotice/index');
     }
   },
   created () {
@@ -101,6 +105,13 @@ export default {
     border-radius: 50%;
     border: 3px solid #ebebeb;
 
+  }
+  .change_avatar_btn{
+    position: absolute;
+    font-size: 14px;
+    color: #666;
+    top:10px;
+    right: 20px;
   }
 }
 .base_msg_panel{

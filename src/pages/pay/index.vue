@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-     <div class="top_tips">
-       <img src="../../../static/img/notice_icon.png">请在24小时内上传转账截图，逾期将不能再使用平台服务。</div>
+    <div class="top_tips">
+       <img src="../../../static/img/notice_icon.png">请在24小时内上传转账截图，逾期将不能再使用平台服务。
+    </div>
     <div class="order_form_panel">
       <div class="panle_block nb">
         <div class="block_title">结算信息</div>

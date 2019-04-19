@@ -333,6 +333,13 @@ button.btn_reset{
       .status_text.grey{
         color: #ccc;
       }
+      .status_text.red{
+        // color: #e96900;
+        color: #fa3200;
+      }
+      .status_text.blue{
+        color: #2d8cf0;
+      }
    
     }
   
@@ -821,4 +828,27 @@ button.btn_reset{
       border-bottom: 1px solid #e6e8eb;
     }
   }
+}
+
+
+// 图片swiper
+.imgs_swiper{
+  position: fixed;
+  top:0;
+  left: 0;
+  background-color: #000;
+  z-index: 9;
+  height: 100%;
+  width: 100%;
+
+  .img_item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    image{
+      width: 375px;
+    }
+
+  }
+
 }

@@ -11,13 +11,6 @@
       <ul class="history_list">
         <li class="list_item" @click="selectTag('财务')">财务</li>
         <li class="list_item" @click="selectTag('财务')">财务</li>
-        <li class="list_item" @click="selectTag('财务')">财务</li>
-        <li class="list_item" @click="selectTag('财务')">财务</li>
-        <li class="list_item" @click="selectTag('财务')">财务测试集</li>
-        <li class="list_item" @click="selectTag('财务')">财务</li>
-        <li class="list_item" @click="selectTag('财务')">财务</li>
-        <li class="list_item" @click="selectTag('财务')">财务</li>
-        <li class="list_item" @click="selectTag('财务')">财务</li>
       </ul>
     </div>
     <!-- <div class="no_data_tips">
@@ -26,9 +19,6 @@
     </div> -->
 
     <div class="experts_list" v-show="searchResultShow">
-      <expert></expert>
-      <expert></expert>
-      <expert></expert>
       <expert></expert>
     </div>
 
