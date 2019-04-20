@@ -1,14 +1,14 @@
 module.exports = [
   // 首页
-  {
-    path: 'pages/login/index',
-    config: {
-      navigationBarTitleText: '登录',
-      usingComponents: {
+  // {
+  //   path: 'pages/login/index',
+  //   config: {
+  //     navigationBarTitleText: '登录',
+  //     usingComponents: {
 
-      }
-    }
-  },
+  //     }
+  //   }
+  // },
 
   // 首页
   {
