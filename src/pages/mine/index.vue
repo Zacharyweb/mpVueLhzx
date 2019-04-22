@@ -3,22 +3,34 @@
     <div class="mine_top_block">
       <img class="bg_img" src="../../../static/img/center_bg.png">
       <div class="mine_msg">
-         <img class="mine_avatar" src="../../../static/img/avatar.jpeg">
-         <div class="mine_txt_msg">
+ 
+        <img class="mine_avatar" v-if="userData" :src="userData.avatarUrl">
+        <img class="mine_avatar" v-else src="../../../static/img/df_avatar.jpg">
+
+         <!-- <div class="mine_txt_msg">
            <div class="mine_txt_line">
               <span class="mine_nick">朱两边</span>
-              <!-- <span class="mine_position">高级财务专家</span> -->
+              <span class="mine_position">高级财务专家</span>
            </div>
-           <!-- <div class="mine_txt_line mt-10" @click="actionSheetShow = true">
+
+           <div class="mine_txt_line mt-10" @click="actionSheetShow = true">
              <span class="mine_status">{{statusText}}</span>
              <img class="arrow_icon" src="../../../static/img/arrow_down.png">
-           </div> -->
+           </div>
+
            <div class="mine_txt_line mt-10">
              <span class="mine_status">普通用户</span>
            </div>
-         </div>
+         </div> -->
          <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
+         <div class="login_block">
+          <div class="no_login_tip">未登录</div>
+          <!-- <div class="action_btn">登录/注册</div> -->
+          <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button>
+
+         </div>
       </div>
+
       <!-- <div class="mine_account">
         <div class="mine_amount">
           <div class="amount">
@@ -144,13 +156,17 @@ export default {
   },
   computed: {
     ...mapState({
-    
+      userData: state => state.counter.userData
     })
   },
-  mounted(){
 
+  mounted(){
+ 
   },
   methods: {
+    ...mapActions('counter', [
+      'updateUserMsg'
+    ]),
     onCloseActionSheet(){
       this.actionSheetShow = false;
     },
@@ -166,7 +182,20 @@ export default {
     },
     linkTo(path){
       this.$router.push(path);
+    },
+
+
+    onGotUserInfo(e){
+      if (e.mp.detail.rawData){
+        //用户按了允许授权按钮
+        let data = this.userData || {};
+        this.updateUserMsg({...data,...e.mp.detail.userInfo});
+        this.$router.push({path:'/pages/login/index'});
+      } else {
+      
+      }
     }
+
   }
 }
 </script>
@@ -225,6 +254,26 @@ export default {
       width: 16px;
       height: 16px;
     }
+
+    .login_block{
+
+      .no_login_tip{
+          font-size: 16px;
+          font-weight: bold;
+          margin-left: 5px;
+      }
+      .action_btn{
+        height: 25px;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ffe288;
+        color: #ffe288;
+        padding: 0 8px;
+        border-radius: 14px;
+        font-size: 14px;
+        margin-top: 12px;
+      }
+    } 
   }
   .mine_account{
       position: absolute;

@@ -3,7 +3,9 @@ import store from './store'
 import { mapState, mapActions } from 'vuex'
 export default {
   computed: {
-  
+    ...mapState({
+      userData: state => state.counter.userData
+    })
   },
   created () {
     // 调用API获取机型信息
@@ -16,13 +18,31 @@ export default {
         }
       }
     });
-    that.updateUserMsg({type:'e'});
+    that.getSetting();
   },
    methods: {
     ...mapActions('counter', [
       'updateIsX',
       'updateUserMsg'
     ]),
+
+    // 检测用户是否已授权
+    getSetting(){
+      let that = this;
+      wx.getSetting({
+        success: function(res){
+          if (res.authSetting['scope.userInfo']) {
+            wx.getUserInfo({
+              success: function(res) {
+                let data = that.userData || {};
+                that.updateUserMsg({...data,...res.userInfo});
+              }
+            })
+          }
+        }
+      })
+    },
+    
   }
 }
 </script>
