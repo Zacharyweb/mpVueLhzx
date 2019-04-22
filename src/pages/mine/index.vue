@@ -107,7 +107,7 @@
       </li>
 
       
-      <li class="router_item" @click="linkTo('/pages/useNotice/index')">
+      <li class="router_item" @click="linkTo('/pages/useNotice/index',true)">
         <div class="item_left">
           <img src="../../../static/img/center_icon7.png">
           使用说明
@@ -150,7 +150,8 @@ export default {
           name: '休息中',
           subname: '休息至明早8:00',
         }
-      ]
+      ],
+      loginStatus:'Y',
 
     }
   },
@@ -180,10 +181,18 @@ export default {
       }
       this.actionSheetShow = false;
     },
-    linkTo(path){
-      this.$router.push(path);
-    },
 
+    linkTo(path,notNeedLogin){
+      if(notNeedLogin || this.loginStatus == 'Y'){
+        this.$router.push(path);
+      }else{
+        wx.showToast({
+          title: '请先完成登录',
+          icon: 'none',
+          duration: 1500
+        })
+      }
+    },
 
     onGotUserInfo(e){
       if (e.mp.detail.rawData){

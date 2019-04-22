@@ -2,7 +2,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "联合咨询",
+    "navigationBarTitleText": "咨询堂",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

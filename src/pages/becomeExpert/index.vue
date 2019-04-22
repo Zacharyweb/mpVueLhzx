@@ -32,14 +32,13 @@
             <div class="item_name">语言(可多选)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item">汉语</span>
-                <span class="tag_item">英语</span>
+                <span class="tag_item" v-for="(item,index) in language" :key="index" :class="{'active':item.flag}" @click="multipleChange('language',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
           <li class="form_item required">
             <div class="item_name">所在地区</div>
-            <div class="item_content"  @click="areaSelectPanelShow = true">
+            <div class="item_content"  @click="showAreaSelectPanel">
               <span class="select_tips"  v-show="!provice">请选择地区</span>
               <span class="select_content" v-show="provice">{{provice}}{{city?'-' + city:''}}{{areaBlock?'-' + areaBlock:''}}</span>
             </div>
@@ -49,13 +48,13 @@
           <li class="form_item required">
             <div class="item_name">工作单位</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入工作单位" :disabled="isChecked == 'Y'">
+              <input type="text" v-model="company" placeholder="请输入工作单位" :disabled="isChecked == 'Y'">
             </div>
           </li>
           <li class="form_item required">
             <div class="item_name">职务</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入职务" :disabled="isChecked == 'Y'">
+              <input v-model="position" type="text" placeholder="请输入职务" :disabled="isChecked == 'Y'">
             </div>
           </li>
        
@@ -71,12 +70,7 @@
             <div class="item_name">专业(单选)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item">税务</span>
-                <span class="tag_item">财务</span>
-                <span class="tag_item">法务</span>
-                <span class="tag_item active">海关</span>
-                <span class="tag_item">外汇</span>
-                <span class="tag_item">工商</span>
+                <span class="tag_item" v-for="(item,index) in majorType" :key="index" :class="{'active':item.flag}" @click="singleChange('majorType',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -87,10 +81,7 @@
             <div class="item_name">从事年限(单选)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item">5-10年</span>
-                <span class="tag_item">10-15年</span>
-                <span class="tag_item">15-20年</span>
-                <span class="tag_item active">20年以上</span>
+                <span class="tag_item" v-for="(item,index) in workYearsType" :key="index" :class="{'active':item.flag}" @click="singleChange('workYearsType',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -99,23 +90,7 @@
             <div class="item_name">领域(可多选，最多5项，最少选一项)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item">企业所得税</span>
-                <span class="tag_item">个人所得税</span>
-                <span class="tag_item">货劳税收</span>
-                <span class="tag_item">出口退税</span>
-                <span class="tag_item">国际税收</span>
-                <span class="tag_item">征收管理</span>
-                <span class="tag_item">清税注销</span>
-                <span class="tag_item">运输企业</span>
-                <span class="tag_item">房地产企业</span>
-                <span class="tag_item">互联网</span>
-                <span class="tag_item">行政复议</span>
-                <span class="tag_item">税务检查</span>
-                <span class="tag_item">电子商务</span>
-                <span class="tag_item">小微企业税收</span>
-                <span class="tag_item">能源企业</span>
-                <span class="tag_item">金融企业</span>
-                <span class="tag_item active">合伙企业</span>
+                <span class="tag_item" v-for="(item,index) in workFieldType" :key="index" :class="{'active':item.flag}" @click="multipleChange('workFieldType',index,5)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -144,26 +119,26 @@
           <li class="form_item required textarea_item textarea_item">
             <div class="item_name">擅长业务(最多填五项，最少填一项)</div>
             <div class="item_content input_group_item">
-              <span class="input_index">1、</span> <input placeholder="例：申请高新企业税收优惠... " maxlength='150' :disabled="isChecked == 'Y'"></input>
+              <span class="input_index">1、</span> <input v-model="gootAtList[0]" placeholder="例：申请高新企业税收优惠... " maxlength='150' :disabled="isChecked == 'Y'"></input>
             </div>
             <div class="item_content input_group_item">
-              <span class="input_index">2、</span> <input placeholder="例：税收检查攻略，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
+              <span class="input_index">2、</span> <input v-model="gootAtList[1]" placeholder="例：税收检查攻略，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
             </div>
             <div class="item_content input_group_item">
-              <span class="input_index">3、</span> <input placeholder="例：VIE结构，..." maxlength='150' :disabled="isChecked == 'Y'"></input>
+              <span class="input_index">3、</span> <input v-model="gootAtList[2]" placeholder="例：VIE结构，..." maxlength='150' :disabled="isChecked == 'Y'"></input>
             </div>
             <div class="item_content input_group_item">
-              <span class="input_index">4、</span> <input placeholder="例：总部费用分摊税收，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
+              <span class="input_index">4、</span> <input v-model="gootAtList[3]" placeholder="例：总部费用分摊税收，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
             </div>
             <div class="item_content input_group_item">
-              <span class="input_index">5、</span> <input placeholder="例：股权激励规划，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
+              <span class="input_index">5、</span> <input v-model="gootAtList[4]" placeholder="例：股权激励规划，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
             </div>
           </li>
 
           <li class="form_item required textarea_item">
             <div class="item_name">专业心得</div>
             <div class="item_content">
-              <textarea class="more_height" placeholder="例：7号公告对美元基金的影响..." maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" v-model="majorExperience" placeholder="例：7号公告对美元基金的影响..." maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
@@ -175,19 +150,19 @@
               </div>
             </div>
             <ul class="link_list">
-              <li class="link_item">
+              <li class="link_item" v-for="(item,index) in outLink" :key="index">
                 <div class="item_left">
                    <span>链接名称</span> 
-                   <input placeholder="请输入链接名称">
+                   <input v-model="item.name" placeholder="请输入链接名称" :disabled="isChecked == 'Y'">
                 </div>
                 <div class="item_right">
                    <span>链接地址</span> 
-                   <input placeholder="请输入链接地址">
+                   <input v-model="item.link" placeholder="请输入链接地址" :disabled="isChecked == 'Y'">
                 </div>
-                <img class="delete_icon" src="../../../static/img/delete_icon.png">
+                <img class="delete_icon" src="../../../static/img/delete_icon.png" @click="deleteOutLinkItem(index)">
               </li>
               
-              <li class="add_item">
+              <li class="add_item" @click="addOutLinkItem" v-if="outLink.length < 5">
                 <img src="../../../static/img/add_icon.png">
               </li>
             </ul>
@@ -196,7 +171,7 @@
           <li class="form_item required textarea_item">
             <div class="item_name">关于专家</div>
             <div class="item_content">
-              <textarea class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea v-model="introduce" class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
@@ -228,7 +203,7 @@
           <li class="form_item required">
             <div class="item_name">真实姓名</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入真实姓名"  :disabled="isChecked == 'Y'">
+              <input v-model="realName" type="text" placeholder="请输入真实姓名"  :disabled="isChecked == 'Y'">
             </div>
           </li>
 
@@ -236,9 +211,7 @@
             <div class="item_name">证件类型</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item">省份证</span>
-                <span class="tag_item">护照</span>
-                <span class="tag_item">通行证</span>
+                <span class="tag_item" v-for="(item,index) in certificateType" :key="index" :class="{'active':item.flag}" @click="singleChange('certificateType',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -246,7 +219,7 @@
           <li class="form_item required">
             <div class="item_name">证件号</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入证件号"  :disabled="isChecked == 'Y'">
+              <input v-model="certificateNo" type="text" placeholder="请输入证件号"  :disabled="isChecked == 'Y'">
             </div>
           </li>
         </ul>
@@ -264,7 +237,7 @@
           <li class="form_item required textarea_item">
             <div class="item_name">每次收费人民币(元)</div>
             <div class="item_content">
-              <input type="text" placeholder="请输入每节收费金额"  :disabled="isChecked == 'Y'">
+              <input v-model="charge" type="digit" placeholder="请输入每节收费金额"  :disabled="isChecked == 'Y'">
             </div>
           </li>
           <li class="form_item textarea_item">
@@ -311,14 +284,7 @@
             <div class="item_name">接单承诺(在收到订单后的多少时间内回应是否同意接单)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item">1分钟</span>
-                <span class="tag_item">5分钟</span>
-                <span class="tag_item">15分钟</span>
-                <span class="tag_item">30分钟</span>
-                <span class="tag_item">1小时</span>
-                <span class="tag_item">2小时</span>
-                <span class="tag_item">4小时</span>
-
+                <span class="tag_item" v-for="(item,index) in receiptTimeType" :key="index" :class="{'active':item.flag}" @click="singleChange('receiptTimeType',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -326,14 +292,7 @@
             <div class="item_name">作答承诺(在同意接单后的多少时间内完成作答)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item">30分钟</span>
-                <span class="tag_item">1小时</span>
-                <span class="tag_item">2小时</span>
-                <span class="tag_item">4小时</span>
-                <span class="tag_item">8小时</span>
-                <span class="tag_item">12小时</span>
-                <span class="tag_item">24小时</span>
-                <span class="tag_item">48小时</span>
+                <span class="tag_item" v-for="(item,index) in answerTimeType" :key="index" :class="{'active':item.flag}" @click="singleChange('answerTimeType',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -384,23 +343,25 @@
       </div>
 
     </div>
-
-    
-
     <div class="btn_block">
-      <div class="btn green large">提交审核</div>
+      <div class="btn grey large" v-if="isChecked == 'Y'">审核中,请等待</div>
+      <div class="btn green large" v-else>提交审核</div>
     </div>
     <div class="check_time_tips">平台将在24小时内完成验证，请耐心等待</div>
+
+    <!-- 地区选择组件 -->
     <div class="area_select_block">
       <div class="mask" @click="areaSelectPanelShow = false" v-show="areaSelectPanelShow"></div>
       <div class="area_select_panel" :class="{'show':areaSelectPanelShow}">
         <van-area :area-list="areaList" @confirm="confirmArea" @cancel="areaSelectPanelShow = false"/>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
+
 import { mapState, mapActions } from 'vuex'
 import AreaList from '../../../static/js/area.js';
 export default {
@@ -409,27 +370,78 @@ export default {
       nickName:'',
       mobile:'',
       email:'',
-      language:'',
+      language:[{name:'汉语',type:'cn',flag:false},{name:'英语',type:'en',flag:false}],
       provice:'',
       city:'',
       areaBlock:'',
       company:'',
       position:'',
-      majorType:'',
-      workYearsType:'',
-      workFieldType:'',
+      majorType:[
+                 {name:'税务',type:'sw',flag:false},
+                 {name:'财务',type:'cw',flag:false},
+                 {name:'法务',type:'fw',flag:false},
+                 {name:'海关',type:'hg',flag:false},
+                 {name:'外汇',type:'wh',flag:false},
+                 {name:'工商',type:'gs',flag:false}
+                ],
+      workYearsType:[
+                 {name:'5-10年',type:'1',flag:false},
+                 {name:'10-15年',type:'2',flag:false},
+                 {name:'15-20年',type:'3',flag:false},
+                 {name:'20年以上',type:'4',flag:false},
+                ],
+      workFieldType:[
+                 {name:'企业所得税',type:'1',flag:false},
+                 {name:'个人所得税',type:'2',flag:false},
+                 {name:'货劳税收',type:'3',flag:false},
+                 {name:'出口退税',type:'4',flag:false},
+                 {name:'国际税收',type:'5',flag:false},
+                 {name:'征收管理',type:'6',flag:false},
+                 {name:'清税注销',type:'7',flag:false},
+                 {name:'运输企业',type:'8',flag:false},
+                 {name:'房地产企业',type:'9',flag:false},
+                 {name:'互联网',type:'10',flag:false},
+                 {name:'行政复议',type:'11',flag:false},
+                 {name:'税务检查',type:'12',flag:false},
+                 {name:'电子商务',type:'13',flag:false},
+                 {name:'小微企业税收',type:'14',flag:false},
+                 {name:'能源企业',type:'15',flag:false},
+                 {name:'金融企业',type:'16',flag:false},
+                 {name:'合伙企业',type:'17',flag:false},
+                ],
       gootAtList:['','','','',''],
       majorExperience:'',
       outLink:[{name:'',link:''}],
       introduce:'',
       photosList:[],
       realName:'',
-      certificateType:'',
+      certificateType:[
+                 {name:'身份证',type:'1',flag:false},
+                 {name:'护照',type:'2',flag:false},
+                 {name:'通行证',type:'3',flag:false},
+                ],
       certificateNo:'',
       charge:'',
       paymentCodeList:[],
-      ReceiptTimeType:'',
-      answerTimeType:'',
+      receiptTimeType:[
+                 {name:'1分钟',type:'1',flag:false},
+                 {name:'5分钟',type:'5',flag:false},
+                 {name:'15分钟',type:'15',flag:false},
+                 {name:'30分钟',type:'30',flag:false},
+                 {name:'1小时',type:'60',flag:false},
+                 {name:'2小时',type:'120',flag:false},
+                 {name:'4小时',type:'240',flag:false}
+                ],
+      answerTimeType:[
+                 {name:'30分钟',type:'0.5',flag:false},
+                 {name:'1小时',type:'1',flag:false},
+                 {name:'2小时',type:'2',flag:false},
+                 {name:'4小时',type:'4',flag:false},
+                 {name:'8小时',type:'8',flag:false},
+                 {name:'12小时',type:'12',flag:false},
+                 {name:'24小时',type:'24',flag:false},
+                 {name:'48小时',type:'48',flag:false}
+                ],
       agreeRule:true,
       areaList:AreaList,
       areaSelectPanelShow:false,
@@ -441,17 +453,70 @@ export default {
   computed: {
     ...mapState({
 
-    })
+    }),
+
+
   },
   mounted(){
 
   },
   methods: {
-  
-    linkTo(path){
-      this.$router.push(path);
+    checkedStatus(){
+       if(this.isChecked == 'Y'){
+          wx.showToast({
+            title: '审核状态不可更改信息',
+            icon: 'none',
+            duration: 1500
+          })
+          return false;
+      }else{
+        return true;
+      }
     },
-  
+    // 多选项变动
+    multipleChange(itemName,index,max){
+      if(!this.checkedStatus()) return;
+    
+      if(!max){
+         this[itemName][index].flag =  !this[itemName][index].flag;
+      }else{
+        let count = 0;
+        this[itemName].forEach(item => {
+          if(item.flag){
+            count++;
+          }
+        });
+        if(count >= max){
+          if(this[itemName][index].flag){
+            this[itemName][index].flag = false;
+          }else{
+            wx.showToast({
+              title: '最多只能选' + max + '项',
+              icon: 'none',
+              duration: 1500
+            })
+          }
+        }else{
+          this[itemName][index].flag =  !this[itemName][index].flag;
+        }
+      }
+    },
+    // 单选变动
+    singleChange(itemName,index){
+      if(!this.checkedStatus()) return;
+      if(this[itemName][index].flag) return;
+      this[itemName].forEach(item => {
+        item.flag = false;
+      });
+      this[itemName][index].flag =  true;
+    },
+
+    showAreaSelectPanel(){
+      if(!this.checkedStatus()) return;
+      this.areaSelectPanelShow = true;
+    },
+
+
     confirmArea(e){
       let result = e.mp.detail.values;
       this.provice = result[0].name;
@@ -460,6 +525,7 @@ export default {
       this.areaSelectPanelShow = false;
     },
     upLoadPhoto(){
+      if(!this.checkedStatus()) return;
       let that = this;
       wx.chooseImage({
         count: 5 - that.photosList.length,
@@ -482,9 +548,11 @@ export default {
       })
     },
     deletePhoto(index){
+      if(!this.checkedStatus()) return;
       this.photosList.splice(index,1);
     },
     upLoadPaymentCode(){
+      if(!this.checkedStatus()) return;
       let that = this;
       wx.chooseImage({
         count: 1 - that.paymentCodeList.length,
@@ -495,7 +563,16 @@ export default {
       })
     },
     deletePaymentCode(){
+      if(!this.checkedStatus()) return;
       this.paymentCodeList = [];
+    },
+    deleteOutLinkItem(index){
+      if(!this.checkedStatus()) return;
+      this.outLink.splice(index,1);
+    },
+    addOutLinkItem(){
+      if(!this.checkedStatus()) return;
+      this.outLink.push({name:'',link:''});
     }
   },
   
@@ -603,7 +680,6 @@ export default {
     }
   }
 }
-
 .form_list{
   background-color: #fff;
   .form_item{
@@ -623,7 +699,6 @@ export default {
     &.tags_item{
       padding-bottom: 0;
     }
-
     &.required > .item_name::before {
       content: '*';
       position: absolute;
@@ -637,7 +712,6 @@ export default {
       input{
         width: 100%;
       }
-     
       .item_tags{
         display: flex;
         flex-wrap: wrap;
@@ -695,7 +769,6 @@ export default {
            height: 120px; 
         }
       }
-
     }
     &.all_text_item{
       flex-direction: column;
@@ -721,7 +794,6 @@ export default {
     bottom: 0;
     z-index: 1;
     background-color: rgba(0, 0, 0, 0.6);
-
   }
   .area_select_panel{
     position: fixed;
@@ -736,7 +808,6 @@ export default {
     transform: translateY(0);
   }
 }
-
 .link_list{
   .link_item{
     margin-top: 10px;
@@ -763,7 +834,6 @@ export default {
      img{
        width: 40px;
        height: 40px;
-
      }
   }
   .item_left{
@@ -790,7 +860,6 @@ export default {
       flex: 1;
     }
   }
-
 }
 .agree_bar{
   padding-left: 10px;

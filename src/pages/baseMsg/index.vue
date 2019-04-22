@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <div class="user_avatar_panel">
-        <img class="user_avatar" src="../../../static/img/avatar.jpeg">
-        <span class="change_avatar_btn">更换头像</span>
+        <img class="user_avatar" v-if="avatarImg" :src="avatarImg">
+        <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg">
+        <span class="change_avatar_btn" @click="upLoadAvatar">更换头像</span>
     </div>
     <div class="base_msg_panel">
 
@@ -10,13 +11,13 @@
         <li class="form_item">
           <div class="item_name">昵称</div>
           <div class="item_content">
-            <input type="text" placeholder="请输入昵称，用于平台展示" :disabled="isChecked == 'Y'">
+            <input type="text" placeholder="请输入昵称，用于平台展示" v-model="nickName">
           </div>
         </li>
         <li class="form_item textarea_item">
           <div class="item_name">自我介绍</div>
           <div class="item_content">
-            <textarea class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+            <textarea class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' v-model="introduce"></textarea>
           </div>
         </li>
       </ul>
@@ -33,26 +34,42 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 import Dialog from '../../../static/vant/dialog/dialog';
 export default {
   data () {
     return {
-
-
+       avatarImg:'',
+       nickName:'',
+       introduce:''
     }
   },
-
-  components: {
-    
+  computed: {
+    ...mapState({
+      userData: state => state.counter.userData
+    })
   },
 
   methods: {
-    chageMobile(){
-      this.$router.push('/pages/editMobile1/index');
-    }
+    // chageMobile(){
+    //   this.$router.push('/pages/editMobile1/index');
+    // },
+    upLoadAvatar(){
+      let that = this;
+      wx.chooseImage({
+        count: 1,
+        success(res) {
+          const tempFilePaths = res.tempFilePaths;
+          that.avatarImg = res.tempFilePaths[0];
+        }
+      })
+    },
+  },
+  mounted(){
+    this.avatarImg = this.userData? this.userData.avatarUrl:'';
   },
   created () {
-   
+
   },
   onShow(){
  
