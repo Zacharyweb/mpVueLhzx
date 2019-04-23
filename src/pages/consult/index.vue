@@ -557,8 +557,12 @@
           <div class="order_time">2018-12-14 00:00:00</div>
         </div>
       </div>
-      
     </div>
+
+    <!-- <div class="no_data_tips">
+      <img class="no_data_img" src="../../../static/img/no_data_tips.png">
+      <span>还没有相关订单哦~</span>
+    </div>  -->
 
   </div>
 </template>

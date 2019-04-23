@@ -11,6 +11,11 @@
 
     <div style="height:32px;"></div>
 
+    <!-- <div class="no_data_tips">
+      <img class="no_data_img" src="../../../static/img/no_data_tips.png">
+      <span>还没有相关客户哦~</span>
+    </div>  -->
+
     <div class="experts_list type1_list" v-show="currentTab == 0">
      
       <div class="experts_item">

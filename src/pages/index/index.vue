@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <van-search  background="#fff" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
-
+    
     <!-- <div class="relation_experts_block">
       <div class="relation_expert" @click="toExpertList('/pages/collectExpert/index')">
         <div class="expert_num">
@@ -60,9 +60,11 @@
     <div class="tab_fix_wrap" v-show="tabFixedFlag">
        <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
           <van-tab title="税务"></van-tab>
+          <van-tab title="财务"></van-tab>
           <van-tab title="法务"></van-tab>
-          <van-tab title="工商"></van-tab>
           <van-tab title="海关"></van-tab>
+          <van-tab title="外汇"></van-tab>
+          <van-tab title="工商"></van-tab>
         </van-tabs>
         <div class="top_tips" @click="toConsultList">
            <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
@@ -72,9 +74,11 @@
     <div id="tabStaticWrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
         <van-tab title="税务"></van-tab>
+        <van-tab title="财务"></van-tab>
         <van-tab title="法务"></van-tab>
-        <van-tab title="工商"></van-tab>
         <van-tab title="海关"></van-tab>
+        <van-tab title="外汇"></van-tab>
+        <van-tab title="工商"></van-tab>
       </van-tabs>
     </div>
 
@@ -82,12 +86,16 @@
        <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
     </div>
 
-    <div class="experts_list">
-      <expert></expert>
-      <expert></expert>
+    <div class="experts_list" v-if="currentTab == 0">
       <expert></expert>
       <expert></expert>
     </div>
+
+    <div class="no_data_tips" v-else>
+      <img class="no_data_img" src="../../../static/img/no_data_tips.png">
+      <span>还没有相关专家哦~</span>
+    </div> 
+
   </div>
 </template>
 <script>

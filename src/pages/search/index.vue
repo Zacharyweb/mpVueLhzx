@@ -96,22 +96,22 @@ export default {
     }
   }
 }
-.no_data_tips{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  .no_data_img{
-      width: 150px;
-      height: 150px;
-  }
-  span{
-    color: #999;
-    font-size: 14px;
-    margin-top: 20px;
-  }  
-}
+// .no_data_tips{
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   margin-top: 50px;
+//   .no_data_img{
+//       width: 150px;
+//       height: 150px;
+//   }
+//   span{
+//     color: #999;
+//     font-size: 14px;
+//     margin-top: 20px;
+//   }  
+// }
 .experts_list{
   
 }

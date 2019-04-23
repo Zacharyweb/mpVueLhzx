@@ -1,5 +1,9 @@
 <template>
   <div class="container hpb" :class="{'isX': isX}">
+    <!-- <div class="no_data_tips">
+      <img class="no_data_img" src="../../../static/img/no_data_tips.png">
+      <span>还没有已添加的关系户哦~</span>
+    </div>  -->
     <div class="experts_list type3_list">
       <div class="experts_item" style="padding-bottom:0px;" v-for="(item,index) in friendsList" :key="index">
         <div class="top_block" style="padding-bottom:14px;">
@@ -38,7 +42,7 @@
     </div>
 
     <div class="bottom_fixed" :class="{'isX':isX}">
-       <button open-type="share" class="action_btn1">添加好友</button>
+       <button open-type="share" class="action_btn1">添加关系户</button>
     </div>
     <van-dialog id="van-dialog"/>
 
