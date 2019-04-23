@@ -1,16 +1,5 @@
 module.exports = [
  
-  // 登录
-  // {
-  //   path: 'pages/login/index',
-  //   config: {
-  //     navigationBarTitleText: '登录',
-  //     usingComponents: {
-
-  //     }
-  //   }
-  // },
-
   // 首页
   {
     path: 'pages/index/index',
@@ -21,6 +10,17 @@ module.exports = [
         "van-tag": "/static/vant/tag/index",
         "van-tab": "/static/vant/tab/index",
         "van-tabs": "/static/vant/tabs/index"
+      }
+    }
+  },
+  
+  // 登录
+  {
+    path: 'pages/login/index',
+    config: {
+      navigationBarTitleText: '登录',
+      usingComponents: {
+
       }
     }
   },

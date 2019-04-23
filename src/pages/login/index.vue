@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div class="user_avatar_panel">
-        <img class="user_avatar" src="../../../static/img/avatar.jpeg">
+        <!-- <img class="user_avatar" src="../../../static/img/avatar.jpeg"> -->
+        <img class="user_avatar" v-if="userData" :src="userData.avatarUrl">
+        <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg">
         <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
     </div>
     <div class="base_msg_panel">
@@ -9,24 +11,24 @@
       <ul class="form_list">
         <li class="form_item">
           <div class="item_content">
-            <input type="number" maxlength='11' style="width:190px;" placeholder="请输入手机号">
+            <input type="number" maxlength='11' v-model="mobile" style="width:190px;" placeholder="请输入手机号">
             <span class="devide_line"></span>
-            <!-- <span class="tips_text1" @click="count" v-if="status == 1">发送验证码</span> -->
-            <button class="tips_text1" v-if="status == 1" @getuserinfo="onGotUserInfo" open-type="getUserInfo">发送验证码</button>
-
+            <span class="tips_text1" @click="sendVcode" v-if="status == 1">发送验证码</span>
+            <!-- <button class="tips_text1" v-if="status == 1" @getuserinfo="onGotUserInfo" open-type="getUserInfo">发送验证码</button> -->
             <span class="tips_text2" v-if="status == 2">已发送{{timeText}}s</span>
           </div>
         </li>
         <li class="form_item">
           <div class="item_content">
-            <input type="number" maxlength='6' placeholder="请输入验证码">
+            <input type="number" maxlength='6' v-model="vode" placeholder="请输入验证码">
           </div>
         </li>
        
       </ul>
   
       <div class="btn_block">
-        <div class="btn large green" @click="toLogin">登录</div>
+        <!-- <div class="btn large green" @click="toLogin">登录</div> -->
+        <button class="btn large green" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录</button>
       </div>
     </div>
     
@@ -60,6 +62,9 @@ export default {
     ...mapActions('counter', [
       'updateUserMsg'
     ]),
+    sendVcode(){
+      this.count();
+    },
     count(){
       var that = this;
       this.status = 2;
@@ -78,54 +83,44 @@ export default {
           }
       },1000)
     },
-    toLogin(res){
-      console.log(res);
+    toLoginByWX(){
       // wx.switchTab({
       //   url: '/pages/index/index'
       // });
-      //  wx.login({
-      //   success(res) {
-      //     if (res.code) {
-      //       发起网络请求
-      //       wx.request({
-      //         url: 'https://test.com/onLogin',
-      //         data: {
-      //           code: res.code
-      //         }
-      //       })
-      //       console.log(res);
-      //     } else {
-      //       console.log('登录失败！' + res.errMsg)
-      //     }
-      //   }
-      // })
-      // 
-    },
-
-    getSetting(){
-      wx.getSetting({
-        success: function(res){
-          if (res.authSetting['scope.userInfo']) {
-            wx.getUserInfo({
-              success: function(res) {
-                console.log(res.userInfo)
-                //用户已经授权过
-                console.log('用户已经授权过')
+      let that = this;
+       wx.login({
+        success(res) {
+          if (res.code) {
+            that.$http.request({
+              url:'AuthorizedLoginByWx',
+              data: {
+                Code: res.code,
+                NickName: that.userData.nickName,
+                AvatarUrl:that.userData.avatarUrl
+              },
+              flyConfig:{
+                headers:{
+                  'content-type': 'application/x-www-form-urlencoded',
+                },
+                method: 'post'
               }
+            }).then(res => {
+               console.log(res);
             })
-          }else{
-            console.log('用户还未授权过')
+          } else {
+            console.log('登录失败！' + res.errMsg)
           }
         }
       })
+      
     },
-   
+
     onGotUserInfo(e){
       if (e.mp.detail.rawData){
         //用户按了允许授权按钮
         let data = this.userData || {};
         this.updateUserMsg({...data,...e.mp.detail.userInfo});
-        this.count();
+        this.toLoginByWX();
       } else {
         //用户按了拒绝授权按钮
          this.$router.go(-1);
@@ -138,7 +133,7 @@ export default {
     
   },
   mounted(){
-    this.getSetting()
+   
   },
   onShow(){
  

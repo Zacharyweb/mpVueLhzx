@@ -194,12 +194,42 @@ export default {
       }
     },
 
+    toLoginByWX(){
+      let that = this;
+       wx.login({
+        success(res) {
+          if (res.code) {
+            that.$http.request({
+              url:'AuthorizedLoginByWx',
+              data: {
+                Code: res.code,
+                NickName: that.userData.nickName,
+                AvatarUrl:that.userData.avatarUrl
+              },
+              flyConfig:{
+                headers:{
+                  'content-type': 'application/x-www-form-urlencoded',
+                },
+                method: 'post'
+              }
+            }).then(res => {
+              that.$router.push({path:'/pages/login/index'});
+            })
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
+        }
+      })
+      
+    },
+
     onGotUserInfo(e){
       if (e.mp.detail.rawData){
         //用户按了允许授权按钮
         let data = this.userData || {};
         this.updateUserMsg({...data,...e.mp.detail.userInfo});
-        this.$router.push({path:'/pages/login/index'});
+        this.toLoginByWX();
+        // this.$router.push({path:'/pages/login/index'});
       } else {
       
       }
