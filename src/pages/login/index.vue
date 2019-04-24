@@ -125,6 +125,9 @@ export default {
         //用户按了拒绝授权按钮
          this.$router.go(-1);
       }
+    },
+    toUseNotice(){
+      this.$router.push('/pages/useNotice/index')
     }
 
   },
