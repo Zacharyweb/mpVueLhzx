@@ -16,21 +16,19 @@ request.config.headers={
 request.config.baseURL = BASE_URL
 
 request.interceptors.request.use((request) => {
-  // 封装wx请求cookie
   request.headers["X-Tag"]="flyio";
-  // 带上存了的token
-  if(store.state.counter.userData && store.state.counter.userData.accessToken){
-     request.headers.Authorization = store.state.counter.userData.accessToken;
-  }else{
-    let userDataStr = wx.getStorageSync('userData');
-    if (userDataStr) {
-      let userData = JSON.parse(userDataStr);
-      store.dispatch('counter/updateUserMsg',userData);
-      if(userData.accessToken){
-        request.headers.Authorization = store.state.counter.userData.accessToken;
-      }
-    }
-  };
+  // if(store.state.counter.userData && store.state.counter.userData.accessToken){
+  //    request.headers.Authorization = 'Bearer ' + store.state.counter.userData.accessToken;
+  // }else{
+  //   let userDataStr = wx.getStorageSync('userData');
+  //   if (userDataStr) {
+  //     let userData = JSON.parse(userDataStr);
+  //     store.dispatch('counter/updateUserMsg',userData);
+  //     if(userData.accessToken){
+  //       request.headers.Authorization = 'Bearer ' + store.state.counter.userData.accessToken;
+  //     }
+  //   }
+  // };
 
   if(!request.headers.Authorization){
     request.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6IjJiYTRlNGM5LTU1M2YtNTBhYS1lMGRiLTM5ZWQ2YWExNjVhOCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3d3dy5hc3BuZXRib2lsZXJwbGF0ZS5jb20vaWRlbnRpdHkvY2xhaW1zL3RlbmFudElkIjoiMSIsInN1YiI6IjIiLCJqdGkiOiI5MzA3NWI2MC01YWNjLTRkMTMtYjI5Mi1mZjNmOTQyMzE1ZWMiLCJpYXQiOjE1NTc4OTAwMDgsIm5iZiI6MTU1Nzg5MDAwOCwiZXhwIjoxNTU3OTc2NDA4LCJpc3MiOiJQcm8iLCJhdWQiOiJQcm8ifQ.ls3V9YgSmMkrxV7jIEW56bqPageGmML7D9hRzn8es7I';

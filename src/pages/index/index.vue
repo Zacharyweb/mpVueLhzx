@@ -59,12 +59,7 @@
 
     <div class="tab_fix_wrap" v-show="tabFixedFlag">
        <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
-          <van-tab title="税务"></van-tab>
-          <van-tab title="财务"></van-tab>
-          <van-tab title="法务"></van-tab>
-          <van-tab title="海关"></van-tab>
-          <van-tab title="外汇"></van-tab>
-          <van-tab title="工商"></van-tab>
+          <van-tab v-for="(item,index) in tagsList" :key="index" :title="item.tagName"></van-tab>
         </van-tabs>
         <div class="top_tips" @click="toConsultList">
            <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
@@ -73,12 +68,7 @@
 
     <div id="tabStaticWrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
-        <van-tab title="税务"></van-tab>
-        <van-tab title="财务"></van-tab>
-        <van-tab title="法务"></van-tab>
-        <van-tab title="海关"></van-tab>
-        <van-tab title="外汇"></van-tab>
-        <van-tab title="工商"></van-tab>
+        <van-tab  v-for="(item,index) in tagsList" :key="index" :title="item.tagName"></van-tab>
       </van-tabs>
     </div>
 
@@ -86,9 +76,8 @@
        <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
     </div>
 
-    <div class="experts_list" v-if="currentTab == 0">
-      <expert></expert>
-      <expert></expert>
+    <div class="experts_list" v-if="expertsList.length > 0">
+      <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
     </div>
 
     <div class="no_data_tips" v-else>
@@ -106,7 +95,10 @@ export default {
     return {
       userInfo: {},
       currentTab:0,
-      tabFixedFlag:false
+      tabFixedFlag:false,
+      tagsList:[],
+
+      expertsList:[]
     }
   },
   
@@ -119,30 +111,51 @@ export default {
     ...mapActions('counter', [
       'updateConsultListTab'
     ]),
-    getAllExperts () {
+    // 获取分类标签
+    getAllTags(){
+      let that = this;
+      that.$http.request({
+        url:'GetAllTags',
+        data: {
+ 
+        }
+      }).then(res => {
+        that.tagsList = res.result.items;
+        that.getAllExperts(res.result.items[0].id);
+      })
+    },
+    
+    // 获取专家列表
+    getAllExperts (tagsId) {
       let that = this;
       that.$http.request({
         url:'GetAllExperts',
         data: {
-          TagsId: '',
+          TagsId: tagsId,
         }
       }).then(res => {
         console.log(res);
+        that.expertsList = res.result.items;
       })
     },
+
     toExpertList(path){
       this.$router.push(path);
     },
+
     onTabsChange(event){
-      this.currentTab = event.target.index;
+      let index = event.target.index;
+      this.currentTab = index;
+      this.getAllExperts(this.tagsList[index].id);
     },
+
     onSearchFocus(){
       this.$router.push('/pages/search/index')
     },
+    
     toConsultList(){
       // 控制咨询列表页Tab
       // this.updateConsultListTab(1);
-    
       wx.switchTab({
         url: '/pages/consult/index'
       });
@@ -167,8 +180,7 @@ export default {
     })
   },
   onShow(){
-    // 获取专家列表
-    this.getAllExperts();
+    this.getAllTags();
   },
   created () {
     // 调用应用实例的方法获取全局数据

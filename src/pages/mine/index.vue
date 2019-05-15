@@ -6,29 +6,28 @@
  
         <img class="mine_avatar" v-if="userData" :src="userData.avatarUrl">
         <img class="mine_avatar" v-else src="../../../static/img/df_avatar.jpg">
+        <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
 
-         <!-- <div class="mine_txt_msg">
-           <div class="mine_txt_line">
-              <span class="mine_nick">朱两边</span>
-              <span class="mine_position">高级财务专家</span>
-           </div>
+        <div class="login_block" v-if="!userData || !userData.accessToken">
+         <div class="no_login_tip">未登录</div>
+         <div class="action_btn" @click="toLoginPage">登录/注册</div>
+         <!-- <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button> -->
+        </div>
+        <div class="mine_txt_msg" v-else>
+          <div class="mine_txt_line">
+             <span class="mine_nick">{{userData.nickName}}</span>
+             <span class="mine_position">高级财务专家</span>
+          </div>
 
-           <div class="mine_txt_line mt-10" @click="actionSheetShow = true">
-             <span class="mine_status">{{statusText}}</span>
-             <img class="arrow_icon" src="../../../static/img/arrow_down.png">
-           </div>
+          <div class="mine_txt_line mt-10" @click="actionSheetShow = true">
+            <span class="mine_status">{{statusText}}</span>
+            <img class="arrow_icon" src="../../../static/img/arrow_down.png">
+          </div>
 
-           <div class="mine_txt_line mt-10">
-             <span class="mine_status">普通用户</span>
-           </div>
-         </div> -->
-         <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
-         <div class="login_block">
-          <div class="no_login_tip">未登录</div>
-          <!-- <div class="action_btn">登录/注册</div> -->
-          <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button>
-
-         </div>
+          <!-- <div class="mine_txt_line mt-10">
+            <span class="mine_status">普通用户</span>
+          </div> -->
+        </div>
       </div>
 
       <!-- <div class="mine_account">
@@ -193,6 +192,9 @@ export default {
         })
       }
     },
+    toLoginPage(){
+      this.$router.push({path:'/pages/login/index'});
+    },
 
     toLoginByWX(){
       let that = this;
@@ -220,7 +222,6 @@ export default {
           }
         }
       })
-      
     },
 
     onGotUserInfo(e){
@@ -229,11 +230,11 @@ export default {
         let data = this.userData || {};
         this.updateUserMsg({...data,...e.mp.detail.userInfo});
         this.toLoginByWX();
-        // this.$router.push({path:'/pages/login/index'});
       } else {
       
       }
-    }
+    },
+
 
   }
 }

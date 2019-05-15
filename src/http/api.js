@@ -15,6 +15,12 @@ const API = {
 
 
   'GetAllExperts':'/api/services/app/User/GetAll', // 获取专家列表
+
+
+
+
+
+  'GetAllTags':'/api/services/app/Tag/GetAll', // 获取专家分类标签
 }
 
 export {API, BASE_URL}

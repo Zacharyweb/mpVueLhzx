@@ -189,16 +189,8 @@ export default {
         }
       }).then(res => {
         let userDataStr = JSON.stringify(that.userData);
-        try {
-          wx.setStorageSync('userData', userDataStr);
-          that.$router.go(-1);
-        } catch (e) { 
-          wx.showToast({
-            title: '登录失败请重试',
-            icon: 'none',
-            duration: 2000
-          })
-        }
+        wx.setStorageSync('userData', userDataStr);
+        that.$router.go(-1);
       })
     },
 

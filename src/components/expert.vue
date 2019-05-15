@@ -1,14 +1,17 @@
 <template>
   <div class="experts_item" @click="linkTo('/pages/expertDetail/index')">
     <div class="top_block">
-      <img class="experts_avatar" src="../../static/img/avatar.jpeg">
+      <img class="experts_avatar" :src="expertData.avatarUrl">
       <div class="top_block_right">
         <div class="experts_msg1">
-          <div class="experts_name">朱两边<span class="status">营业中</span></div>
-          <span class="consult_msg">5位关系户已咨询过</span>
+          <div class="experts_name">{{expertData.nickName}}
+            <span class="status" v-if="expertData.workStatus == '1'">营业中</span>
+            <span class="status grey" v-else>休息中</span>
+           </div>
+          <span class="consult_msg">{{expertData.expertOrderCount}}位关系户已咨询过</span>
         </div>
         <div class="experts_msg2">
-          <span class="experts_position">前所得税副处（杭州市税局大企业处）</span>
+          <span class="experts_position">{{expertData.companyPosition}}{{expertData.companyName?'（' + expertData.companyName + '）':''}}</span>
         </div>
        
         <div class="experts_msg3">
@@ -55,6 +58,9 @@ export default {
     linkTo(path){
       this.$router.push(path);
     }
+  },
+  create(){
+    console.log(this.experData);
   }
 
 }
