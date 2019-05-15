@@ -18,7 +18,14 @@ export default {
         }
       }
     });
-    that.getSetting();
+    
+    let userDataStr = wx.getStorageSync('userData');
+    if (userDataStr) {
+      let userData = JSON.parse(userDataStr);
+      that.updateUserMsg(userData);
+    }else{
+      that.getSetting();
+    }
   },
    methods: {
     ...mapActions('counter', [

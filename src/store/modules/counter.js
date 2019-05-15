@@ -44,6 +44,9 @@ const actions = {
   },
   updateConsultListTab({commit},num){
     commit('UPDATECONSULTLISTTAB',num)
+  },
+  b(){
+    console.log('bbbbbbbbbbbbb');
   }
 }
 

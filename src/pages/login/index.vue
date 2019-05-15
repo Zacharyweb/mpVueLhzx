@@ -13,22 +13,22 @@
           <div class="item_content">
             <input type="number" maxlength='11' v-model="mobile" style="width:190px;" placeholder="请输入手机号">
             <span class="devide_line"></span>
-            <span class="tips_text1" @click="sendVcode" v-if="status == 1">发送验证码</span>
-            <!-- <button class="tips_text1" v-if="status == 1" @getuserinfo="onGotUserInfo" open-type="getUserInfo">发送验证码</button> -->
+            <!-- <span class="tips_text1" @click="sendVcode" v-if="status == 1">发送验证码</span> -->
+            <button class="tips_text1" v-if="status == 1" @getuserinfo="onGotUserInfo" open-type="getUserInfo">发送验证码</button>
             <span class="tips_text2" v-if="status == 2">已发送{{timeText}}s</span>
           </div>
         </li>
         <li class="form_item">
           <div class="item_content">
-            <input type="number" maxlength='6' v-model="vode" placeholder="请输入验证码">
+            <input type="number" maxlength='6' v-model="vcode" placeholder="请输入验证码">
           </div>
         </li>
        
       </ul>
   
       <div class="btn_block">
-        <!-- <div class="btn large green" @click="toLogin">登录</div> -->
-        <button class="btn large green" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录</button>
+        <div class="btn large green" @click="toLogin">登录</div>
+        <!-- <button class="btn large green" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录</button> -->
       </div>
     </div>
     
@@ -44,7 +44,11 @@ export default {
       time:60,
       timeText:'60',
       timer:null,
-      status:1
+      status:1,
+
+      mobile:'',
+      userId:'',
+      vcode:''
 
     }
   },
@@ -62,8 +66,86 @@ export default {
     ...mapActions('counter', [
       'updateUserMsg'
     ]),
-    sendVcode(){
-      this.count();
+    // 获取微信用户授权
+    onGotUserInfo(e){
+      if (e.mp.detail.rawData){
+        //用户按了允许授权按钮
+        let data = this.userData || {};
+        this.updateUserMsg({...data,...e.mp.detail.userInfo});
+        if(!this.mobile){
+          wx.showToast({
+            title: '请先输入手机号',
+            icon: 'none',
+            duration: 2000
+          })
+          return;
+        }
+        let reg = /^(1[345789]\d{9})$/;
+        if(reg.test(this.mobile)){
+          this.toLoginByWX();
+          return;
+        }
+    
+        wx.showToast({
+          title: '手机号格式错误',
+          icon: 'none',
+          duration: 2000
+        })
+    
+      } else {
+        //用户按了拒绝授权按钮
+         this.$router.go(-1);
+      }
+    },
+
+    // 用户微信登录
+    toLoginByWX(){
+      let that = this;
+       wx.login({
+        success(res) {
+          if (res.code) {
+            that.$http.request({
+              url:'AuthorizedLoginByWx',
+              data: {
+                Code: res.code,
+                NickName: that.userData.nickName,
+                AvatarUrl:that.userData.avatarUrl
+              },
+              flyConfig:{
+                headers:{
+                  'content-type': 'application/x-www-form-urlencoded',
+                },
+                method: 'post'
+              }
+            }).then(res => {
+              let data = that.userData || {};
+              that.updateUserMsg({...data,...res.result});
+              that.sendVcode(res);
+            })
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
+        }
+      })
+    },
+    
+    // 发送验证码
+    sendVcode(data){
+      console.log(data);
+      let that = this;
+      that.$http.request({
+        url:'SendSms',
+        data: {
+          phoneNumber:that.mobile,
+          userId:data.result.userId,
+        },
+        flyConfig:{
+
+        }
+      }).then(res => {
+        that.count();
+        console.log(res);
+      })
     },
     count(){
       var that = this;
@@ -83,49 +165,44 @@ export default {
           }
       },1000)
     },
-    toLoginByWX(){
-      // wx.switchTab({
-      //   url: '/pages/index/index'
-      // });
+
+    // 提交验证码绑定手机登录
+    toLogin(){
+      if(!this.vcode){
+        wx.showToast({
+          title: '请输入验证码',
+          icon: 'none',
+          duration: 2000
+        })
+        return;
+      };
       let that = this;
-       wx.login({
-        success(res) {
-          if (res.code) {
-            that.$http.request({
-              url:'AuthorizedLoginByWx',
-              data: {
-                Code: res.code,
-                NickName: that.userData.nickName,
-                AvatarUrl:that.userData.avatarUrl
-              },
-              flyConfig:{
-                headers:{
-                  'content-type': 'application/x-www-form-urlencoded',
-                },
-                method: 'post'
-              }
-            }).then(res => {
-               console.log(res);
-            })
-          } else {
-            console.log('登录失败！' + res.errMsg)
-          }
+      that.$http.request({
+        url:'VerSmsCodeAsync',
+        data: {
+          phoneNumber: that.mobile,
+          userid: that.userData.userId,
+          code:that.vcode
+        },
+        flyConfig:{
+
+        }
+      }).then(res => {
+        let userDataStr = JSON.stringify(that.userData);
+        try {
+          wx.setStorageSync('userData', userDataStr);
+          that.$router.go(-1);
+        } catch (e) { 
+          wx.showToast({
+            title: '登录失败请重试',
+            icon: 'none',
+            duration: 2000
+          })
         }
       })
-      
     },
 
-    onGotUserInfo(e){
-      if (e.mp.detail.rawData){
-        //用户按了允许授权按钮
-        let data = this.userData || {};
-        this.updateUserMsg({...data,...e.mp.detail.userInfo});
-        this.toLoginByWX();
-      } else {
-        //用户按了拒绝授权按钮
-         this.$router.go(-1);
-      }
-    },
+
     toUseNotice(){
       this.$router.push('/pages/useNotice/index')
     }

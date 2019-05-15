@@ -119,16 +119,15 @@ export default {
     ...mapActions('counter', [
       'updateConsultListTab'
     ]),
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
-            }
-          })
+    getAllExperts () {
+      let that = this;
+      that.$http.request({
+        url:'GetAllExperts',
+        data: {
+          TagsId: '',
         }
+      }).then(res => {
+        console.log(res);
       })
     },
     toExpertList(path){
@@ -167,10 +166,12 @@ export default {
       }
     })
   },
+  onShow(){
+    // 获取专家列表
+    this.getAllExperts();
+  },
   created () {
     // 调用应用实例的方法获取全局数据
-    this.getUserInfo();
-
     // 接口调用案例
     // get请求
     // this.$http.request({

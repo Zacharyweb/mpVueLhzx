@@ -72,6 +72,7 @@ Flyio.request = function(obj){
         //    setTimeout(() => { errorFunction(tipConfig, err) }, 0)
        }
     }).catch(err => {
+        rqConfig.isLoading && Config.loading.loadingHide();
         // setTimeout(() => { errorFunction(tipConfig, err) }, 0)
     })
 }
