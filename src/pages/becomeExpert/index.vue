@@ -4,30 +4,28 @@
       <div class="panle_block">
         <div class="block_title">基础信息</div>
         <ul class="form_list">
+
           <li class="form_item">
-            <div class="item_name">昵称</div>
+            <div class="item_name">称呼</div>
             <div class="item_content">
               <input type="text" v-model="nickName" placeholder="请输入昵称，用于平台展示" :disabled="isChecked == 'Y'">
             </div>
           </li>
-          <!-- <li class="form_item required">
-            <div class="item_name">姓名</div>
-            <div class="item_content">
-              <input type="text" placeholder="请输入姓名" :disabled="isChecked == 'Y'">
-            </div>
-          </li> -->
+    
           <li class="form_item required">
             <div class="item_name">手机号</div>
             <div class="item_content">
-              <input type="number" v-model="mobile" placeholder="请输入手机号"  :disabled="isChecked == 'Y'">
+              <input type="number" v-model="phoneNumber" placeholder="请输入手机号"  :disabled="isChecked == 'Y'">
             </div>
           </li>
+
           <li class="form_item required">
             <div class="item_name">电子邮箱</div>
             <div class="item_content">
-              <input type="text" v-model="email" placeholder="请输入电子邮箱" :disabled="isChecked == 'Y'" >
+              <input type="text" v-model="emailAddress" placeholder="请输入电子邮箱" :disabled="isChecked == 'Y'" >
             </div>
           </li>
+
           <li class="form_item required tags_item">
             <div class="item_name">语言(可多选)</div>
             <div class="item_content">
@@ -36,6 +34,7 @@
               </div>
             </div>
           </li>
+
           <li class="form_item required">
             <div class="item_name">所在地区</div>
             <div class="item_content"  @click="showAreaSelectPanel">
@@ -44,21 +43,20 @@
             </div>
           </li>
 
-        
           <li class="form_item required">
             <div class="item_name">工作单位</div>
             <div class="item_content">
-              <input type="text" v-model="company" placeholder="请输入工作单位" :disabled="isChecked == 'Y'">
+              <input type="text" v-model="companyName" placeholder="请输入工作单位" :disabled="isChecked == 'Y'">
             </div>
           </li>
+
           <li class="form_item required">
             <div class="item_name">职务</div>
             <div class="item_content">
-              <input v-model="position" type="text" placeholder="请输入职务" :disabled="isChecked == 'Y'">
+              <input v-model="companyPosition" type="text" placeholder="请输入职务" :disabled="isChecked == 'Y'">
             </div>
           </li>
        
-         
         </ul>
       </div>
 
@@ -76,12 +74,11 @@
           </li>
           
           
-
           <li class="form_item required tags_item textarea_item">
             <div class="item_name">从事年限(单选)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item" v-for="(item,index) in workYearsType" :key="index" :class="{'active':item.flag}" @click="singleChange('workYearsType',index)">{{item.name}}</span>
+                <span class="tag_item" v-for="(item,index) in majorYearsDesc" :key="index" :class="{'active':item.flag}" @click="singleChange('majorYearsDesc',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -90,31 +87,10 @@
             <div class="item_name">领域(可多选，最多5项，最少选一项)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item" v-for="(item,index) in workFieldType" :key="index" :class="{'active':item.flag}" @click="multipleChange('workFieldType',index,5)">{{item.name}}</span>
+                <span class="tag_item" v-for="(item,index) in businessArea" :key="index" :class="{'active':item.flag}" @click="multipleChange('businessArea',index,5)">{{item.name}}</span>
               </div>
             </div>
           </li>
-
-          <!-- <li class="form_item required textarea_item">
-            <div class="item_name">一句话说专业</div>
-            <div class="item_content">
-              <textarea placeholder="20字以内。例：税务检查，攻守有道"  maxlength='20' :disabled="isChecked == 'Y'"></textarea>
-            </div>
-          </li> -->
-
-          <!-- <li class="form_item required textarea_item">
-            <div class="item_name">领域</div>
-            <div class="item_content">
-              <textarea placeholder="150字以内。例：个人所得税、房产税收..." maxlength='150' :disabled="isChecked == 'Y'"></textarea>
-            </div>
-          </li>
-
-          <li class="form_item required textarea_item">
-            <div class="item_name">细分</div>
-            <div class="item_content">
-              <textarea placeholder="150字以内。例：运输企业、房地产、互联网..." maxlength='150' :disabled="isChecked == 'Y'"></textarea>
-            </div>
-          </li> -->
 
           <li class="form_item required textarea_item textarea_item">
             <div class="item_name">擅长业务(最多填五项，最少填一项)</div>
@@ -138,7 +114,7 @@
           <li class="form_item required textarea_item">
             <div class="item_name">专业心得</div>
             <div class="item_content">
-              <textarea class="more_height" v-model="majorExperience" placeholder="例：7号公告对美元基金的影响..." maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" v-model="lifeAndFeelDesc" placeholder="例：7号公告对美元基金的影响..." maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
@@ -171,7 +147,7 @@
           <li class="form_item required textarea_item">
             <div class="item_name">关于专家</div>
             <div class="item_content">
-              <textarea v-model="introduce" class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea v-model="aboutUserDesc" class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
@@ -211,7 +187,7 @@
             <div class="item_name">证件类型</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item" v-for="(item,index) in certificateType" :key="index" :class="{'active':item.flag}" @click="singleChange('certificateType',index)">{{item.name}}</span>
+                <span class="tag_item" v-for="(item,index) in certType" :key="index" :class="{'active':item.flag}" @click="singleChange('certType',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -219,7 +195,7 @@
           <li class="form_item required">
             <div class="item_name">证件号</div>
             <div class="item_content">
-              <input v-model="certificateNo" type="text" placeholder="请输入证件号"  :disabled="isChecked == 'Y'">
+              <input v-model="certNum" type="text" placeholder="请输入证件号"  :disabled="isChecked == 'Y'">
             </div>
           </li>
         </ul>
@@ -237,7 +213,7 @@
           <li class="form_item required textarea_item">
             <div class="item_name">每次收费人民币(元)</div>
             <div class="item_content">
-              <input v-model="charge" type="digit" placeholder="请输入每节收费金额"  :disabled="isChecked == 'Y'">
+              <input v-model="oneOfCost" type="digit" placeholder="请输入每节收费金额"  :disabled="isChecked == 'Y'">
             </div>
           </li>
           <li class="form_item textarea_item">
@@ -284,7 +260,7 @@
             <div class="item_name">接单承诺(在收到订单后的多少时间内回应是否同意接单)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item" v-for="(item,index) in receiptTimeType" :key="index" :class="{'active':item.flag}" @click="singleChange('receiptTimeType',index)">{{item.name}}</span>
+                <span class="tag_item" v-for="(item,index) in responseTime" :key="index" :class="{'active':item.flag}" @click="singleChange('responseTime',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -292,7 +268,7 @@
             <div class="item_name">作答承诺(在同意接单后的多少时间内完成作答)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item" v-for="(item,index) in answerTimeType" :key="index" :class="{'active':item.flag}" @click="singleChange('answerTimeType',index)">{{item.name}}</span>
+                <span class="tag_item" v-for="(item,index) in answeringTime" :key="index" :class="{'active':item.flag}" @click="singleChange('answeringTime',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -335,17 +311,16 @@
               <p>申诉和举报的电邮地址：xxxxxxxx</p>
           </li>
         </ul>
-
       </div>
         
       <div class="agree_bar">
-        <span class="custom_checkbox" :class="{'active':agreeRule}" @click="agreeRule = !agreeRule" style="margin-right:20px;">阅读并同意专家的使用规则</span>
+        <span class="custom_checkbox" :class="{'active':isReadSelect}" @click="isReadSelect = !isReadSelect" style="margin-right:20px;">阅读并同意专家的使用规则</span>
       </div>
 
     </div>
     <div class="btn_block">
       <div class="btn grey large" v-if="isChecked == 'Y'">审核中,请等待</div>
-      <div class="btn green large" v-else>提交审核</div>
+      <div class="btn green large" v-else @click="submit">提交审核</div>
     </div>
     <div class="check_time_tips">平台将在24小时内完成验证，请耐心等待</div>
 
@@ -364,101 +339,105 @@
 
 import { mapState, mapActions } from 'vuex'
 import AreaList from '../../../static/js/area.js';
+import { resolve } from 'dns';
 export default {
   data(){
     return{
       nickName:'',
-      mobile:'',
-      email:'',
-      language:[{name:'汉语',type:'cn',flag:false},{name:'英语',type:'en',flag:false}],
+      phoneNumber:'',
+      emailAddress:'',
+      language:[
+        {name:'汉语',type:'cn',flag:false},
+        {name:'英语',type:'en',flag:false}
+      ],
       provice:'',
       city:'',
       areaBlock:'',
-      company:'',
-      position:'',
+      companyName:'',
+      companyPosition:'',
       majorType:[
-                 {name:'税务',type:'sw',flag:false},
-                 {name:'财务',type:'cw',flag:false},
-                 {name:'法务',type:'fw',flag:false},
-                 {name:'海关',type:'hg',flag:false},
-                 {name:'外汇',type:'wh',flag:false},
-                 {name:'工商',type:'gs',flag:false}
-                ],
-      workYearsType:[
-                 {name:'5-10年',type:'1',flag:false},
-                 {name:'10-15年',type:'2',flag:false},
-                 {name:'15-20年',type:'3',flag:false},
-                 {name:'20年以上',type:'4',flag:false},
-                ],
-      workFieldType:[
-                 {name:'企业所得税',type:'1',flag:false},
-                 {name:'个人所得税',type:'2',flag:false},
-                 {name:'货劳税收',type:'3',flag:false},
-                 {name:'出口退税',type:'4',flag:false},
-                 {name:'国际税收',type:'5',flag:false},
-                 {name:'征收管理',type:'6',flag:false},
-                 {name:'清税注销',type:'7',flag:false},
-                 {name:'运输企业',type:'8',flag:false},
-                 {name:'房地产企业',type:'9',flag:false},
-                 {name:'互联网',type:'10',flag:false},
-                 {name:'行政复议',type:'11',flag:false},
-                 {name:'税务检查',type:'12',flag:false},
-                 {name:'电子商务',type:'13',flag:false},
-                 {name:'小微企业税收',type:'14',flag:false},
-                 {name:'能源企业',type:'15',flag:false},
-                 {name:'金融企业',type:'16',flag:false},
-                 {name:'合伙企业',type:'17',flag:false},
-                ],
+        {name:'税务',type:'sw',flag:false},
+        {name:'财务',type:'cw',flag:false},
+        {name:'法务',type:'fw',flag:false},
+        {name:'海关',type:'hg',flag:false},
+        {name:'外汇',type:'wh',flag:false},
+        {name:'工商',type:'gs',flag:false}
+      ],
+      majorYearsDesc:[
+        {name:'5-10年',type:'1',flag:false},
+        {name:'10-15年',type:'2',flag:false},
+        {name:'15-20年',type:'3',flag:false},
+        {name:'20年以上',type:'4',flag:false},
+      ],
+      businessArea:[
+        {name:'企业所得税',type:'1',flag:false},
+        {name:'个人所得税',type:'2',flag:false},
+        {name:'货劳税收',type:'3',flag:false},
+        {name:'出口退税',type:'4',flag:false},
+        {name:'国际税收',type:'5',flag:false},
+        {name:'征收管理',type:'6',flag:false},
+        {name:'清税注销',type:'7',flag:false},
+        {name:'运输企业',type:'8',flag:false},
+        {name:'房地产企业',type:'9',flag:false},
+        {name:'互联网',type:'10',flag:false},
+        {name:'行政复议',type:'11',flag:false},
+        {name:'税务检查',type:'12',flag:false},
+        {name:'电子商务',type:'13',flag:false},
+        {name:'小微企业税收',type:'14',flag:false},
+        {name:'能源企业',type:'15',flag:false},
+        {name:'金融企业',type:'16',flag:false},
+        {name:'合伙企业',type:'17',flag:false},
+      ],
       gootAtList:['','','','',''],
-      majorExperience:'',
+      lifeAndFeelDesc:'',
       outLink:[{name:'',link:''}],
-      introduce:'',
+      aboutUserDesc:'',
       photosList:[],
       realName:'',
-      certificateType:[
-                 {name:'身份证',type:'1',flag:false},
-                 {name:'护照',type:'2',flag:false},
-                 {name:'通行证',type:'3',flag:false},
-                ],
-      certificateNo:'',
-      charge:'',
+      certType:[
+        {name:'身份证',type:'1',flag:false},
+        {name:'护照',type:'2',flag:false},
+        {name:'通行证',type:'3',flag:false},
+      ],
+      certNum:'',
+      oneOfCost:'',
       paymentCodeList:[],
-      receiptTimeType:[
-                 {name:'1分钟',type:'1',flag:false},
-                 {name:'5分钟',type:'5',flag:false},
-                 {name:'15分钟',type:'15',flag:false},
-                 {name:'30分钟',type:'30',flag:false},
-                 {name:'1小时',type:'60',flag:false},
-                 {name:'2小时',type:'120',flag:false},
-                 {name:'4小时',type:'240',flag:false}
-                ],
-      answerTimeType:[
-                 {name:'30分钟',type:'0.5',flag:false},
-                 {name:'1小时',type:'1',flag:false},
-                 {name:'2小时',type:'2',flag:false},
-                 {name:'4小时',type:'4',flag:false},
-                 {name:'8小时',type:'8',flag:false},
-                 {name:'12小时',type:'12',flag:false},
-                 {name:'24小时',type:'24',flag:false},
-                 {name:'48小时',type:'48',flag:false}
-                ],
-      agreeRule:true,
+      responseTime:[
+        {name:'1分钟',type:'1',flag:false},
+        {name:'5分钟',type:'5',flag:false},
+        {name:'15分钟',type:'15',flag:false},
+        {name:'30分钟',type:'30',flag:false},
+        {name:'1小时',type:'60',flag:false},
+        {name:'2小时',type:'120',flag:false},
+        {name:'4小时',type:'240',flag:false}
+      ],
+      answeringTime:[
+        {name:'30分钟',type:'30',flag:false},
+        {name:'1小时',type:'60',flag:false},
+        {name:'2小时',type:'120',flag:false},
+        {name:'4小时',type:'240',flag:false},
+        {name:'8小时',type:'489',flag:false},
+        {name:'12小时',type:'720',flag:false},
+        {name:'24小时',type:'1440',flag:false},
+        {name:'48小时',type:'2880',flag:false}
+      ],
+      isReadSelect:true,
       areaList:AreaList,
       areaSelectPanelShow:false,
+
       isChecked:'N', // 当前是否是超级管理员审核状态
-   
-     
     }
   },
   computed: {
     ...mapState({
-
-    }),
-
-
+      userData: state => state.counter.userData
+    })
   },
   mounted(){
 
+  },
+  onShow(){
+    this.getInitData()
   },
   methods: {
     checkedStatus(){
@@ -515,8 +494,6 @@ export default {
       if(!this.checkedStatus()) return;
       this.areaSelectPanelShow = true;
     },
-
-
     confirmArea(e){
       let result = e.mp.detail.values;
       this.provice = result[0].name;
@@ -573,9 +550,335 @@ export default {
     addOutLinkItem(){
       if(!this.checkedStatus()) return;
       this.outLink.push({name:'',link:''});
+    },
+
+    checkData(){
+      if(!this.phoneNumber){
+        this.showToast('请输入手机号');
+        return false;
+      }
+      let mobileReg = /^(1[345789]\d{9})$/;
+      if(!mobileReg.test(this.phoneNumber)){
+        this.showToast('手机号格式错误');
+        return false;
+      }
+
+      if(!this.emailAddress){
+        this.showToast('请输入电子邮箱');
+        return false;
+      }
+
+      let emailReg = /^([a-zA-Z0-9]|[._])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+      if(!emailReg.test(this.emailAddress)){
+        this.showToast('电子邮箱格式错误');
+        return false;
+      }
+
+      let language = this.language.filter((item)=>{
+        return item.flag;
+      });
+
+      if(language.length > 0){
+        language = language.map((item)=>{
+         return item.name; 
+        });
+        language = language.join('|zxt|')
+      }else{
+        this.showToast('请选择语言');
+        return false;
+      }
+
+      if(!this.provice || !this.city || !this.areaBlock){
+        this.showToast('请选择所在地区');
+        return false;
+      }
+      let address = this.provice + '-' + this.city + '-' + this.areaBlock;
+
+      if(!this.companyName){
+        this.showToast('请输入工作单位');
+        return false;
+      }
+
+      if(!this.companyPosition){
+        this.showToast('请输入职务');
+        return false;
+      }
+
+      // this.专业（待定下）
+      let majorYearsDesc = this.majorYearsDesc.filter((item)=>{
+        return item.flag;
+      });
+
+      if(majorYearsDesc.length > 0){
+        majorYearsDesc = majorYearsDesc[0].name;
+      }else{
+        this.showToast('请选择从事专业年限');
+        return false;
+      }
+
+      let businessArea = this.businessArea.filter((item)=>{
+        return item.flag;
+      });
+
+      if(businessArea.length > 0){
+        businessArea = businessArea.map((item)=>{
+         return item.name; 
+        });
+        businessArea = businessArea.join('|zxt|');
+      }else{
+        this.showToast('请选择专业领域');
+        return false;
+      }
+
+      let goodAtBusiness = this.gootAtList.filter((item)=>{
+        return item;
+      });
+      if(goodAtBusiness.length > 0){
+        goodAtBusiness = goodAtBusiness.join('|zxt|');
+      }else{
+        this.showToast('请至少填写一项擅长业务');
+        return false;
+      }
+      let outLink;
+      if(this.outLink.length > 0){
+        let outLinkFlag = this.outLink.every((item)=>{
+          return item.name && item.link;
+        });
+        if(!outLinkFlag){
+          this.showToast('外部链接未填写完整');
+          return false;
+        }
+        outLink = this.outLink.map((item)=>{
+         return JSON.stringify(item); 
+        });
+        outLink = outLink.join('|zxt|');
+      }else{
+        outLink = '';
+      }
+
+      if(!this.aboutUserDesc){
+        this.showToast('请填写关于专家');
+        return false;
+      }
+      
+      // this.photosList（相关照片转一下） 非 最多5张
+      if(!this.aboutUserDesc){
+        this.showToast('请填写关于专家');
+        return false;
+      }
+      if(!this.realName){
+        this.showToast('请填写真实姓名');
+        return false;
+      }
+
+      let certType = this.certType.filter((item)=>{
+        return item.flag;
+      });
+      if(certType.length > 0){
+        certType = certType[0].name;
+      }else{
+        this.showToast('请选择证件类型');
+        return false;
+      }
+
+      if(!this.certNum){
+        this.showToast('请填写证件号');
+        return false;
+      }
+
+      if(!this.oneOfCost){
+        this.showToast('请填写咨询费用');
+        return false;
+      }
+      if(this.oneOfCost*1 > 999){
+        this.showToast('咨询费用不能大于999元');
+        return false;
+      }
+
+      let paymentCode = '';
+      if(this.paymentCodeList.length > 0){
+        paymentCode = this.paymentCodeList[0];
+      }else{
+        this.showToast('请上传收款二维码');
+      }
+
+      let responseTime = this.responseTime.filter((item)=>{
+        return item.flag;
+      });
+      if(responseTime.length > 0){
+        responseTime = responseTime[0].type;
+      }else{
+        this.showToast('请选择回应时间');
+        return false;
+      }
+
+      
+      let answeringTime = this.answeringTime.filter((item)=>{
+        return item.flag;
+      });
+      if(answeringTime.length > 0){
+        answeringTime = answeringTime[0].type;
+      }else{
+        this.showToast('请选择作答时间');
+        return false;
+      }
+      if(!this.isReadSelect){
+        this.showToast('请先阅读并同意专家的使用规则');
+        return false;
+      }
+
+      return {
+          language,
+          address,
+          majorYearsDesc,
+          businessArea,
+          goodAtBusiness,
+          outLink,
+          certType,
+          paymentCode,
+          responseTime,
+          answeringTime
+      }
+    },
+    showToast(txt){
+      wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: 1500
+      })
+    },
+    getInitData(){
+      this.$http.request({
+        url:'getExpertMsg',
+        data: {
+          Id: this.userData.userId
+        }
+      }).then(res => {
+        let result = res;
+        this.nickName = result.nickName;
+        this.phoneNumber = result.phoneNumber;
+        this.emailAddress = result.emailAddress;
+
+        let address = result.address.split('-');
+        this.provice = address[0];
+        this.city = address[1];
+        this.areaBlock = address[2];
+
+        this.companyName = result.companyName;
+        this.companyPosition = result.companyPosition;
+
+        this.lifeAndFeelDesc = result.lifeAndFeelDesc;
+        this.aboutUserDesc = resolve.aboutUserDesc;
+        this.realName = result.realName;
+        this.certNum = result.certNum;
+        this.oneOfCost = result.oneOfCost;
+        this.paymentCodeList = [result.paymentCode];
+
+        this.photosList = []; // 相关照片
+
+        let language = result.language.split('|zxt|');
+        this.language.forEach((item)=>{
+          language.forEach((item2)=>{
+            if(item.name == item2){
+              item.flag = true;
+            }
+          })
+        });
+       
+        this.gootAtList = result.goodAtBusiness.split('|zxt|');
+
+        let outLink = result.outLink.split('|zxt|');
+        this.outLink = outLink.map((item)=>{
+          return JSON.parse(item);
+        });
+
+
+        let majorType = result.majorType;
+        this.majorType.forEach((item)=>{
+          if(item.name == majorType){
+            item.flag = true;
+          }
+        });
+
+        let majorYearsDesc = result.majorYearsDesc;
+        this.majorYearsDesc.forEach((item)=>{
+          if(item.name == majorYearsDesc){
+            item.flag = true;
+          }
+        });
+        
+        let businessArea = result.businessArea.split('|zxt|');
+        this.businessArea.forEach((item)=>{
+          businessArea.forEach((item2)=>{
+            if(item.name == item2){
+              item.flag = true;
+            }
+          })
+        });
+
+        let certType = result.certType;
+        this.certType.forEach((item)=>{
+          if(item.name == certType){
+            item.flag = true;
+          }
+        });
+
+        let responseTime = result.responseTime;
+        this.responseTime.forEach((item)=>{
+          if(item.type == responseTime){
+            item.flag = true;
+          }
+        });
+
+        let answeringTime = result.answeringTime;
+        this.answeringTime.forEach((item)=>{
+          if(item.type == answeringTime){
+            item.flag = true;
+          }
+        });
+        this.isReadSelect = true;
+      })
+    },
+    submit(){
+      let flag = this.checkData();
+      if(!flag){
+        return;
+      }
+      this.$http.request({
+        url:'submitExpertMsg',
+        data: {
+          nickName: this.nickName,
+          phoneNumber: this.phoneNumber,
+          emailAddress: this.emailAddress,
+          language: flag.language,
+          address: flag.address,
+          companyName: this.companyName,
+          companyPosition: this.companyPosition,
+          // 专业（待定下）
+          majorYearsDesc: flag.majorYearsDesc,
+          businessArea: flag.businessArea,
+          goodAtBusiness: flag.goodAtBusiness,
+          lifeAndFeelDesc: this.lifeAndFeelDesc,
+          outLink:flag.outLink,
+          aboutUserDesc: this.aboutUserDesc,
+          // photosList（相关照片转一下） 非 最多5张
+          realName: this.realName,
+          certType: flag.certType,
+          certNum: this.certNum,
+          oneOfCost: this.oneOfCost *1,
+          paymentCode: flag.paymentCode,
+          responseTime: flag.responseTime*1,
+          answeringTime: flag.answeringTime*1,
+          isReadSelect: this.isReadSelect
+        },
+        flyConfig:{
+          method: 'put'
+        }
+      }).then(res => {
+         
+      })
     }
   },
-  
 }
 </script>
 
