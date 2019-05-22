@@ -320,7 +320,7 @@
     </div>
     <div class="btn_block">
       <div class="btn grey large" v-if="isChecked == 'Y'">审核中,请等待</div>
-      <div class="btn green large" v-else @click="submit">提交审核</div>
+      <div class="btn green large" v-else @click="submitMsg">提交审核</div>
     </div>
     <div class="check_time_tips">平台将在24小时内完成验证，请耐心等待</div>
 
@@ -339,7 +339,6 @@
 
 import { mapState, mapActions } from 'vuex'
 import AreaList from '../../../static/js/area.js';
-import { resolve } from 'dns';
 export default {
   data(){
     return{
@@ -754,7 +753,8 @@ export default {
           Id: this.userData.userId
         }
       }).then(res => {
-        let result = res;
+        console.log(res);
+        let result = res.result;
         this.nickName = result.nickName;
         this.phoneNumber = result.phoneNumber;
         this.emailAddress = result.emailAddress;
@@ -839,7 +839,7 @@ export default {
         this.isReadSelect = true;
       })
     },
-    submit(){
+    submitMsg(){
       let flag = this.checkData();
       if(!flag){
         return;

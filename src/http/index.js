@@ -65,6 +65,8 @@ Flyio.request = function(obj){
 
     // 数据返回拦截
     return flyioRequest.then( res => {
+        console.log('33333333333')
+        console.log(res);
        if (1) {
            rqConfig.isLoading && Config.loading.loadingHide() 
            return res;
@@ -72,6 +74,11 @@ Flyio.request = function(obj){
         //    setTimeout(() => { errorFunction(tipConfig, err) }, 0)
        }
     }).catch(err => {
+        if(err.response.data.unAuthorizedRequest){
+            wx.navigateTo({
+              url: '/pages/login/index'
+            })
+        };
         rqConfig.isLoading && Config.loading.loadingHide();
         // setTimeout(() => { errorFunction(tipConfig, err) }, 0)
     })
