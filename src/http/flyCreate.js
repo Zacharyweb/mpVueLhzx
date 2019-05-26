@@ -17,18 +17,18 @@ request.config.baseURL = BASE_URL
 
 request.interceptors.request.use((request) => {
   request.headers["X-Tag"]="flyio";
-  // if(store.state.counter.userData && store.state.counter.userData.accessToken){
-  //    request.headers.Authorization = 'Bearer ' + store.state.counter.userData.accessToken;
-  // }else{
-  //   let userDataStr = wx.getStorageSync('userData');
-  //   if (userDataStr) {
-  //     let userData = JSON.parse(userDataStr);
-  //     store.dispatch('counter/updateUserMsg',userData);
-  //     if(userData.accessToken){
-  //       request.headers.Authorization = 'Bearer ' + store.state.counter.userData.accessToken;
-  //     }
-  //   }
-  // };
+  if(store.state.counter.userData && store.state.counter.userData.accessToken){
+     request.headers.Authorization = 'Bearer ' + store.state.counter.userData.accessToken;
+  }else{
+    let userDataStr = wx.getStorageSync('userData');
+    if (userDataStr) {
+      let userData = JSON.parse(userDataStr);
+      store.dispatch('counter/updateUserMsg',userData);
+      if(userData.accessToken){
+        request.headers.Authorization = 'Bearer ' + store.state.counter.userData.accessToken;
+      }
+    }
+  };
 
   // if(!request.headers.Authorization){
   //   request.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6IjNjY2EyMGI4LTUwODgtODI3YS04YjZlLTM5ZWRlN2Y0ZjlhMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiaHR0cDovL3d3dy5hc3BuZXRib2lsZXJwbGF0ZS5jb20vaWRlbnRpdHkvY2xhaW1zL3RlbmFudElkIjoiMSIsInN1YiI6IjIiLCJqdGkiOiJmOThmMWEzOS0wOTU1LTQ0NjYtODFjMy0xZDcxYTYwZTU5MDEiLCJpYXQiOjE1NTg3NTgxMDEsIm5iZiI6MTU1ODc1ODEwMSwiZXhwIjoxNTU4ODQ0NTAxLCJpc3MiOiJQcm8iLCJhdWQiOiJQcm8ifQ.La31NlZcvp-KrSda0R9jFrKVGteJ79tIHczIQqE93d0';

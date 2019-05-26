@@ -112,10 +112,10 @@ export default {
       'updateConsultListTab'
     ]),
     // 获取分类标签
-    getAllTags(){
+    GetAllMajor(){
       let that = this;
       that.$http.request({
-        url:'GetAllTags',
+        url:'GetAllMajor',
         data: {
  
         }
@@ -180,7 +180,7 @@ export default {
     })
   },
   onShow(){
-    this.getAllTags();
+    this.GetAllMajor();
   },
   created () {
     // 调用应用实例的方法获取全局数据

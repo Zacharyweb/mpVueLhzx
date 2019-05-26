@@ -68,7 +68,7 @@
             <div class="item_name">专业(单选)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item" v-for="(item,index) in majorType" :key="index" :class="{'active':item.flag}" @click="singleChange('majorType',index)">{{item.name}}</span>
+                <span class="tag_item" v-for="(item,index) in major" :key="index" :class="{'active':item.flag}" @click="singleChange('major',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -354,13 +354,13 @@ export default {
       areaBlock:'',
       companyName:'',
       companyPosition:'',
-      majorType:[
-        {name:'税务',type:'sw',flag:false},
-        {name:'财务',type:'cw',flag:false},
-        {name:'法务',type:'fw',flag:false},
-        {name:'海关',type:'hg',flag:false},
-        {name:'外汇',type:'wh',flag:false},
-        {name:'工商',type:'gs',flag:false}
+      major:[
+        // {name:'税务',type:'sw',flag:false},
+        // {name:'财务',type:'cw',flag:false},
+        // {name:'法务',type:'fw',flag:false},
+        // {name:'海关',type:'hg',flag:false},
+        // {name:'外汇',type:'wh',flag:false},
+        // {name:'工商',type:'gs',flag:false}
       ],
       majorYearsDesc:[
         {name:'5-10年',type:'1',flag:false},
@@ -369,23 +369,23 @@ export default {
         {name:'20年以上',type:'4',flag:false},
       ],
       businessArea:[
-        {name:'企业所得税',type:'1',flag:false},
-        {name:'个人所得税',type:'2',flag:false},
-        {name:'货劳税收',type:'3',flag:false},
-        {name:'出口退税',type:'4',flag:false},
-        {name:'国际税收',type:'5',flag:false},
-        {name:'征收管理',type:'6',flag:false},
-        {name:'清税注销',type:'7',flag:false},
-        {name:'运输企业',type:'8',flag:false},
-        {name:'房地产企业',type:'9',flag:false},
-        {name:'互联网',type:'10',flag:false},
-        {name:'行政复议',type:'11',flag:false},
-        {name:'税务检查',type:'12',flag:false},
-        {name:'电子商务',type:'13',flag:false},
-        {name:'小微企业税收',type:'14',flag:false},
-        {name:'能源企业',type:'15',flag:false},
-        {name:'金融企业',type:'16',flag:false},
-        {name:'合伙企业',type:'17',flag:false},
+        // {name:'企业所得税',type:'1',flag:false},
+        // {name:'个人所得税',type:'2',flag:false},
+        // {name:'货劳税收',type:'3',flag:false},
+        // {name:'出口退税',type:'4',flag:false},
+        // {name:'国际税收',type:'5',flag:false},
+        // {name:'征收管理',type:'6',flag:false},
+        // {name:'清税注销',type:'7',flag:false},
+        // {name:'运输企业',type:'8',flag:false},
+        // {name:'房地产企业',type:'9',flag:false},
+        // {name:'互联网',type:'10',flag:false},
+        // {name:'行政复议',type:'11',flag:false},
+        // {name:'税务检查',type:'12',flag:false},
+        // {name:'电子商务',type:'13',flag:false},
+        // {name:'小微企业税收',type:'14',flag:false},
+        // {name:'能源企业',type:'15',flag:false},
+        // {name:'金融企业',type:'16',flag:false},
+        // {name:'合伙企业',type:'17',flag:false},
       ],
       gootAtList:['','','','',''],
       lifeAndFeelDesc:'',
@@ -436,7 +436,9 @@ export default {
 
   },
   onShow(){
-    this.getInitData()
+    this.getAllMajor();
+    this.getAllBusinessArea();
+    this.getInitData();
   },
   methods: {
     checkedStatus(){
@@ -551,7 +553,131 @@ export default {
       this.outLink.push({name:'',link:''});
     },
 
-    checkData(){
+    showToast(txt){
+      wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: 1500
+      })
+    },
+    getAllMajor(){
+      this.major = [];
+      this.$http.request({
+        url:'GetAllMajor',
+      }).then(res => {
+        res.data.forEach((item)=>{
+         this.major.push({name:item,flag:false});
+        })
+      })
+    },
+
+    getAllBusinessArea(){
+      this.businessArea = [];
+      this.$http.request({
+        url:'GetAllBusinessArea',
+      }).then(res => {
+        res.data.forEach((item)=>{
+          this.businessArea.push({name:item,flag:false});
+        })
+      })
+    },
+    getInitData(){
+      this.photosList = [];
+      this.$http.request({
+        url:'getExpertMsg',
+        data: {
+          Id: this.userData.userId
+        }
+      }).then(res => {
+        console.log(res);
+        let result = res.data;
+        this.nickName = result.nickName;
+        this.phoneNumber = result.phoneNumber;
+        this.emailAddress = result.emailAddress;
+
+        let address = result.companyAddress.split('-');
+        this.provice = address[0];
+        this.city = address[1];
+        this.areaBlock = address[2];
+
+        this.companyName = result.companyName;
+        this.companyPosition = result.companyPosition;
+
+        this.lifeAndFeelDesc = result.lifeAndFeelDesc;
+        this.aboutUserDesc = resolve.aboutUserDesc;
+        this.realName = result.realName;
+        this.certNum = result.certNum;
+        this.oneOfCost = result.oneOfCost;
+        this.paymentCodeList = [result.paymentCode];
+
+        result.userFiles.forEach((item)=>{
+          this.photosList.push(item.fileUrl);
+        })
+
+        let language = result.language.split('|zxt|');
+        this.language.forEach((item)=>{
+          language.forEach((item2)=>{
+            if(item.name == item2){
+              item.flag = true;
+            }
+          })
+        });
+       
+        this.gootAtList = result.goodAtBusiness.split('|zxt|');
+
+        let outLink = result.outLink.split('|zxt|');
+        this.outLink = outLink.map((item)=>{
+          return JSON.parse(item);
+        });
+
+
+        let major = result.major;
+        this.major.forEach((item)=>{
+          if(item.name == major){
+            item.flag = true;
+          }
+        });
+
+        let majorYearsDesc = result.majorYearsDesc;
+        this.majorYearsDesc.forEach((item)=>{
+          if(item.name == majorYearsDesc){
+            item.flag = true;
+          }
+        });
+        
+        let businessArea = result.businessArea.split('|zxt|');
+        this.businessArea.forEach((item)=>{
+          businessArea.forEach((item2)=>{
+            if(item.name == item2){
+              item.flag = true;
+            }
+          })
+        });
+
+        let certType = result.certType;
+        this.certType.forEach((item)=>{
+          if(item.name == certType){
+            item.flag = true;
+          }
+        });
+
+        let responseTime = result.responseTime;
+        this.responseTime.forEach((item)=>{
+          if(item.type == responseTime){
+            item.flag = true;
+          }
+        });
+
+        let answeringTime = result.answeringTime;
+        this.answeringTime.forEach((item)=>{
+          if(item.type == answeringTime){
+            item.flag = true;
+          }
+        });
+        this.isReadSelect = true;
+      })
+    },
+     checkData(){
       if(!this.phoneNumber){
         this.showToast('请输入手机号');
         return false;
@@ -603,7 +729,17 @@ export default {
         return false;
       }
 
-      // this.专业（待定下）
+      let major = this.major.filter((item)=>{
+        return item.flag;
+      });
+
+      if(major.length > 0){
+        major = major[0].name;
+      }else{
+        this.showToast('请选择专业');
+        return false;
+      }
+
       let majorYearsDesc = this.majorYearsDesc.filter((item)=>{
         return item.flag;
       });
@@ -661,6 +797,12 @@ export default {
       }
       
       // this.photosList（相关照片转一下） 非 最多5张
+      let userFiles  = [];
+      if(this.photosList.length > 0){
+         this.photosList.forEach((item)=>{
+           userFiles.push({userId:this.userData.userId,fileUrl:item})
+         })
+      }
       if(!this.aboutUserDesc){
         this.showToast('请填写关于专家');
         return false;
@@ -725,10 +867,10 @@ export default {
         this.showToast('请先阅读并同意专家的使用规则');
         return false;
       }
-
       return {
           language,
           address,
+          major,
           majorYearsDesc,
           businessArea,
           goodAtBusiness,
@@ -736,108 +878,9 @@ export default {
           certType,
           paymentCode,
           responseTime,
-          answeringTime
+          answeringTime,
+          userFiles,
       }
-    },
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
-    getInitData(){
-      this.$http.request({
-        url:'getExpertMsg',
-        data: {
-          Id: this.userData.userId
-        }
-      }).then(res => {
-        console.log(res);
-        let result = res.result;
-        this.nickName = result.nickName;
-        this.phoneNumber = result.phoneNumber;
-        this.emailAddress = result.emailAddress;
-
-        let address = result.companyAddress.split('-');
-        this.provice = address[0];
-        this.city = address[1];
-        this.areaBlock = address[2];
-
-        this.companyName = result.companyName;
-        this.companyPosition = result.companyPosition;
-
-        this.lifeAndFeelDesc = result.lifeAndFeelDesc;
-        this.aboutUserDesc = resolve.aboutUserDesc;
-        this.realName = result.realName;
-        this.certNum = result.certNum;
-        this.oneOfCost = result.oneOfCost;
-        this.paymentCodeList = [result.paymentCode];
-
-        this.photosList = []; // 相关照片
-
-        let language = result.language.split('|zxt|');
-        this.language.forEach((item)=>{
-          language.forEach((item2)=>{
-            if(item.name == item2){
-              item.flag = true;
-            }
-          })
-        });
-       
-        this.gootAtList = result.goodAtBusiness.split('|zxt|');
-
-        let outLink = result.outLink.split('|zxt|');
-        this.outLink = outLink.map((item)=>{
-          return JSON.parse(item);
-        });
-
-
-        let majorType = result.majorType;
-        this.majorType.forEach((item)=>{
-          if(item.name == majorType){
-            item.flag = true;
-          }
-        });
-
-        let majorYearsDesc = result.majorYearsDesc;
-        this.majorYearsDesc.forEach((item)=>{
-          if(item.name == majorYearsDesc){
-            item.flag = true;
-          }
-        });
-        
-        let businessArea = result.businessArea.split('|zxt|');
-        this.businessArea.forEach((item)=>{
-          businessArea.forEach((item2)=>{
-            if(item.name == item2){
-              item.flag = true;
-            }
-          })
-        });
-
-        let certType = result.certType;
-        this.certType.forEach((item)=>{
-          if(item.name == certType){
-            item.flag = true;
-          }
-        });
-
-        let responseTime = result.responseTime;
-        this.responseTime.forEach((item)=>{
-          if(item.type == responseTime){
-            item.flag = true;
-          }
-        });
-
-        let answeringTime = result.answeringTime;
-        this.answeringTime.forEach((item)=>{
-          if(item.type == answeringTime){
-            item.flag = true;
-          }
-        });
-        this.isReadSelect = true;
-      })
     },
     submitMsg(){
       let flag = this.checkData();
@@ -845,7 +888,7 @@ export default {
         return;
       }
       this.$http.request({
-        url:'submitExpertMsg',
+        url:'PutCurrentUser',
         data: {
           nickName: this.nickName,
           phoneNumber: this.phoneNumber,
@@ -854,14 +897,14 @@ export default {
           companyAddress: flag.address,
           companyName: this.companyName,
           companyPosition: this.companyPosition,
-          // 专业（待定下）
+          major:flag.major,
           majorYearsDesc: flag.majorYearsDesc,
           businessArea: flag.businessArea,
           goodAtBusiness: flag.goodAtBusiness,
           lifeAndFeelDesc: this.lifeAndFeelDesc,
           outLink:flag.outLink,
           aboutUserDesc: this.aboutUserDesc,
-          // photosList（相关照片转一下） 非 最多5张
+          userFiles:flag.userFiles,
           realName: this.realName,
           certType: flag.certType,
           certNum: this.certNum,
@@ -869,10 +912,12 @@ export default {
           paymentCode: flag.paymentCode,
           responseTime: flag.responseTime*1,
           answeringTime: flag.answeringTime*1,
-          isReadSelect: this.isReadSelect
+          workStatus: 0,
+          isReadSelect: this.isReadSelect?1:0,
+          // lastModificationTime: "2019-05-26T13:49:52.473Z"
         },
         flyConfig:{
-          method: 'put'
+          method: 'post'
         }
       }).then(res => {
          
@@ -880,6 +925,8 @@ export default {
     }
   },
 }
+
+
 </script>
 
 <style lang="less">
