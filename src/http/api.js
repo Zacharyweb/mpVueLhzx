@@ -7,10 +7,10 @@ const API = {
 
 
 
-  'AuthorizedLoginByWx':'/api/TokenAuth/AuthorizedLoginByWx',// 微信登录
+  'AuthorizedLoginByWx':'/api/Users/AuthorizedLoginByWx',// 微信登录
 
-  'SendSms':'/api/TokenAuth/SendSms', //发送短信验证码
-  'VerSmsCodeAsync':'/api/TokenAuth/VerSmsCodeAsync', //验证验证码
+  'SendCode':'/api/LhzxSmsCode/SendCode', //发送短信验证码
+  'CheckCode':'/api/LhzxSmsCode/CheckCode', //验证验证码
 
 
 

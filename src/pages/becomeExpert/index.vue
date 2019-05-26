@@ -759,7 +759,7 @@ export default {
         this.phoneNumber = result.phoneNumber;
         this.emailAddress = result.emailAddress;
 
-        let address = result.address.split('-');
+        let address = result.companyAddress.split('-');
         this.provice = address[0];
         this.city = address[1];
         this.areaBlock = address[2];
@@ -851,7 +851,7 @@ export default {
           phoneNumber: this.phoneNumber,
           emailAddress: this.emailAddress,
           language: flag.language,
-          address: flag.address,
+          companyAddress: flag.address,
           companyName: this.companyName,
           companyPosition: this.companyPosition,
           // 专业（待定下）

@@ -118,9 +118,10 @@ export default {
                 method: 'post'
               }
             }).then(res => {
+              console.log(res.data);
               let data = that.userData || {};
-              that.updateUserMsg({...data,...res.result});
-              that.sendVcode(res);
+              that.updateUserMsg({...data,...res.data});
+              that.sendVcode(res.data);
             })
           } else {
             console.log('登录失败！' + res.errMsg)
@@ -131,16 +132,16 @@ export default {
     
     // 发送验证码
     sendVcode(data){
-      console.log(data);
+ 
       let that = this;
       that.$http.request({
-        url:'SendSms',
+        url:'SendCode',
         data: {
           phoneNumber:that.mobile,
-          userId:data.result.userId,
+          userId:data.userId,
         },
         flyConfig:{
-
+          method: 'post'
         }
       }).then(res => {
         that.count();
@@ -178,14 +179,14 @@ export default {
       };
       let that = this;
       that.$http.request({
-        url:'VerSmsCodeAsync',
+        url:'CheckCode',
         data: {
           phoneNumber: that.mobile,
           userid: that.userData.userId,
           code:that.vcode
         },
         flyConfig:{
-
+          method: 'post'
         }
       }).then(res => {
         let userDataStr = JSON.stringify(that.userData);
