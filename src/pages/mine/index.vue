@@ -19,8 +19,10 @@
              <span class="mine_position">高级财务专家</span>
           </div>
 
-          <div class="mine_txt_line mt-10" @click="actionSheetShow = true">
-            <span class="mine_status">{{statusText}}</span>
+          <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')">
+            <span class="mine_status" v-if="workStatus == 1">营业中</span>
+            <span class="mine_status" v-else-if="workStatus == 2">休息至下次登入</span>
+            <span class="mine_status" v-else-if="workStatus == 3">休息至明早8:00</span>
             <img class="arrow_icon" src="../../../static/img/arrow_down.png">
           </div>
 
@@ -132,24 +134,8 @@ import { mapState, mapActions } from 'vuex'
 export default {
  data () {
     return {
-      actionSheetShow:false,
-      statusText:'营业中',
-      actions:[
-        {
-          targetId:1,
-          name: '营业中',
-        },
-        {
-          targetId:2,
-          name: '休息中',
-          subname: '休息至下次登入',
-        },
-        {
-          targetId:3,
-          name: '休息中',
-          subname: '休息至明早8:00',
-        }
-      ],
+      workStatus:0,
+    
       loginStatus:'Y',
 
     }
@@ -167,19 +153,6 @@ export default {
     ...mapActions('counter', [
       'updateUserMsg'
     ]),
-    onCloseActionSheet(){
-      this.actionSheetShow = false;
-    },
-    onSelectAction(data){
-      if(data.mp.detail.targetId == 2){
-        this.statusText = '休息至下次登入';
-      }else if(data.mp.detail.targetId == 3){
-        this.statusText = '休息至明早8:00';
-      }else{
-        this.statusText = '营业中';
-      }
-      this.actionSheetShow = false;
-    },
 
     linkTo(path,notNeedLogin){
       if(notNeedLogin || this.loginStatus == 'Y'){

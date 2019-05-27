@@ -59,7 +59,7 @@
 
     <div class="tab_fix_wrap" v-show="tabFixedFlag">
        <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
-          <van-tab v-for="(item,index) in tagsList" :key="index" :title="item.tagName"></van-tab>
+          <van-tab v-for="(item,index) in tagsList" :key="index" :title="item"></van-tab>
         </van-tabs>
         <div class="top_tips" @click="toConsultList">
            <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
@@ -68,7 +68,7 @@
 
     <div id="tabStaticWrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
-        <van-tab  v-for="(item,index) in tagsList" :key="index" :title="item.tagName"></van-tab>
+        <van-tab  v-for="(item,index) in tagsList" :key="index" :title="item"></van-tab>
       </van-tabs>
     </div>
 
@@ -97,8 +97,10 @@ export default {
       currentTab:0,
       tabFixedFlag:false,
       tagsList:[],
-
-      expertsList:[]
+      expertsList:[],
+      pageIndex:0,
+      major:'',
+      isNomore:false
     }
   },
   
@@ -116,26 +118,35 @@ export default {
       let that = this;
       that.$http.request({
         url:'GetAllMajor',
-        data: {
- 
-        }
       }).then(res => {
-        that.tagsList = res.result.items;
-        that.getAllExperts(res.result.items[0].id);
+        that.tagsList = res.data;
+        that.major = res.data[0];
+        that.getAllExperts();
       })
     },
     
     // 获取专家列表
-    getAllExperts (tagsId) {
+    getAllExperts () {
       let that = this;
       that.$http.request({
-        url:'GetAllExperts',
+        url:'GetExpertList',
         data: {
-          TagsId: tagsId,
+          major: '',
+          pageIndex: this.pageIndex,
+        },
+        flyConfig:{
+          method: 'post'
         }
       }).then(res => {
-        console.log(res);
-        that.expertsList = res.result.items;
+        if(res.data.length == 0){
+          that.isNomore = true;
+        }else{
+          res.data.forEach(item => {
+            item.companyAddress = item.companyAddress.split('-')[1] || item.companyAddress.split('市')[0] + '市';
+            item.goodAtBusiness = item.goodAtBusiness.split('|zxt|');
+          });
+          that.expertsList = [...that.expertsList,...res.data];
+        }
       })
     },
 
@@ -144,9 +155,13 @@ export default {
     },
 
     onTabsChange(event){
+      this.expertsList = [];
+      this.pageIndex = 0;
+      this.isNomore = false;
       let index = event.target.index;
       this.currentTab = index;
-      this.getAllExperts(this.tagsList[index].id);
+      this.major = this.tagsList[index];
+      this.getAllExperts();
     },
 
     onSearchFocus(){
@@ -180,7 +195,7 @@ export default {
     })
   },
   onShow(){
-    this.GetAllMajor();
+ 
   },
   created () {
     // 调用应用实例的方法获取全局数据
@@ -219,6 +234,13 @@ export default {
     // }).then(res => {
       
     // })
+    this.GetAllMajor();
+  },
+  onReachBottom(){
+    if(!this.isNomore){
+      this.pageIndex++;
+      this.getAllExperts();
+    };
   }
 }
 </script>

@@ -4,7 +4,11 @@
       <li class="router_item">
         <div class="item_left">服务状态</div>
         <div class="item_right" @click="actionSheetShow = true">
-          <span class="status_text">{{statusText}}</span>
+          <span class="status_text" v-if="workStatus == 1">营业中</span>
+          <span class="status_text" v-else-if="workStatus == 2">休息至下次登入</span>
+          <span class="status_text" v-else-if="workStatus == 3">休息至明早8:00</span>
+          <span class="status_text" v-else>获取中</span>
+          
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
@@ -21,11 +25,13 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
       actionSheetShow:false,
-      statusText:'营业中',
+      workStatus:0,
+      // statusText:'营业中',
       actions:[
         {
           targetId:1,
@@ -46,7 +52,9 @@ export default {
     }
   },
   computed: {
- 
+    ...mapState({
+      userData: state => state.counter.userData
+    })
   },
   mounted(){
 
@@ -56,14 +64,44 @@ export default {
       this.actionSheetShow = false;
     },
     onSelectAction(data){
+      let statusText,workStatus;
       if(data.mp.detail.targetId == 2){
-        this.statusText = '休息至下次登入';
+        statusText = '休息至下次登入';
+        workStatus = 2;
       }else if(data.mp.detail.targetId == 3){
-        this.statusText = '休息至明早8:00';
+        statusText = '休息至明早8:00';
+        workStatus = 3;
       }else{
-        this.statusText = '营业中';
+        statusText = '营业中';
+        workStatus = 1;
       }
+      this.setWorkStatus(workStatus,statusText);
       this.actionSheetShow = false;
+    },
+    setWorkStatus(workStatus,statusText){
+      if(this.workStatus == workStatus){
+        return;
+      }
+      this.$http.request({
+        url:'SetWorkStatus',
+        data:{
+          id: this.userData.userId,
+          workStatus: workStatus
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.workStatus = workStatus;
+          this.statusText = statusText;
+          wx.showToast({
+            title: '服务状态切换成功',
+            icon: 'none',
+            duration: 1500
+          });
+        }
+      })
     },
  
     linkTo(path){

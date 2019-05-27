@@ -16,7 +16,9 @@ const API = {
   'GetAllBusinessArea': '/api/Users/GetAllBusinessArea', // 获取所有领域
 
   
-  'GetAllExperts':'/api/services/app/User/GetAll', // 获取专家列表
+  'GetExpertList':'/api/Users/GetExpertList', // 获取专家列表
+
+  'SetWorkStatus':'/api/Users/SetWorkStatus', // 更新工作状态
   'getExpertMsg':'/api/services/app/User/Get',//获取成为专家页面的专家信息
 }
 

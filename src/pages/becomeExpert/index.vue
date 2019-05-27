@@ -339,6 +339,7 @@
 
 import { mapState, mapActions } from 'vuex'
 import AreaList from '../../../static/js/area.js';
+import { setTimeout } from 'timers';
 export default {
   data(){
     return{
@@ -920,7 +921,14 @@ export default {
           method: 'post'
         }
       }).then(res => {
-         
+        if(res.code == 1){
+            this.showToast('提交成功，请等待审核~');
+            setTimeout(()=>{
+              wx.switchTab({
+                url: '/pages/mine/index'
+              });
+            },1500)
+        } 
       })
     }
   },
