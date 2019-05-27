@@ -1,69 +1,13 @@
 <template>
   <div class="container">
     <van-search  background="#fff" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
-    
-    <!-- <div class="relation_experts_block">
-      <div class="relation_expert" @click="toExpertList('/pages/collectExpert/index')">
-        <div class="expert_num">
-          <img src="../../../static/img/index_icon1.png" alt="">
-          <span class="num_text">
-            <van-tag round color="#1fb7b6" type="primary">0</van-tag>
-          </span>
-        </div>
-        <div class="expert_cate">收藏的专家</div>
-      </div>
-
-      <div class="relation_expert" @click="toExpertList('/pages/expertFriends/index')">
-        <div class="expert_num">
-          <img src="../../../static/img/index_icon2.png" alt="">
-          <span class="num_text">
-            <van-tag round color="#1fb7b6" type="primary">10</van-tag>
-          </span>
-        </div>
-        <div class="expert_cate">我的专家好友</div>
-      </div>
-
-      <div class="relation_expert" @click="toExpertList('/pages/expertFriends/index')">
-        <div class="expert_num">
-          <img src="../../../static/img/index_icon3.png" alt="">
-          <span class="num_text">
-            <van-tag round color="#1fb7b6" type="primary">100</van-tag>
-          </span>
-        </div>
-        <div class="expert_cate">已咨询专家</div>
-      </div>
-
-      <div class="relation_expert" @click="toExpertList('/pages/recommendExpert/index')">
-        <div class="expert_num">
-          <img src="../../../static/img/index_icon4.png" alt="">
-          <span class="num_text">
-            <van-tag round color="#1fb7b6" type="primary">100</van-tag>
-          </span>
-        </div>
-        <div class="expert_cate">好友推荐专家</div>
-      </div>
-    </div> -->
-
-    <!-- <div class="msg_block">
-      <div class="block_top">
-        <img src="../../../static/img/notice_icon1.png">
-        <span>您有3条未查看消息。</span>
-      </div>
-      <div class="new_msg">
-        <div class="msg_content text_ellipsis">
-          <span>最新：</span>文本超出省略文本超出省略文本超出省略文本超出省略文本超出省略
-        </div>
-        <div class="msg_time">2018-11-28 00:00:00</div>
-      </div>
-    </div> -->
-
     <div class="tab_fix_wrap" v-show="tabFixedFlag">
        <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
           <van-tab v-for="(item,index) in tagsList" :key="index" :title="item"></van-tab>
         </van-tabs>
-        <div class="top_tips" @click="toConsultList">
+        <!-- <div class="top_tips" @click="toConsultList">
            <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
-        </div>
+        </div> -->
     </div>
 
     <div id="tabStaticWrap">
@@ -72,9 +16,9 @@
       </van-tabs>
     </div>
 
-    <div class="top_tips" @click="toConsultList">
+    <!-- <div class="top_tips" @click="toConsultList">
        <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
-    </div>
+    </div> -->
 
     <div class="experts_list" v-if="expertsList.length > 0">
       <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>

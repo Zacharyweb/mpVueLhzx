@@ -1,24 +1,27 @@
 <template>
-  <div class="container" :class="{'m_bottom':isX}">
+  <div class="container" :class="{'m_bottom':isX}" v-if="expertData">
     <div class="experts_item">
       <div class="top_block">
         <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
         <div class="top_block_right">
           <div class="experts_msg1">
-            <div class="experts_name">朱两边<span class="status">营业中</span></div>
+            <div class="experts_name">{{expertData.nickName}}
+              <span class="status" v-if="expertData.workStatus == 1">营业中</span>
+              <span class="status grey" v-else>休息中</span>
+            </div>
             <span class="consult_msg">10人已关注</span>
           </div>
           <div class="experts_msg2">
-            <span class="respond_time"><span>5</span>分钟内回应，<span>12</span>小时内作答</span>
+            <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span>
             <span class="order_num">20人已咨询</span>
           </div>
           <div class="experts_msg3">
             <div class="experts_location">
-              <img src="../../../static/img/location_icon.png">杭州
+              <img src="../../../static/img/location_icon.png">{{expertData.address}}
             </div>
             <span class="devide_line"></span>
             <div class="experts_experience">
-              <img src="../../../static/img/time_icon.png">3-5年从业经验
+              <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}从业经验
             </div>
           </div>
         
@@ -39,46 +42,46 @@
       <div class="panle_block">
          <div class="base_msg">
           <span class="msg_name">担任职位</span>
-          <span class="msg_content">前所得税副处</span>
+          <span class="msg_content">{{expertData.companyPosition}}</span>
         </div>
         <div class="base_msg">
           <span class="msg_name">任职企业</span>
-          <span class="msg_content">杭州市税局大企业处</span>
+          <span class="msg_content">{{expertData.companyName}}</span>
         </div>
         <div class="base_msg">
           <span class="msg_name">工作年限</span>
-          <span class="msg_content">20年</span>
+          <span class="msg_content">{{expertData.majorYearsDesc}}</span>
         </div>
       </div>
       <div class="panle_block">
         <!-- <div class="block_title">领域与擅长业务</div> -->
         <div class="base_msg">
            <span class="msg_name">领域</span>
-           <span class="msg_content">企业所得税、金融企业、出口退税、行政复议</span>
+           <span class="msg_content">{{expertData.businessArea}}</span>
         </div>
      
         <div class="base_msg">
            <span class="msg_name">擅长业务</span>
-           <span class="msg_content">税收检查应对、发票风险管理实务、转攻房地产税务难题</span>
+           <span class="msg_content">{{expertData.gootAtList}}</span>
         </div>
       </div>
       
        <div class="panle_block nb">
         <div class="block_title">专业见解</div>
-        <div class="block_content">7号公告对美元基金的影响...</div>
+        <div class="block_content">{{expertData.lifeAndFeelDesc}}</div>
       </div>
     </div>
     <div class="introduce_panel" v-show="currentTab == 1">
 
       <div class="panle_block">
         <div class="block_title">自我介绍</div>
-        <div class="block_content">朱先生，是美国南太平洋大学的博士，现任中国葛洲坝集团国际工程有限公司的税务专家 (集团全球税务负责人）。他是经济学硕士（税务专业）、工商管理博士（税务方向），高级经济师，中国注册税务师，国家税务总局《中国税网》 税务专家顾问。</div>
+        <div class="block_content">{{expertData.aboutUserDesc}}</div>
       </div>
 
       <div class="panle_block">
         <div class="block_title">相关照片</div>
         <div class="block_content">
-          <img class="intro_img"  v-for="(item,index) in imgUrls" :src="item" :key="index" @click="showImgSwiper(index)">
+          <img class="intro_img"  v-for="(item,index) in expertData.photosList" :src="item" :key="index" @click="showImgSwiper(index)">
 
         </div>
       </div>
@@ -86,18 +89,11 @@
 
       <div class="panle_block nb">
         <div class="block_title">作品链接</div>
-        <div class="base_msg no_name">
+        <div class="base_msg no_name" v-for="(item,index) in expertData.outLink" :key="index" @click="copyText(item.link)">
            <span class="msg_name"></span>
-           <span class="msg_content">《作品一名称》</span>
+           <span class="msg_content">{{item.name}}</span>
         </div>
-        <div class="base_msg no_name">
-           <span class="msg_name"></span>
-           <span class="msg_content">《作品二名称》</span>
-        </div>
-        <div class="base_msg no_name">
-           <span class="msg_name"></span>
-           <span class="msg_content">《作品三名称》</span>
-        </div>
+        
       </div>
       
     </div>
@@ -160,7 +156,7 @@
           <span>分享</span>
         </button>
       </div>
-       <span class="action_btn1" @click="toContact">马上咨询&nbsp;￥40</span>
+       <span class="action_btn1" @click="toContact">马上咨询&nbsp;￥{{expertData.oneOfCost}}</span>
     </div>
 
     <van-action-sheet
@@ -180,7 +176,7 @@
       indicator-active-color="#fff"
     >
 
-      <block v-for="(item,index) in imgUrls" :key="index">
+      <block v-for="(item,index) in expertData.photosList" :key="index">
         <swiper-item class="img_item" @click="imgSwiperShow = false">
           <image :src="item" mode="widthFix" class="slide-image"/>
         </swiper-item>
@@ -191,6 +187,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import {API, BASE_URL} from  '../../http/api.js'
 export default {
   data(){
     return{
@@ -213,23 +210,19 @@ export default {
           name: '咨询疑问'
         }
       ],
-      imgUrls: [
-        'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-        'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
-        'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
-        'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
-        'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
-      ],
+    
       imgSwiperShow: false,
-  
-
       swiperCurrent:2,
+      expertData:null
     }
   },
   computed: {
     ...mapState({
       isX: state => state.counter.isX
     })
+  },
+  onLoad(options){
+    this.getInitData(options.id);
   },
   mounted(){
 
@@ -280,6 +273,55 @@ export default {
 
       this.swiperCurrent = index;
       this.imgSwiperShow = true;
+    },
+    getInitData(id){
+      let url = API['GetUserDetail'] + id;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let expertData = {};
+
+        let result = res.data;
+        expertData.nickName = result.nickName;
+        expertData.address = result.companyAddress.split('-')[1] || result.companyAddress.split('市')[0] + '市';
+        expertData.companyName = result.companyName;
+        expertData.companyPosition = result.companyPosition;
+        expertData.lifeAndFeelDesc = result.lifeAndFeelDesc;
+        expertData.aboutUserDesc = result.aboutUserDesc;
+        expertData.oneOfCost = result.oneOfCost;
+        let photosList = [];
+        result.userFiles.forEach((item)=>{
+          photosList.push(item.fileUrl);
+        })
+        expertData.photosList = photosList;
+        expertData.gootAtList = result.goodAtBusiness.split('|zxt|').join('、');
+        let outLink = result.outLink.split('|zxt|');
+        expertData.outLink = outLink.map((item)=>{
+          return JSON.parse(item);
+        });
+        expertData.major = result.major;
+        expertData.majorYearsDesc = result.majorYearsDesc;
+        expertData.businessArea = result.businessArea.split('|zxt|').join('、');
+        expertData.responseTime = result.responseTime;
+        expertData.answeringTime = result.answeringTime;
+        expertData.workStatus = result.workStatus;
+
+        this.expertData = expertData;
+      })
+    },
+    copyText(text){
+      console.log(text);
+      wx.setClipboardData({
+        data: text,
+        success (res) {
+          wx.showToast({
+            title: '已复制相关链接',
+            icon: 'none',
+            duration: 1500
+          });
+         
+        }
+      })
     }
   },
   onShow(){

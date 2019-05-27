@@ -48,7 +48,7 @@ export default {
   props: ['expertData'],
   methods:{
     linkTo(path){
-      this.$router.push(path);
+      this.$router.push({path:path,query:{id:this.expertData.id}});
     }
   },
   create(){
