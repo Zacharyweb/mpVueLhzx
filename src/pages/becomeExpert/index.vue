@@ -15,7 +15,7 @@
           <li class="form_item required">
             <div class="item_name">手机号</div>
             <div class="item_content">
-              <input type="number" v-model="phoneNumber" placeholder="请输入手机号"  :disabled="isChecked == 'Y'">
+              <input type="number" v-model="workPhoneNumber" placeholder="请输入手机号"  :disabled="isChecked == 'Y'">
             </div>
           </li>
 
@@ -344,7 +344,7 @@ export default {
   data(){
     return{
       nickName:'',
-      phoneNumber:'',
+      workPhoneNumber:'',
       emailAddress:'',
       language:[
         {name:'汉语',type:'cn',flag:false},
@@ -619,7 +619,7 @@ export default {
       }).then(res => {
         let result = res.data;
         this.nickName = result.nickName;
-        this.phoneNumber = result.phoneNumber;
+        this.workPhoneNumber = result.workPhoneNumber;
         this.emailAddress = result.emailAddress;
         let address = result.companyAddress.split('-');
         this.provice = address[0];
@@ -705,12 +705,12 @@ export default {
       })
     },
     checkData(){
-      if(!this.phoneNumber){
+      if(!this.workPhoneNumber){
         this.showToast('请输入手机号');
         return false;
       }
       let mobileReg = /^(1[345789]\d{9})$/;
-      if(!mobileReg.test(this.phoneNumber)){
+      if(!mobileReg.test(this.workPhoneNumber)){
         this.showToast('手机号格式错误');
         return false;
       }
@@ -917,7 +917,7 @@ export default {
         url:'PutCurrentUser',
         data: {
           nickName: this.nickName,
-          phoneNumber: this.phoneNumber,
+          workPhoneNumber: this.workPhoneNumber,
           emailAddress: this.emailAddress,
           language: flag.language,
           companyAddress: flag.address,
