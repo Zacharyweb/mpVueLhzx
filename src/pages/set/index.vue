@@ -4,9 +4,9 @@
       <li class="router_item">
         <div class="item_left">服务状态</div>
         <div class="item_right" @click="actionSheetShow = true">
-          <span class="status_text" v-if="workStatus == 1">营业中</span>
-          <span class="status_text" v-else-if="workStatus == 2">休息至下次登入</span>
-          <span class="status_text" v-else-if="workStatus == 3">休息至明早8:00</span>
+          <span class="status_text" v-if="userData.workStatus == 1">营业中</span>
+          <span class="status_text" v-else-if="userData.workStatus == 2">休息至下次登入</span>
+          <span class="status_text" v-else-if="userData.workStatus == 3">休息至明早8:00</span>
           <span class="status_text" v-else>获取中</span>
           
           <img  src="../../../static/img/arrow_right.png">
@@ -14,7 +14,6 @@
       </li>
 
     </ul>
-
      <van-action-sheet
       :show="actionSheetShow"
       :actions="actions"
@@ -30,8 +29,6 @@ export default {
   data () {
     return {
       actionSheetShow:false,
-      workStatus:0,
-      // statusText:'营业中',
       actions:[
         {
           targetId:1,
@@ -59,27 +56,30 @@ export default {
   mounted(){
 
   },
+  onShow(){
+    console.log(this.userData);
+  },
   methods: {
+    ...mapActions('counter', [
+      'updateUserMsg'
+    ]),
     onCloseActionSheet(){
       this.actionSheetShow = false;
     },
     onSelectAction(data){
-      let statusText,workStatus;
+      let workStatus;
       if(data.mp.detail.targetId == 2){
-        statusText = '休息至下次登入';
         workStatus = 2;
       }else if(data.mp.detail.targetId == 3){
-        statusText = '休息至明早8:00';
         workStatus = 3;
       }else{
-        statusText = '营业中';
         workStatus = 1;
       }
-      this.setWorkStatus(workStatus,statusText);
+      this.setWorkStatus(workStatus);
       this.actionSheetShow = false;
     },
-    setWorkStatus(workStatus,statusText){
-      if(this.workStatus == workStatus){
+    setWorkStatus(workStatus){
+      if(this.userData.workStatus == workStatus){
         return;
       }
       this.$http.request({
@@ -93,8 +93,8 @@ export default {
         }
       }).then(res => {
         if(res.code == 1){
-          this.workStatus = workStatus;
-          this.statusText = statusText;
+          let data = this.userData || {};
+          this.updateUserMsg({...data,workStatus:workStatus});
           wx.showToast({
             title: '服务状态切换成功',
             icon: 'none',

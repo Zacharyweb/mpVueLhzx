@@ -338,8 +338,8 @@
 <script>
 
 import { mapState, mapActions } from 'vuex'
+import {API, BASE_URL} from  '../../http/api.js'
 import AreaList from '../../../static/js/area.js';
-import { setTimeout } from 'timers';
 export default {
   data(){
     return{
@@ -355,42 +355,17 @@ export default {
       areaBlock:'',
       companyName:'',
       companyPosition:'',
-      major:[
-        // {name:'税务',type:'sw',flag:false},
-        // {name:'财务',type:'cw',flag:false},
-        // {name:'法务',type:'fw',flag:false},
-        // {name:'海关',type:'hg',flag:false},
-        // {name:'外汇',type:'wh',flag:false},
-        // {name:'工商',type:'gs',flag:false}
-      ],
+      major:[],
       majorYearsDesc:[
         {name:'5-10年',type:'1',flag:false},
         {name:'10-15年',type:'2',flag:false},
         {name:'15-20年',type:'3',flag:false},
         {name:'20年以上',type:'4',flag:false},
       ],
-      businessArea:[
-        // {name:'企业所得税',type:'1',flag:false},
-        // {name:'个人所得税',type:'2',flag:false},
-        // {name:'货劳税收',type:'3',flag:false},
-        // {name:'出口退税',type:'4',flag:false},
-        // {name:'国际税收',type:'5',flag:false},
-        // {name:'征收管理',type:'6',flag:false},
-        // {name:'清税注销',type:'7',flag:false},
-        // {name:'运输企业',type:'8',flag:false},
-        // {name:'房地产企业',type:'9',flag:false},
-        // {name:'互联网',type:'10',flag:false},
-        // {name:'行政复议',type:'11',flag:false},
-        // {name:'税务检查',type:'12',flag:false},
-        // {name:'电子商务',type:'13',flag:false},
-        // {name:'小微企业税收',type:'14',flag:false},
-        // {name:'能源企业',type:'15',flag:false},
-        // {name:'金融企业',type:'16',flag:false},
-        // {name:'合伙企业',type:'17',flag:false},
-      ],
+      businessArea:[ ],
       gootAtList:['','','','',''],
       lifeAndFeelDesc:'',
-      outLink:[{name:'',link:''}],
+      outLink:[],
       aboutUserDesc:'',
       photosList:[],
       realName:'',
@@ -426,6 +401,9 @@ export default {
       areaSelectPanelShow:false,
 
       isChecked:'N', // 当前是否是超级管理员审核状态
+      hasGetInitData:false,
+
+      isUploadingFile:false
     }
   },
   computed: {
@@ -434,12 +412,15 @@ export default {
     })
   },
   mounted(){
-
+  
   },
   onShow(){
-    this.getAllMajor();
-    this.getAllBusinessArea();
-    this.getInitData();
+    if(this.hasGetInitData && !this.isUploadingFile){
+      this.getInitData();
+    }else{
+      this.getAllMajor();
+      this.getAllBusinessArea();
+    }
   },
   methods: {
     checkedStatus(){
@@ -506,26 +487,41 @@ export default {
     upLoadPhoto(){
       if(!this.checkedStatus()) return;
       let that = this;
+      this.isUploadingFile = true;
       wx.chooseImage({
-        count: 5 - that.photosList.length,
+        count: 1,
         success(res) {
-          const tempFilePaths = res.tempFilePaths;
-          that.photosList = [...that.photosList,...res.tempFilePaths];
-          console.log(res);
-          // wx.uploadFile({
-          //   url: 'https://example.weixin.qq.com/upload',
-          //   filePath: tempFilePaths[0],
-          //   name: 'file',
-          //   formData: {
-          //     user: 'test'
-          //   },
-          //   success(res) {
-          //     const data = res.data
-          //   }
-          // })
+          wx.showLoading({
+            title: '图片上传中',
+            mask: true
+          })
+          let tempFilePaths = res.tempFilePaths;
+          let dotSplit = tempFilePaths[0].split('.');
+          let l = dotSplit.length;
+          let suffix = dotSplit[l-1];
+          let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
+          //同步方法
+          let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[0], 'base64');
+          that.$http.request({
+            url:'UploadFile',
+            data:{
+              type: "image",
+              filename: fileName,
+              base64String: base64 
+            },
+            flyConfig:{
+              method: 'post'
+            }
+          }).then(result => {
+            let data = result.data;
+            that.photosList = [...that.photosList,data.originalurl];
+            that.isUploadingFile = false;
+            wx.hideLoading();
+          })
         }
-      })
+      });
     },
+
     deletePhoto(index){
       if(!this.checkedStatus()) return;
       this.photosList.splice(index,1);
@@ -533,13 +529,40 @@ export default {
     upLoadPaymentCode(){
       if(!this.checkedStatus()) return;
       let that = this;
+
       wx.chooseImage({
-        count: 1 - that.paymentCodeList.length,
+        count: 1,
         success(res) {
-          const tempFilePaths = res.tempFilePaths;
-          that.paymentCodeList = [...that.paymentCodeList,...res.tempFilePaths];
+          wx.showLoading({
+            title: '图片上传中',
+            mask: true
+          })
+          let tempFilePaths = res.tempFilePaths;
+          let dotSplit = tempFilePaths[0].split('.');
+          let l = dotSplit.length;
+          let suffix = dotSplit[l-1];
+          let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
+          //同步方法
+          let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[0], 'base64');
+          that.$http.request({
+            url:'UploadFile',
+            data:{
+              type: "image",
+              filename: fileName,
+              base64String: base64 
+            },
+            flyConfig:{
+              method: 'post'
+            }
+          }).then(result => {
+            let data = result.data;
+            that.paymentCodeList = [data.originalurl];
+            that.isUploadingFile = false;
+            wx.hideLoading();
+          })
         }
-      })
+      });
+
     },
     deletePaymentCode(){
       if(!this.checkedStatus()) return;
@@ -568,6 +591,9 @@ export default {
       }).then(res => {
         res.data.forEach((item)=>{
          this.major.push({name:item,flag:false});
+         if(this.businessArea.length && !this.hasGetInitData){
+           this.getInitData();
+         }
         })
       })
     },
@@ -579,23 +605,22 @@ export default {
       }).then(res => {
         res.data.forEach((item)=>{
           this.businessArea.push({name:item,flag:false});
+          if(this.major.length && !this.hasGetInitData){
+           this.getInitData();
+          }
         })
       })
     },
     getInitData(){
-      this.photosList = [];
+      this.hasGetInitData = true;
+      let url = API['GetUserDetail'] + this.userData.userId;
       this.$http.request({
-        url:'getExpertMsg',
-        data: {
-          Id: this.userData.userId
-        }
+        url:url,
       }).then(res => {
-        console.log(res);
         let result = res.data;
         this.nickName = result.nickName;
         this.phoneNumber = result.phoneNumber;
         this.emailAddress = result.emailAddress;
-
         let address = result.companyAddress.split('-');
         this.provice = address[0];
         this.city = address[1];
@@ -605,15 +630,17 @@ export default {
         this.companyPosition = result.companyPosition;
 
         this.lifeAndFeelDesc = result.lifeAndFeelDesc;
-        this.aboutUserDesc = resolve.aboutUserDesc;
+        this.aboutUserDesc = result.aboutUserDesc;
         this.realName = result.realName;
         this.certNum = result.certNum;
         this.oneOfCost = result.oneOfCost;
         this.paymentCodeList = [result.paymentCode];
-
+ 
+        let photosList = [];
         result.userFiles.forEach((item)=>{
-          this.photosList.push(item.fileUrl);
+          photosList.push(item.fileUrl);
         })
+        this.photosList = photosList;
 
         let language = result.language.split('|zxt|');
         this.language.forEach((item)=>{
@@ -630,7 +657,6 @@ export default {
         this.outLink = outLink.map((item)=>{
           return JSON.parse(item);
         });
-
 
         let major = result.major;
         this.major.forEach((item)=>{
@@ -678,7 +704,7 @@ export default {
         this.isReadSelect = true;
       })
     },
-     checkData(){
+    checkData(){
       if(!this.phoneNumber){
         this.showToast('请输入手机号');
         return false;
@@ -797,7 +823,6 @@ export default {
         return false;
       }
       
-      // this.photosList（相关照片转一下） 非 最多5张
       let userFiles  = [];
       if(this.photosList.length > 0){
          this.photosList.forEach((item)=>{
@@ -869,18 +894,18 @@ export default {
         return false;
       }
       return {
-          language,
-          address,
-          major,
-          majorYearsDesc,
-          businessArea,
-          goodAtBusiness,
-          outLink,
-          certType,
-          paymentCode,
-          responseTime,
-          answeringTime,
-          userFiles,
+        language,
+        address,
+        major,
+        majorYearsDesc,
+        businessArea,
+        goodAtBusiness,
+        outLink,
+        certType,
+        paymentCode,
+        responseTime,
+        answeringTime,
+        userFiles,
       }
     },
     submitMsg(){
@@ -913,9 +938,8 @@ export default {
           paymentCode: flag.paymentCode,
           responseTime: flag.responseTime*1,
           answeringTime: flag.answeringTime*1,
-          workStatus: 0,
           isReadSelect: this.isReadSelect?1:0,
-          // lastModificationTime: "2019-05-26T13:49:52.473Z"
+          workStatus: this.userData.workStatus 
         },
         flyConfig:{
           method: 'post'

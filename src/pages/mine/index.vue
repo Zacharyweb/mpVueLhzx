@@ -7,28 +7,33 @@
         <img class="mine_avatar" v-if="userData" :src="userData.avatarUrl">
         <img class="mine_avatar" v-else src="../../../static/img/df_avatar.jpg">
         <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
-
         <div class="login_block" v-if="!userData || !userData.accessToken">
          <div class="no_login_tip">未登录</div>
          <div class="action_btn" @click="toLoginPage">登录/注册</div>
          <!-- <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button> -->
         </div>
-        <div class="mine_txt_msg" v-else>
-          <div class="mine_txt_line">
-             <span class="mine_nick">{{userData.nickName}}</span>
-             <span class="mine_position">高级财务专家</span>
-          </div>
 
-          <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')">
-            <span class="mine_status" v-if="workStatus == 1">营业中</span>
-            <span class="mine_status" v-else-if="workStatus == 2">休息至下次登入</span>
-            <span class="mine_status" v-else-if="workStatus == 3">休息至明早8:00</span>
-            <img class="arrow_icon" src="../../../static/img/arrow_down.png">
+        <div class="mine_txt_msg" v-if="userData">
+          <div v-if="userData.isExpert == 1">
+            <div class="mine_txt_line">
+               <span class="mine_nick">{{userData.nickName}}</span>
+               <span class="mine_position">{{mineData.companyPosition}}</span>
+            </div>
+            <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')">
+              <span class="mine_status" v-if="userData.workStatus == 1">营业中</span>
+              <span class="mine_status" v-else-if="userData.workStatus == 2">休息至下次登入</span>
+              <span class="mine_status" v-else-if="userData.workStatus == 3">休息至明早8:00</span>
+              <img class="arrow_icon" src="../../../static/img/arrow_down.png">
+            </div>
           </div>
-
-          <!-- <div class="mine_txt_line mt-10">
-            <span class="mine_status">普通用户</span>
-          </div> -->
+          <div v-else>
+            <div class="mine_txt_line">
+               <span class="mine_nick">{{userData.nickName}}</span>
+            </div>
+            <div class="mine_txt_line mt-10">
+              <span class="mine_status">普通用户</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -67,7 +72,7 @@
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/myCustomer/index')">
+      <li class="router_item" @click="linkTo('/pages/myCustomer/index')" v-if="userData && userData.isExpert == 1">
         <div class="item_left">
           <img src="../../../static/img/center_icon2.png">
           我的客户
@@ -90,14 +95,14 @@
       <li class="router_item" @click="linkTo('/pages/becomeExpert/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon4.png">
-          成为专家
+          {{ userData && userData.isExpert == 1 ?'修改信息':'成为专家'}}
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/set/index')">
+      <li class="router_item" @click="linkTo('/pages/set/index')" v-if="userData && userData.isExpert == 1">
         <div class="item_left">
           <img src="../../../static/img/center_icon5.png">
           设置
@@ -131,13 +136,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import {API, BASE_URL} from  '../../http/api.js'
+import { setTimeout } from 'timers';
 export default {
  data () {
     return {
-      workStatus:0,
-    
       loginStatus:'Y',
-
+      mineData:{}
     }
   },
   computed: {
@@ -145,14 +150,27 @@ export default {
       userData: state => state.counter.userData
     })
   },
-
-  mounted(){
- 
+  onShow(){
+    this.getMineData();
   },
   methods: {
     ...mapActions('counter', [
       'updateUserMsg'
     ]),
+    getMineData(){
+      if(!this.userData){
+        return;
+      }
+      let url = API['GetUserDetail'] + this.userData.userId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let result = res.data;
+        this.mineData = res.data;
+        let data = this.userData || {};
+        this.updateUserMsg({...data,workStatus:result.workStatus});
+      })
+    },
 
     linkTo(path,notNeedLogin){
       if(notNeedLogin || this.loginStatus == 'Y'){
@@ -207,8 +225,6 @@ export default {
       
       }
     },
-
-
   }
 }
 </script>

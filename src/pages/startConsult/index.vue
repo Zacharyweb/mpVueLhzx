@@ -69,13 +69,11 @@
 
           <!-- <div class="files_group" style="padding-top: 15px;">
              <span class="title" style="top:22px;">文件</span>
-
               <div class="pdf_file_item">
                <img class="pdf_icon" src="../../../static/img/pdf_icon.png" alt="">
                <div class="pdf_name">文件名称文件名称文件名称文件名称</div>
                <img class="delete_icon" src="../../../static/img/delete_icon3.png" alt="">
               </div>
-          
              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
           </div> -->
         </div>

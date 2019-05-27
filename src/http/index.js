@@ -41,7 +41,7 @@ Flyio.request = function(obj){
     let urlName = obj.url || '';
     let url = '';
     if(urlName){
-        url = API[urlName]; // 映射请求链接
+        url = API[urlName]?API[urlName]:urlName; // 映射请求链接
     }
 
     let data = obj.data || {}; // 请求数据

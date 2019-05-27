@@ -48,7 +48,9 @@ export default {
 
       mobile:'',
       userId:'',
-      vcode:''
+      vcode:'',
+
+      originalData:{}
 
     }
   },
@@ -119,8 +121,7 @@ export default {
               }
             }).then(res => {
               console.log(res.data);
-              let data = that.userData || {};
-              that.updateUserMsg({...data,...res.data});
+              that.originalData = res.data;
               that.sendVcode(res.data);
             })
           } else {
@@ -189,7 +190,10 @@ export default {
           method: 'post'
         }
       }).then(res => {
-        let userDataStr = JSON.stringify(that.userData);
+        let data = that.userData || {};
+        that.originalData.isExpert = 1;
+        that.updateUserMsg({...data,...that.originalData});
+        let userDataStr = JSON.stringify({...data,...that.originalData});
         wx.setStorageSync('userData', userDataStr);
         that.$router.go(-1);
       })

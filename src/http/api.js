@@ -15,11 +15,15 @@ const API = {
   'GetAllMajor':'/api/Users/GetAllMajor', // 获取专家分类标签,
   'GetAllBusinessArea': '/api/Users/GetAllBusinessArea', // 获取所有领域
 
+
   
   'GetExpertList':'/api/Users/GetExpertList', // 获取专家列表
+  'GetUserDetail':'/api/Users/GetUserDetail/',//获取专家详情信息
+
+  'UploadFile':'/api/LhzxFile/Post', //上传文件
 
   'SetWorkStatus':'/api/Users/SetWorkStatus', // 更新工作状态
-  'getExpertMsg':'/api/services/app/User/Get',//获取成为专家页面的专家信息
+ 
 }
 
 export {API, BASE_URL}
