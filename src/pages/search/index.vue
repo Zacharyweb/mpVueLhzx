@@ -10,11 +10,10 @@
     <div class="search_history" v-show="expertsList.length == 0 && !searchHandle ">
       <div class="block_top">
         <span>最近搜索</span>
-        <img src="../../../static/img/delete_icon.png">
+        <img src="../../../static/img/delete_icon.png" @click="triggerDelete">
       </div>
       <ul class="history_list">
-        <li class="list_item" @click="selectTag('财务')">财务</li>
-        <!-- <li class="list_item" @click="selectTag('财务')">财务</li> -->
+        <li class="list_item" @click="selectTag(item.searchKeyWord)" v-for="(item,index) in searchKeysList" :key="index">{{item.searchKeyWord}}</li>
       </ul>
     </div>
 
@@ -27,10 +26,14 @@
       <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
     </div>
     <div class="no_more_tips" v-show="expertsList.length > 0 && isNomore && !isLoading">没有更多了哦~</div>
+    <van-dialog id="van-dialog"/>
   </div>
 </template>
 <script>
 import expert from '@/components/expert'
+import Dialog from '../../../static/vant/dialog/dialog';
+import { mapState, mapActions } from 'vuex'
+import {API, BASE_URL} from  '../../http/api.js'
 export default {
   data () {
     return {
@@ -46,10 +49,16 @@ export default {
   components: {
     expert
   },
+  computed: {
+    ...mapState({
+      userData: state => state.counter.userData
+    })
+  },
   methods: {
     handleSearchChange(event){
       this.searchKey = event.mp.detail;
       if(!event.mp.detail){
+        this.getSearchHistory();
         this.expertsList = [];
         this.searchHandle = false;
       }
@@ -110,12 +119,51 @@ export default {
         wx.hideLoading()
       })
     },
+
+    // 获取用户搜索历史
+    getSearchHistory () {
+      let that = this;
+      that.$http.request({
+        url:API['GetSearchHistory'] + this.userData.userId,
+      }).then(res => {
+        if(res.code == 1){
+          that.searchKeysList = res.data;
+        }
+      })
+    },
+
+    triggerDelete(){
+      let that = this;
+      Dialog.confirm({
+        title: '确认清空搜索记录？',
+        // message: '解除关系后，您将从对方的关系户中删除'
+      }).then(() => {
+         that.deleteSearchHistory();
+      }).catch(() => {
+        
+      });
+    },
+
+    deleteSearchHistory(){
+      let that = this;
+      that.$http.request({
+        url:API['DeleteSearchHistory'] + this.userData.userId,
+      }).then(res => {
+        if(res.code == 1){
+          that.searchKeysList = [];
+          wx.showToast({
+            title: '已清空记录',
+            icon: 'none'
+          })
+        }
+      })
+    }
   },
   created () {
    
   },
   onShow(){
-
+    this.getSearchHistory();
   },
   onReachBottom(){
     if(!this.isNomore && !this.isLoading){

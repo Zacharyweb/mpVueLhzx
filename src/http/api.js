@@ -22,6 +22,8 @@ const API = {
   'UploadFile':'/api/LhzxFile/Post', //上传文件
 
   'SetWorkStatus':'/api/Users/SetWorkStatus', // 更新工作状态
+  'GetSearchHistory':'/api/LhzxSearchHistory/Get/', // 搜索记录
+  'DeleteSearchHistory':'/api/LhzxSearchHistory/Delete/', //清空记录
  
 }
 

@@ -45,7 +45,8 @@ module.exports = [
     config: {
       navigationBarTitleText: '搜索专家',
       usingComponents: {
-        "van-search": "/static/vant/search/index"
+        "van-search": "/static/vant/search/index",
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },
