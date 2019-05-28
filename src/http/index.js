@@ -65,20 +65,30 @@ Flyio.request = function(obj){
 
     // 数据返回拦截
     return flyioRequest.then( res => {
-        console.log('33333333333')
-        console.log(res);
-       if (1) {
+       if (res.code == 1) {
            rqConfig.isLoading && Config.loading.loadingHide() 
            return res;
        }else{
-        //    setTimeout(() => { errorFunction(tipConfig, err) }, 0)
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+            duration: 1500
+          });
+          return res;
+          //  setTimeout(() => { errorFunction(tipConfig, err) }, 0)
        }
     }).catch(err => {
-        if(err.response.data.unAuthorizedRequest){
+        if(err.response.status == 401){
             wx.navigateTo({
               url: '/pages/login/index'
             })
-        };
+        }else{
+            wx.showToast({
+               title: '服务器维护中，请稍后再试',
+               icon: 'none',
+               duration: 1500
+            });
+        }
         rqConfig.isLoading && Config.loading.loadingHide();
         // setTimeout(() => { errorFunction(tipConfig, err) }, 0)
     })

@@ -576,7 +576,8 @@ export default {
   },
   computed:{
     ...mapState({
-      consultListTab: state => state.counter.consultListTab
+      consultListTab: state => state.counter.consultListTab,
+      userData: state => state.counter.userData
     })
   },
 
@@ -585,7 +586,6 @@ export default {
   },
 
   methods: {
-
     changeTab(num){
       if(this.currentTab == num){
         return;
@@ -597,6 +597,26 @@ export default {
     },
     toComment(){
        this.$router.push({path:'/pages/comment/index',query:{orderId:1}});
+    },
+    GetUserOrderList(){
+      this.$http.request({
+        url:'GetUserOrderList',
+        data:{
+          id:this.userData.userId
+        }
+      }).then(res => {
+        console.log(res);
+      })
+    },
+    GetExpertOrderList(){
+      this.$http.request({
+        url:'GetExpertOrderList',
+        data:{
+          id:this.userData.userId
+        }
+      }).then(res => {
+          console.log(res);
+      })
     }
   },
   created () {
@@ -606,6 +626,13 @@ export default {
      console.log(options)
      this.currentTab = this.consultListTab;
   },
+  onShow(){
+    this.GetUserOrderList();
+    if(this.userData && this.userData.isExpert == 1){
+      this.GetExpertOrderList();
+    }
+  }
+
 }
 </script>
 <style lang="less" scoped>

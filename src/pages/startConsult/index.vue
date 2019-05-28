@@ -101,7 +101,7 @@ export default {
   },
   computed: {
     ...mapState({
-     
+      userData: state => state.counter.userData
     })
   },
   mounted(){
@@ -124,6 +124,31 @@ export default {
       wx.switchTab({
         url: '/pages/consult/index'
       });
+      let that = this;
+      that.$http.request({
+        url:'CreateOrder',
+        data: {
+          parentOrderId: 0,
+          userId: this.userData.userId,
+          expertId: this.expertId,
+          questionRemark: "string",
+          price: 0,
+          quantity: 1,
+          orderUserName: "string",
+          orderUserCompany: "string",
+          orderUserCompanyPosition: "string",
+          orderUserCompanyBusiness: "string",
+          remark: "string"
+        },
+        flyConfig:{
+          headers:{
+            'content-type': 'application/x-www-form-urlencoded',
+          },
+          method: 'post'
+        }
+      }).then(res => {
+     
+      })
     },
     upLoadPhoto(){
       let that = this;
@@ -136,13 +161,15 @@ export default {
         }
       })
     },
+
     deletePhoto(index){
       this.photosList.splice(index,1);
-    }
+    },
   },
-  onShow(){
-    this.currentTab = 0;
-  }
+
+  onLoad(options){
+    this.expertId = options.expertId;
+  },
 }
 </script>
 
@@ -272,7 +299,7 @@ export default {
       border-radius: 4px;
       width: 100%;
       height: 100px;
-      padding:15px;
+      padding:12px;
       box-sizing: border-box;
       font-size: 14px;
       color: #666;

@@ -1,27 +1,32 @@
 <template>
   <div class="container">
-    <van-search :value="searchKey" background="#fff" use-action-slot placeholder="请输入搜索关键词" @change="handleSearchChange">  
-      <view slot="action" @click="onSearch">搜索</view>
-    </van-search>
-    <div class="search_history" v-show="!searchResultShow">
+    <div class="search_block">
+      <van-search :value="searchKey" background="#fff" use-action-slot placeholder="请输入搜索关键词" @change="handleSearchChange">  
+        <view slot="action" @click="onSearch">搜索</view>
+      </van-search>
+    </div>
+    <div class="fixed_fill_block"></div>
+
+    <div class="search_history" v-show="expertsList.length == 0 && !searchHandle ">
       <div class="block_top">
         <span>最近搜索</span>
         <img src="../../../static/img/delete_icon.png">
       </div>
       <ul class="history_list">
         <li class="list_item" @click="selectTag('财务')">财务</li>
-        <li class="list_item" @click="selectTag('财务')">财务</li>
+        <!-- <li class="list_item" @click="selectTag('财务')">财务</li> -->
       </ul>
     </div>
-    <!-- <div class="no_data_tips">
+
+    <div class="no_data_tips" v-show="expertsList.length == 0 && searchHandle && !isLoading">
       <img class="no_data_img" src="../../../static/img/no_data_tips.png">
       <span>没有相关结果哦~</span>
-    </div> -->
-
-    <div class="experts_list" v-show="searchResultShow">
-      <expert></expert>
     </div>
 
+    <div class="experts_list" v-if="expertsList.length > 0">
+      <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
+    </div>
+    <div class="no_more_tips" v-show="expertsList.length > 0 && isNomore && !isLoading">没有更多了哦~</div>
   </div>
 </template>
 <script>
@@ -29,8 +34,13 @@ import expert from '@/components/expert'
 export default {
   data () {
     return {
-       searchKey:'',
-       searchResultShow:false
+      searchKey:'',
+      searchKeysList:[], // 搜索的历史记录
+      searchHandle:false, //用于切换历史记录与搜索为空结果页
+      expertsList:[],
+      pageIndex:0,
+      isNomore:false,
+      isLoading:false
     }
   },
   components: {
@@ -39,30 +49,95 @@ export default {
   methods: {
     handleSearchChange(event){
       this.searchKey = event.mp.detail;
+      if(!event.mp.detail){
+        this.expertsList = [];
+        this.searchHandle = false;
+      }
     },
     onSearch(){
-      console.log(this.searchKey);
-      this.toSearch();
+      if(!this.searchKey){
+        wx.showToast({
+          title: '请输入搜索关键词',
+          icon: 'none'
+        })
+        return;
+      };
+      this.expertsList = [];
+      this.searchHandle = true;
+      this.isNomore = false;
+      this.getExpertList();
     },
     selectTag(key){
+      this.expertsList = [];
+      this.searchHandle = true;
+      this.isNomore = false;
       this.searchKey = key;
-      this.toSearch();
+      this.getExpertList();
     },
-    toSearch(){
-      this.searchResultShow = true;
-    }
+
+    // 搜索专家列表
+    getExpertList () {
+      if(this.isNomore || this.isLoading){
+        return;
+      }
+      let that = this;
+      that.isLoading = true;
+      wx.showLoading({
+        title: '搜索中',
+        mask: true
+      });
+      that.$http.request({
+        url:'GetExpertList',
+        data: {
+          major: '',
+          keyword: this.searchKey,
+          pageIndex: this.pageIndex,
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.data.length == 0){
+          that.isNomore = true;
+        }else{
+          res.data.forEach(item => {
+            item.companyAddress = item.companyAddress.split('-')[1] || item.companyAddress.split('市')[0] + '市';
+            item.goodAtBusiness = item.goodAtBusiness.split('|zxt|');
+          });
+        };
+        that.expertsList = [...that.expertsList,...res.data];
+        that.isLoading = false; 
+        wx.hideLoading()
+      })
+    },
   },
   created () {
-    // console.log('11111111111111111111111111111sddasdsadasd');
+   
   },
   onShow(){
-    this.searchResultShow = false;
-    this.searchKey = '';
+
+  },
+  onReachBottom(){
+    if(!this.isNomore && !this.isLoading){
+      this.pageIndex++;
+      this.getExpertList();
+    };
   }
 }
 </script>
 
 <style lang="less" scoped>
+.search_block{
+  position: fixed;
+  width: 100%;
+  top:0;
+  left: 0;
+  height: 44px;
+  z-index: 2;
+}
+.fixed_fill_block{
+  height: 44px;
+}
 .search_history{
    padding:10px 15px;
    font-size: 14px;
@@ -114,5 +189,11 @@ export default {
 // }
 .experts_list{
   
+}
+.no_more_tips{
+  font-size: 13px;
+  color: #999;
+  text-align: center;
+  line-height: 36px;
 }
 </style>

@@ -391,7 +391,7 @@ export default {
         {name:'1小时',type:'60',flag:false},
         {name:'2小时',type:'120',flag:false},
         {name:'4小时',type:'240',flag:false},
-        {name:'8小时',type:'489',flag:false},
+        {name:'8小时',type:'480',flag:false},
         {name:'12小时',type:'720',flag:false},
         {name:'24小时',type:'1440',flag:false},
         {name:'48小时',type:'2880',flag:false}

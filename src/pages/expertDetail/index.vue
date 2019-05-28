@@ -36,8 +36,6 @@
       <span class="active_bar" :class="{'active1':currentTab == 1,'active2':currentTab == 2}"></span>
     </div>
 
-  
-
     <div class="introduce_panel" v-show="currentTab == 0">
       <div class="panle_block">
          <div class="base_msg">
@@ -78,24 +76,21 @@
         <div class="block_content">{{expertData.aboutUserDesc}}</div>
       </div>
 
-      <div class="panle_block">
+      <div class="panle_block" v-if="expertData.photosList.length > 0">
         <div class="block_title">相关照片</div>
         <div class="block_content">
           <img class="intro_img"  v-for="(item,index) in expertData.photosList" :src="item" :key="index" @click="showImgSwiper(index)">
-
         </div>
       </div>
      
-
-      <div class="panle_block nb">
+      <div class="panle_block nb" v-if="expertData.outLink.length > 0">
         <div class="block_title">作品链接</div>
         <div class="base_msg no_name" v-for="(item,index) in expertData.outLink" :key="index" @click="copyText(item.link)">
            <span class="msg_name"></span>
            <span class="msg_content">{{item.name}}</span>
         </div>
-        
       </div>
-      
+
     </div>
 
     <div class="comment_panel" v-show="currentTab == 2">
@@ -213,7 +208,8 @@ export default {
     
       imgSwiperShow: false,
       swiperCurrent:2,
-      expertData:null
+      expertData:null,
+      expertId:''
     }
   },
   computed: {
@@ -222,6 +218,7 @@ export default {
     })
   },
   onLoad(options){
+    this.expertId = options.id;
     this.getInitData(options.id);
   },
   mounted(){
@@ -251,7 +248,7 @@ export default {
     },
     toContact(){
       // this.actionSheetShow = true;
-      this.$router.push({path:'/pages/startConsult/index'});
+      this.$router.push({path:'/pages/startConsult/index',query:{expertId:this.expertId}});
     },
     onCloseActionSheet(){
        this.actionSheetShow = false;
@@ -296,9 +293,14 @@ export default {
         expertData.photosList = photosList;
         expertData.gootAtList = result.goodAtBusiness.split('|zxt|').join('、');
         let outLink = result.outLink.split('|zxt|');
-        expertData.outLink = outLink.map((item)=>{
-          return JSON.parse(item);
-        });
+        if(outLink.length > 0 && outLink[0].indexOf('{') != -1){
+          expertData.outLink = outLink.map((item)=>{
+            return JSON.parse(item);
+          });
+        }else{
+          expertData.outLink = [];
+        }
+       
         expertData.major = result.major;
         expertData.majorYearsDesc = result.majorYearsDesc;
         expertData.businessArea = result.businessArea.split('|zxt|').join('、');
@@ -310,7 +312,6 @@ export default {
       })
     },
     copyText(text){
-      console.log(text);
       wx.setClipboardData({
         data: text,
         success (res) {

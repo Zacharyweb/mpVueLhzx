@@ -24,7 +24,7 @@
       <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
     </div>
 
-    <div class="no_data_tips" v-else>
+    <div class="no_data_tips" v-if="expertsList.length == 0 && !isLoading">
       <img class="no_data_img" src="../../../static/img/no_data_tips.png">
       <span>还没有相关专家哦~</span>
     </div> 
@@ -44,7 +44,8 @@ export default {
       expertsList:[],
       pageIndex:0,
       major:'',
-      isNomore:false
+      isNomore:false,
+      isLoading:false
     }
   },
   
@@ -60,28 +61,38 @@ export default {
     // 获取分类标签
     GetAllMajor(){
       let that = this;
+      that.isLoading = true;
       that.$http.request({
         url:'GetAllMajor',
       }).then(res => {
-        that.tagsList = res.data;
-        that.major = res.data[0];
-        that.getAllExperts();
+        wx.hideLoading();
+        that.isLoading = false;
+        if(res && res.code == 1){
+          that.tagsList = res.data;
+          that.currentTab = 0;
+          that.major = res.data[0];
+          that.expertsList = [];
+          that.getAllExperts();
+        }
       })
     },
     
     // 获取专家列表
     getAllExperts () {
       let that = this;
+      that.isLoading = true;
       that.$http.request({
         url:'GetExpertList',
         data: {
-          major: '',
+          major: this.major,
+          keyword: '',
           pageIndex: this.pageIndex,
         },
         flyConfig:{
           method: 'post'
         }
       }).then(res => {
+        that.isLoading = false;
         if(res.data.length == 0){
           that.isNomore = true;
         }else{
@@ -89,8 +100,8 @@ export default {
             item.companyAddress = item.companyAddress.split('-')[1] || item.companyAddress.split('市')[0] + '市';
             item.goodAtBusiness = item.goodAtBusiness.split('|zxt|');
           });
-          that.expertsList = [...that.expertsList,...res.data];
         }
+        that.expertsList = [...that.expertsList,...res.data];
       })
     },
 
@@ -139,7 +150,9 @@ export default {
     })
   },
   onShow(){
- 
+    if(!this.major){
+      this.GetAllMajor();
+    }
   },
   created () {
     // 调用应用实例的方法获取全局数据
@@ -178,10 +191,10 @@ export default {
     // }).then(res => {
       
     // })
-    this.GetAllMajor();
+   
   },
   onReachBottom(){
-    if(!this.isNomore){
+    if(!this.isNomore && !this.isLoading){
       this.pageIndex++;
       this.getAllExperts();
     };

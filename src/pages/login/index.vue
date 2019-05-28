@@ -73,7 +73,8 @@ export default {
       if (e.mp.detail.rawData){
         //用户按了允许授权按钮
         let data = this.userData || {};
-        this.updateUserMsg({...data,...e.mp.detail.userInfo});
+        this.originalData = {...data,...e.mp.detail.userInfo};
+
         if(!this.mobile){
           wx.showToast({
             title: '请先输入手机号',
@@ -96,7 +97,11 @@ export default {
     
       } else {
         //用户按了拒绝授权按钮
-         this.$router.go(-1);
+        wx.showToast({
+          title: '拒绝授权将无法为您提供服务哦',
+          icon: 'none',
+          duration: 1500
+        });
       }
     },
 
@@ -110,8 +115,8 @@ export default {
               url:'AuthorizedLoginByWx',
               data: {
                 Code: res.code,
-                NickName: that.userData.nickName,
-                AvatarUrl:that.userData.avatarUrl
+                NickName: that.originalData.nickName,
+                AvatarUrl:that.originalData.avatarUrl
               },
               flyConfig:{
                 headers:{
@@ -120,8 +125,7 @@ export default {
                 method: 'post'
               }
             }).then(res => {
-              console.log(res.data);
-              that.originalData = res.data;
+              that.originalData = {...that.originalData,...res.data};
               that.sendVcode(res.data);
             })
           } else {
@@ -133,7 +137,6 @@ export default {
     
     // 发送验证码
     sendVcode(data){
- 
       let that = this;
       that.$http.request({
         url:'SendCode',
@@ -183,29 +186,27 @@ export default {
         url:'CheckCode',
         data: {
           phoneNumber: that.mobile,
-          userid: that.userData.userId,
+          userid: that.originalData.userId,
           code:that.vcode
         },
         flyConfig:{
           method: 'post'
         }
       }).then(res => {
-        let data = that.userData || {};
-        that.originalData.isExpert = 1;
-        that.updateUserMsg({...data,...that.originalData});
-        let userDataStr = JSON.stringify({...data,...that.originalData});
-        wx.setStorageSync('userData', userDataStr);
-        that.$router.go(-1);
+        if(res.code == 1){
+          let data = that.userData || {};
+          that.originalData.isExpert = 1;
+          that.updateUserMsg({...data,...that.originalData});
+          let userDataStr = JSON.stringify({...data,...that.originalData});
+          wx.setStorageSync('userData', userDataStr);
+          that.$router.go(-1);
+        }
       })
     },
-
-
     toUseNotice(){
       this.$router.push('/pages/useNotice/index')
     }
-
   },
-
   created () {
     
   },
