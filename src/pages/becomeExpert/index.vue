@@ -491,6 +491,7 @@ export default {
       wx.chooseImage({
         count: 5 - that.photosList.length,
         success(res) {
+          that.isUploadingFile = false;
           wx.showLoading({
             title: '图片上传中',
             mask: true
@@ -526,7 +527,7 @@ export default {
               }
               that.photosList = [...that.photosList,...imgList];
             }
-            that.isUploadingFile = false;
+           
             wx.hideLoading();
           })
         }
@@ -544,6 +545,7 @@ export default {
       wx.chooseImage({
         count: 1,
         success(res) {
+          that.isUploadingFile = false;
           wx.showLoading({
             title: '图片上传中',
             mask: true
@@ -574,7 +576,7 @@ export default {
                 this.showToast('图片上传失败');
               }
             }
-            that.isUploadingFile = false;
+           
             wx.hideLoading();
           })
         }
