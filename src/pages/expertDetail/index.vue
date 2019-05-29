@@ -2,18 +2,19 @@
   <div class="container" :class="{'m_bottom':isX}" v-if="expertData">
     <div class="experts_item">
       <div class="top_block">
-        <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+        <img class="experts_avatar" :src="expertData.avatarUrl" v-if="expertData.avatarUrl">
+        <img class="experts_avatar" v-else src="../../../static/img/df_avatar.jpg">
         <div class="top_block_right">
           <div class="experts_msg1">
             <div class="experts_name">{{expertData.nickName}}
               <span class="status" v-if="expertData.workStatus == 1">营业中</span>
               <span class="status grey" v-else>休息中</span>
             </div>
-            <span class="consult_msg">10人已关注</span>
+            <span class="consult_msg">{{expertData.followCount}}人已关注</span>
           </div>
           <div class="experts_msg2">
             <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span>
-            <span class="order_num">20人已咨询</span>
+            <span class="order_num">{{expertData.consultedCount}}人已咨询</span>
           </div>
           <div class="experts_msg3">
             <div class="experts_location">
@@ -32,7 +33,7 @@
     <div class="custom_tabs">
       <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">专业信息</div>
       <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">介绍信息</div>
-      <div class="tab_item" :class="{'active':currentTab == 2}" @click="changeTab(2)">关系户评价(2)</div>
+      <div class="tab_item" :class="{'active':currentTab == 2}" @click="changeTab(2)">关系户评价({{commentData.length}})</div>
       <span class="active_bar" :class="{'active1':currentTab == 1,'active2':currentTab == 2}"></span>
     </div>
 
@@ -93,7 +94,7 @@
 
     </div>
 
-    <div class="comment_panel" v-show="currentTab == 2">
+    <!-- <div class="comment_panel" v-show="currentTab == 2">
       <div class="comment_item">
         <img class="user_avatar" src="../../../static/img/avatar.jpeg">
         <div class="comment_content">
@@ -129,6 +130,25 @@
           </div>
         </div>
       </div>
+    </div> -->
+
+    <div class="comment_panel" v-show="currentTab == 2">
+
+      <div class="comment_item" v-if="commentData.length > 0" v-for="(item,index) in commentData" :key="index">
+        <img class="user_avatar" src="../../../static/img/comment_avatar.png">
+        <div class="comment_content">
+          <div class="content_top">
+             <span class="user_name">关系户{{index + 1}}</span>
+             <span class="comment_time">{{item.creationTime}}</span>
+          </div>
+          <div class="comment_text">{{item.content}}</div>
+        </div>
+      </div>
+      <div class="no_data_tips" v-if="commentData.length == 0">
+        <img class="no_data_img" src="../../../static/img/no_data_tips.png">
+        <span>还没有关系户评价过哦~</span>
+      </div> 
+
     </div>
 
     <div class="to_chat_btn" @click="toChatRoom" :class="{'m_top':isX}">
@@ -136,14 +156,14 @@
     </div>
     <div class="bottom_fixed" :class="{'isX':isX}">
       <div class="icon_btns">
-        <div class="icon_btn" v-if="!collected" @click="collected = true">
+        <div class="icon_btn" v-if="!collected" @click="addUserFollow">
           <img src="../../../static/img/collect_icon.png">
           <span>关注</span>
         </div>
 
-        <div class="icon_btn" v-if="collected" @click="collected = false">
+        <div class="icon_btn" v-if="collected" @click="deleteUserFollow">
           <img src="../../../static/img/collect_icon2.png">
-          <span style="color:#1fb7b6;">收藏</span>
+          <span style="color:#1fb7b6;">已关注</span>
         </div>
 
         <button open-type="share" class="icon_btn btn_reset">
@@ -166,11 +186,10 @@
       :indicator-dots="true"
       :current="swiperCurrent"
       :autoplay="false"
-      :duration="1000"
+      :duration="300"
       indicator-color="rgba(255,255,255,0.6)"
       indicator-active-color="#fff"
     >
-
       <block v-for="(item,index) in expertData.photosList" :key="index">
         <swiper-item class="img_item" @click="imgSwiperShow = false">
           <image :src="item" mode="widthFix" class="slide-image"/>
@@ -183,6 +202,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import {API, BASE_URL} from  '../../http/api.js'
+import util from '../../utils/index.js'
 export default {
   data(){
     return{
@@ -209,17 +229,20 @@ export default {
       imgSwiperShow: false,
       swiperCurrent:2,
       expertData:null,
-      expertId:''
+      expertId:'',
+      commentData:[]
     }
   },
   computed: {
     ...mapState({
-      isX: state => state.counter.isX
+      isX: state => state.counter.isX,
+      userData: state => state.counter.userData
     })
   },
   onLoad(options){
     this.expertId = options.id;
     this.getInitData(options.id);
+    this.CheckHasFollowed();
   },
   mounted(){
 
@@ -227,8 +250,8 @@ export default {
   onShareAppMessage(obj){
       console.log(obj);
       return {
-        title:'分享测试',
-        path:'/pages/expertCard/index?mineId=2019&uId=2018',
+        title:this.userData.nickName + '向你推荐'+ this.expertData.major + '专家' + this.expertData.nickName,
+        path:'/pages/expertCard/index?userId=' + this.userData.userId + '&expertId=' + this.expertId,
       }
   },
   methods: {
@@ -264,7 +287,12 @@ export default {
       this.actionSheetShow = false;
     },
     toChatRoom(){
-      this.$router.push({path:'/pages/chatRoom/index',query:{id:1}})
+      this.$router.push({path:'/pages/chatRoom/index',query:{
+          userId:this.userData.userId,
+          expertId:this.expertId,
+          cost:this.expertData.oneOfCost
+        }
+      })
     },
     showImgSwiper(index){
 
@@ -279,6 +307,11 @@ export default {
         let expertData = {};
 
         let result = res.data;
+        expertData.avatarUrl = result.avatarUrl;
+        expertData.followCount = result.followCount;
+        expertData.consultedCount = result.consultedCount;
+        expertData.orderCount = result.orderCount;
+
         expertData.nickName = result.nickName;
         expertData.address = result.companyAddress.split('-')[1] || result.companyAddress.split('市')[0] + '市';
         expertData.companyName = result.companyName;
@@ -300,15 +333,81 @@ export default {
         }else{
           expertData.outLink = [];
         }
-       
         expertData.major = result.major;
         expertData.majorYearsDesc = result.majorYearsDesc;
         expertData.businessArea = result.businessArea.split('|zxt|').join('、');
         expertData.responseTime = result.responseTime;
         expertData.answeringTime = result.answeringTime;
         expertData.workStatus = result.workStatus;
-
         this.expertData = expertData;
+    
+        if(result.comments && result.comments.length){
+          result.comments.forEach((item)=>{
+            item.creationTime = util.formatTime(new Date(item.creationTime));
+          });
+        }
+        this.commentData = result.comments || [];
+
+      })
+    },
+    CheckHasFollowed(){
+      this.$http.request({
+        url:'CheckHasFollowed',
+        data:{
+          userId: this.userData.userId,
+          expertId: this.expertId*1
+        },
+        config:{
+          hideMsg:true // 是否隐藏res.code不为1时的错误提示
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.collected = true;
+        }else{
+          this.collected = false;
+        }
+      })
+    },
+    addUserFollow(){
+      this.$http.request({
+        url:'AddUserFollow',
+        data:{
+          userId: this.userData.userId,
+          expertId: this.expertId*1
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          wx.showToast({
+             title: '关注成功',
+             icon: 'none',
+             duration: 1000
+          });
+          this.collected = true;
+        }
+      })
+    },
+    deleteUserFollow(){
+      this.$http.request({
+        url:'DeleteUserFollow',
+        data:{
+          userId: this.userData.userId,
+          expertId: this.expertId*1
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          wx.showToast({
+             title: '已取消关注',
+             icon: 'none',
+             duration: 1000
+          });
+          this.collected = false;
+        }
       })
     },
     copyText(text){
@@ -453,8 +552,8 @@ export default {
           display: flex;
           align-items: center;
           padding:0 10px;
-          color: #999;
-          border:1px solid #999;
+          color: #aaa;
+          border:1px solid #aaa;
           border-radius: 10px;
         }
       }
@@ -468,11 +567,12 @@ export default {
     display: flex;
     align-items: center;
     .icon_btn{
+      width: 38px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-right: 30px;
+      margin-right: 15px;
       img{
         width: 24px;
         height: 24px;

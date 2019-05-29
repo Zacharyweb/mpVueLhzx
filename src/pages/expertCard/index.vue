@@ -1,46 +1,42 @@
 <template>
   <div>
-    <div class="expert_card_block">
+    <div class="expert_card_block" v-if="expertData">
       <img class="bg_img" src="../../../static/img/center_bg.png">
      
       <div class="card_panel">
         <div class="top">
           <div class="top_left">
             <img class="expert_avatar" src="../../../static/img/avatar.jpeg">
-            <span class="expert_name">朱两边</span>
+            <span class="expert_name">{{expertData.nickName}}</span>
             <div class="expert_location">
               <img src="../../../static/img/location_icon.png">
-              <span>杭州</span>
+              <span>{{expertData.address}}</span>
             </div>
           </div>
           <div class="top_right">
             <div class="msg_item">
-              <!-- <img class="item_icon" src="../../../static/img/expert_card_icon1.png"> -->
-              <span class="item_name">职位：</span>
-              <span class="item_content">高级财务专家</span>
+              <span class="item_name">从事专业：</span>
+              <span class="item_content">{{expertData.major}}</span>
             </div>
               <div class="msg_item">
-              <!-- <img class="item_icon" src="../../../static/img/expert_card_icon2.png"> -->
-              <span class="item_name">工作年限：</span>
-              <span class="item_content">5-10年</span>
+              <span class="item_name">从业年限：</span>
+              <span class="item_content">{{expertData.majorYearsDesc}}</span>
             </div>
             <div class="msg_item">
-              <!-- <img class="item_icon" src="../../../static/img/expert_card_icon3.png"> -->
               <span class="item_name">擅长领域：</span>
-              <span class="item_content">个人所得税个人所得税个人所得税个人所得税</span>
+              <span class="item_content">{{expertData.businessArea}}</span>
             </div>
             <div class="msg_item nmb">
-              <!-- <img class="item_icon" src="../../../static/img/expert_card_icon4.png"> -->
               <span class="item_name">专家介绍：</span>
             </div>
-            <div class="expret_intro">我是专家我是专家我是专家我是专家我是专家</div>
+            <div class="expret_intro">{{expertData.aboutUserDesc}}</div>
             
             
           </div>
         </div>
         <div class="bottom">
-          <div class="action_btn2">进入咨询堂</div>
-          <div class="action_btn">了解更多</div>
+          <div class="action_btn" @click="linkTo('/pages/expertDetail/index?id=' + expertId)">查看专家详情</div>
+          <div class="action_btn2" @click="toIndex">进入咨询堂</div>
         </div>
         
       </div>
@@ -51,26 +47,64 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import {API, BASE_URL} from  '../../http/api.js'
 export default {
   computed: {
     ...mapState({
-      count: state => state.counter.count
+  
     })
+  },
+  data(){
+    return {
+      userId:'',
+      expertId:'',
+      expertData:null
+    }
+
   },
   mounted(){
 
   },
   onLoad(options){
-        console.log(options);
+    this.userId = options.userId;
+    this.expertId = options.expertId;
+    this.getExpertData()
   },
   methods: {
     ...mapActions('counter', [
-      'increment',
-      'decrement',
-      'getProvince'
+     
     ]),
+    toIndex(){
+      wx.switchTab({
+        url: '/pages/index/index'
+      });
+    },
     linkTo(path){
       this.$router.push(path);
+    },
+    getExpertData(){
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      });
+      let url = API['GetUserDetail'] + this.expertId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let expertData = {};
+        let result = res.data;
+        expertData.nickName = result.nickName;
+        expertData.address = result.companyAddress.split('-')[1] || result.companyAddress.split('市')[0] + '市';
+        expertData.companyPosition = result.companyPosition;
+        expertData.aboutUserDesc = result.aboutUserDesc;
+        expertData.gootAtList = result.goodAtBusiness.split('|zxt|').join('、');
+        let outLink = result.outLink.split('|zxt|');
+        expertData.major = result.major;
+        expertData.majorYearsDesc = result.majorYearsDesc;
+        expertData.businessArea = result.businessArea.split('|zxt|').join('、');
+        this.expertData = expertData;
+        wx.hideLoading();
+      })
     }
   }
 }

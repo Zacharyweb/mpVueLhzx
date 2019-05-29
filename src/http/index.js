@@ -69,12 +69,14 @@ Flyio.request = function(obj){
            rqConfig.isLoading && Config.loading.loadingHide() 
            return res;
        }else{
-          wx.showToast({
-            title: res.msg,
-            icon: 'none',
-            duration: 1500
-          });
-          return res;
+            if(!rqConfig.hideMsg){
+               wx.showToast({
+                title: res.msg,
+                icon: 'none',
+                duration: 1500
+              });
+            }
+           return res;
           //  setTimeout(() => { errorFunction(tipConfig, err) }, 0)
        }
     }).catch(err => {
@@ -84,7 +86,7 @@ Flyio.request = function(obj){
             })
         }else{
             wx.showToast({
-               title: '服务器维护中，请稍后再试',
+               title: '服务器维护中，请重试',
                icon: 'none',
                duration: 1500
             });

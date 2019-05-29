@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="chat_room" :class="{'isX':isX}"> 
-      <div class="consult_tips_panel">
+      <div class="consult_tips_panel" @click="toContact">
         <span class="tips_text">初步咨询满意的话可下单咨询哦~</span>
-        <span class="consule_btn">马上咨询 40元/次</span>
+        <span class="consule_btn">马上咨询 {{cost}}元/次</span>
       </div>
 
       <scroll-view scroll-y  :scroll-top="sTop" class="chat_content">
@@ -22,7 +22,7 @@
         </div>
       </scroll-view>
       <div class="input_panel" :class="{'isX':isX}">
-        <div class="left">
+        <div class="left" @click="toIndex">
           <img src="../../../static/img/home_icon.png">
           <span>首页</span>
         </div>
@@ -48,7 +48,12 @@ export default {
       chatList:[
         {type:'e',content:'你好我是专家',time:'2019-03-12 16:20:56'},
         {type:'u',content:'你好我是用户',time:'2019-03-12 16:21:56'}
-      ]
+      ],
+      userId:'',
+      expertId:'',
+      cost:'',
+
+      timer:''
     }
   },
   computed: {
@@ -59,6 +64,12 @@ export default {
 
   mounted(){
 
+  },
+  onLoad(options){
+    this.userId = options.userId;
+    this.expertId = options.expertId;
+    this.cost = options.cost;
+    this.getChatData();
   },
   methods: {
     linkTo(path){
@@ -74,14 +85,49 @@ export default {
       this.chatRoomSlideToBottom();
       this.inputVal = '';
     },
-    
     chatRoomSlideToBottom(){
       let that = this;
       wx.createSelectorQuery().select('#chat-ref').boundingClientRect(function (rect) {
         that.sTop = rect ? parseInt(rect.height) : 0
       }).exec()
+    },
+    toIndex(){
+      wx.switchTab({
+        url: '/pages/index/index'
+      });
+    },
+    getChatData(){
+      this.$http.request({
+        url:'GetChatData',
+        data:{
+          userId: this.userId,
+          isExpert: this.expertId
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.loopGetData();
+        }
+      })
+    },
+    toContact(){
+      this.$router.push({
+          path:'/pages/startConsult/index',
+          query:{expertId:this.expertId}
+        }
+      );
+    },
+    loopGetData(){
+      clearTimeout(this.timer);
+      this.timer = setTimeout(()=>{
+        this.getChatData();
+      },5000)
     }
-
+  },
+  onHide(){
+    clearTimeout(this.timer);
   }
 }
 </script>

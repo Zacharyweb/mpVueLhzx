@@ -15,6 +15,12 @@ const API = {
   'GetExpertList':'/api/Users/GetExpertList', // 获取专家列表
   'GetUserDetail':'/api/Users/GetUserDetail/',//获取专家详情信息
 
+  
+  'CheckHasFollowed':'/api/LhzxFollow/HasFollowed',//获取是否关注
+  'AddUserFollow':'/api/LhzxFollow/AddUserFollow', //添加关注
+  'DeleteUserFollow':'/api/LhzxFollow/DeleteUserFollow', //取消关注
+
+
   'CreateOrder':'/api/LhzxOrder/PostOrder',//创建订单
   'GetUserOrderList':'/api/LhzxOrder/UserOrderList',//获取用户订单
   'GetExpertOrderList':'/api/LhzxOrder/ExpertOrderList',//获取专家的订单
