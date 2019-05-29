@@ -489,32 +489,43 @@ export default {
       let that = this;
       this.isUploadingFile = true;
       wx.chooseImage({
-        count: 1,
+        count: 5 - that.photosList.length,
         success(res) {
           wx.showLoading({
             title: '图片上传中',
             mask: true
           })
+
           let tempFilePaths = res.tempFilePaths;
-          let dotSplit = tempFilePaths[0].split('.');
-          let l = dotSplit.length;
-          let suffix = dotSplit[l-1];
-          let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
-          //同步方法
-          let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[0], 'base64');
+          let dataList = [];
+
+          for(let i = 0;i < tempFilePaths.length; i++){
+            let dotSplit = tempFilePaths[i].split('.');
+            let l = dotSplit.length;
+            let suffix = dotSplit[l-1];
+            let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
+            //同步方法
+            let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[i], 'base64');
+            dataList.push({ type: "image",filename: fileName,base64String: base64 })
+          }
+ 
           that.$http.request({
             url:'UploadFile',
-            data:{
-              type: "image",
-              filename: fileName,
-              base64String: base64 
-            },
+            data:dataList,
             flyConfig:{
               method: 'post'
             }
           }).then(result => {
-            let data = result.data;
-            that.photosList = [...that.photosList,data.originalurl];
+            if(result.code == 1){
+              let data = result.data;
+              let imgList = [];
+              for(let i = 0;i < data.length; i++){
+                if(data[i].uploadCode == 1){
+                   imgList.push(data[i].data.originalurl);
+                }
+              }
+              that.photosList = [...that.photosList,...imgList];
+            }
             that.isUploadingFile = false;
             wx.hideLoading();
           })
@@ -546,17 +557,23 @@ export default {
           let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[0], 'base64');
           that.$http.request({
             url:'UploadFile',
-            data:{
+            data:[{
               type: "image",
               filename: fileName,
               base64String: base64 
-            },
+            }],
             flyConfig:{
               method: 'post'
             }
           }).then(result => {
-            let data = result.data;
-            that.paymentCodeList = [data.originalurl];
+            if(result.code == 1){
+              let data = result.data;
+              if(data[0].uploadCode == 1){
+                that.paymentCodeList = [data[0].data.originalurl];
+              }else{
+                this.showToast('图片上传失败');
+              }
+            }
             that.isUploadingFile = false;
             wx.hideLoading();
           })

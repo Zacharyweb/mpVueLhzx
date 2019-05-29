@@ -299,7 +299,7 @@ export default {
       border-radius: 4px;
       width: 100%;
       height: 100px;
-      padding:12px;
+      padding:5px;
       box-sizing: border-box;
       font-size: 14px;
       color: #666;

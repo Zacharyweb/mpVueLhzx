@@ -15,6 +15,7 @@ const API = {
   'GetExpertList':'/api/Users/GetExpertList', // 获取专家列表
   'GetUserDetail':'/api/Users/GetUserDetail/',//获取专家详情信息
 
+  'UpdateUserBaseInfo':'/api/Users/UpdateUserBaseInfo',//更新用户基本信息
   
   'CheckHasFollowed':'/api/LhzxFollow/HasFollowed',//获取是否关注
   'AddUserFollow':'/api/LhzxFollow/AddUserFollow', //添加关注

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="user_avatar_panel">
-        <img class="user_avatar" v-if="avatarImg" :src="avatarImg">
+        <img class="user_avatar" v-if="avatarUrl" :src="avatarUrl">
         <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg">
         <span class="change_avatar_btn" @click="upLoadAvatar">更换头像</span>
     </div>
@@ -17,13 +17,13 @@
         <li class="form_item textarea_item">
           <div class="item_name">自我介绍</div>
           <div class="item_content">
-            <textarea class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' v-model="introduce"></textarea>
+            <textarea class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' v-model="aboutUserDesc"></textarea>
           </div>
         </li>
       </ul>
   
       <div class="btn_block">
-        <div class="btn large green">确认修改</div>
+        <div class="btn large green" @click="updateUserBaseInfo">确认修改</div>
       </div>
     </div>
     
@@ -36,12 +36,14 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import Dialog from '../../../static/vant/dialog/dialog';
+import {API, BASE_URL} from  '../../http/api.js'
 export default {
   data () {
     return {
-       avatarImg:'',
+       avatarUrl:'',
        nickName:'',
-       introduce:''
+       avatarUrl:'',
+       aboutUserDesc:''
     }
   },
   computed: {
@@ -59,20 +61,95 @@ export default {
       wx.chooseImage({
         count: 1,
         success(res) {
-          const tempFilePaths = res.tempFilePaths;
-          that.avatarImg = res.tempFilePaths[0];
+          wx.showLoading({
+            title: '图片上传中',
+            mask: true
+          })
+          let tempFilePaths = res.tempFilePaths;
+          let dotSplit = tempFilePaths[0].split('.');
+          let l = dotSplit.length;
+          let suffix = dotSplit[l-1];
+          let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
+          //同步方法
+          let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[0], 'base64');
+          that.$http.request({
+            url:'UploadFile',
+            data:[{
+              type: "image",
+              filename: fileName,
+              base64String: base64 
+            }],
+            flyConfig:{
+              method: 'post'
+            }
+          }).then(result => {
+            let data = result.data;
+            that.paymentCodeList = [data.originalurl];
+            that.isUploadingFile = false;
+            wx.hideLoading();
+          })
+          that.avatarUrl = res.tempFilePaths[0];
         }
       })
     },
+    getInitData(){
+      let url = API['GetUserDetail'] + this.userData.userId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let result = res.data;
+        if(result.avatarUrl){
+          this.avatarUrl = result.avatarUrl;
+        }else{
+          this.avatarUrl = this.userData? this.userData.avatarUrl:'';
+        }
+        this.nickName = result.nickName;
+        this.aboutUserDesc = result.aboutUserDesc;
+      })
+    },
+    updateUserBaseInfo(){
+  
+      this.$http.request({
+        url:'UpdateUserBaseInfo',
+        data:{
+          userId: this.userData.userId,
+          nickName: this.nickName,
+          avatarUrl: this.avatarUrl,
+          aboutUserDesc: this.aboutUserDesc
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          wx.showToast({
+            title: '提交成功',
+            icon: 'none',
+            duration: 1500
+          })
+          setTimeout(()=>{
+            wx.switchTab({
+              url: '/pages/mine/index'
+            });
+          },1000)
+        }
+      })
+    },
+
   },
+
   mounted(){
-    this.avatarImg = this.userData? this.userData.avatarUrl:'';
+
   },
   created () {
 
   },
   onShow(){
- 
+     console.log('onShow');
+    // this.getInitData();
+  },
+  onLoad(){
+    console.log('onLoad')
   }
 }
 </script>
@@ -172,12 +249,10 @@ export default {
           padding:10px;
         }
         textarea.more_height{
-           height: 120px; 
+          height: 120px; 
         }
       }
     }
   }
-
 }
-  
 </style>

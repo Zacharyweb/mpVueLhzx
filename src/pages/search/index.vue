@@ -135,8 +135,8 @@ export default {
     triggerDelete(){
       let that = this;
       Dialog.confirm({
-        title: '确认清空搜索记录？',
-        // message: '解除关系后，您将从对方的关系户中删除'
+        title: '确认清空',
+        message: '清空搜索记录将无法恢复，请确认'
       }).then(() => {
          that.deleteSearchHistory();
       }).catch(() => {

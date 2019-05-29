@@ -6,7 +6,8 @@
       <div class="card_panel">
         <div class="top">
           <div class="top_left">
-            <img class="expert_avatar" src="../../../static/img/avatar.jpeg">
+            <img class="expert_avatar" :src="expertData.avatarUrl" v-if="expertData.avatarUrl">
+            <img class="expert_avatar" v-else src="../../../static/img/df_avatar.jpg">
             <span class="expert_name">{{expertData.nickName}}</span>
             <div class="expert_location">
               <img src="../../../static/img/location_icon.png">
@@ -93,6 +94,7 @@ export default {
       }).then(res => {
         let expertData = {};
         let result = res.data;
+        expertData.avatarUrl = result.avatarUrl;
         expertData.nickName = result.nickName;
         expertData.address = result.companyAddress.split('-')[1] || result.companyAddress.split('市')[0] + '市';
         expertData.companyPosition = result.companyPosition;
