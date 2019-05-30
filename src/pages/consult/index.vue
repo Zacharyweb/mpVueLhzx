@@ -13,7 +13,7 @@
         <div class="order_msg0">
           <span class="order_no">订单号：{{item.orderNo}}</span>
           <div class="order_status">
-            <span class="time_count">{{item.countDownTime}}</span>
+            <span class="time_count">{{item.hh}}:{{item.mm}}:{{item.ss}}</span>
             <span class="status_text" v-if="item.status == 0">待接单</span>
             <span class="status_text" v-if="item.status == 1">待重新确认</span>
             <span class="status_text" v-if="item.status == 2">待作答</span>   
@@ -198,9 +198,6 @@ export default {
             // }
           });
           this.myOrders = res.data;
-          for (let i in this.myOrders) {
-            this.countDown(i)
-          }
           // this.initMyOrdersItemCount();
         }
       })
@@ -225,8 +222,6 @@ export default {
             item.leaveAnswerTime = (+new Date(item.lastAnswerTime)) - (+new Date());
             item.lastAnswerTime = util.formatTime(new Date(item.lastAnswerTime));
 
-            item.time_remaining = 1000;
-
           });
           this.customerOrders = res.data;
 
@@ -234,14 +229,24 @@ export default {
       })
     },
     initMyOrdersItemCount(){
-      let that = this;
+      this.myOrders.forEach((item)=>{
+        item.timer = null;
+        let leaveTime = 0;
+        if(item.status == 0 && item.lastReceiptTime > 0){
+          leaveTime = item.lastReceiptTime;
+        }
+        if(item.status == 2 && item.lastReceiptTime > 0){
+          leaveTime = item.lastReceiptTime;
+        }
+        if(leaveTime <= 0){
+          return;
+        }
 
-      function count(item,leaveTime){
-        return function(){
-          console.log(item);
-          console.log(leaveTime)
+        item.timer = setInterval(()=>{
           let hh = Math.floor(leaveTime / 3600);
           item.hh = hh < 10 ? '0' + hh : hh;
+          console.log(obj);
+          console.log(item.hh)
           let mm = Math.floor(leaveTime % 3600 / 60);
           item.mm = mm < 10 ? '0' + mm : mm;
           let ss = leaveTime % 60;
@@ -250,76 +255,9 @@ export default {
           if(leaveTime < 0){
             clearInterval(item.timer);
           }
-        }
-      };
-
-      this.myOrders.forEach((item)=>{
-        let leaveTime = 20;
-        // if(item.status == 0 && item.lastReceiptTime > 0){
-        //   leaveTime = item.lastReceiptTime;
-        // }
-        // if(item.status == 2 && item.lastReceiptTime > 0){
-        //   leaveTime = item.lastReceiptTime;
-        // }
-        // if(leaveTime <= 0){
-        //   return;
-        // }
-    
-        // item.timer = setInterval(()=>{
-        //   let hh = Math.floor(leaveTime / 3600);
-        //   item.hh = hh < 10 ? '0' + hh : hh;
-        //   let mm = Math.floor(leaveTime % 3600 / 60);
-        //   item.mm = mm < 10 ? '0' + mm : mm;
-        //   let ss = leaveTime % 60;
-        //   item.ss = ss < 10 ? '0' + ss : ss;
-        //   leaveTime--;
-        //   if(leaveTime < 0){
-        //     clearInterval(item.timer);
-        //   }
-        // },1000)
-        item.timer = setInterval(()=>{
-          return count()
         },1000)
       })
-    },
-    // count(item,leaveTime){
-    //   let hh = Math.floor(leaveTime / 3600);
-    //   item.hh = hh < 10 ? '0' + hh : hh;
-    //   let mm = Math.floor(leaveTime % 3600 / 60);
-    //   item.mm = mm < 10 ? '0' + mm : mm;
-    //   let ss = leaveTime % 60;
-    //   item.ss = ss < 10 ? '0' + ss : ss;
-    //   leaveTime--;
-    //   if(leaveTime < 0){
-    //     clearInterval(item.timer);
-    //   }
-    // }
-
-    formatTime(s) {
-      let Day = parseInt(s / 60 / 60 / 24, 10)
-      let Hour = parseInt(s / 60 / 60 % 24, 10)
-      let Minute = parseInt(s / 60 % 60, 10)
-      let Second = parseInt(s % 60, 10)
-      let res = {
-        d: Day,
-        h: (Hour + "").padStart(2, "0"),
-        m: (Minute + "").padStart(2, "0"),
-        s: (Second + "").padStart(2, "0")
-      }
-      return res;
-    },
-    countDown(i) {
-      let item = this.myOrders[i]
-      this.myOrders[i].countDownFn = setInterval(() => {
-        item.time_remaining -= 1
-        if (item.time_remaining <= 0) {
-          clearInterval(this.myOrders[i].countDownFn);
-        } else {
-          item.countDownTime = item.time_remaining > 0 ? this.formatTime(item.time_remaining) : {}
-        }
-      }, 1000);
     }
-
   },
   created () {
   
@@ -333,11 +271,6 @@ export default {
     if(this.userData && this.userData.isExpert == 1){
       this.getExpertOrderList();
     }
-  },
-  onHide(){
-      for (let i in this.myOrders) {
-        clearInterval(this.myOrders[i].countDownFn);
-      }
   }
 
 }
