@@ -42,7 +42,6 @@ export default {
     return {
        avatarUrl:'',
        nickName:'',
-       avatarUrl:'',
        aboutUserDesc:''
     }
   },
@@ -53,6 +52,9 @@ export default {
   },
 
   methods: {
+    ...mapActions('counter', [
+      'updateUserMsg'
+    ]),
     // chageMobile(){
     //   this.$router.push('/pages/editMobile1/index');
     // },
@@ -83,14 +85,18 @@ export default {
               method: 'post'
             }
           }).then(result => {
-            let data = result.data;
-            that.paymentCodeList = [data.originalurl];
-            that.isUploadingFile = false;
+            if(result.code == 1){
+              let data = result.data;
+              if(data[0].uploadCode == 1){
+                that.avatarUrl = data[0].data.originalurl;
+              }else{
+                this.showToast('图片上传失败');
+              }
+            }
             wx.hideLoading();
           })
-          that.avatarUrl = res.tempFilePaths[0];
         }
-      })
+      });
     },
     getInitData(){
       let url = API['GetUserDetail'] + this.userData.userId;
@@ -108,7 +114,6 @@ export default {
       })
     },
     updateUserBaseInfo(){
-  
       this.$http.request({
         url:'UpdateUserBaseInfo',
         data:{
@@ -122,6 +127,8 @@ export default {
         }
       }).then(res => {
         if(res.code == 1){
+          let data = this.userData || {};
+          this.updateUserMsg({...data,avatarUrl:this.avatarUrl,nickName:this.nickName});
           wx.showToast({
             title: '提交成功',
             icon: 'none',
@@ -135,21 +142,9 @@ export default {
         }
       })
     },
-
-  },
-
-  mounted(){
-
-  },
-  created () {
-
-  },
-  onShow(){
-     console.log('onShow');
-    // this.getInitData();
   },
   onLoad(){
-    console.log('onLoad')
+    this.getInitData();
   }
 }
 </script>

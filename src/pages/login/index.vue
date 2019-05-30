@@ -7,7 +7,6 @@
         <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
     </div>
     <div class="base_msg_panel">
-
       <ul class="form_list">
         <li class="form_item">
           <div class="item_content">
@@ -18,12 +17,13 @@
             <span class="tips_text2" v-if="status == 2">已发送{{timeText}}s</span>
           </div>
         </li>
+
         <li class="form_item">
           <div class="item_content">
             <input type="number" maxlength='6' v-model="vcode" placeholder="请输入验证码">
           </div>
         </li>
-       
+
       </ul>
   
       <div class="btn_block">
@@ -51,7 +51,6 @@ export default {
       vcode:'',
 
       originalData:{}
-
     }
   },
   computed: {
@@ -213,8 +212,17 @@ export default {
   mounted(){
    
   },
+  onLoad(){
+    this.mobile = '';
+    this.vcode = '';
+  },
   onShow(){
- 
+    this.status = 1;
+    this.time = 60;
+    this.timeText = '60';
+  },
+  onHide(){
+    clearInterval(this.timer);
   }
 }
 </script>

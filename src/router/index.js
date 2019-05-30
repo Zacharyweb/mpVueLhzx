@@ -288,7 +288,8 @@ module.exports = [
     config: {
       navigationBarTitleText: '设置',
       usingComponents: {
-        "van-action-sheet": "/static/vant/action-sheet/index"
+        "van-action-sheet": "/static/vant/action-sheet/index",
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },

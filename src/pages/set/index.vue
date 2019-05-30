@@ -4,17 +4,18 @@
       <li class="router_item">
         <div class="item_left">服务状态</div>
         <div class="item_right" @click="actionSheetShow = true">
-          <span class="status_text" v-if="userData.workStatus == 1">营业中</span>
-          <span class="status_text" v-else-if="userData.workStatus == 2">休息至下次登入</span>
-          <span class="status_text" v-else-if="userData.workStatus == 3">休息至明早8:00</span>
+          <span class="status_text" v-if="userData && userData.workStatus == 1">营业中</span>
+          <span class="status_text" v-else-if="userData && userData.workStatus == 2">休息至下次登入</span>
+          <span class="status_text" v-else-if="userData && userData.workStatus == 3">休息至明早8:00</span>
           <span class="status_text" v-else>获取中</span>
           
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
-
     </ul>
-     <van-action-sheet
+    <div class="log_out_btn" @click="logout">退出登录</div>
+    <van-dialog id="van-dialog"/>
+    <van-action-sheet
       :show="actionSheetShow"
       :actions="actions"
       @close="onCloseActionSheet"
@@ -25,6 +26,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import Dialog from '../../../static/vant/dialog/dialog';
 export default {
   data () {
     return {
@@ -57,7 +59,10 @@ export default {
 
   },
   onShow(){
-    console.log(this.userData);
+    if(!this.userData){
+      wx.removeStorageSync('userData');
+      this.$router.push('/pages/login/index')
+    }
   },
   methods: {
     ...mapActions('counter', [
@@ -102,6 +107,19 @@ export default {
           });
         }
       })
+    },
+
+    logout(){
+      Dialog.confirm({
+        title: '确认退出',
+        message: '确认是否退出当前账号？'
+      }).then(() => {
+        wx.removeStorageSync('userData');
+        this.updateUserMsg(null);
+        this.$router.push('/pages/login/index')
+      }).catch(() => {
+        
+      });
     },
  
     linkTo(path){
@@ -151,5 +169,19 @@ export default {
       }
     }
   }
+}
+.log_out_btn{
+  width: 195px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fa3200;
+  background-color: #fff;
+  position: fixed;
+  bottom: 50px;
+  left: 90px;
 }
 </style>

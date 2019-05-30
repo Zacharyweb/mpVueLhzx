@@ -95,7 +95,7 @@
       <li class="router_item" @click="linkTo('/pages/becomeExpert/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon4.png">
-          {{ userData && userData.isExpert == 1 ?'修改信息':'成为专家'}}
+          {{ userData && userData.isExpert == 1 ?'修改专业信息':'成为专家'}}
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -168,7 +168,7 @@ export default {
         let result = res.data;
         this.mineData = res.data;
         let data = this.userData || {};
-        this.updateUserMsg({...data,workStatus:result.workStatus});
+        this.updateUserMsg({...data,workStatus:result.workStatus,nickName:result.nickName,avatarUrl:result.avatarUrl});
       })
     },
 

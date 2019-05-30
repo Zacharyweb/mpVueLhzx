@@ -401,7 +401,7 @@ export default {
       areaSelectPanelShow:false,
 
       isChecked:'N', // 当前是否是超级管理员审核状态
-      hasGetInitData:false,
+
 
       isUploadingFile:false
     }
@@ -414,13 +414,11 @@ export default {
   mounted(){
   
   },
-  onShow(){
-    if(this.hasGetInitData && !this.isUploadingFile){
-      this.getInitData();
-    }else{
-      this.getAllMajor();
-      this.getAllBusinessArea();
-    }
+  onLoad(){
+    this.major = [];
+    this.businessArea = [];
+    this.getAllMajor();
+    this.getAllBusinessArea();
   },
   methods: {
     checkedStatus(){
@@ -610,10 +608,10 @@ export default {
       }).then(res => {
         res.data.forEach((item)=>{
          this.major.push({name:item,flag:false});
-         if(this.businessArea.length && !this.hasGetInitData){
-           this.getInitData();
-         }
         })
+        if(this.businessArea.length){
+          this.getInitData();
+        }
       })
     },
 
@@ -624,14 +622,13 @@ export default {
       }).then(res => {
         res.data.forEach((item)=>{
           this.businessArea.push({name:item,flag:false});
-          if(this.major.length && !this.hasGetInitData){
-           this.getInitData();
-          }
         })
+        if(this.major.length){
+         this.getInitData();
+        }
       })
     },
     getInitData(){
-      this.hasGetInitData = true;
       let url = API['GetUserDetail'] + this.userData.userId;
       this.$http.request({
         url:url,

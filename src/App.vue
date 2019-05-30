@@ -24,7 +24,7 @@ export default {
       let userData = JSON.parse(userDataStr);
       that.updateUserMsg(userData);
     }else{
-      that.getSetting();
+      // that.getSetting();
     }
   },
    methods: {
@@ -32,24 +32,23 @@ export default {
       'updateIsX',
       'updateUserMsg'
     ]),
-
-    // 检测用户是否已授权
-    getSetting(){
-      let that = this;
-      wx.getSetting({
-        success: function(res){
-          if (res.authSetting['scope.userInfo']) {
-            wx.getUserInfo({
-              success: function(res) {
-                let data = that.userData || {};
-                that.updateUserMsg({...data,...res.userInfo});
-              }
-            })
-          }
-        }
-      })
-    },
     
+    // 检测用户是否已授权
+    // getSetting(){
+    //   let that = this;
+    //   wx.getSetting({
+    //     success: function(res){
+    //       if (res.authSetting['scope.userInfo']) {
+    //         wx.getUserInfo({
+    //           success: function(res) {
+    //             let data = that.userData || {};
+    //             that.updateUserMsg({...data,...res.userInfo});
+    //           }
+    //         })
+    //       }
+    //     }
+    //   })
+    // },
   }
 }
 </script>

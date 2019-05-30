@@ -77,7 +77,7 @@ Flyio.request = function(obj){
               });
             }
            return res;
-          //  setTimeout(() => { errorFunction(tipConfig, err) }, 0)
+          // setTimeout(() => { errorFunction(tipConfig, err) }, 0)
        }
     }).catch(err => {
         if(err.response.status == 401){

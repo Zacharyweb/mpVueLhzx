@@ -2,22 +2,27 @@
   <div class="container">
     <div class="experts_item">
       <div class="top_block">
-        <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+        <img class="experts_avatar" :src="expertData.avatarUrl">
         <div class="top_block_right">
           <div class="experts_msg1">
-            <div class="experts_name">朱两边<span class="sub_position_text">前所得税副处&nbsp;|&nbsp;杭州市税局大企业处</span></div>
+            <div class="experts_name">
+              <span class="experts_nickname">{{expertData.nickName}}</span>
+              <span class="sub_position_text">{{expertData.companyPosition}}
+              <!-- &nbsp;|&nbsp;{{expertData.companyName}} -->
+              </span>
+            </div>
             <!-- <span class="consult_msg"><img class="query_icon" src="../../../static/img/query_icon.png">咨询流程</span> -->
           </div>
           <div class="experts_msg2">
-            <span class="respond_time"><span>5</span>分钟内回应，<span>12</span>小时内作答</span>
+            <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span>
           </div>
           <div class="experts_msg3">
             <div class="experts_location">
-              <img src="../../../static/img/location_icon.png">杭州
+              <img src="../../../static/img/location_icon.png">{{expertData.address}}
             </div>
             <span class="devide_line"></span>
             <div class="experts_experience">
-              <img src="../../../static/img/time_icon.png">20年工作经验
+              <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}工作经验
             </div>
           </div>
         </div>
@@ -26,7 +31,7 @@
 
     <div class="order_form_panel">
       <div class="panle_block">
-        <div class="block_title mb0">预计费用&nbsp;<span class="cost_text">40</span>&nbsp;元</div>
+        <div class="block_title mb0">预计费用&nbsp;<span class="cost_text">{{expertData.oneOfCost}}</span>&nbsp;元</div>
 
         <!-- <div class="class_num_block">
           <van-stepper
@@ -45,13 +50,13 @@
       <div class="panle_block">
         <div class="block_title"><span class="require_icon">*</span>问题内容</div>
         <div class="problem_content">
-          <textarea  cols="30" rows="10" placeholder="请输入咨询问题内容"></textarea>
+          <textarea  cols="30" rows="10" v-model="questionRemark" placeholder="请输入咨询问题内容"></textarea>
         </div>
       </div>
       <div class="panle_block">
         <div class="block_title">其他介绍</div>
         <div class="problem_content">
-          <textarea  cols="30" rows="10" placeholder="可填写相关介绍一下，例如您的自我介绍信息，让专家更了解您或您的问题。"></textarea>
+          <textarea  cols="30" rows="10" v-model="orderUserDesc" placeholder="可填写相关介绍一下，例如您的自我介绍信息，让专家更了解您或您的问题。"></textarea>
         </div>
       </div>
       <div class="panle_block npb">
@@ -81,7 +86,7 @@
     </div>
 
     <div class="agree_bar">
-      <span class="custom_checkbox active" style="margin-right:20px;">阅读并同意专家的使用规则</span>
+      <span class="custom_checkbox" :class="{'active':agreeRule}" @click="agreeRule = !agreeRule" style="margin-right:20px;">阅读并同意专家的使用规则</span>
     </div>
 
     <div class="btn_block">
@@ -92,20 +97,24 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import {API, BASE_URL} from  '../../http/api.js'
+import { setTimeout } from 'timers';
 export default {
   data(){
     return{
       classNum:1,
       photosList:[],
+      expertData:{},
+      agreeRule:true,
+      questionRemark:'',
+      orderUserDesc:'',
+      parentOrderId:0
     }
   },
   computed: {
     ...mapState({
       userData: state => state.counter.userData
     })
-  },
-  mounted(){
-
   },
   methods: {
     ...mapActions('counter', [
@@ -118,49 +127,125 @@ export default {
     linkTo(path){
       this.$router.push(path);
     },
+
+    getExpertMsgData(){
+      let url = API['GetUserDetail'] + this.expertId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let result = res.data;
+        result.address = result.companyAddress.split('-')[1] || result.companyAddress.split('市')[0] + '市';
+        this.expertData = result;
+      })
+    },
+
+
     submitOrder(){
-      // 控制咨询列表页Tab
-      // this.updateConsultListTab(1);
-      wx.switchTab({
-        url: '/pages/consult/index'
-      });
+      if(!this.agreeRule){
+          wx.showToast({
+             title: '请先阅读并同意专家的使用规则',
+             icon: 'none',
+             duration: 1500
+          });
+          return;
+      };
+      if(!this.questionRemark){
+          wx.showToast({
+             title: '请输入问题内容',
+             icon: 'none',
+             duration: 1500
+          });
+          return;
+      };
+
+      let userFiles  = [];
+      if(this.photosList.length > 0){
+         this.photosList.forEach((item)=>{
+           userFiles.push({userId:this.userData.userId,fileUrl:item})
+         })
+      }
+
       let that = this;
       that.$http.request({
         url:'CreateOrder',
         data: {
-          parentOrderId: 0,
+          parentOrderId: this.parentOrderId,
           userId: this.userData.userId,
           expertId: this.expertId,
-          questionRemark: "string",
-          price: 0,
+          questionRemark: this.questionRemark,
+          price: this.expertData.oneOfCost,
           quantity: 1,
-          orderUserName: "string",
-          orderUserCompany: "string",
-          orderUserCompanyPosition: "string",
-          orderUserCompanyBusiness: "string",
-          remark: "string"
+          orderUserDesc: this.orderUserDesc,
+          remark: '',
+          userOrderFiles: userFiles
         },
         flyConfig:{
-          headers:{
-            'content-type': 'application/x-www-form-urlencoded',
-          },
           method: 'post'
         }
       }).then(res => {
-     
+        if(res.code == 1){
+          wx.showToast({
+             title: '订单提交成功，请等待专家回应',
+             icon: 'none',
+             duration: 1500
+          });
+          setTimeout(()=>{
+            this.updateConsultListTab(0);
+            wx.switchTab({
+              url: '/pages/consult/index'
+            });
+          },1000)
+        }
       })
     },
+
     upLoadPhoto(){
       let that = this;
       wx.chooseImage({
         count: 5 - that.photosList.length,
         success(res) {
-          const tempFilePaths = res.tempFilePaths;
-          that.photosList = [...that.photosList,...res.tempFilePaths];
-          console.log(res);
+          that.isUploadingFile = false;
+          wx.showLoading({
+            title: '图片上传中',
+            mask: true
+          })
+
+          let tempFilePaths = res.tempFilePaths;
+          let dataList = [];
+
+          for(let i = 0;i < tempFilePaths.length; i++){
+            let dotSplit = tempFilePaths[i].split('.');
+            let l = dotSplit.length;
+            let suffix = dotSplit[l-1];
+            let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
+            //同步方法
+            let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[i], 'base64');
+            dataList.push({ type: "image",filename: fileName,base64String: base64 })
+          }
+ 
+          that.$http.request({
+            url:'UploadFile',
+            data:dataList,
+            flyConfig:{
+              method: 'post'
+            }
+          }).then(result => {
+            if(result.code == 1){
+              let data = result.data;
+              let imgList = [];
+              for(let i = 0;i < data.length; i++){
+                if(data[i].uploadCode == 1){
+                   imgList.push(data[i].data.originalurl);
+                }
+              }
+              that.photosList = [...that.photosList,...imgList];
+            }
+            wx.hideLoading();
+          })
         }
-      })
+      });
     },
+
 
     deletePhoto(index){
       this.photosList.splice(index,1);
@@ -168,7 +253,9 @@ export default {
   },
 
   onLoad(options){
+    this.parentOrderId = options.orderNo || 0;
     this.expertId = options.expertId;
+    this.getExpertMsgData();
   },
 }
 </script>
@@ -192,7 +279,7 @@ export default {
 .experts_name{
   font-size: 16px;
   color: #333;
-  span{
+  .sub_position_text{
     font-size: 13px;
     margin-left: 5px;
     color: #666;
