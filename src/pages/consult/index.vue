@@ -70,7 +70,7 @@ export default {
       this.$http.request({
         url:'GetUserOrderList',
         data:{
-          id:this.userData.userId
+          userid:this.userData.userId
         }
       }).then(res => {
         this.isLoading = false;
@@ -93,7 +93,7 @@ export default {
       this.$http.request({
         url:'GetExpertOrderList',
         data:{
-          id:this.userData.userId
+          userid:this.userData.userId
         }
       }).then(res => {
         this.isLoading = false;

@@ -16,22 +16,28 @@ const API = {
   'GetUserDetail':'/api/Users/GetUserDetail/',//获取专家详情信息
 
   'UpdateUserBaseInfo':'/api/Users/UpdateUserBaseInfo',//更新用户基本信息
-  
   'CheckHasFollowed':'/api/LhzxFollow/HasFollowed',//获取是否关注
   'AddUserFollow':'/api/LhzxFollow/AddUserFollow', //添加关注
   'DeleteUserFollow':'/api/LhzxFollow/DeleteUserFollow', //取消关注
+  'UploadFile':'/api/LhzxFile/Post', //上传文件
+  'SetWorkStatus':'/api/Users/SetWorkStatus', // 更新工作状态
+  'GetSearchHistory':'/api/LhzxSearchHistory/Get/', // 搜索记录
+  'DeleteSearchHistory':'/api/LhzxSearchHistory/Delete/', //清空记录
 
 
   'CreateOrder':'/api/LhzxOrder/PostOrder',//创建订单
   'GetUserOrderList':'/api/LhzxOrder/UserOrderList',//获取用户订单
   'GetExpertOrderList':'/api/LhzxOrder/ExpertOrderList',//获取专家的订单
-
-  'UploadFile':'/api/LhzxFile/Post', //上传文件
-
-  'SetWorkStatus':'/api/Users/SetWorkStatus', // 更新工作状态
-  'GetSearchHistory':'/api/LhzxSearchHistory/Get/', // 搜索记录
-  'DeleteSearchHistory':'/api/LhzxSearchHistory/Delete/', //清空记录
- 
+  'ReceiptOrder':'/api/LhzxOrder/Receipt', //专家接单
+  'ModifyOrderOrder':'/api/LhzxOrder/ModifyOrder',//专家修改订单信息
+  'UserResureOrder':'/api/LhzxOrder/DoSureOrderInfo', //专家重新确认订单
+  'AnswerOrder':'/api/LhzxOrder/Answer', //专家作答
+  'UserDoSureAnswer':'/api/LhzxOrder/UserDoSure', // 用户确认（超过最后确认时间还未操作会自动确认）
+  'UserPaying':'/api/LhzxOrder/Paying',//  用户支付订单（操作后系统将专家的收款二维码以模板消息发送给用户）
+  'ExpertPaySure':'/api/LhzxOrder/PaySure', // 专家确认订单（操作后系统将订单完成的消息推送给用户）
+  'UseComment':'/api/LhzxOrder/OrderComment', //用户评价(超过最后评价时间后系统将自动好评)
+  'UserComplaining':'/api/LhzxOrder/Complaining', // 申诉
+  'ClosedOrder':'/api/LhzxOrder/Closed', // 关闭订单
 }
 
 export {API, BASE_URL}

@@ -8,11 +8,13 @@
         <span class="status_text" v-if="orderData.status == 1">待重新确认</span>
         <span class="status_text" v-if="orderData.status == 2">待作答</span>   
         <span class="status_text" v-if="orderData.status == 3">已作答/待确认</span>  
-        <span class="status_text" v-if="orderData.status == 4">已作答/待支付</span>   
-        <span class="status_text" v-if="orderData.status == 5">已作答/待评价</span>    
-        <span class="status_text grey" v-if="orderData.status == 6">已完成</span> 
-        <span class="status_text red" v-if="orderData.status == 7">申诉中</span>   
-        <span class="status_text grey" v-if="orderData.status == 8">已关闭</span>  
+        <span class="status_text" v-if="orderData.status == 4">已作答/待支付</span>
+        <span class="status_text" v-if="orderData.status == 5">待专家确认收款</span> 
+        <span class="status_text" v-if="orderData.status == 6">已支付/待评价</span>    
+        <span class="status_text grey" v-if="orderData.status == 7">已完成</span> 
+        <span class="status_text red" v-if="orderData.status == 8">申诉中</span>   
+        <span class="status_text grey" v-if="orderData.status == 9">已关闭</span>  
+        <span class="status_text grey" v-if="orderData.status == -1">已取消</span>
       </div>
     </div>
     <div class="top_block">
