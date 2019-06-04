@@ -28,6 +28,7 @@ const API = {
   'CreateOrder':'/api/LhzxOrder/PostOrder',//创建订单
   'GetUserOrderList':'/api/LhzxOrder/UserOrderList',//获取用户订单
   'GetExpertOrderList':'/api/LhzxOrder/ExpertOrderList',//获取专家的订单
+  'GetOrderDetail':'/api/LhzxOrder/GetOrderDetail',//获取订单详情
   'ReceiptOrder':'/api/LhzxOrder/Receipt', //专家接单
   'ModifyOrderOrder':'/api/LhzxOrder/ModifyOrder',//专家修改订单信息
   'UserResureOrder':'/api/LhzxOrder/DoSureOrderInfo', //专家重新确认订单

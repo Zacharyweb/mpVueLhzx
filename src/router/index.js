@@ -129,9 +129,9 @@ module.exports = [
     config: {
       navigationBarTitleText: '咨询详情',
       usingComponents: {
-  
         "van-stepper": "/static/vant/stepper/index",
-        "van-datetime-picker": "/static/vant/datetime-picker/index"
+        "van-datetime-picker": "/static/vant/datetime-picker/index",
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },

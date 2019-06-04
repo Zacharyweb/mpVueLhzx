@@ -1,5 +1,5 @@
 <template>
- <div class="order_item"  @click="toOrderDetail(1,'u')">
+ <div class="order_item"  @click="toOrderDetail(orderData.id,'u')">
     <div class="order_msg0">
       <span class="order_no">订单号：{{orderData.orderNo}}</span>
       <div class="order_status">
@@ -38,22 +38,25 @@
       </div>
       <div class="order_time">{{orderData.creationTime}}</div>
     </div>
-    <div class="other_msg_block">
+    <div class="other_msg_block" v-if="orderData.status == 1">
       <span class="other_msg">专家已修改订单信息，请重新确认</span>
       <span class="action_btn">前往确认</span>
     </div>
-    <!-- <div class="other_msg_block">
+    <div class="other_msg_block" v-if="orderData.status == 3">
       <span class="other_msg">专家已作答，请及时确认</span>
       <span class="action_btn">前往确认</span>
     </div>
-    <div class="other_msg_block">
+    <div class="other_msg_block" v-if="orderData.status == 4">
       <span class="other_msg">订单待支付80元，请及时完成支付</span>
       <span class="action_btn">前往支付</span>
     </div>
-    <div class="other_msg_block">
+    <div class="other_msg_block" v-if="orderData.status == 6">
       <span class="other_msg">订单支付完成，可对专家进行评价</span>
       <span class="action_btn" @click="toComment">去评价</span>
-    </div> -->
+    </div>
+    <div class="other_msg_block" v-if="orderData.status == 8">
+      <span class="other_msg">订单申诉中，请留意平台的结果通知</span>
+    </div>
   </div>
 </template>
 
@@ -66,7 +69,9 @@ export default {
       mm:'00',
       ss:'00',
       timer:null,
-      showCount:false
+      showCount:false,
+      isCounting:false
+
     }
   },
   create(){
@@ -86,8 +91,8 @@ export default {
     this.isCounting = false;
   },
   methods: {
-    toOrderDetail(status,id){
-      this.$router.push({path:'/pages/consultDetail/index',query:{status:status,id:id}});
+    toOrderDetail(orderId,userType){
+      this.$router.push({path:'/pages/consultDetail/index',query:{orderId:orderId,userType:userType}});
     },
     initCount(){
       // this.countDown(300);

@@ -1,8 +1,10 @@
 <template>
   <div class="container">
+
     <div class="top_tips">
-       <img src="../../../static/img/notice_icon.png">请在24小时内上传转账截图，逾期将不能再使用平台服务。
+      <img src="../../../static/img/notice_icon.png">请在24小时内上传转账截图，逾期将不能再使用平台服务。
     </div>
+
     <div class="order_form_panel">
       <div class="panle_block nb">
         <div class="block_title">结算信息</div>
@@ -10,20 +12,19 @@
           <div class="tips1">专家已为您完成作答，订单结算如下：</div>
           <ul class="detail_list">
             <li class="detail_item">
-              <span class="item_name">费率：</span>
-              <span class="item_content">40元/节</span>
+              <span class="item_name">费用：</span>
+              <span class="item_content">{{price}}元/次</span>
             </li>
             <li class="detail_item">
               <span class="item_name">节数：</span>
-              <span class="item_content">2节</span>
+              <span class="item_content">{{quantity}}次</span>
             </li>
             <li class="detail_item">
               <span class="item_name">合计：</span>
-              <span class="item_content">80元</span>
+              <span class="item_content">{{price*quantity}}元</span>
             </li>
           </ul>
           <div class="tips2">专家的收款二维码已通过公众号发送给您，请先将付款码保存至手机相册，再用微信扫码完成转账支付。</div>
-       
         </div>
       </div>
     
@@ -31,16 +32,14 @@
         <div class="block_title">上传转账截图</div>
         <div class="problem_content">
           <div class="files_group">
-              <span class="title">转账截图</span>
+            <span class="title">转账截图</span>
+            <div class="img_file_item"  v-for="(item,index) in photosList" :key="index">
+              <img class="img_file" :src="item">
+              <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
+            </div>
+            <img class="add_files_icon" src="../../../static/img/add_files_icon.png"  v-show="photosList.length < 5" @click="upLoadPhoto">
 
-              <div class="img_file_item">
-               <img class="img_file" src="../../../static/img/avatar.jpeg" alt="">
-               <img class="delete_icon" src="../../../static/img/delete_icon3.png" alt="">
-              </div>
-             
-              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
           </div>
-         
         </div>
       </div>
     </div>
@@ -56,74 +55,124 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data(){
     return{
-      classNum:1,
-      currentTab:0,
-      collected:false,
-      actionSheetShow:false,
-      actions:[
-        {
-          targetId:1,
-          name: '在线问答',
-          subname: '￥40',
-        },
-        {
-          targetId:2,
-          name: '电话约谈',
-          subname: '￥40/15分钟',
-        },
-        {
-          targetId:3,
-          name: '咨询疑问'
-        }
-      ]
+      orderId:0,
+      price:'',
+      quantity:'',
+      photosList:[]
     }
   },
   computed: {
     ...mapState({
-      count: state => state.counter.count
+      userData: state => state.counter.userData
     })
   },
   mounted(){
-
+       
+  },
+  onLoad(options){
+    this.orderId = options.orderId*1;
+    this.price = options.price;
+    this.quantity = options.quantity || 1;
+    this.postPayMsg();
   },
   methods: {
-    ...mapActions('counter', [
-      'increment',
-      'decrement',
-      'getProvince'
-    ]),
-    onClassNumChange(e){
-      console.log(e.mp.detail);
+    postPayMsg(){
+      this.$http.request({
+        url:'UserPaying',
+        data:this.orderId,
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(result => {
 
+      })
     },
-    linkTo(path){
-      this.$router.push(path);
+    upLoadPhoto(){
+      let that = this;
+      wx.chooseImage({
+        count: 5 - that.photosList.length,
+        success(res) {
+          wx.showLoading({
+            title: '图片上传中',
+            mask: true
+          })
+
+          let tempFilePaths = res.tempFilePaths;
+          let dataList = [];
+
+          for(let i = 0;i < tempFilePaths.length; i++){
+            let dotSplit = tempFilePaths[i].split('.');
+            let l = dotSplit.length;
+            let suffix = dotSplit[l-1];
+            let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
+            //同步方法
+            let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[i], 'base64');
+            dataList.push({ type: "image",filename: fileName,base64String: base64 })
+          }
+ 
+          that.$http.request({
+            url:'UploadFile',
+            data:dataList,
+            flyConfig:{
+              method: 'post'
+            }
+          }).then(result => {
+            if(result.code == 1){
+              let data = result.data;
+              let imgList = [];
+              for(let i = 0;i < data.length; i++){
+                if(data[i].uploadCode == 1){
+                   imgList.push(data[i].data.originalurl);
+                }
+              }
+              that.photosList = [...that.photosList,...imgList];
+            }
+           
+            wx.hideLoading();
+          })
+        }
+      });
     },
-    changeTab(num){
-      if(this.currentTab == num){
+
+    deletePhoto(index){
+      this.photosList.splice(index,1);
+    },
+
+    submitPhoto(){
+      if(this.photosList.length == 0){
+        this.showToast('请上传支付凭证');
         return;
-      }
-      this.currentTab = num;
-    },
-    toContact(){
-      this.actionSheetShow = true;
-    },
-    onCloseActionSheet(){
-       this.actionSheetShow = false;
-    },
-    onSelectAction(data){
-      if(data.mp.detail.targetId == 1){
-        
-      }else if(data.mp.detail.targetId == 2){
-        
-      }else{
-
       };
-      this.actionSheetShow = false;
+
+      let userFiles  = [];
+      if(this.photosList.length > 0){
+        this.photosList.forEach((item)=>{
+          userFiles.push({userId:this.userData.userId,fileUrl:item})
+        })
+      };
+
+      this.$http.request({
+        url:'PutCurrentUser',
+        data: {
+          userFiles:userFiles,
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+            this.showToast('提交成功，请等待专家确认');
+            setTimeout(()=>{
+              this.$router.go(-1);
+            },1500)
+        } 
+      })
+
     },
+   
   },
   onShow(){
-    this.currentTab = 0;
+   
   }
 }
 </script>

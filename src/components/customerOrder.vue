@@ -1,18 +1,20 @@
 <template>
- <div class="order_item"  @click="toOrderDetail(1,'e')">
+ <div class="order_item"  @click="toOrderDetail(orderData.id,'e')">
   <div class="order_msg0">
       <span class="order_no">订单编号：{{orderData.orderNo}}</span>
       <div class="order_status">
         <span class="time_count" v-show="showCount">{{hh}}:{{mm}}:{{ss}}</span>
-        <span class="status_text" v-if="orderData.status == 0">待接单</span>  
+        <span class="status_text" v-if="orderData.status == 0">待接单</span>
         <span class="status_text" v-if="orderData.status == 1">待重新确认</span>
         <span class="status_text" v-if="orderData.status == 2">待作答</span>   
         <span class="status_text" v-if="orderData.status == 3">已作答/待确认</span>  
-        <span class="status_text" v-if="orderData.status == 4">已作答/待支付</span>   
-        <span class="status_text" v-if="orderData.status == 5">已作答/待评价</span>    
-        <span class="status_text grey" v-if="orderData.status == 6">已完成</span> 
-        <span class="status_text red" v-if="orderData.status == 7">申诉中</span>   
-        <span class="status_text grey" v-if="orderData.status == 8">已关闭</span>  
+        <span class="status_text" v-if="orderData.status == 4">已作答/待支付</span>
+        <span class="status_text" v-if="orderData.status == 5">待专家确认收款</span> 
+        <span class="status_text" v-if="orderData.status == 6">已支付/待评价</span>    
+        <span class="status_text grey" v-if="orderData.status == 7">已完成</span> 
+        <span class="status_text red" v-if="orderData.status == 8">申诉中</span>   
+        <span class="status_text grey" v-if="orderData.status == 9">已关闭</span>  
+        <span class="status_text grey" v-if="orderData.status == -1">已取消</span>
       </div>
     </div>
     <div class="top_block">
@@ -22,7 +24,7 @@
           <span class="experts_name">{{orderData.nickName}}</span>
           <span class="consult_msg" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</span>
           <span class="consult_msg" v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</span>
-          <span class="consult_msg" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7">作答时间：2888/08/18 18:28</span>
+          <span class="consult_msg" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8">作答时间：2888/08/18 18:28</span>
         </div>
         <div class="order_msg2">
           <span class="customer_info">{{orderData.orderUserDesc}}</span>
@@ -36,9 +38,16 @@
       </div>
       <div class="order_time">{{orderData.creationTime}}</div>
     </div>
-    <div class="other_msg_block">
+    <div class="other_msg_block" v-if="orderData.status == 2">
       <span class="other_msg">您已接单，请及时完成作答~</span>
       <span class="action_btn">马上作答</span>
+    </div>
+    <div class="other_msg_block" v-if="orderData.status == 5">
+      <span class="other_msg">用户已支付，请及时确认收款~</span>
+      <span class="action_btn">前往确认</span>
+    </div>
+    <div class="other_msg_block" v-if="orderData.status == 8">
+      <span class="other_msg">订单申诉中，请留意平台的结果通知</span>
     </div>
   </div>
 </template>
@@ -72,8 +81,8 @@ export default {
     this.isCounting = false;
   },
   methods: {
-    toOrderDetail(status,id){
-      this.$router.push({path:'/pages/consultDetail/index',query:{status:status,id:id}});
+    toOrderDetail(orderId,userType){
+      this.$router.push({path:'/pages/consultDetail/index',query:{orderId:orderId,userType:userType}});
     },
     initCount(){
       // this.countDown(300);

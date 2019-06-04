@@ -4,7 +4,7 @@
       <div class="panle_block nb">
         <div class="block_title">作答内容</div>
         <div class="problem_content">
-          <textarea  maxlength="2000" placeholder="请输入作答内容"></textarea>
+          <textarea  maxlength="2000" placeholder="请输入作答内容" v-model="answer"></textarea>
         </div>
       </div>
       <div class="panle_block npb">
@@ -13,11 +13,12 @@
           
           <div class="files_group">
               <div class="title">图片</div>
-              <div class="img_file_item" v-for="(item,index) in photosList" :key="index">
+          
+              <div class="img_file_item"  v-for="(item,index) in photosList" :key="index">
                 <img class="img_file" :src="item">
                 <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
               </div>
-              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
+              <img class="add_files_icon" src="../../../static/img/add_files_icon.png"  v-show="photosList.length < 5" @click="upLoadPhoto">
           </div>
         
         </div>
@@ -26,7 +27,7 @@
 
     <div class="btn_block">
       <div class="btn green plain">保存</div>
-      <div class="btn green">提交作答</div>
+      <div class="btn green" @click="submitAnswer">提交作答</div>
     </div>
   </div>
 </template>
@@ -36,6 +37,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data(){
     return{
+      answer:'',
       photosList:[],
     }
   },
@@ -53,15 +55,82 @@ export default {
       wx.chooseImage({
         count: 5 - that.photosList.length,
         success(res) {
-          const tempFilePaths = res.tempFilePaths;
-          that.photosList = [...that.photosList,...res.tempFilePaths];
-          console.log(res);
+          wx.showLoading({
+            title: '图片上传中',
+            mask: true
+          })
+
+          let tempFilePaths = res.tempFilePaths;
+          let dataList = [];
+
+          for(let i = 0;i < tempFilePaths.length; i++){
+            let dotSplit = tempFilePaths[i].split('.');
+            let l = dotSplit.length;
+            let suffix = dotSplit[l-1];
+            let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
+            //同步方法
+            let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[i], 'base64');
+            dataList.push({ type: "image",filename: fileName,base64String: base64 })
+          }
+ 
+          that.$http.request({
+            url:'UploadFile',
+            data:dataList,
+            flyConfig:{
+              method: 'post'
+            }
+          }).then(result => {
+            if(result.code == 1){
+              let data = result.data;
+              let imgList = [];
+              for(let i = 0;i < data.length; i++){
+                if(data[i].uploadCode == 1){
+                   imgList.push(data[i].data.originalurl);
+                }
+              }
+              that.photosList = [...that.photosList,...imgList];
+            }
+           
+            wx.hideLoading();
+          })
         }
-      })
+      });
     },
+
     deletePhoto(index){
       this.photosList.splice(index,1);
-    }
+    },
+    submitAnswer(){
+      if(!this.answer){
+        this.showToast('请填写作答内容');
+        return;
+      };
+      let userFiles  = [];
+      if(this.photosList.length > 0){
+        this.photosList.forEach((item)=>{
+          userFiles.push({userId:this.userData.userId,fileUrl:item})
+        })
+      };
+
+      this.$http.request({
+        url:'AnswerOrder',
+        data: {
+          answer:this.answer,
+          userFiles:userFiles
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+            this.showToast('提交成功，请等待用户确认');
+            setTimeout(()=>{
+              this.$router.go(-1);
+            },1500)
+        } 
+      })
+
+    },
   },
   onShow(){
 

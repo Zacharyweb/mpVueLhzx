@@ -39,7 +39,7 @@
       </div>
       
       <div class="select_list">
-        <div class="select_item fbt">
+        <!-- <div class="select_item fbt">
           <div class="left">
             <img src="../../../static/img/comment_icon1.png">
             <span>满意程度</span>
@@ -48,7 +48,7 @@
             <span>满意</span>
             <img src="../../../static/img/arrow_right3.png">
           </div>
-        </div>
+        </div> -->
 
         <div class="select_item fbt">
          <div class="left">

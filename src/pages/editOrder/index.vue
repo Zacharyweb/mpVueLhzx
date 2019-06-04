@@ -36,7 +36,7 @@
         </div>
 
         <div class="btn_block">
-          <div class="btn large green">提交修改</div>
+          <div class="btn large green" @click="submitModify">提交修改</div>
         </div>
 
         <div class="time_picker_block" :class="{'show':timePickerShow}">
@@ -112,6 +112,25 @@ export default {
     onTimeChange(){
 
     },
+    submitModify(){
+      this.$http.request({
+        url:'ModifyOrderOrder',
+        data:{
+          id: 0,
+          amount: 0,
+          lastAnswerTime: "2019-06-04T06:17:59.564Z",
+          otherExpertId: 0
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.showToast('接单成功');
+          this.getOrderDetail();
+        }
+      })
+    }
   },
   created () {
    
