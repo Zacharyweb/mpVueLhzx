@@ -13,7 +13,7 @@
             <img src="../../../static/img/comment_icon2.png">
            <span>谁可以看</span>
          </div>
-         <div class="right" @click="showVisiblePanel">
+         <div class="right" @click="showFriendsVisiblePanel">
            <span>仅自己</span>
            <img src="../../../static/img/arrow_right3.png">
          </div>
@@ -25,7 +25,7 @@
             <span>专家可见</span>
          </div>
          <div class="right" @click="showActionSheet3">
-           <span>不可见</span>
+           <span>{{expertVisible == 1?'可见':'不可见'}}</span>
            <img src="../../../static/img/arrow_right3.png">
          </div>
         </div>
@@ -54,19 +54,10 @@
       </div>
    
       <div class="select_list">
-        <div class="select_item" @click="changeVisibleType(1)">
-          <div class="select_icon">
-            <span class="selcet_fill" v-show="visibleType == 1"></span>
-          </div>
-          <div class="select_text">
-            <p class="select_text1">公开</p>
-            <p class="select_text2">所有户可见</p>
-          </div>
-        </div>
 
-        <div class="select_item"  @click="changeVisibleType(2)">
+        <div class="select_item"  @click="changeVisibleType(0)">
           <div class="select_icon">
-            <span class="selcet_fill" v-show="visibleType == 2"></span>
+            <span class="selcet_fill" v-show="friendsVisible == 0"></span>
           </div>
           <div class="select_text">
             <p class="select_text1">私密</p>
@@ -74,37 +65,48 @@
           </div>
         </div>
 
-        <div class="select_item" @click="changeVisibleType(3)">
+        <div class="select_item" @click="changeVisibleType(1)">
           <div class="select_icon">
-            <span class="selcet_fill" v-show="visibleType == 3"></span>
+            <span class="selcet_fill" v-show="friendsVisible == 1"></span>
+          </div>
+          <div class="select_text">
+            <p class="select_text1">公开</p>
+            <p class="select_text2">所有关系户可见</p>
+          </div>
+        </div>
+
+      
+        <div class="select_item" @click="changeVisibleType(2)">
+          <div class="select_icon">
+            <span class="selcet_fill" v-show="friendsVisible == 2"></span>
           </div>
           <div class="select_text">
             <p class="select_text1">部分可见</p>
             <p class="select_text2">选中的关系户可见</p>
-            <!-- <p class="select_text3">暂未选中任何关系户,点击右侧去选择</p> -->
-            <p class="select_text4">
-              <span>王老师、张老师、李老师、王老师、张老师、李老师、王老师、张老师、李老师、王老师、张老师、李老师</span>等11人
+            <p class="select_text3" v-show="visibleFriendsList == 0">暂未选中任何关系户,点击右侧去选择</p>
+            <p class="select_text4" v-show="visibleFriendsList.length > 0">
+              <span>{{visibleFriendsListText}}</span>
             </p>
           </div>
-          <div class="to_select_btn"  @click="showAddViewPanel(1)">
+          <div class="to_select_btn" @click="initSelectedFriends(1)">
             <span>去选择</span>
             <img src="../../../static/img/arrow_right3.png">
           </div>
         </div>
 
-        <div class="select_item" @click="changeVisibleType(4)">
+        <div class="select_item" @click="changeVisibleType(3)">
           <div class="select_icon"> 
-            <span class="selcet_fill" v-show="visibleType == 4"></span>
+            <span class="selcet_fill" v-show="friendsVisible == 3"></span>
           </div>
           <div class="select_text">
             <p class="select_text1">不给谁看</p>
             <p class="select_text2">选中关系户不可见</p>
-            <p class="select_text3">暂未选中任何关系户,点击右侧去选择</p>
-            <!-- <p class="select_text4">
-              <span>王老师、张老师、李老师、王老师、张老师、李老师、王老师、张老师、李老师、王老师、张老师、李老师</span>等11人
-            </p> -->
+            <p class="select_text3" v-show="notVisibleFriendsList.length == 0">暂未选中任何关系户,点击右侧去选择</p>
+            <p class="select_text4" v-show="notVisibleFriendsList.length > 0">
+              <span>{{notVisibleFriendsListText}}</span>
+            </p>
           </div>
-          <div class="to_select_btn" @click="showAddViewPanel(2)">
+          <div class="to_select_btn" @click="initSelectedFriends(2)">
             <span>去选择</span>
             <img src="../../../static/img/arrow_right3.png">
           </div>
@@ -121,11 +123,11 @@
       <div class="panel_top">
         <span class="cancel_btn" @click="addViewPanelShow = false">取消</span>
         <span class="title">{{addViewPanelTitle}}</span>
-        <span class="submit_btn">提交</span>
+        <span class="submit_btn" @click="submitSelectFriends">提交</span>
       </div>
       <!-- <scroll-view scroll-y :scroll-top="sTop" class="select_list" v-show="!showSelectedPanel">
         <div class="friend_avatar_list"  id='chat-ref'>
-          <img class="friend_avatar" src="../../../static/img/avatar.jpeg"  v-for="(item,index) in friendsList" :key="index" v-if="item.selected">
+          <img class="friend_avatar" src="../../../static/img/avatar.jpeg"  v-for="(item,index) in friendsList" :key="index" v-if="item.flag">
         </div>
       </scroll-view> -->
       <!-- <scroll-view scroll-y class="friend_list_wrap" :class="{'less_top':showSelectedPanel}"> -->
@@ -134,10 +136,10 @@
         <ul class="friend_list">
           <li class="friend_item" v-for="(item,index) in friendsList" :key="index" @click="selectFriend(index)">
             <div class="select_icon">
-              <span class="selcet_fill" v-show="item.selected"></span>
+              <span class="selcet_fill" v-show="item.flag"></span>
             </div>
-            <img class="friend_avatar" src="../../../static/img/avatar.jpeg">
-            <div class="friend_name">朱两边</div>
+            <img class="friend_avatar" :src="item.avatarUrl">
+            <div class="friend_name">{{item.userName}}</div>
           </li>
           <li class="friend_item">
             <div class="friend_name" style="color:#666;padding-left:4px;">
@@ -153,6 +155,7 @@
 <script>
 import Dialog from '../../../static/vant/dialog/dialog';
 import { mapState, mapActions } from 'vuex'
+import { setTimeout } from 'timers';
 export default {
   data () {
     return {
@@ -164,34 +167,31 @@ export default {
           name: '可见',
         },
         {
-          targetId:2,
+          targetId:0,
           name: '不可见'
         }
       ],
 
       visiblePanelShow:false,
 
-      friendsList:[
-        {extend:false,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:false,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false}
-      ],
+      friendsList:[{flag:false}],
+      selectFriendsFor:1,
+
       sTop:0,
+
       addViewPanelTitle:'',
       addViewPanelShow:false,
 
-      visibleType:0,
-
       orderId:0,
       expertId:0,
-      commentContent:''
+      commentContent:'',
+
+      expertVisible:1,
+      friendsVisible:0,
+
+      visibleFriendsList:[],
+      notVisibleFriendsList:[]
+
     }
   },
   computed:{
@@ -200,9 +200,36 @@ export default {
     }),
     showSelectedPanel(){
       return this.friendsList.every((item)=>{
-        return item.selected == false;
+        return item.flag == false;
       })
-    }
+    },
+
+    visibleFriendsListText(){
+      let str = '';
+      let list = [];
+      this.visibleFriendsList.forEach((item)=>{
+        list.push(item.userName);
+      })
+      str = list.split('、');
+      if(str.length > 40){
+        str = str.slice(0,40) + '...等'+ list.length +'人';
+      }else{
+        str = str + '(共'+ list.length +'人)';
+      }
+    },
+    notVisibleFriendsListText(){
+      let str = '';
+      let list = [];
+      this.notVisibleFriendsList.forEach((item)=>{
+        list.push(item.userName);
+      })
+      str = list.split('、');
+      if(str.length > 40){
+        str = str.slice(0,40) + '...等'+ list.length +'人';
+      }else{
+        str = str + '(共'+ list.length +'人)';
+      }
+    },
   },
   onShareAppMessage(obj){
       return {
@@ -225,7 +252,7 @@ export default {
       })
     },
     selectFriend(index){
-      this.friendsList[index].selected = !this.friendsList[index].selected;
+      this.friendsList[index].flag = !this.friendsList[index].flag;
       // this.selectFriendsPanelScrollBottom();
     },
     
@@ -236,45 +263,30 @@ export default {
       }).exec()
     },
 
-  
-
-    showVisiblePanel(){
+    showFriendsVisiblePanel(){
       this.visiblePanelShow = true
     },
    
     showActionSheet3(){
       this.actionSheet3Show = true;
     },
-
     closeActionSheet3(){
       this.actionSheet3Show = false;
     },
   
-
     selectAction3(data){
-      if(data.mp.detail.targetId == 1){
-
-      }else{
-       
-      };
+      this.expertVisible = data.mp.detail.targetId;
       this.actionSheet3Show = false;
     },
 
     changeVisibleType(type){
-      if(this.visibleType == type){
+      if(this.friendsVisible == type){
         return;
       }
-      this.visibleType = type;
+      this.friendsVisible = type;
     },
     
-    showAddViewPanel(flag){
-      if(flag == 1){
-        this.addViewPanelTitle = '设置对谁可见';
-      }else{
-        this.addViewPanelTitle = '设置对谁不可见';
-      }
-      this.addViewPanelShow = true;
-    },
+  
 
     getUserFriendsList(){
       this.$http.request({
@@ -296,28 +308,84 @@ export default {
         }
       })
     },
+    initSelectedFriends(flag){
+      let list;
+      this.selectFriendsFor = flag;
+      if(flag == 1){
+        this.addViewPanelTitle = '设置对谁可见';
+        list = this.visibleFriendsList;
+      }else{
+        this.addViewPanelTitle = '设置对谁不可见';
+        list = this.notVisibleFriendsList;
+      };
+
+      this.friendsList.forEach((item)=>{
+        list.forEach((f)=>{
+          if(f.userId == item.userId){
+            item.flag = true;
+          }
+        })
+      });
+
+      this.addViewPanelShow = true;
+    },
+
+    submitSelectFriends(){
+      let list = [];
+      this.friendsList.forEach((item)=>{
+        if(item.flag){
+          list.push({userId:item.userId,userName:item.userName})
+        } 
+      });
+      if(this.selectFriendsFor == 1){
+        this.visibleFriendsList = list;
+      }else{
+        this.notVisibleFriendsList = list;
+      }
+      this.addViewPanelShow = false;
+    },
 
     submitComment(){
       if(!this.commentContent){
         this.showToast('请输入评价内容');
         return;
       };
+      let list = [];
+      if(this.friendsVisible == 2){
+        if(this.visibleFriendsList.length == 0){
+          this.showToast('请选择可见好友');
+          return;
+        }else{
+          list = this.visibleFriendsList;
+        }
+      }
+      if(this.friendsVisible == 3){
+        if(this.notVisibleFriendsList.length == 0){
+          this.showToast('请选择不可见好友');
+          return;
+        }else{
+          list = this.notVisibleFriendsList;
+        }
+      }
+
       this.$http.request({
         url:'UseComment',
         data:{
           orderId: this.orderId,
           commentContent:this.commentContent,
+          expertVisible:this.expertVisible,
+          friendsVisible:this.friendsVisible,
+          list:list
         },
         flyConfig:{
           method: 'post'
         }
       }).then(res => {
         if(res.code == 1){
-          console.log(res.data)
-          res.data.forEach(item => {
-            item.flag = false;
-          }); 
-          this.friendsList = res.data;
+          this.showToast('评价成功');
+          setTimeout(()=>{
+            this.$router.go(-1);
+          },1500)
         }
       })
     }
