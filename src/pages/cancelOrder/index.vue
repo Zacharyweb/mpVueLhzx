@@ -85,7 +85,7 @@ export default {
           closeType: 2,
           closeDesc: closeDesc,
           closerId: this.userData.userId,
-          orderId:this.orderId
+          orderId:this.orderId*1
         },
         flyConfig:{
           method: 'post'
