@@ -25,13 +25,14 @@
 
         <div class="edit_item">
           <span class="item_name">作答时间：</span>
-          <span class="item_content" @click="timePickerShow = true">2019-03-17 23:34:00</span>
+          <span class="item_content" @click="timePickerShow = true">{{newLastAnswerTime}}</span>
           <img class="item_icon" @click="timePickerShow = true" src="../../../static/img/edit_icon.png">
         </div>
 
         <div class="edit_item">
           <span class="item_name">推荐至其他专家：</span>
-          <span class="item_content" @click="friendsListShow = true">选择专家好友</span>
+          <span class="item_content" @click="friendsListShow = true" v-show="otherExpertId == 0">选择专家好友</span>
+          <span class="item_content" @click="friendsListShow = true" v-show="otherExpertId != 0">已选择专家好友：{{selectedOtherExpert.name}}</span>
           <img class="item_icon" @click="friendsListShow = true" src="../../../static/img/friend_icon2.png">
         </div>
 
@@ -45,7 +46,8 @@
            :value="currentDate"
            :min-date="minDate"
            :max-date="maxDate"
-           :bind:change="onTimeChange"
+           @confirm="onTimeChange"
+           @cancel="timePickerShow = false"
           />
         </div>
 
@@ -53,12 +55,12 @@
 
         <div class="friends_list" :class="{'show':friendsListShow}">
           <div class="panel_top">
-            <span class="cancel_btn" @click="friendsListShow = false">取消推荐</span>
+            <span class="cancel_btn" @click="cancelOtherExpert">取消推荐</span>
             <span class="title">选择推荐专家</span>
-            <span class="submit_btn">提交</span>
+            <span class="submit_btn" @click="submitOtherExpert">提交</span>
           </div>
           
-          <div class="friend_item">
+          <div class="friend_item" v-for="(item,index) in friendsList" :key="index" @click="selectOtherExpertChange(index)">
             <div class="left">
               <img class="friend_avatar" src="../../../static/img/avatar.jpeg">
               <div class="friend_msg">
@@ -66,10 +68,10 @@
                 <div class="friend_position">高级财务专家</div>
               </div>
             </div>
-            <span class="select_icon actived"></span>
+            <span class="select_icon" :class="{'actived':item.flag}"></span>
           </div>
 
-          <div class="friend_item">
+          <!-- <div class="friend_item">
             <div class="left">
               <img class="friend_avatar" src="../../../static/img/avatar.jpeg">
               <div class="friend_msg">
@@ -78,7 +80,7 @@
               </div>
             </div>
             <span class="select_icon"></span>
-          </div>
+          </div> -->
 
         </div>
 
@@ -88,45 +90,118 @@
   </div>
 </template>
 <script>
-
+import util from '../../utils/index.js'
+import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
+      orderId:'',
       timePickerShow:false,
       friendsListShow:false,
 
-      amount:1,
-      
+      amount:0,
+      oldAmount:'',
+
+      otherExpertId:0,
+      selectedOtherExpert:{},
+
       minDate: new Date().getTime(),
       maxDate: new Date(2030, 10, 1).getTime(),
-      currentDate: new Date().getTime()
+      currentDate: new Date().getTime(),
+
+      lastAnswerTime:"",
+      newLastAnswerTime:"",
+      friendsList:[]
+
+
     }
   },
-  components: {
-    
+  computed: {
+    ...mapState({
+      userData: state => state.counter.userData
+    })
   },
+
   methods: {
+    showToast(txt){
+      wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: 1500
+      })
+    },
     onClassNumChange(){
-
+     
     },
-    onTimeChange(){
-
+    onTimeChange(e){
+      this.newLastAnswerTime = util.formatTime(new Date(e.mp.detail));
     },
-    submitModify(){
+    getExpertFriendsList(){
       this.$http.request({
-        url:'ModifyOrderOrder',
+        url:'GetUserFriendList',
         data:{
-          id: 0,
-          amount: 0,
-          lastAnswerTime: "2019-06-04T06:17:59.564Z",
-          otherExpertId: 0
+          userId: this.userData.userId,
+          isExpert:1
         },
         flyConfig:{
           method: 'post'
         }
       }).then(res => {
         if(res.code == 1){
-          this.showToast('接单成功');
+          console.log(res.data)
+          res.data.forEach(item => {
+            item.flag = false;
+          }); 
+          this.friendsList = res.data;
+        }
+      })
+    },
+    // 选择其他专家变动
+    selectOtherExpertChange(index){
+      let flag = this.friendsList[index].flag;
+      this.friendsList.forEach(item => {
+        item.flag = false;
+      });
+      if(!flag){
+        this[itemName][index].flag =  true;
+      }
+    },
+    submitOtherExpert(){
+      this.otherExpertId = 0;
+      this.friendsList.forEach(item => {
+        if(item.flag){
+          this.otherExpertId = item.id;
+          this.selectedOtherExpert = item;
+        }
+      });
+    },
+    cancelOtherExpert(){
+      this.otherExpertId = 0;
+      this.friendsListShow = false;
+    },
+    submitModify(){
+      let lastAnswerTime = +new Date(this.lastAnswerTime);
+      let newLastAnswerTime = +new Date(this.newLastAnswerTime); 
+
+      if(lastAnswerTime == newLastAnswerTime && this.amount == this.oldAmount && this.otherExpertId == 0){
+        this.showToast('未对订单做任何修改');
+        return;
+      };
+
+      this.$http.request({
+        url:'ModifyOrderOrder',
+        data:{
+          id: this.orderId,
+          amount: this.amount,
+          lastAnswerTime: this.newLastAnswerTime ,
+          otherExpertId: this.otherExpertId
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.showToast('已提交修改');
           this.getOrderDetail();
         }
       })
@@ -136,7 +211,14 @@ export default {
    
   },
   onLoad: function (options) {
-   
+    this.orderId = options.orderId;
+    this.oldAmount = options.price* options.quantity;
+    this.amount = options.price* options.quantity;
+    this.lastAnswerTime = options.lastAnswerTime;
+    this.newLastAnswerTime = util.formatTime(new Date(options.lastAnswerTime));
+    this.currentDate = new Date(options.lastAnswerTime).getTime();
+    this.otherExpertId = 0;
+    this.getExpertFriendsList();
   },
   onShow(){
 

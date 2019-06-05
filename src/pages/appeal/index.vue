@@ -4,7 +4,7 @@
       <div class="panle_block nb">
         <div class="block_title">申诉内容</div>
         <div class="problem_content">
-          <textarea  maxlength="2000" placeholder="请输入申诉内容"></textarea>
+          <textarea  maxlength="200" v-model="complainingDesc" placeholder="请输入申诉内容"></textarea>
         </div>
       </div>
 
@@ -23,7 +23,7 @@
         
         </div>
       </div> -->
-        <div class="appeal_tips">需要申诉的，请说明情况和原因。平台在收到申诉和咨询款后的48小时内将作出全部、部分、或者不退款的决定。</div>
+        <div class="appeal_tips">需要申诉的，请说明情况和原因。平台在收到申诉后的48小时内将作出处理。</div>
     </div>
     <div class="btn_block">
       <!-- <div class="btn green plain">保存</div> -->
@@ -37,22 +37,54 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data(){
     return{
+      orderId:'',
+      complainingDesc:''
     }
   },
   computed: {
     ...mapState({
-   
+      userData: state => state.counter.userData
     })
   },
   mounted(){
 
   },
   methods: {
+    showToast(txt){
+      wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: 1500
+      })
+    },
     submit(){
-      this.$router.go(-1);
+      if(!this.complainingDesc){
+        this.showToast('请输入申诉内容');
+        return;
+      };
+      this.$http.request({
+        url:'UserComplaining',
+        data:{
+          orderId: this.orderId,
+          complainingUserId: this.userData.userId,
+          complainingDesc: this.complainingDesc
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.showToast('申诉已提交，请等待平台处理');
+          setTimeout(()=>{
+              this.$router.go(-1);
+          },1500)
+         
+        }
+      })
     }
   },
-  onShow(){
+  onLoad(options){
+    this.orderId = options.orderId;
    
   }
 }

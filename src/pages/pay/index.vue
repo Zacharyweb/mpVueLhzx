@@ -37,7 +37,7 @@
               <img class="img_file" :src="item">
               <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
             </div>
-            <img class="add_files_icon" src="../../../static/img/add_files_icon.png"  v-show="photosList.length < 5" @click="upLoadPhoto">
+            <img class="add_files_icon" src="../../../static/img/add_files_icon.png"  v-show="photosList.length < 1" @click="upLoadPhoto">
 
           </div>
         </div>
@@ -70,12 +70,19 @@ export default {
        
   },
   onLoad(options){
-    this.orderId = options.orderId*1;
+    this.orderId = options.orderId;
     this.price = options.price;
     this.quantity = options.quantity || 1;
     this.postPayMsg();
   },
   methods: {
+    showToast(txt){
+      wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: 1500
+      })
+    },
     postPayMsg(){
       this.$http.request({
         url:'UserPaying',
@@ -90,7 +97,7 @@ export default {
     upLoadPhoto(){
       let that = this;
       wx.chooseImage({
-        count: 5 - that.photosList.length,
+        count: 1 - that.photosList.length,
         success(res) {
           wx.showLoading({
             title: '图片上传中',
@@ -144,17 +151,12 @@ export default {
         return;
       };
 
-      let userFiles  = [];
-      if(this.photosList.length > 0){
-        this.photosList.forEach((item)=>{
-          userFiles.push({userId:this.userData.userId,fileUrl:item})
-        })
-      };
-
       this.$http.request({
-        url:'PutCurrentUser',
-        data: {
-          userFiles:userFiles,
+        url:'PaymentVoucher',
+        data:  {
+          userId: this.userData.userId,
+          orderId: this.orderId,
+          fileUrl: this.photosList[0]
         },
         flyConfig:{
           method: 'post'

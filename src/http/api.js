@@ -24,21 +24,25 @@ const API = {
   'GetSearchHistory':'/api/LhzxSearchHistory/Get/', // 搜索记录
   'DeleteSearchHistory':'/api/LhzxSearchHistory/Delete/', //清空记录
 
-
   'CreateOrder':'/api/LhzxOrder/PostOrder',//创建订单
   'GetUserOrderList':'/api/LhzxOrder/UserOrderList',//获取用户订单
   'GetExpertOrderList':'/api/LhzxOrder/ExpertOrderList',//获取专家的订单
-  'GetOrderDetail':'/api/LhzxOrder/GetOrderDetail',//获取订单详情
+  'GetOrderDetail':'/api/LhzxOrder/GetOrderDetail/',//获取订单详情
   'ReceiptOrder':'/api/LhzxOrder/Receipt', //专家接单
   'ModifyOrderOrder':'/api/LhzxOrder/ModifyOrder',//专家修改订单信息
-  'UserResureOrder':'/api/LhzxOrder/DoSureOrderInfo', //专家重新确认订单
+  'UserResureOrder':'/api/LhzxOrder/DoSureOrderInfo', //用户重新确认订单
   'AnswerOrder':'/api/LhzxOrder/Answer', //专家作答
   'UserDoSureAnswer':'/api/LhzxOrder/UserDoSure', // 用户确认（超过最后确认时间还未操作会自动确认）
   'UserPaying':'/api/LhzxOrder/Paying',//  用户支付订单（操作后系统将专家的收款二维码以模板消息发送给用户）
+  'PaymentVoucher':'/api/LhzxOrder/PaymentVoucher', // 用户提交支付凭证
   'ExpertPaySure':'/api/LhzxOrder/PaySure', // 专家确认订单（操作后系统将订单完成的消息推送给用户）
   'UseComment':'/api/LhzxOrder/OrderComment', //用户评价(超过最后评价时间后系统将自动好评)
   'UserComplaining':'/api/LhzxOrder/Complaining', // 申诉
   'ClosedOrder':'/api/LhzxOrder/Closed', // 关闭订单
+
+  'AddUserFriend':'/api/LhzxFriend/AddUserFriend', //添加关系户
+  'GetUserFriendList':'/api/LhzxFriend/UserFriendList',//获取用户的关系户好友
+
 }
 
 export {API, BASE_URL}

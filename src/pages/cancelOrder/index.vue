@@ -27,37 +27,84 @@
       </div>
 
       <div class="input_block" v-if="rejectResonId == 3">
-        <textarea class="text_area" placeholder="请输入其他原因"></textarea>
+        <textarea class="text_area" placeholder="请输入其他原因" v-model="closeDesc"></textarea>
       </div>
 
       <div class="btn_block">
-        <div class="btn large green">提交</div>
+        <div class="btn large green" @click="submit">提交</div>
       </div>
     </div>
 
   </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
+      closeDesc:'',
       rejectResonId:1,
+      orderId:0
     }
   },
-  components: {
-    
+  computed: {
+    ...mapState({
+      userData: state => state.counter.userData
+    })
   },
   methods: {
+    showToast(txt){
+      wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: 1500
+      })
+    },
     changeResonId(flag){
       if(this.rejectResonId == flag) return;
       this.rejectResonId = flag;
     },
+    submit(){
+      let closeDesc;
+      if(this.rejectResonId == 1){
+        closeDesc = '';
+      }else if(this.rejectResonId == 2){
+        closeDesc = '';
+      }else{
+        if(!this.closeDesc){
+           this.showToast('请填写其他原因');
+           return;
+        }else{
+          closeDesc = this.closeDesc;
+        }
+      }
+      this.$http.request({
+        url:'ClosedOrder',
+        data:{
+          closeType: 2,
+          closeDesc: closeDesc,
+          closerId: this.userData.userId,
+          orderId:this.orderId
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.showToast('订单已取消');
+          setTimeout(()=>{
+            this.$router.go(-1);
+          },1500);
+        }
+      })
+    }
   },
   created () {
    
   },
   onLoad: function (options) {
+    this.orderId = options.orderId;
    
   },
   onShow(){

@@ -24,7 +24,7 @@
           <img class="experts_avatar" :src="orderData.expertAvatarUrl">
           <div class="top_block_right">
             <div class="order_msg1">
-              <div class="experts_name">{{orderData.expertName}}<span>{{orderData.companyPosition}}&nbsp;|&nbsp;{{orderData.companyName}}</span></div>
+              <div class="experts_name">{{orderData.expertName}}<span>{{orderData.expertCompanyPosition}}&nbsp;|&nbsp;{{orderData.expertCompanyName}}</span></div>
             </div>
             <div class="order_msg3">
               <div class="order_response" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</div>
@@ -86,7 +86,7 @@
              </div>
           </div>
 
-          <div class="order_time">作答时间：2018-12-14 00:00:00</div>
+          <div class="order_time">作答时间：{{orderData.actualAnswerTime}}</div>
         </div>
         
         <div v-if="userType == 'u'">
@@ -99,8 +99,8 @@
            <!-- 专家修改订单信息后客户的操作 -->
            <div class="other_msg_block" v-if="orderData.status == 2">
              <span class="other_msg">订单信息已修改，请确认是否同意</span>
-             <span class="action_btn2">不同意</span>
-             <span class="action_btn">同意</span>
+             <span class="action_btn2" @click="userCloseOrder">不同意</span>
+             <span class="action_btn" >同意</span>
            </div>
    
 
@@ -108,8 +108,8 @@
            <div class="other_msg_block" v-if="orderData.status == 4">
              <span class="other_msg">是否满意此次作答？</span>
              <div class="action_btn_bar">
-                <span class="action_btn" @click="userConfirmOrder(1)">满意</span>
-                <span class="action_btn2" @click="userConfirmOrder(2)">一般</span>
+                <span class="action_btn" @click="userConfirmOrder('很满意')">满意</span>
+                <span class="action_btn2" @click="userConfirmOrder('一般满意')">一般</span>
                 <span class="action_btn2" @click="toAppeal">不满意</span>
              </div>
            </div>
@@ -129,9 +129,7 @@
            </div>
    
            <!-- 用户支付完成后可进行的操作 -->
-           <!-- <div class="other_msg_block" v-if="orderData.status == 6"> -->
-           <div class="other_msg_block">
-
+           <div class="other_msg_block" v-if="orderData.status == 6">
              <span class="other_msg">您已完成支付，可进行评价或追问~</span>
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(2)">追问</span>
@@ -182,7 +180,7 @@
           <div class="other_msg_block" v-if="orderData.status == 5 && payStatus == 'Y'">
             <span class="other_msg">用户已提交支付，请及时确认~</span>
             <div class="action_btn_bar">
-                <span class="action_btn2">未到账</span>
+                <span class="action_btn2" @click="toPayAppeal">未到账</span>
                 <span class="action_btn" @click="expertPaySure">已到账</span>
             </div>
           </div>
@@ -236,6 +234,8 @@
 <script>
 import util from '../../utils/index.js'
 import Dialog from '../../../static/vant/dialog/dialog';
+import { mapState, mapActions } from 'vuex'
+import {API, BASE_URL} from  '../../http/api.js'
 export default {
   data () {
     return {
@@ -265,9 +265,10 @@ export default {
       ss:'ss'
     }
   },
-
-  components: {
-    
+  computed: {
+    ...mapState({
+      userData: state => state.counter.userData
+    })
   },
 
   methods: {
@@ -280,7 +281,12 @@ export default {
     },
     // 专家修改订单
     toEditOrder(){
-      this.$router.push({path:'/pages/editOrder/index',query:{orderId:this.orderId}})
+      this.$router.push({path:'/pages/editOrder/index',query:{
+        orderId:this.orderId,
+        price:this.orderData.price,
+        quantity:this.orderData.quantity,
+        lastAnswerTime:this.orderData.lastAnswerTime
+      }})
     },
     // 专家拒绝订单
     toRejectOrder(){
@@ -306,6 +312,12 @@ export default {
     toAnswerPage(){
       this.$router.push({path:'/pages/answer/index',query:{orderId:this.orderId}})
     },
+    
+    // 专家未收款到账申诉
+    toPayAppeal(){
+      this.$router.push({path:'/pages/appeal/index',query:{orderId:this.orderId}})
+    },
+
     // 专家确认收款
     expertPaySure(){
       Dialog.confirm({
@@ -314,7 +326,7 @@ export default {
       }).then(() => {
         this.$http.request({
           url:'ExpertPaySure',
-          data:this.orderId*1,
+          data:this.orderId,
           flyConfig:{
             method: 'post'
           }
@@ -329,12 +341,6 @@ export default {
       });
     },
 
-
-    // 不满意去申诉
-    toAppeal(){
-      this.$router.push({path:'/pages/appeal/index',query:{orderId:this.orderId}})
-    },
-    
     // 用户取消订单
     userCloseOrder(){
       Dialog.confirm({
@@ -343,7 +349,12 @@ export default {
       }).then(() => {
         this.$http.request({
           url:'ClosedOrder',
-          data:this.orderId*1,
+          data:{
+            closeType: 1,
+            closeDesc: '',
+            closerId: this.userData.userId,
+            orderId:this.orderId
+          },
           flyConfig:{
             method: 'post'
           }
@@ -357,23 +368,60 @@ export default {
         
       });
     },
+    // 用户重新确认订单信息
+    userResureOrder(){
+      Dialog.confirm({
+        title: '同意订单修改',
+        message: '专家已修改订单信息，请再次确认是否同意修改。'
+      }).then(() => {
+        this.$http.request({
+          url:'UserResureOrder',
+          data:this.orderId*1,
+          flyConfig:{
+            method: 'post'
+          }
+        }).then(res => {
+          if(res.code == 1){
+            this.showToast('您已同意订单修改');
+            this.getOrderDetail();
+          }
+        });
+
+      }).catch(() => {
+        
+      });
+    },
      
-    // 用户确认订单
+    // 用户确认收到专家的回答
     userConfirmOrder(flag){
-      this.$http.request({
-        url:'UserDoSureAnswer',
-        data:{
-          orderid: this.orderId*1,
-          flag:flag
-        },
-        flyConfig:{
-          method: 'post'
-        }
-      }).then(res => {
-        if(res.code == 1){
-          this.getOrderDetail();
-        }
-      })
+      Dialog.confirm({
+        title: '确认回答',
+        message: '确认已收到专家的回答，并对回答内容' +  flag + '。'
+      }).then(() => {
+        this.$http.request({
+          url:'UserDoSureAnswer',
+          data:{
+            orderId: this.orderId*1,
+            satisfactionDegree: flag
+          },
+          flyConfig:{
+            method: 'post'
+          }
+        }).then(res => {
+          if(res.code == 1){
+            this.showToast('确认成功，稍后请及时支付账单。');
+            this.getOrderDetail();
+          }
+        });
+
+      }).catch(() => {
+        
+      });
+    },
+
+    // 不满意去申诉
+    toAppeal(){
+      this.$router.push({path:'/pages/appeal/index',query:{orderId:this.orderId}})
     },
 
     // 用户去支付
@@ -387,7 +435,7 @@ export default {
 
     // 用户去评论
     toComment(){
-      this.$router.push({path:'/pages/comment/index',query:{orderId:this.orderId}})
+      this.$router.push({path:'/pages/comment/index',query:{orderId:this.orderId,expertId:this.orderData.expertId}})
     },
     // 用户去追问
     toAskMore(){
@@ -409,12 +457,9 @@ export default {
           mask: false
         });
       }
+      let url = API['GetOrderDetail'] + this.orderId;
       this.$http.request({
-        url:'GetOrderDetail',
-        data:this.orderId*1,
-        flyConfig:{
-          method: 'post'
-        }
+        url:url,
       }).then(res => {
         wx.hideLoading();
         if(res.code == 1){

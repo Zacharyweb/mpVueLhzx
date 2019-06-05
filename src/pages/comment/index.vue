@@ -1,61 +1,19 @@
 <template>
   <div class="container">
 
-    <!-- <div class="comment_item">
-      <div class="comment_q">是否会推荐给好友？</div>
-      <div class="comment_a">
-        <span class="custom_checkbox active">是</span>
-        <span class="custom_checkbox">否</span>
-      </div>
-    </div>
-
-    <div class="comment_item">
-      <div class="comment_q">下次是否还会咨询该专家？</div>
-      <div class="comment_a">
-        <span class="custom_checkbox active">是</span>
-        <span class="custom_checkbox">否</span>
-      </div>
-    </div>
-
-    <div class="comment_tags">
-      <span class="tag_item active">专业</span>
-      <span class="tag_item">详细</span>
-      <span class="tag_item">有耐心</span>
-    </div>
-
-    <div class="comment_input">
-      <textarea placeholder="请输入评价内容"></textarea>
-    </div>
-
-    <div class="visible_block"> 
-        <span class="custom_checkbox active" style="margin-right:20px;">所有好友可见</span>
-        <span class="custom_checkbox" style="margin-right:0;">部分好友可见</span>
-    </div> -->
 
     <!-- 用户评论组件 -->
     <div class="comment_panel show">
       <div class="input_block">
-        <textarea class="text_area" placeholder="请输入评价内容" v-if="!visiblePanelShow"></textarea>
+        <textarea class="text_area" placeholder="请输入评价内容" v-model="commentContent" v-if="!visiblePanelShow && !addViewPanelShow"></textarea>
       </div>
-      
       <div class="select_list">
-        <!-- <div class="select_item fbt">
-          <div class="left">
-            <img src="../../../static/img/comment_icon1.png">
-            <span>满意程度</span>
-          </div>
-          <div class="right" @click="showActionSheet1">
-            <span>满意</span>
-            <img src="../../../static/img/arrow_right3.png">
-          </div>
-        </div> -->
-
         <div class="select_item fbt">
          <div class="left">
             <img src="../../../static/img/comment_icon2.png">
            <span>谁可以看</span>
          </div>
-         <div class="right" @click="visiblePanelShow = true">
+         <div class="right" @click="showVisiblePanel">
            <span>仅自己</span>
            <img src="../../../static/img/arrow_right3.png">
          </div>
@@ -71,25 +29,15 @@
            <img src="../../../static/img/arrow_right3.png">
          </div>
         </div>
+        
       </div>
 
       <div class="submit_block">
-         <div class="btn large green">提交</div>
+         <div class="btn large green" @click="submitComment">提交</div>
       </div>
     </div>
 
-    <van-action-sheet
-      :show="actionSheet1Show"
-      :actions="actions1"
-      @close="closeActionSheet1"
-      @select="selectAction1"
-    />
-    <van-action-sheet
-      :show="actionSheet2Show"
-      :actions="actions2"
-      @close="closeActionSheet2"
-      @select="selectAction2"
-    />
+ 
     <van-action-sheet
       :show="actionSheet3Show"
       :actions="actions3"
@@ -181,6 +129,7 @@
         </div>
       </scroll-view> -->
       <!-- <scroll-view scroll-y class="friend_list_wrap" :class="{'less_top':showSelectedPanel}"> -->
+
       <scroll-view scroll-y class="friend_list_wrap" style="top:48px;">
         <ul class="friend_list">
           <li class="friend_item" v-for="(item,index) in friendsList" :key="index" @click="selectFriend(index)">
@@ -203,25 +152,11 @@
 </template>
 <script>
 import Dialog from '../../../static/vant/dialog/dialog';
+import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      actionSheet1Show:false,
-      actions1:[
-        {
-          targetId:1,
-          name: '满意',
-        },
-        {
-          targetId:2,
-          name: '一般'
-        },
-        {
-          targetId:3,
-          name: '不满意'
-        }
-      ],
-
+  
       actionSheet3Show:false,
       actions3:[
         {
@@ -237,17 +172,32 @@ export default {
       visiblePanelShow:false,
 
       friendsList:[
-        {extend:false,selected:false},{extend:true,selected:false},{extend:true,selected:false},{extend:true,selected:false},{extend:true,selected:false},
-        {extend:false,selected:false},{extend:true,selected:false},{extend:true,selected:false},{extend:true,selected:false},{extend:true,selected:false}
+        {extend:false,selected:false},
+        {extend:true,selected:false},
+        {extend:true,selected:false},
+        {extend:true,selected:false},
+        {extend:true,selected:false},
+        {extend:false,selected:false},
+        {extend:true,selected:false},
+        {extend:true,selected:false},
+        {extend:true,selected:false},
+        {extend:true,selected:false}
       ],
       sTop:0,
       addViewPanelTitle:'',
       addViewPanelShow:false,
 
-      visibleType:0
+      visibleType:0,
+
+      orderId:0,
+      expertId:0,
+      commentContent:''
     }
   },
   computed:{
+    ...mapState({
+      userData: state => state.counter.userData
+    }),
     showSelectedPanel(){
       return this.friendsList.every((item)=>{
         return item.selected == false;
@@ -257,7 +207,7 @@ export default {
   onShareAppMessage(obj){
       return {
         title:'您的好友邀请您加入咨询堂',
-        path:'/pages/index/index?mineId=2019&uId=2018',
+        path:'/pages/expertCard/index?userId=' + this.userData.userId + '&expertId=' + this.expertId,
         imageUrl:'/static/img/share_test_img.png'
       }
   },
@@ -267,6 +217,13 @@ export default {
   },
 
   methods: {
+    showToast(txt){
+      wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: 1500
+      })
+    },
     selectFriend(index){
       this.friendsList[index].selected = !this.friendsList[index].selected;
       // this.selectFriendsPanelScrollBottom();
@@ -279,28 +236,20 @@ export default {
       }).exec()
     },
 
-    showActionSheet1(){
-      this.actionSheet1Show = true;
+  
+
+    showVisiblePanel(){
+      this.visiblePanelShow = true
     },
    
     showActionSheet3(){
       this.actionSheet3Show = true;
     },
-    closeActionSheet1(){
-      this.actionSheet1Show = false;
-    },
-  
+
     closeActionSheet3(){
       this.actionSheet3Show = false;
     },
-    selectAction1(data){
-      if(data.mp.detail.targetId == 1){
-
-      }else{
-       
-      };
-      this.actionSheet1Show = false;
-    },
+  
 
     selectAction3(data){
       if(data.mp.detail.targetId == 1){
@@ -325,13 +274,67 @@ export default {
         this.addViewPanelTitle = '设置对谁不可见';
       }
       this.addViewPanelShow = true;
+    },
+
+    getUserFriendsList(){
+      this.$http.request({
+        url:'GetUserFriendList',
+        data:{
+          userId: this.userData.userId,
+          isExpert:1
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          console.log(res.data)
+          res.data.forEach(item => {
+            item.flag = false;
+          }); 
+          this.friendsList = res.data;
+        }
+      })
+    },
+
+    submitComment(){
+      if(!this.commentContent){
+        this.showToast('请输入评价内容');
+        return;
+      };
+      this.$http.request({
+        url:'UseComment',
+        data:{
+          orderId: this.orderId,
+          commentContent:this.commentContent,
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          console.log(res.data)
+          res.data.forEach(item => {
+            item.flag = false;
+          }); 
+          this.friendsList = res.data;
+        }
+      })
     }
+
+
   },
   created () {
    
   },
-  onShow(){
+  onLoad(options){
     this.visiblePanelShow = false;
+    this.orderId= options.orderId;
+    this.expertId = options.expertId;
+
+  },
+  onShow(){
+
   }
 }
 </script>
