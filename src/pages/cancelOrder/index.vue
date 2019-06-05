@@ -68,9 +68,9 @@ export default {
     submit(){
       let closeDesc;
       if(this.rejectResonId == 1){
-        closeDesc = '';
+        closeDesc = '不好意思，最近忙不过来，希望下次能再为你服务。';
       }else if(this.rejectResonId == 2){
-        closeDesc = '';
+        closeDesc = '不好意思，这个问题不在我的专业领域，希望下次能再为你服务。';
       }else{
         if(!this.closeDesc){
            this.showToast('请填写其他原因');
