@@ -332,7 +332,6 @@ export default {
           }
         }).then(res => {
           if(res.code == 1){
-            this.showToast('已确认收款');
             this.getOrderDetail();
           }
         })
@@ -360,7 +359,6 @@ export default {
           }
         }).then(res => {
           if(res.code == 1){
-            this.showToast('订单已取消');
             this.getOrderDetail();
           }
         })
@@ -382,7 +380,6 @@ export default {
           }
         }).then(res => {
           if(res.code == 1){
-            this.showToast('您已同意订单修改');
             this.getOrderDetail();
           }
         });
