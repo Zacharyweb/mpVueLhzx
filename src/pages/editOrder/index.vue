@@ -31,9 +31,9 @@
 
         <div class="edit_item">
           <span class="item_name">推荐至其他专家：</span>
-          <span class="item_content" @click="friendsListShow = true" v-show="otherExpertId == 0">选择专家好友</span>
-          <span class="item_content" @click="friendsListShow = true" v-show="otherExpertId != 0">已选择专家好友：{{selectedOtherExpert.name}}</span>
-          <img class="item_icon" @click="friendsListShow = true" src="../../../static/img/friend_icon2.png">
+          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId == 0">选择专家好友</span>
+          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId != 0">已选择专家好友：{{selectedOtherExpert.name}}</span>
+          <img class="item_icon" @click="toSelectOtherExpert" src="../../../static/img/friend_icon2.png">
         </div>
 
         <div class="btn_block">
@@ -144,7 +144,8 @@ export default {
           isExpert:1
         },
         flyConfig:{
-          method: 'post'
+          method: 'post',
+
         }
       }).then(res => {
         if(res.code == 1){
@@ -152,9 +153,16 @@ export default {
           res.data.forEach(item => {
             item.flag = false;
           }); 
-          this.friendsList = res.data;
+          this.friendsList = res.data || [];
         }
       })
+    },
+    toSelectOtherExpert(){
+      if(this.friendsList.length == 0){
+        this.showToast('没有可选择的专家好友');
+        return;
+      }
+      this.friendsListShow = true;
     },
     // 选择其他专家变动
     selectOtherExpertChange(index){
