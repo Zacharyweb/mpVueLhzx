@@ -63,7 +63,9 @@
               </div>
             </div>
           </div>
-          <span class="action_btn" @click="sureAddFriend(item,index)">同意添加</span>
+          <span class="action_btn" @click="sureAddFriend(item,index)" v-if="item.isAgree == 0">同意添加</span>
+          <span class="action_btn2" v-if="item.isAgree == 1">已添加</span>
+
         </div>
 
       </div>
@@ -85,7 +87,7 @@ export default {
     return {
       currentTab: 0,
       friendsList:[],
-      newFriendsList:[{nickName:'朱三'}]
+      newFriendsList:[]
     }
   },
   computed:{
@@ -161,10 +163,13 @@ export default {
         url:'GetUserFriendList',
         data:{
           userId: this.userData.userId,
-          isExpert:0
+          isExpert:1
         },
         flyConfig:{
           method: 'post'
+        },
+        config:{
+          hideMsg:true
         }
       }).then(res => {
         if(res.code == 1){
@@ -181,6 +186,9 @@ export default {
         url:'getSureUserFriendList',
         data:{
           userid:this.userData.userId
+        },
+        config:{
+          hideMsg:true
         }
       }).then(res => {
         if(res.code == 1){
@@ -193,7 +201,7 @@ export default {
       this.$http.request({
         url:'SureUserFriend',
         data:{
-          userId: 6,
+          userId: item.userId,
           friendId: this.userData.userId
         },
         flyConfig:{
@@ -202,7 +210,7 @@ export default {
       }).then(res => {
         if(res.code == 1){
           this.showToast('添加成功');
-          this.newFriendsList.splice(1,index);
+          this.newFriendsList[index].isAgree = 1;
         }
       })
     }
@@ -215,7 +223,7 @@ export default {
     if(options.tab){
       this.currentTab = options.tab;
     }
-    if(options.tab == 1){
+    if(this.currentTab == 1){
       this.getUserNewFriendsList();
     }else{
       this.getUserFriendsList();
@@ -348,6 +356,19 @@ export default {
       color: #1fb7b6;
       background-color: #fff;
       border:1px solid #1fb7b6;
+      border-radius: 12px;
+      padding:0 10px;
+      font-size: 12px;
+    }
+    .action_btn2{
+      position: absolute;
+      top:27px;
+      right: 15px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      color: #fff;
+      background-color: #ccc;
       border-radius: 12px;
       padding:0 10px;
       font-size: 12px;
