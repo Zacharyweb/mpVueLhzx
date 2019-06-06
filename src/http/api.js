@@ -41,7 +41,11 @@ const API = {
   'ClosedOrder':'/api/LhzxOrder/Closed', // 关闭订单
 
   'AddUserFriend':'/api/LhzxFriend/AddUserFriend', //添加关系户
+  'DeleteUserFriend':'/api/LhzxFriend/DeleteUserFriend', // 删除关系户
+  'getSureUserFriendList':'/api/LhzxFriend/SureUserFriendList/', //获取关系户申请列表
+  'SureUserFriend':'/api/LhzxFriend/SureUserFriend',// 同意被邀请添加为关系户
   'GetUserFriendList':'/api/LhzxFriend/UserFriendList',//获取用户的关系户好友
+
 
 }
 

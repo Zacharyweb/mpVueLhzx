@@ -1,16 +1,23 @@
 <template>
   <div class="container hpb" :class="{'isX': isX}">
-    <!-- <div class="no_data_tips">
+    <div class="tab_fix_wrap">
+      <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabChange">
+          <van-tab title="已添加的"></van-tab>
+          <van-tab title="未添加的"></van-tab>
+      </van-tabs>
+    </div>
+    <div style="height:32px;"></div>
+    <div class="no_data_tips" v-show="(currentTab == 0 && friendsList.length == 0) || (currentTab == 1 && newFriendsList.length == 0) ">
       <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-      <span>还没有已添加的关系户哦~</span>
-    </div>  -->
-    <div class="experts_list type3_list">
+      <span>还没有相关的关系户哦~</span>
+    </div> 
+    <div class="experts_list type3_list" v-show="currentTab == 0">
       <div class="experts_item" style="padding-bottom:0px;" v-for="(item,index) in friendsList" :key="index">
         <div class="top_block" style="padding-bottom:14px;">
-          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <img class="experts_avatar" :src="item.avatarUrl">
           <div class="top_block_right">
             <div class="experts_msg1">
-              <span class="experts_name">朱两边</span>
+              <span class="experts_name">{{item.nickName}}</span>
             </div>
             <div class="experts_msg2">
               <div class="share_expert_btn" @click="extendExperts(index)">
@@ -19,7 +26,7 @@
               </div>
             </div>
           </div>
-          <span class="action_btn" @click="deleteFriend">删除好友</span>
+          <span class="action_btn1" @click="deleteFriend(item,index)">删除好友</span>
         </div>
 
         <div class="share_experts"  v-show="item.extend">
@@ -41,6 +48,27 @@
       </div>
     </div>
 
+    <div class="experts_list type3_list" v-show="currentTab == 1">
+      
+      <div class="experts_item" style="padding-bottom:0px;" v-for="(item,index) in newFriendsList" :key="index">
+        <div class="top_block" style="padding-bottom:14px;">
+          <img class="experts_avatar" :src="item.avatarUrl">
+          <div class="top_block_right">
+            <div class="experts_msg1">
+              <span class="experts_name">{{item.nickName}}</span>
+            </div>
+            <div class="experts_msg2">
+              <div class="share_expert_btn">
+                <span>申请添加您为关系户</span>
+              </div>
+            </div>
+          </div>
+          <span class="action_btn" @click="sureAddFriend(item,index)">同意添加</span>
+        </div>
+
+      </div>
+    </div>
+
     <div class="bottom_fixed" :class="{'isX':isX}">
        <button open-type="share" class="action_btn1">添加关系户</button>
     </div>
@@ -51,21 +79,19 @@
 <script>
 import { mapState } from 'vuex'
 import Dialog from '../../../static/vant/dialog/dialog';
+import {API, BASE_URL} from  '../../http/api.js';
 export default {
   data () {
     return {
-
-      friendsList:[
-        {extend:false},{extend:false},{extend:false},
-        {extend:false},{extend:false},{extend:false},
-        {extend:false},{extend:false},{extend:false},
-      ],
-
+      currentTab: 0,
+      friendsList:[],
+      newFriendsList:[{nickName:'朱三'}]
     }
   },
   computed:{
     ...mapState({
-      isX: state => state.counter.isX
+      isX: state => state.counter.isX,
+      userData: state => state.counter.userData
     })
   },
   components: {
@@ -74,29 +100,126 @@ export default {
   onShareAppMessage(obj){
       return {
         title:'您的好友邀请您加入咨询堂',
-        path:'/pages/index/index?mineId=2019&uId=2018',
+        path:'/pages/index/index?userId=' + this.userData.userId,
+        path:'/pages/login/index?userId=' + this.userData.userId + '&fromType=3',
         imageUrl:'/static/img/share_test_img.png'
       }
   },
 
   methods: {
-    deleteFriend(p){
+    onTabChange(event){
+      if(this.currentTab == event.target.index){
+        return;
+      }
+      if(event.target.index == 1){
+        this.getUserNewFriendsList();
+      }else{
+        this.getUserFriendsList();
+      };
+      this.currentTab = event.target.index;
+    },
+    showToast(txt){
+      wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: 1500
+      })
+    },
+
+    deleteFriend(item,index){
       var that = this;
       Dialog.confirm({
         title: '确认解除关系？',
         message: '解除关系后，您将从对方的关系户中删除'
       }).then(() => {
+        this.$http.request({
+          url:'DeleteUserFriend',
+          data:{
+            userId: this.userData.userId,
+            friendId: item.id,
+          },
+          flyConfig:{
+            method: 'post'
+          }
+        }).then(res => {
+          if(res.code == 1){
+            this.friendsList.splice(index,1);
+          }
+        })
        
       }).catch(() => {
         
       });
     },
+
     extendExperts(index){
       this.friendsList[index].extend = !this.friendsList[index].extend;
+    },
+
+    getUserFriendsList(){
+      this.$http.request({
+        url:'GetUserFriendList',
+        data:{
+          userId: this.userData.userId,
+          isExpert:0
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          res.data.forEach(item => {
+            item.extend = false;
+          }); 
+          this.friendsList = res.data;
+        }
+      })
+    },
+
+    getUserNewFriendsList(){
+      this.$http.request({
+        url:'getSureUserFriendList',
+        data:{
+          userid:this.userData.userId
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.newFriendsList = res.data;
+        }
+      })
+    },
+
+    sureAddFriend(item,index){
+      this.$http.request({
+        url:'SureUserFriend',
+        data:{
+          userId: 6,
+          friendId: this.userData.userId
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.showToast('添加成功');
+          this.newFriendsList.splice(1,index);
+        }
+      })
     }
   },
+
   created () {
    
+  },
+  onLoad(options){
+    if(options.tab){
+      this.currentTab = options.tab;
+    }
+    if(options.tab == 1){
+      this.getUserNewFriendsList();
+    }else{
+      this.getUserFriendsList();
+    }
   }
 }
 </script>
@@ -107,6 +230,13 @@ export default {
 }
 .container.hpb.isX{
   padding-bottom: 82px;
+}
+.tab_fix_wrap{
+  position: fixed;
+  width: 100%;
+  top:0;
+  left: 0;
+  z-index: 2;
 }
 
 .experts_item{
@@ -204,6 +334,20 @@ export default {
       align-items: center;
       color: #fff;
       background-color: #1fb7b6;
+      border-radius: 12px;
+      padding:0 10px;
+      font-size: 12px;
+    }
+    .action_btn1{
+      position: absolute;
+      top:27px;
+      right: 15px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      color: #1fb7b6;
+      background-color: #fff;
+      border:1px solid #1fb7b6;
       border-radius: 12px;
       padding:0 10px;
       font-size: 12px;

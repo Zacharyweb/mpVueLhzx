@@ -250,8 +250,9 @@ export default {
   onShareAppMessage(obj){
       console.log(obj);
       return {
-        title:this.userData.nickName + '向你推荐'+ this.expertData.major + '专家' + this.expertData.nickName,
-        path:'/pages/expertCard/index?userId=' + this.userData.userId + '&expertId=' + this.expertId,
+        title:'您的好友' + this.userData.nickName + '向你推荐一位咨询堂专家',
+        path:'/pages/login/index?userId=' + this.userData.userId + '&expertId=' + this.expertId + '&fromType=1',
+        imageUrl:'/static/img/share_test_img.png'
       }
   },
   methods: {

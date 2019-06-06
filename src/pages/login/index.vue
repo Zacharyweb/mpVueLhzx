@@ -1,39 +1,38 @@
 <template>
   <div class="container">
-    <div class="user_avatar_panel">
-        <!-- <img class="user_avatar" src="../../../static/img/avatar.jpeg"> -->
-        <img class="user_avatar" v-if="userData" :src="userData.avatarUrl">
-        <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg">
-        <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
-    </div>
-    <div class="base_msg_panel">
-      <ul class="form_list">
-        <li class="form_item">
-          <div class="item_content">
-            <input type="number" maxlength='11' v-model="mobile" style="width:190px;" placeholder="请输入手机号">
-            <span class="devide_line"></span>
-            <!-- <span class="tips_text1" @click="sendVcode" v-if="status == 1">发送验证码</span> -->
-            <button class="tips_text1" v-if="status == 1" @getuserinfo="onGotUserInfo" open-type="getUserInfo">发送验证码</button>
-            <span class="tips_text2" v-if="status == 2">已发送{{timeText}}s</span>
-          </div>
-        </li>
-
-        <li class="form_item">
-          <div class="item_content">
-            <input type="number" maxlength='6' v-model="vcode" placeholder="请输入验证码">
-          </div>
-        </li>
-
-      </ul>
+    <div v-if="showLoginPage">
+      <div class="user_avatar_panel">
+          <!-- <img class="user_avatar" src="../../../static/img/avatar.jpeg"> -->
+          <img class="user_avatar" v-if="userData" :src="userData.avatarUrl">
+          <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg">
+          <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
+      </div>
+      <div class="base_msg_panel">
+        <ul class="form_list">
+          <li class="form_item">
+            <div class="item_content">
+              <input type="number" maxlength='11' v-model="mobile" style="width:190px;" placeholder="请输入手机号">
+              <span class="devide_line"></span>
+              <!-- <span class="tips_text1" @click="sendVcode" v-if="status == 1">发送验证码</span> -->
+              <button class="tips_text1" v-if="status == 1" @getuserinfo="onGotUserInfo" open-type="getUserInfo">发送验证码</button>
+              <span class="tips_text2" v-if="status == 2">已发送{{timeText}}s</span>
+            </div>
+          </li>
   
-      <div class="btn_block">
-        <div class="btn large green" @click="toLogin">登录</div>
-        <!-- <button class="btn large green" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录</button> -->
+          <li class="form_item">
+            <div class="item_content">
+              <input type="number" maxlength='6' v-model="vcode" placeholder="请输入验证码">
+            </div>
+          </li>
+  
+        </ul>
+    
+        <div class="btn_block">
+          <div class="btn large green" @click="toLogin">登录</div>
+          <!-- <button class="btn large green" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录</button> -->
+        </div>
       </div>
     </div>
-    
-
-
   </div>
 </template>
 <script>
@@ -50,12 +49,17 @@ export default {
       userId:'',
       vcode:'',
 
-      originalData:{}
+      originalData:{},
+      fromType:0, // 1:来自专家详情 2：来自评价选择好友 3：来自添加关系户
+      fromUserId:0,
+      shareExpertId:0,
+      showLoginPage:false,
     }
   },
   computed: {
     ...mapState({
-      userData: state => state.counter.userData
+      userData: state => state.counter.userData,
+      
     })
   },
 
@@ -198,12 +202,64 @@ export default {
           that.updateUserMsg({...data,...that.originalData});
           let userDataStr = JSON.stringify({...data,...that.originalData});
           wx.setStorageSync('userData', userDataStr);
-          that.$router.go(-1);
+         
+          if(this.fromType == 1){
+            wx.redirectTo({
+              url: '/pages/expertDetail/index?id=' + this.expertId
+            })
+          }else if(this.fromType == 2){
+            wx.redirectTo({
+              url: '/pages/expertDetail/index?id=' + this.expertId
+            })
+          }else if(this.fromType == 3){
+            this.addUserFriend();
+          }else{
+            that.$router.go(-1);
+          } 
         }
       })
     },
     toUseNotice(){
       this.$router.push('/pages/useNotice/index')
+    },
+    checkIfLogin(){
+      if(this.userData && this.userData.accessToken){
+        if(this.fromType == 1){
+          wx.redirectTo({
+            url: '/pages/expertDetail/index?fromUserId=' + this.fromUserId + '&id=' + this.expertId
+          })
+        }else if(this.fromType == 2){
+          wx.redirectTo({
+            url: '/pages/expertDetail/index?fromUserId=' + this.fromUserId + '&id=' + this.expertId
+          })
+        }else if(this.fromType == 3){
+           this.addUserFriend();
+          
+        }else{
+          wx.switchTab({
+            url: '/pages/index/index'
+          });
+        }    
+      }else{
+        this.showLoginPage = true;
+      }
+    },
+    addUserFriend(){
+      this.$http.request({
+        url:'AddUserFriend',
+        data:{
+          userId: this.fromUserId,
+          friendId: this.userData.userId,
+          remark:''
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        wx.redirectTo({
+          url: '/pages/myRelation/index?tab=1' 
+        })
+      })
     }
   },
   created () {
@@ -212,9 +268,15 @@ export default {
   mounted(){
    
   },
-  onLoad(){
+  onLoad(options){
+    this.fromType = options.fromType || 0; 
+    this.fromUserId = options.userId || 0;
+    this.shareExpertId = options.expertId || 0;
+
     this.mobile = '';
     this.vcode = '';
+    this.showLoginPage = false;
+    this.checkIfLogin();
   },
   onShow(){
     this.status = 1;

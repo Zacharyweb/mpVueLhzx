@@ -244,6 +244,8 @@ module.exports = [
       navigationBarTitleText: '我的关系',
       usingComponents: {
         "van-dialog": "/static/vant/dialog/index",
+        "van-tab": "/static/vant/tab/index",
+        "van-tabs": "/static/vant/tabs/index",
       }
     }
   },
