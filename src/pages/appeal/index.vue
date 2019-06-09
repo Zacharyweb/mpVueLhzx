@@ -50,13 +50,6 @@ export default {
 
   },
   methods: {
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
     submit(){
       if(!this.complainingDesc){
         this.showToast('请输入申诉内容');

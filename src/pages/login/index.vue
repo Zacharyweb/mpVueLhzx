@@ -204,13 +204,9 @@ export default {
           wx.setStorageSync('userData', userDataStr);
          
           if(this.fromType == 1){
-            wx.redirectTo({
-              url: '/pages/expertDetail/index?id=' + this.expertId
-            })
+            this.shareExpert();
           }else if(this.fromType == 2){
-            wx.redirectTo({
-              url: '/pages/expertDetail/index?id=' + this.expertId
-            })
+            this.shareExpert();
           }else if(this.fromType == 3){
             this.addUserFriend();
           }else{
@@ -225,16 +221,11 @@ export default {
     checkIfLogin(){
       if(this.userData && this.userData.accessToken){
         if(this.fromType == 1){
-          wx.redirectTo({
-            url: '/pages/expertDetail/index?fromUserId=' + this.fromUserId + '&id=' + this.expertId
-          })
+          this.shareExpert()
         }else if(this.fromType == 2){
-          wx.redirectTo({
-            url: '/pages/expertDetail/index?fromUserId=' + this.fromUserId + '&id=' + this.expertId
-          })
+          this.shareExpert()
         }else if(this.fromType == 3){
            this.addUserFriend();
-          
         }else{
           wx.switchTab({
             url: '/pages/index/index'
@@ -259,6 +250,24 @@ export default {
         wx.redirectTo({
           url: '/pages/myRelation/index?tab=1' 
         })
+      })
+    },
+    shareExpert(){
+       this.$http.request({
+        url:'ShareExpert',
+        data:{
+          userId: this.fromUserId,
+          shareUserId: this.userData.userId,
+          expertId: this.shareExpertId
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        wx.redirectTo({
+          url: '/pages/expertDetail/index?id=' + this.shareExpertId 
+        })
+      
       })
     }
   },

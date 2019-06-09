@@ -593,14 +593,6 @@ export default {
       if(!this.checkedStatus()) return;
       this.outLink.push({name:'',link:''});
     },
-
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
     getAllMajor(){
       this.major = [];
       this.$http.request({

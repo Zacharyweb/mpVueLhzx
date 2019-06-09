@@ -26,7 +26,7 @@
     </div>
 
     <div class="btn_block">
-      <div class="btn green plain">保存</div>
+      <!-- <div class="btn green plain">保存</div> -->
       <div class="btn green" @click="submitAnswer">提交作答</div>
     </div>
   </div>
@@ -37,13 +37,14 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data(){
     return{
+      orderId:0,
       answer:'',
       photosList:[],
     }
   },
   computed: {
     ...mapState({
-      
+      userData: state => state.counter.userData
     })
   },
   mounted(){
@@ -108,15 +109,16 @@ export default {
       let userFiles  = [];
       if(this.photosList.length > 0){
         this.photosList.forEach((item)=>{
-          userFiles.push({userId:this.userData.userId,fileUrl:item})
+          userFiles.push({userId:this.userData.userId,fileUrl:item,orderId:this.orderId})
         })
       };
 
       this.$http.request({
         url:'AnswerOrder',
         data: {
-          answer:this.answer,
-          userFiles:userFiles
+          orderId: this.orderId,
+          questionAnswerText:this.answer,
+          answerFiles:userFiles
         },
         flyConfig:{
           method: 'post'
@@ -131,6 +133,11 @@ export default {
       })
 
     },
+  },
+  onLoad(options){
+    this.orderId = options.orderId*1;
+    this.answer = '';
+    this.photosList = [];
   },
   onShow(){
 

@@ -30,7 +30,7 @@
               <div class="order_response" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</div>
               <div class="order_response" v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</div>
               <div class="order_response" v-if="orderData.actualAnswerTime">作答时间：{{orderData.actualAnswerTime}}</div>
-              <div class="order_cost"><span>费用：{{orderData.price*orderData.quantity}}元</span><span class="sub_text">{{orderData.responseTime}}分钟内回应&nbsp;|&nbsp;{{orderData.answeringTime/60}}小时内作答</span></div>
+              <div class="order_cost"><span>费用：{{orderData.amount}}元</span><span class="sub_text">{{orderData.responseTime}}分钟内回应&nbsp;|&nbsp;{{orderData.answeringTime/60}}小时内作答</span></div>
             </div>
           </div>
         </div>
@@ -51,35 +51,44 @@
           <div class="order_time">咨询发起时间：{{orderData.creationTime}}</div>
         </div>
 
-        <!-- 专家拒绝并推荐 -->
-        <div class="bottom_block" v-if="orderData.status == 9 && rejectType == 2">
+        <!-- 用户取消订单 -->
+        <div class="bottom_block" v-if="orderData.status == 9 && !orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">订单关闭：</span>专家取消订单，原因：不好意思最近太忙没时间回复
+              <span class="question_title">订单关闭：</span>用户&nbsp;<span style="font-weight:bold;">{{orderData.closerNickName}}</span>&nbsp;已取消订单。
           </div>
-          <div class="order_time">订单关闭时间：2018-12-14 00:00:00</div>
+          <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
+        </div>
+
+
+        <!-- 专家取消订单 -->
+        <div class="bottom_block" v-if="orderData.status == 9 && orderData.closeDesc && !orderData.otherExpertId">
+          <div class="question">
+              <span class="question_title">订单关闭：</span>专家取消订单，原因：{{orderData.closeDesc}}
+          </div>
+          <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
         </div>
 
         <!-- 专家拒绝并推荐其他专家 -->
-        <div class="bottom_block" v-if="orderData.status == 9 && rejectType == 3">
+        <div class="bottom_block" v-if="orderData.status == 9 && orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">订单关闭：</span>专家取消订单，并推荐了相关专家&nbsp;<span class="link_text">朱两边2</span>&nbsp;,可转至其推荐专家详情页了解推荐专家并重新发起咨询。
+              <span class="question_title">订单关闭：</span>专家取消订单，并推荐了相关专家&nbsp;<span class="link_text" @click="toOtherExpertDetail(orderData.otherExpertId)">{{orderData.otherExpertName}}</span>&nbsp;,可转至其推荐专家详情页了解推荐专家并重新发起咨询。
           </div>
-          <div class="order_time">订单关闭时间：2018-12-14 00:00:00</div>
+          <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
         </div>
 
         <!-- 专家修改订单-->
-        <div class="bottom_block" v-if="orderData.status == 2">
+        <div class="bottom_block" v-if="orderData.status == 1">
           <div class="question">
-              <span class="question_title">订单变更：</span>专家已变更订单信息，<span class="colorful_text">订单费用由66元变更至88元，作答时间由</span>，请重新确认订单信息。
+              <span class="question_title">订单变更：</span>专家已变更订单信息，<span class="colorful_text">订单费用为{{orderData.amount}}元，最晚作答时间为{{orderData.lastAnswerTime}}</span>，请用户重新确认订单信息。
           </div>
-          <div class="order_time">订单变更时间：2018-12-14 00:00:00</div>
+          <div class="order_time">订单变更时间：{{orderData.lastModificationTime}}</div>
         </div>
 
-        <div class="bottom_block" v-if="orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8">
+        <div class="bottom_block" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8">
           <div class="question">
-              <span class="question_title">作答内容：</span>我是作答内容我是作答，内容我是作答内容我是作答内容我是作答内容我是作答内容我是作答内容，我是作答内容我是作答内容我是作答内容，我是作答内容我是作答内容我是作答内容，我是作答内容我是作答内容我是作答内容，我是作答内容我是作答内容我是作答内容，我是作答内容我是作答内容我是作答内容，我是作答内容我是作答内容我是作答内容，我是作答内容我是作答内容我是作答内容。
+              <span class="question_title">作答内容：</span>{{orderData.questionAnswerText}}
           </div>
-          <div class="question_files">
+          <div class="question_files" v-if="questionImgs.length > 0">
              <div class="question_files_title">相关附件：</div>
              <div class="img_block">
                <img v-for="(item,index) in answerImgs" :key="index" :src="item" alt="" @click="showAnswerImgsSwiper(index)">
@@ -97,15 +106,15 @@
            </div>
    
            <!-- 专家修改订单信息后客户的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 2">
+           <div class="other_msg_block" v-if="orderData.status == 1">
              <span class="other_msg">订单信息已修改，请确认是否同意</span>
              <span class="action_btn2" @click="userCloseOrder">不同意</span>
-             <span class="action_btn" >同意</span>
+             <span class="action_btn" @click="userResureOrder">同意</span>
            </div>
    
 
            <!-- 专家回答后用户可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 4">
+           <div class="other_msg_block" v-if="orderData.status == 3">
              <span class="other_msg">是否满意此次作答？</span>
              <div class="action_btn_bar">
                 <span class="action_btn" @click="userConfirmOrder('很满意')">满意</span>
@@ -115,7 +124,7 @@
            </div>
 
            <!-- 专家回答后用户可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 5 && payStatus == 'N'">
+           <div class="other_msg_block" v-if="orderData.status == 4">
              <span class="other_msg">请24小时内完成本次费用支付~</span>
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(1)">追问</span>
@@ -124,7 +133,7 @@
            </div>
    
             <!-- 用户支付中时的提示 -->
-           <div class="other_msg_block" v-if="orderData.status == 5 && payStatus == 'Y'">
+           <div class="other_msg_block" v-if="orderData.status == 5">
              <span class="other_msg">您已提交支付，请等待专家确认。专家确认后您可继续追问~</span>
            </div>
    
@@ -139,7 +148,7 @@
 
           <!-- 用户不满意作答申诉 -->
           <div class="other_msg_block" v-if="orderData.status == 8">
-             <span class="other_msg">您已提交申诉，客服正在处理中，请稍后</span>
+             <span class="other_msg">申诉已提交，平台正在处理中，请稍后</span>
           </div>
         </div>
 
@@ -155,29 +164,29 @@
           </div>
   
           <!-- 修改订单后等待用户确认 -->
-          <div class="other_msg_block" v-if="orderData.status == 2">
+          <div class="other_msg_block" v-if="orderData.status == 1">
             <span class="other_msg">您已修改订单信息，请等待用户确认~</span>
           </div>
   
           <!-- 已接单时专家的操作 -->
-          <div class="ex_action_block" v-if="orderData.status == 3">
+          <div class="ex_action_block" v-if="orderData.status == 2">
               <div class="action_btn_bar">
                 <span class="action_btn" @click="toAnswerPage">马上作答</span>
              </div>
           </div>
 
           <!-- 已作答等待用户确认 -->
-          <div class="ex_action_block" v-if="orderData.status == 4">
+          <div class="ex_action_block" v-if="orderData.status == 3">
             <span class="other_msg">您已提交作答内容，请等待用户确认</span>
           </div>
 
           <!-- 用户支付前-->
-          <div class="other_msg_block" v-if="orderData.status == 5 && payStatus == 'N'">
+          <div class="other_msg_block" v-if="orderData.status == 4">
             <span class="other_msg">用户已确认作答内容，请等待用户完成支付~</span>
           </div>
 
           <!-- 用户支付完成后专家可进行的操作 -->
-          <div class="other_msg_block" v-if="orderData.status == 5 && payStatus == 'Y'">
+          <div class="other_msg_block" v-if="orderData.status == 5">
             <span class="other_msg">用户已提交支付，请及时确认~</span>
             <div class="action_btn_bar">
                 <span class="action_btn2" @click="toPayAppeal">未到账</span>
@@ -187,7 +196,7 @@
 
           <!-- 用户不满意作答申诉 -->
           <div class="other_msg_block" v-if="orderData.status == 8">
-             <span class="other_msg">用户已提交申诉，客服正在处理中，请稍后~</span>
+             <span class="other_msg">申诉已提交，平台正在处理中，请稍后~</span>
           </div>
           
         </div>
@@ -241,19 +250,15 @@ export default {
     return {
       orderId:'',
       userType:'',
-      payStatus:'N',
-      rejectType:1, //1:用户取消 2：专家取消并没相关推荐 3:专家取消有相关推荐
+
+ 
 
       questionImgs: [],
 
       questionImgsSwiperShow: false,
       questionImgsswiperCurrent:2,
 
-      answerImgs:[
-        'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-        'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
-        'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
-      ],
+      answerImgs:[],
       answerImgsSwiperShow: false,
       answerImgsswiperCurrent:2,
       orderData:{},
@@ -272,25 +277,20 @@ export default {
   },
 
   methods: {
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
+
     // 专家修改订单
     toEditOrder(){
       this.$router.push({path:'/pages/editOrder/index',query:{
         orderId:this.orderId,
         price:this.orderData.price,
         quantity:this.orderData.quantity,
+        amount:this.orderData.amount || '0',
         lastAnswerTime:this.orderData.lastAnswerTime
       }})
     },
     // 专家拒绝订单
     toRejectOrder(){
-      this.$router.push({path:'/pages/cancelOrder/index',query:{orderId:1}})
+      this.$router.push({path:'/pages/cancelOrder/index',query:{orderId:this.orderId}})
     },
     // 专家接单
     receiptOrder(){
@@ -425,18 +425,24 @@ export default {
     toPay(){
       this.$router.push({path:'/pages/pay/index',query:{
         orderId:this.orderId,
+        amount:this.orderData.amount,
         price:this.orderData.price,
         quantity:this.orderData.quantity
       }})
     },
+
 
     // 用户去评论
     toComment(){
       this.$router.push({path:'/pages/comment/index',query:{orderId:this.orderId,expertId:this.orderData.expertId}})
     },
     // 用户去追问
-    toAskMore(){
-
+    toAskMore(flag){
+      if(flag == 1){
+        this.showToast('请先完成支付~');
+        return;
+      }
+      this.$router.push({path:'/pages/startConsult/index',query:{expertId:this.orderData.expertId,parentOrderId:this.orderData.id}});
     },
     showQuestionImgsSwiper(index){
       this.questionImgsSwiperShow = true;
@@ -466,11 +472,23 @@ export default {
             questionImgs.push(item.fileUrl);
           })
           this.questionImgs = questionImgs;
+
+          let answerImgs = [];
+          result.answerOrderFiles.forEach((item)=>{
+            answerImgs.push(item.fileUrl);
+          });
+          this.answerImgs = answerImgs;
+
+          
           
           result.creationTime = util.formatTime(new Date(result.creationTime));
+          result.lastModificationTime = util.formatTime(new Date(result.lastModificationTime));
  
           result.leaveReceiptTime = Math.ceil(((+new Date(result.lastReceiptTime)) - (+new Date()))  / 1000);
           result.lastReceiptTime = util.formatTime(new Date(result.lastReceiptTime));
+          if(!result.lastAnswerTime){
+             result.lastAnswerTime = util.formatTime(new Date());
+          }
           result.leaveAnswerTime = Math.ceil(((+new Date(result.lastAnswerTime)) - (+new Date())) / 1000);
           result.lastAnswerTime = util.formatTime(new Date(result.lastAnswerTime));
 
@@ -518,6 +536,10 @@ export default {
       },1000)
     },
 
+    toOtherExpertDetail(id){
+      this.$router.push({path:'/pages/expertDetail/index',query:{id:id}});
+    }
+
   },
   created () {
    
@@ -525,10 +547,9 @@ export default {
   onLoad: function (options) {
     this.orderId = options.orderId;
     this.userType = options.userType;
-    this.getOrderDetail(true);
   },
   onShow(){
-  
+    this.getOrderDetail(true);
   },
   onHide(){
     clearInterval(this.timer);

@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <form @submit="submitOrder" :report-submit="true">
     <div class="experts_item">
       <div class="top_block">
         <img class="experts_avatar" :src="expertData.avatarUrl">
@@ -47,6 +48,7 @@
           </div>
         </div> -->
       </div>
+
       <div class="panle_block">
         <div class="block_title"><span class="require_icon">*</span>问题内容</div>
         <div class="problem_content">
@@ -71,18 +73,9 @@
               </div>
               <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
           </div>
-
-          <!-- <div class="files_group" style="padding-top: 15px;">
-             <span class="title" style="top:22px;">文件</span>
-              <div class="pdf_file_item">
-               <img class="pdf_icon" src="../../../static/img/pdf_icon.png" alt="">
-               <div class="pdf_name">文件名称文件名称文件名称文件名称</div>
-               <img class="delete_icon" src="../../../static/img/delete_icon3.png" alt="">
-              </div>
-             <img  class="add_files_icon" src="../../../static/img/add_files_icon.png">
-          </div> -->
         </div>
       </div>
+      
     </div>
 
     <div class="agree_bar">
@@ -90,8 +83,10 @@
     </div>
 
     <div class="btn_block">
-      <div class="btn green large" @click="submitOrder">提交订单</div>
+      <!-- <div class="btn green large" @click="submitOrder">提交订单</div> -->
+      <button class="btn green large" form-type="submit">提交订单</button>
     </div>
+    </form>
   </div>
 </template>
 
@@ -140,7 +135,8 @@ export default {
     },
 
 
-    submitOrder(){
+    submitOrder(e){
+     
       if(!this.agreeRule){
           wx.showToast({
              title: '请先阅读并同意专家的使用规则',
@@ -175,6 +171,7 @@ export default {
           questionRemark: this.questionRemark,
           price: this.expertData.oneOfCost,
           quantity: 1,
+          formId:e.mp.detail.formId,
           orderUserDesc: this.orderUserDesc,
           remark: '',
           userOrderFiles: userFiles
@@ -253,7 +250,8 @@ export default {
   },
 
   onLoad(options){
-    this.parentOrderId = options.orderNo || 0;
+    this.parentOrderId = options.parentOrderId || 0;
+    console.log(this.parentOrderId)
     this.expertId = options.expertId;
     this.getExpertMsgData();
   },

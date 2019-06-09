@@ -20,9 +20,12 @@
               <span class="experts_name">{{item.nickName}}</span>
             </div>
             <div class="experts_msg2">
-              <div class="share_expert_btn" @click="extendExperts(index)">
+              <div class="share_expert_btn" @click="extendExperts(index)" v-if="item.shareUserList && item.shareUserList.length > 0">
                 <span>TA分享的专家</span>
                 <img src="../../../static/img/extend_icon.png" :class="{'extend': item.extend}">
+              </div>
+              <div class="share_expert_btn" v-else>
+                <span>TA还没有分享专家哦</span>
               </div>
             </div>
           </div>
@@ -30,20 +33,16 @@
         </div>
 
         <div class="share_experts"  v-show="item.extend">
-          <div class="expert_msg">
+          <div class="expert_msg" v-for="(e,i) in item.shareUserList" :key="i">
             <div class="left">
-              <img src="../../../static/img/avatar.jpeg">
-              <div>朱两边<span>(财务)</span></div>
+              <img :src="e.avatarUrl">
+              <div>{{e.nickName}}
+                <!-- <span>(财务)</span> -->
+              </div>
             </div>
-            <span class="right">查看详情</span>
+            <span class="right" @click="toExpertDetail(e.shareUserId)">查看详情</span>
           </div>
-          <div class="expert_msg">
-            <div class="left">
-              <img src="../../../static/img/avatar.jpeg">
-              <div>朱两边<span>(财务)</span></div>
-            </div>
-            <span class="right">查看详情</span>
-          </div>
+         
         </div>
       </div>
     </div>
@@ -120,13 +119,6 @@ export default {
       };
       this.currentTab = event.target.index;
     },
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
 
     deleteFriend(item,index){
       var that = this;
@@ -163,7 +155,7 @@ export default {
         url:'GetUserFriendList',
         data:{
           userId: this.userData.userId,
-          isExpert:1
+          isExpert:0
         },
         flyConfig:{
           method: 'post'
@@ -176,7 +168,7 @@ export default {
           res.data.forEach(item => {
             item.extend = false;
           }); 
-          this.friendsList = res.data;
+          // this.friendsList = res.data;
         }
       })
     },
@@ -213,6 +205,9 @@ export default {
           this.newFriendsList[index].isAgree = 1;
         }
       })
+    },
+    toExpertDetail(id){
+       this.$router.push({path:'/pages/expertDetail/index',query:{id:id}});
     }
   },
 

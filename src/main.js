@@ -7,6 +7,14 @@ import '@/asset/css/common.less'
 import '@/asset/css/value.less'
 Vue.use(MpvueRouterPatch)
 Vue.prototype.$http = handleHttp
+Vue.prototype.showToast = function(txt,duration){
+    wx.showToast({
+        title: txt,
+        icon: 'none',
+        duration: duration || 1500
+    })
+}
+
 Vue.config.productionTip = false
 App.mpType = 'app'
 

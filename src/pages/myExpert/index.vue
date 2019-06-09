@@ -9,18 +9,18 @@
       </van-tabs>
     </div>
     <div style="height:32px;"></div>
-    <!-- <div class="no_data_tips">
+    <div class="no_data_tips" v-show="(currentTab == 0 && list1.length == 0) || (currentTab == 1 && list2.length == 0) || (currentTab == 2 && list3.length == 0)">
       <img class="no_data_img" src="../../../static/img/no_data_tips.png">
       <span>还没有相关专家哦~</span>
-    </div>  -->
+    </div> 
 
     <div class="experts_list type2_list" v-show="currentTab == 0">
-      <div class="experts_item">
+      <div class="experts_item" v-for="(item,index) in list1" :key="index">
         <div class="top_block">
-          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <img class="experts_avatar" :src="item.avatarUrl">
           <div class="top_block_right">
             <div class="experts_msg1">
-              <span class="experts_name">专家1</span>
+              <span class="experts_name">{{item.nickName}}</span>
             </div>
             <div class="experts_msg2">
               <span class="experts_position">高级财务专家</span>
@@ -36,12 +36,12 @@
 
     
     <div class="experts_list type2_list" v-show="currentTab == 1">
-      <div class="experts_item">
+      <div class="experts_item" v-for="(item,index) in list2" :key="index">
         <div class="top_block">
-          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <img class="experts_avatar" :src="item.avatarUrl">
           <div class="top_block_right">
             <div class="experts_msg1">
-              <span class="experts_name">专家2</span>
+              <span class="experts_name">{{item.nickName}}</span>
             </div>
             <div class="experts_msg2">
               <span class="experts_position">高级财务专家</span>
@@ -53,12 +53,12 @@
     </div>
 
     <div class="experts_list type2_list" v-show="currentTab == 2">
-      <div class="experts_item">
+      <div class="experts_item" v-for="(item,index) in list3" :key="index">
         <div class="top_block">
-          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <img class="experts_avatar" :src="item.avatarUrl">
           <div class="top_block_right">
             <div class="experts_msg1">
-              <span class="experts_name">专家3</span>
+              <span class="experts_name">{{item.nickName}}</span>
             </div>
             <div class="experts_msg2">
               <span class="experts_position">高级财务专家</span>
@@ -103,37 +103,40 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import {API, BASE_URL} from  '../../http/api.js'
 export default {
   data () {
     return {
       currentTab: 0,
       friendsList:[
-        {extend:false,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:false,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false},
-        {extend:true,selected:false}
+        {selected:false},
+        {selected:false},
+        {selected:false},
+        {selected:false},
+        {selected:false},
+        {selected:false},
+        {selected:false},
+        {selected:false},
+        {selected:false},
+        {selected:false}
         ],
       sTop:0,
- 
-      addViewPanelShow:false
+      addViewPanelShow:false,
+      list1:[],
+      list2:[],
+      list3:[]
     }
   },
   computed:{
     ...mapState({
-      isX: state => state.counter.isX
+      isX: state => state.counter.isX,
+      userData: state => state.counter.userData
     }),
     showSelectedPanel(){
       return this.friendsList.every((item)=>{
         return item.selected == false;
       })
-    }
-
+    },
   },
 
   components: {
@@ -141,6 +144,9 @@ export default {
   },
   onShow(){
     this.addViewPanelShow = false;  
+    this.getConsultedExpertList();
+    this.getInquiredExpertList();
+    this.getFollowedExpertList();
   },
   methods: {
     onTabChange(event){
@@ -159,6 +165,37 @@ export default {
       wx.createSelectorQuery().select('#chat-ref').boundingClientRect(function (rect) {
         that.sTop = rect ? parseInt(rect.height) : 0
       }).exec()
+    },
+
+    getConsultedExpertList(){
+      let url = API['GetConsultedExpertList'] + this.userData.userId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let result = res.data;
+        this.list1 = result;
+      })
+    },
+
+    getInquiredExpertList(){
+      let url = API['GetInquiredExpertList'] + this.userData.userId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let result = res.data;
+        this.list2 = result;
+       
+      })
+    },
+
+    getFollowedExpertList(){
+      let url = API['GetFollowedExpertList'] + this.userData.userId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let result = res.data;
+        this.list3 = result;
+      })
     }
   },
   created () {
@@ -191,6 +228,7 @@ export default {
       height: auto;
        display: flex;
        align-items: center;
+       padding: 0;
       .experts_avatar{
         width: 50px;
         height: 50px;

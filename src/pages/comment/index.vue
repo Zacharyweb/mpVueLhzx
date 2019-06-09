@@ -50,7 +50,7 @@
       <div class="panel_top">
         <span class="cancel_btn" @click="visiblePanelShow = false">取消</span>
         <span class="title">设置可见性</span>
-        <span class="submit_btn">提交</span>
+        <span class="submit_btn" @click="visiblePanelShow = false">提交</span>
       </div>
    
       <div class="select_list">
@@ -85,7 +85,7 @@
             <p class="select_text2">选中的关系户可见</p>
             <p class="select_text3" v-show="visibleFriendsList == 0">暂未选中任何关系户,点击右侧去选择</p>
             <p class="select_text4" v-show="visibleFriendsList.length > 0">
-              <span>{{visibleFriendsListText}}</span>
+              <span  v-show="visibleFriendsList.length > 0">{{visibleFriendsListText}}</span>
             </p>
           </div>
           <div class="to_select_btn" @click="initSelectedFriends(1)">
@@ -103,7 +103,7 @@
             <p class="select_text2">选中关系户不可见</p>
             <p class="select_text3" v-show="notVisibleFriendsList.length == 0">暂未选中任何关系户,点击右侧去选择</p>
             <p class="select_text4" v-show="notVisibleFriendsList.length > 0">
-              <span>{{notVisibleFriendsListText}}</span>
+              <span  v-show="notVisibleFriendsList.length > 0">{{notVisibleFriendsListText}}</span>
             </p>
           </div>
           <div class="to_select_btn" @click="initSelectedFriends(2)">
@@ -139,7 +139,7 @@
               <span class="selcet_fill" v-show="item.flag"></span>
             </div>
             <img class="friend_avatar" :src="item.avatarUrl">
-            <div class="friend_name">{{item.userName}}</div>
+            <div class="friend_name">{{item.nickName}}</div>
           </li>
           <li class="friend_item">
             <div class="friend_name" style="color:#666;padding-left:4px;">
@@ -190,8 +190,7 @@ export default {
       friendsVisible:0,
 
       visibleFriendsList:[],
-      notVisibleFriendsList:[]
-
+      notVisibleFriendsList:[],
     }
   },
   computed:{
@@ -210,12 +209,13 @@ export default {
       this.visibleFriendsList.forEach((item)=>{
         list.push(item.userName);
       })
-      str = list.split('、');
+      str = list.join('、');
       if(str.length > 40){
         str = str.slice(0,40) + '...等'+ list.length +'人';
       }else{
         str = str + '(共'+ list.length +'人)';
       }
+      return str;
     },
     notVisibleFriendsListText(){
       let str = '';
@@ -223,12 +223,13 @@ export default {
       this.notVisibleFriendsList.forEach((item)=>{
         list.push(item.userName);
       })
-      str = list.split('、');
+      str = list.join('、');
       if(str.length > 40){
         str = str.slice(0,40) + '...等'+ list.length +'人';
       }else{
         str = str + '(共'+ list.length +'人)';
       }
+      return str;
     },
   },
   onShareAppMessage(obj){
@@ -244,13 +245,6 @@ export default {
   },
 
   methods: {
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
     selectFriend(index){
       this.friendsList[index].flag = !this.friendsList[index].flag;
       // this.selectFriendsPanelScrollBottom();
@@ -264,6 +258,7 @@ export default {
     },
 
     showFriendsVisiblePanel(){
+      console.log('11111111111111')
       this.visiblePanelShow = true
     },
    
@@ -297,10 +292,12 @@ export default {
         },
         flyConfig:{
           method: 'post'
+        },
+        config:{
+          hideMsg:true
         }
       }).then(res => {
         if(res.code == 1){
-          console.log(res.data)
           res.data.forEach(item => {
             item.flag = false;
           }); 
@@ -332,16 +329,19 @@ export default {
 
     submitSelectFriends(){
       let list = [];
+
       this.friendsList.forEach((item)=>{
         if(item.flag){
-          list.push({userId:item.userId,userName:item.userName})
+          list.push({userId:item.id,userName:item.nickName})
         } 
       });
+
       if(this.selectFriendsFor == 1){
         this.visibleFriendsList = list;
       }else{
         this.notVisibleFriendsList = list;
       }
+  
       this.addViewPanelShow = false;
     },
 
@@ -356,7 +356,10 @@ export default {
           this.showToast('请选择可见好友');
           return;
         }else{
-          list = this.visibleFriendsList;
+          // list = this.visibleFriendsList;
+          this.visibleFriendsList.forEach((item)=>{
+            list.push({userId:item.userId})
+          })
         }
       }
       if(this.friendsVisible == 3){
@@ -364,18 +367,24 @@ export default {
           this.showToast('请选择不可见好友');
           return;
         }else{
-          list = this.notVisibleFriendsList;
+          // list = this.notVisibleFriendsList;
+          this.notVisibleFriendsList.forEach((item)=>{
+            list.push({userId:item.userId})
+          })
         }
       }
 
       this.$http.request({
         url:'UseComment',
         data:{
+          userId: this.userData.userId,
+          expertId: this.expertId,
           orderId: this.orderId,
-          commentContent:this.commentContent,
+          content:this.commentContent,
+          commentTag:'',
           expertVisible:this.expertVisible,
           friendsVisible:this.friendsVisible,
-          list:list
+          selectedFriends:list
         },
         flyConfig:{
           method: 'post'
@@ -399,6 +408,7 @@ export default {
     this.visiblePanelShow = false;
     this.orderId= options.orderId;
     this.expertId = options.expertId;
+    this.getUserFriendsList();
 
   },
   onShow(){

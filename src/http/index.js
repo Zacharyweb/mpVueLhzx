@@ -76,6 +76,7 @@ Flyio.request = function(obj){
                 duration: 1500
               });
             }
+            rqConfig.isLoading && Config.loading.loadingHide() 
            return res;
           // setTimeout(() => { errorFunction(tipConfig, err) }, 0)
        }

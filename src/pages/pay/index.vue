@@ -13,15 +13,15 @@
           <ul class="detail_list">
             <li class="detail_item">
               <span class="item_name">费用：</span>
-              <span class="item_content">{{price}}元/次</span>
+              <span class="item_content">{{amount}}元/次</span>
             </li>
             <li class="detail_item">
-              <span class="item_name">节数：</span>
+              <span class="item_name">次数：</span>
               <span class="item_content">{{quantity}}次</span>
             </li>
             <li class="detail_item">
               <span class="item_name">合计：</span>
-              <span class="item_content">{{price*quantity}}元</span>
+              <span class="item_content">{{amount}}元</span>
             </li>
           </ul>
           <div class="tips2">专家的收款二维码已通过公众号发送给您，请先将付款码保存至手机相册，再用微信扫码完成转账支付。</div>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="btn_block">
-      <div class="btn green large">提交凭证</div>
+      <div class="btn green large" @click="submitPhoto">提交凭证</div>
     </div>
   </div>
 </template>
@@ -56,6 +56,7 @@ export default {
   data(){
     return{
       orderId:0,
+      amount:0,
       price:'',
       quantity:'',
       photosList:[]
@@ -72,17 +73,11 @@ export default {
   onLoad(options){
     this.orderId = options.orderId;
     this.price = options.price;
+    this.amount = options.amount;
     this.quantity = options.quantity || 1;
     this.postPayMsg();
   },
   methods: {
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
     postPayMsg(){
       this.$http.request({
         url:'UserPaying',
@@ -150,13 +145,20 @@ export default {
         this.showToast('请上传支付凭证');
         return;
       };
+      let userFiles  = [];
+      if(this.photosList.length > 0){
+         this.photosList.forEach((item)=>{
+           userFiles.push({userId:this.userData.userId,orderId: this.orderId,fileUrl:item})
+         })
+      }
+
 
       this.$http.request({
         url:'PaymentVoucher',
         data:  {
           userId: this.userData.userId,
           orderId: this.orderId,
-          fileUrl: this.photosList[0]
+          fileUrl: userFiles
         },
         flyConfig:{
           method: 'post'

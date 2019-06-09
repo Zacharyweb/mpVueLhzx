@@ -22,13 +22,18 @@
       <div class="top_block_right">
         <div class="order_msg1">
           <span class="experts_name">{{orderData.nickName}}</span>
-          <span class="consult_msg" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</span>
+          <!-- <span class="consult_msg" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</span>
           <span class="consult_msg" v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</span>
-          <span class="consult_msg" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7">作答时间：2888/08/18 18:28</span>
+          <span class="consult_msg" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7">作答时间：2888/08/18 18:28</span> -->
+        </div>
+        <div class="consult_time_msg">
+          <span v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</span>
+          <span v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</span>
+          <span v-if="orderData.actualAnswerTime">作答时间：{{orderData.actualAnswerTime}}</span>
         </div>
         <div class="order_msg2">
           <span class="experts_position">{{orderData.companyPosition}}&nbsp;|&nbsp;{{orderData.companyName}}</span>
-          <span class="consult_price">￥{{orderData.price*orderData.quantity}}</span>
+          <span class="consult_price">￥{{orderData.amount || '0'}}</span>
         </div>
       </div>
     </div>
@@ -81,6 +86,8 @@ export default {
     this.initCount();
   },
   onShow(){
+    clearInterval(this.timer);
+    this.showCount = false;
     if(!this.isCounting){
       this.initCount();
     } 

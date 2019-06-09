@@ -32,7 +32,7 @@
         <div class="edit_item">
           <span class="item_name">推荐至其他专家：</span>
           <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId == 0">选择专家好友</span>
-          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId != 0">已选择专家好友：{{selectedOtherExpert.name}}</span>
+          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId != 0">已选择专家：{{selectedOtherExpertName}}</span>
           <img class="item_icon" @click="toSelectOtherExpert" src="../../../static/img/friend_icon2.png">
         </div>
 
@@ -62,10 +62,10 @@
           
           <div class="friend_item" v-for="(item,index) in friendsList" :key="index" @click="selectOtherExpertChange(index)">
             <div class="left">
-              <img class="friend_avatar" src="../../../static/img/avatar.jpeg">
+              <img class="friend_avatar" :src="item.avatarUrl">
               <div class="friend_msg">
-                <div class="friend_name">朱两边</div>
-                <div class="friend_position">高级财务专家</div>
+                <div class="friend_name">{{item.nickName}}</div>
+                <!-- <div class="friend_position">高级财务专家</div> -->
               </div>
             </div>
             <span class="select_icon" :class="{'actived':item.flag}"></span>
@@ -103,7 +103,7 @@ export default {
       oldAmount:'',
 
       otherExpertId:0,
-      selectedOtherExpert:{},
+      selectedOtherExpertName:'',
 
       minDate: new Date().getTime(),
       maxDate: new Date(2030, 10, 1).getTime(),
@@ -123,18 +123,13 @@ export default {
   },
 
   methods: {
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
+
     onClassNumChange(){
      
     },
     onTimeChange(e){
       this.newLastAnswerTime = util.formatTime(new Date(e.mp.detail));
+      this.timePickerShow = false;
     },
     getExpertFriendsList(){
       this.$http.request({
@@ -145,11 +140,12 @@ export default {
         },
         flyConfig:{
           method: 'post',
-
+        },
+        config:{
+          hideMsg:true
         }
       }).then(res => {
         if(res.code == 1){
-          console.log(res.data)
           res.data.forEach(item => {
             item.flag = false;
           }); 
@@ -171,17 +167,21 @@ export default {
         item.flag = false;
       });
       if(!flag){
-        this[itemName][index].flag =  true;
+        this.friendsList[index].flag =  true;
       }
     },
     submitOtherExpert(){
       this.otherExpertId = 0;
+      let obj = {};
       this.friendsList.forEach(item => {
         if(item.flag){
           this.otherExpertId = item.id;
-          this.selectedOtherExpert = item;
+          this.selectedOtherExpertName = item.nickName;
         }
       });
+    
+
+      this.friendsListShow = false;
     },
     cancelOtherExpert(){
       this.otherExpertId = 0;
@@ -200,8 +200,8 @@ export default {
         url:'ModifyOrderOrder',
         data:{
           id: this.orderId,
-          amount: this.amount,
-          lastAnswerTime: this.newLastAnswerTime ,
+          amount: this.amount*1,
+          lastAnswerTime: this.newLastAnswerTime,
           otherExpertId: this.otherExpertId
         },
         flyConfig:{
@@ -210,7 +210,9 @@ export default {
       }).then(res => {
         if(res.code == 1){
           this.showToast('已提交修改');
-          this.getOrderDetail();
+          setTimeout(()=>{
+            this.$router.go(-1);
+          },1500)
         }
       })
     }
@@ -220,8 +222,9 @@ export default {
   },
   onLoad: function (options) {
     this.orderId = options.orderId;
-    this.oldAmount = options.price* options.quantity;
-    this.amount = options.price* options.quantity;
+    // this.oldAmount = options.price* options.quantity;
+    this.oldAmount = options.amount;
+    this.amount = options.amount;
     this.lastAnswerTime = options.lastAnswerTime;
     this.newLastAnswerTime = util.formatTime(new Date(options.lastAnswerTime));
     this.currentDate = new Date(options.lastAnswerTime).getTime();

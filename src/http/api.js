@@ -46,6 +46,11 @@ const API = {
   'SureUserFriend':'/api/LhzxFriend/SureUserFriend',// 同意被邀请添加为关系户
   'GetUserFriendList':'/api/LhzxFriend/UserFriendList',//获取用户的关系户好友
 
+  'ShareExpert':'/api/LhzxShare/AddShare', // 分享专家
+
+  'GetConsultedExpertList':'/api/LhzxFriend/GetConsultedList/',//获取咨询过的专家
+  'GetInquiredExpertList':'/api/LhzxFriend/GetInquiredList/', //获取询问过的专家
+  'GetFollowedExpertList':'/api/LhzxFriend/GetFollowedList/', //获取询问过的专家
 
 }
 

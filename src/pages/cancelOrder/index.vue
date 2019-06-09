@@ -54,13 +54,6 @@ export default {
     })
   },
   methods: {
-    showToast(txt){
-      wx.showToast({
-        title: txt,
-        icon: 'none',
-        duration: 1500
-      })
-    },
     changeResonId(flag){
       if(this.rejectResonId == flag) return;
       this.rejectResonId = flag;
