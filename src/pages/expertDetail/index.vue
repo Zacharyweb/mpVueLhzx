@@ -252,7 +252,7 @@ export default {
       return {
         title:'您的好友' + this.userData.nickName + '向你推荐一位咨询堂专家',
         path:'/pages/login/index?userId=' + this.userData.userId + '&expertId=' + this.expertId + '&fromType=1',
-        imageUrl:'/static/img/share_test_img.png'
+        // imageUrl:'/static/img/share_test_img.png'
       }
   },
   methods: {

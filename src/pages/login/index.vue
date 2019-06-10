@@ -206,7 +206,7 @@ export default {
           if(this.fromType == 1){
             this.shareExpert();
           }else if(this.fromType == 2){
-            this.shareExpert();
+            this.addUserFriend();
           }else if(this.fromType == 3){
             this.addUserFriend();
           }else{
@@ -223,7 +223,7 @@ export default {
         if(this.fromType == 1){
           this.shareExpert()
         }else if(this.fromType == 2){
-          this.shareExpert()
+          this.addUserFriend()
         }else if(this.fromType == 3){
            this.addUserFriend();
         }else{

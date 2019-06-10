@@ -1073,14 +1073,14 @@ export default {
 .form_list{
   background-color: #fff;
   .form_item{
-    padding: 10px 15px;
+    padding: 12px 15px;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 15px;
     display: flex;
     border-bottom: 1px solid #ebedf0;
-    line-height: 24px;
+    line-height: 28px;
     .item_name{
-       width: 90px;
+       width: 110px;
        position: relative;
        input{
          width: 75px;
@@ -1094,7 +1094,7 @@ export default {
       position: absolute;
       left: -10px;
       top:0;
-      font-size: 14px;
+      font-size: 15px;
       color: #f44;
     }
     .item_content{
@@ -1108,14 +1108,14 @@ export default {
         .tag_item{
           display: flex;
           align-items: center;
-          height: 22px;
-          padding:0 8px;
+          height: 30px;
+          padding:0 12px;
           border:1px solid #ccc;
           color: #ccc;
           border-radius: 4px;
           font-size: 13px;
-          margin-right: 6px;
-          margin-bottom: 10px;
+          margin-right: 10px;
+          margin-bottom: 12px;
           &.active{
             border-color: #1fb7b6;
             background-color: #1fb7b6;
@@ -1128,13 +1128,15 @@ export default {
       }
       &.input_group_item{
         display: flex;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         align-items: center;
         .input_index{
           font-size: 13px;
         }
         input{
-           background-color: #fbfbfb;
+          //  background-color: #fbfbfb;
+           background-color: #fff;
+           border:1px solid #ccc;
            padding: 10px;
            border-radius: 3px;
         }
@@ -1146,12 +1148,14 @@ export default {
         width: 100%;
       }
       .item_content{
-        padding-top: 5px;
+        padding-top: 10px;
         textarea{
+          box-sizing: border-box;
           width: 100%;
           height: 72px; 
-          background-color: #fbfbfb;
-          border: #ebedf0;
+          // background-color: #fbfbfb;
+          background-color: #fff;
+          border:1px solid #ccc;
           border-radius: 4px;
           padding:10px;
         }
@@ -1227,7 +1231,7 @@ export default {
      }
   }
   .item_left{
-    height: 30px;
+    height: 40px;
     display: flex;
     align-items: center;
     span{
@@ -1239,7 +1243,7 @@ export default {
     }
   }
   .item_right{
-    height: 30px;
+    height: 40px;
     display: flex;
     align-items: center;
     span{

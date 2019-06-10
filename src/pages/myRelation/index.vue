@@ -101,9 +101,8 @@ export default {
   onShareAppMessage(obj){
       return {
         title:'您的好友邀请您加入咨询堂',
-        path:'/pages/index/index?userId=' + this.userData.userId,
         path:'/pages/login/index?userId=' + this.userData.userId + '&fromType=3',
-        imageUrl:'/static/img/share_test_img.png'
+        // imageUrl:'/static/img/share_test_img.png'
       }
   },
 
@@ -168,7 +167,7 @@ export default {
           res.data.forEach(item => {
             item.extend = false;
           }); 
-          // this.friendsList = res.data;
+          this.friendsList = res.data;
         }
       })
     },
@@ -184,7 +183,13 @@ export default {
         }
       }).then(res => {
         if(res.code == 1){
-          this.newFriendsList = res.data;
+          let list = [];
+          res.data.forEach((item,index)=>{
+            if(item.isAgree == 0){
+              list.push(item);
+            }
+          })
+          this.newFriendsList = list;
         }
       })
     },

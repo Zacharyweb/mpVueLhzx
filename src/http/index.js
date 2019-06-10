@@ -65,8 +65,8 @@ Flyio.request = function(obj){
 
     // 数据返回拦截
     return flyioRequest.then( res => {
+       Config.loading.loadingHide() 
        if (res.code == 1) {
-           rqConfig.isLoading && Config.loading.loadingHide() 
            return res;
        }else{
             if(!rqConfig.hideMsg){
@@ -76,9 +76,7 @@ Flyio.request = function(obj){
                 duration: 1500
               });
             }
-            rqConfig.isLoading && Config.loading.loadingHide() 
            return res;
-          // setTimeout(() => { errorFunction(tipConfig, err) }, 0)
        }
     }).catch(err => {
         if(err.response.status == 401){
@@ -92,8 +90,8 @@ Flyio.request = function(obj){
                duration: 1500
             });
         }
-        rqConfig.isLoading && Config.loading.loadingHide();
-        // setTimeout(() => { errorFunction(tipConfig, err) }, 0)
+        Config.loading.loadingHide();
+        // rqConfig.isLoading && Config.loading.loadingHide();
     })
 }
 

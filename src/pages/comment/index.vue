@@ -142,7 +142,7 @@
             <div class="friend_name">{{item.nickName}}</div>
           </li>
           <li class="friend_item">
-            <div class="friend_name" style="color:#666;padding-left:4px;">
+            <div class="friend_name" style="color:#666;padding-left:4px;" @click="onShareAppMessage">
               <img class="share_icon" style="width:16px;height:16px;margin-right:5px;" src="../../../static/img/share_icon.png">分享专家至微信通讯录好友
             </div>
           </li>
@@ -174,7 +174,7 @@ export default {
 
       visiblePanelShow:false,
 
-      friendsList:[{flag:false}],
+      friendsList:[],
       selectFriendsFor:1,
 
       sTop:0,
@@ -234,9 +234,9 @@ export default {
   },
   onShareAppMessage(obj){
       return {
-        title: '您的好友' + this.userData.nickName + '向你推荐一位咨询堂专家',
+        title: '您的好友' + this.userData.nickName + '邀请您加入咨询堂',
         path:'/pages/login/index?userId=' + this.userData.userId + '&expertId=' + this.expertId + '&fromType=2',
-        imageUrl:'/static/img/share_test_img.png'
+        // imageUrl:'/static/img/share_test_img.png'
       }
   },
 
