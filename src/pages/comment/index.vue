@@ -408,6 +408,7 @@ export default {
     this.visiblePanelShow = false;
     this.orderId= options.orderId;
     this.expertId = options.expertId;
+    this.commentContent = '';
     this.getUserFriendsList();
 
   },

@@ -251,7 +251,7 @@ export default {
 
   onLoad(options){
     this.parentOrderId = options.parentOrderId || 0;
-    console.log(this.parentOrderId)
+
     this.expertId = options.expertId;
     this.questionRemark = '';
     this.orderUserDesc = '';

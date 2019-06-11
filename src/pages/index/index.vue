@@ -152,6 +152,8 @@ export default {
   onShow(){
     if(!this.major){
       this.GetAllMajor();
+    }else{
+      this.getAllExperts();
     }
   },
   created () {

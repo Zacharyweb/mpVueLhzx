@@ -17,9 +17,9 @@
           <div v-if="userData.isExpert == 1">
             <div class="mine_txt_line">
                <span class="mine_nick">{{userData.nickName}}</span>
-               <span class="mine_position">{{mineData.companyPosition}}</span>
+               <span class="mine_position" v-show="mineData.companyPositio">{{mineData.companyPosition}}</span>
             </div>
-            <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')">
+            <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')" v-show="userData.workStatus">
               <span class="mine_status" v-if="userData.workStatus == 1">营业中</span>
               <span class="mine_status" v-else-if="userData.workStatus == 2">休息至下次登入</span>
               <span class="mine_status" v-else-if="userData.workStatus == 3">休息至明早8:00</span>

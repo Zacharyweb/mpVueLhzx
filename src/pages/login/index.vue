@@ -198,7 +198,7 @@ export default {
       }).then(res => {
         if(res.code == 1){
           let data = that.userData || {};
-          that.originalData.isExpert = 1;
+          // that.originalData.isExpert = 1;
           that.updateUserMsg({...data,...that.originalData});
           let userDataStr = JSON.stringify({...data,...that.originalData});
           wx.setStorageSync('userData', userDataStr);
