@@ -1231,7 +1231,7 @@ export default {
      }
   }
   .item_left{
-    height: 40px;
+    height: 44px;
     display: flex;
     align-items: center;
     span{
@@ -1243,7 +1243,7 @@ export default {
     }
   }
   .item_right{
-    height: 40px;
+    height: 44px;
     display: flex;
     align-items: center;
     span{

@@ -253,6 +253,9 @@ export default {
     this.parentOrderId = options.parentOrderId || 0;
     console.log(this.parentOrderId)
     this.expertId = options.expertId;
+    this.questionRemark = '';
+    this.orderUserDesc = '';
+    this.photosList = [];
     this.getExpertMsgData();
   },
 }

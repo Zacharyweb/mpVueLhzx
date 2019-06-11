@@ -1,13 +1,13 @@
 module.exports = [
-  {
-    path: 'pages/becomeExpert/index',
-    config: {
-      navigationBarTitleText: '成为专家',
-      usingComponents: {
-        "van-area": "/static/vant/area/index"
-      }
-    }
-  },
+  // {
+  //   path: 'pages/becomeExpert/index',
+  //   config: {
+  //     navigationBarTitleText: '成为专家',
+  //     usingComponents: {
+  //       "van-area": "/static/vant/area/index"
+  //     }
+  //   }
+  // },
  
   // 首页
   {
