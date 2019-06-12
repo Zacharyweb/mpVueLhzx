@@ -2,17 +2,17 @@
   <div>
     <ul class="router_list">
 
-      <li class="router_item">
+      <li class="router_item" v-if="userData && userData.isExpert == 1">
         <div class="item_left">服务状态</div>
         <div class="item_right" @click="actionSheetShow = true">
           <span class="status_text" v-if="userData && userData.workStatus == 1">营业中</span>
-          <span class="status_text" v-else-if="userData && userData.workStatus == 2">休息至下次登入</span>
+          <span class="status_text" v-else-if="userData && userData.workStatus == 2">休息中</span>
           <span class="status_text" v-else-if="userData && userData.workStatus == 3">休息至明早8:00</span>
           <span class="status_text" v-else>获取中</span>
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
-<!-- 
+
       <li class="router_item">
         <div class="item_left">{{i18n.languageName}}</div>
         <div class="item_right" @click="actionSheet2Show = true">
@@ -21,7 +21,7 @@
           <span class="status_text" v-else-if="i18n.LANGTYPE == 'en'">English</span>
           <img  src="../../../static/img/arrow_right.png">
         </div>
-      </li> -->
+      </li>
 
     </ul>
     <div class="log_out_btn" @click="logout">退出登录</div>

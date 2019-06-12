@@ -21,7 +21,7 @@
             </div>
             <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')" v-show="userData.workStatus">
               <span class="mine_status" v-if="userData.workStatus == 1">营业中</span>
-              <span class="mine_status" v-else-if="userData.workStatus == 2">休息至下次登入</span>
+              <span class="mine_status" v-else-if="userData.workStatus == 2">休息中</span>
               <span class="mine_status" v-else-if="userData.workStatus == 3">休息至明早8:00</span>
               <img class="arrow_icon" src="../../../static/img/arrow_down.png">
             </div>

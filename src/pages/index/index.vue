@@ -101,7 +101,12 @@ export default {
             item.goodAtBusiness = item.goodAtBusiness.split('|zxt|');
           });
         }
-        that.expertsList = [...that.expertsList,...res.data];
+        if(that.pageIndex == 0){
+          that.expertsList = [...res.data];
+        }else{
+          that.expertsList = [...that.expertsList,...res.data];
+        }
+     
       })
     },
 
@@ -153,7 +158,7 @@ export default {
     if(!this.major){
       this.GetAllMajor();
     }else{
-      this.expertsList = [];
+      // this.expertsList = [];
       this.pageIndex = 0;
       this.isNomore = false;
       this.getAllExperts();
