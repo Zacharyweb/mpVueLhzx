@@ -3,7 +3,8 @@ const state = {
   count: 0,
   isX:false,
   userData:null,
-  consultListTab:0
+  consultListTab:0,
+  i18n:{}
 }
 
 const mutations = {
@@ -27,6 +28,10 @@ const mutations = {
     const obj = state;
     obj.consultListTab = num;
   },
+  UPDATELANGUAGE:(state,lang) => {
+    const obj = state;
+    obj.i18n = lang;
+  }
 }
 
 const actions = {
@@ -42,11 +47,11 @@ const actions = {
   updateUserMsg({commit},data) {
     commit('UPDATEUSER',data)
   },
+  updateLanguage({commit},data) {
+    commit('UPDATELANGUAGE',data)
+  },
   updateConsultListTab({commit},num){
     commit('UPDATECONSULTLISTTAB',num)
-  },
-  b(){
-    console.log('bbbbbbbbbbbbb');
   }
 }
 

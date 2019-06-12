@@ -102,7 +102,7 @@
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/set/index')" v-if="userData && userData.isExpert == 1">
+      <li class="router_item" @click="linkTo('/pages/set/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon5.png">
           设置

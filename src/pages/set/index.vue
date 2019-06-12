@@ -1,6 +1,7 @@
 <template>
   <div>
     <ul class="router_list">
+
       <li class="router_item">
         <div class="item_left">服务状态</div>
         <div class="item_right" @click="actionSheetShow = true">
@@ -8,10 +9,20 @@
           <span class="status_text" v-else-if="userData && userData.workStatus == 2">休息至下次登入</span>
           <span class="status_text" v-else-if="userData && userData.workStatus == 3">休息至明早8:00</span>
           <span class="status_text" v-else>获取中</span>
-          
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
+<!-- 
+      <li class="router_item">
+        <div class="item_left">{{i18n.languageName}}</div>
+        <div class="item_right" @click="actionSheet2Show = true">
+          <span class="status_text" v-if="i18n.LANGTYPE == 'cn_j'">简体中文</span>
+          <span class="status_text" v-else-if="i18n.LANGTYPE == 'cn_f'">繁體中文</span>
+          <span class="status_text" v-else-if="i18n.LANGTYPE == 'en'">English</span>
+          <img  src="../../../static/img/arrow_right.png">
+        </div>
+      </li> -->
+
     </ul>
     <div class="log_out_btn" @click="logout">退出登录</div>
     <van-dialog id="van-dialog"/>
@@ -20,6 +31,13 @@
       :actions="actions"
       @close="onCloseActionSheet"
       @select="onSelectAction"
+    />
+
+    <van-action-sheet
+      :show="actionSheet2Show"
+      :actions="actions2"
+      @close="onCloseAction2Sheet"
+      @select="onSelectAction2"
     />
   </div>
 </template>
@@ -46,17 +64,33 @@ export default {
           name: '休息中',
           subname: '休息至明早8:00',
         }
-      ]
+      ],
 
+      actionSheet2Show:false,
+      actions2:[
+        {
+          targetId:'cn_j',
+          name: '简体中文',
+        },
+        {
+          targetId:'cn_f',
+          name: '繁體中文',
+        },
+        {
+          targetId:'en',
+          name: 'English',
+        }
+      ],
     }
   },
   computed: {
     ...mapState({
-      userData: state => state.counter.userData
+      userData: state => state.counter.userData,
+      i18n: state => state.counter.i18n
     })
   },
   mounted(){
-
+  
   },
   onShow(){
     if(!this.userData){
@@ -66,10 +100,14 @@ export default {
   },
   methods: {
     ...mapActions('counter', [
-      'updateUserMsg'
+      'updateUserMsg',
+      'updateLanguage'
     ]),
     onCloseActionSheet(){
       this.actionSheetShow = false;
+    },
+    onCloseAction2Sheet(){
+      this.actionSheet2Show = false;
     },
     onSelectAction(data){
       let workStatus;
@@ -82,6 +120,14 @@ export default {
       }
       this.setWorkStatus(workStatus);
       this.actionSheetShow = false;
+    },
+    onSelectAction2(data){
+      let lang = data.mp.detail.targetId;
+      wx.setStorage({key: 'langFlag', data: lang});
+      this.$t.setLocale( lang || 'cn_j');
+      let langData = this.$t.getLanguage();
+      this.updateLanguage(langData);
+      this.actionSheet2Show = false;
     },
     setWorkStatus(workStatus){
       if(this.userData.workStatus == workStatus){

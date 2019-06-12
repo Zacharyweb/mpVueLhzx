@@ -19,7 +19,7 @@
     <!-- <div class="top_tips" @click="toConsultList">
        <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
     </div> -->
-
+   
     <div class="experts_list" v-if="expertsList.length > 0">
       <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
     </div>
@@ -153,6 +153,9 @@ export default {
     if(!this.major){
       this.GetAllMajor();
     }else{
+      this.expertsList = [];
+      this.pageIndex = 0;
+      this.isNomore = false;
       this.getAllExperts();
     }
   },

@@ -14,7 +14,10 @@
            <span>谁可以看</span>
          </div>
          <div class="right" @click="showFriendsVisiblePanel">
-           <span>仅自己</span>
+           <span v-show="friendsVisible == 0">仅自己可见</span>
+           <span v-show="friendsVisible == 1">所有关系户可见</span>
+           <span v-show="friendsVisible == 2">选中的关系户可见</span>
+           <span v-show="friendsVisible == 3">选中关系户不可见</span>
            <img src="../../../static/img/arrow_right3.png">
          </div>
         </div>
