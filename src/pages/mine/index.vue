@@ -17,7 +17,7 @@
           <div v-if="userData.isExpert == 1">
             <div class="mine_txt_line">
                <span class="mine_nick">{{userData.nickName}}</span>
-               <span class="mine_position" v-show="mineData.companyPositio">{{mineData.companyPosition}}</span>
+               <!-- <span class="mine_position" v-show="mineData.companyPositio">{{mineData.companyPosition}}</span> -->
             </div>
             <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')" v-show="userData.workStatus">
               <span class="mine_status" v-if="userData.workStatus == 1">营业中</span>
@@ -55,7 +55,7 @@
       <li class="router_item" @click="linkTo('/pages/baseMsg/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon6.png">
-          基础信息
+          我的信息
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -64,18 +64,8 @@
 
       <li class="router_item" @click="linkTo('/pages/myRelation/index')">
         <div class="item_left">
-          <img src="../../../static/img/center_icon1.png">
-          我的关系户
-        </div>
-        <div class="item_right">
-          <img  src="../../../static/img/arrow_right.png">
-        </div>
-      </li>
-
-      <li class="router_item" @click="linkTo('/pages/myCustomer/index')" v-if="userData && userData.isExpert == 1">
-        <div class="item_left">
           <img src="../../../static/img/center_icon2.png">
-          我的客户
+          我的关系户
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -92,7 +82,18 @@
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/becomeExpert/index')">
+      <li class="router_item" @click="linkTo('/pages/myCustomer/index')" v-if="userData && userData.isExpert == 1">
+        <div class="item_left">
+          <img src="../../../static/img/center_icon2.png">
+          我的客户
+        </div>
+        <div class="item_right">
+          <img  src="../../../static/img/arrow_right.png">
+        </div>
+      </li>
+
+    
+      <!-- <li class="router_item" @click="linkTo('/pages/becomeExpert/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon4.png">
           {{ userData && userData.isExpert == 1 ?'修改专业信息':'成为专家'}}
@@ -100,7 +101,7 @@
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
-      </li>
+      </li> -->
 
       <li class="router_item" @click="linkTo('/pages/set/index')">
         <div class="item_left">
@@ -112,7 +113,6 @@
         </div>
       </li>
 
-      
       <li class="router_item" @click="linkTo('/pages/useNotice/index',true)">
         <div class="item_left">
           <img src="../../../static/img/center_icon7.png">

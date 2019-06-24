@@ -4,8 +4,8 @@
     <div class="tab_fix_wrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabChange">
           <van-tab title="咨询过您"></van-tab>
-          <van-tab title="问候过您"></van-tab>
           <van-tab title="关注您的"></van-tab>
+          <!-- <van-tab title="问候过您"></van-tab> -->
       </van-tabs>
     </div>
 
@@ -35,24 +35,6 @@
     </div>
 
     <div class="experts_list type1_list" v-show="currentTab == 1">
-  
-      <div class="experts_item">
-        <div class="top_block">
-          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
-          <div class="top_block_right">
-            <div class="experts_msg1">
-              <span class="experts_name">客户2</span>
-            </div>
-            <div class="experts_msg2">
-              <span class="customer_info">客户2的自我介绍</span>
-            </div>
-          </div>
-         
-        </div>
-      </div>
-    </div>
-
-    <div class="experts_list type1_list" v-show="currentTab == 2">
     
       <div class="experts_item">
         <div class="top_block">
@@ -68,7 +50,25 @@
         
         </div>
       </div>
-    </div>
+    </div> 
+<!-- 
+    <div class="experts_list type1_list" v-show="currentTab == 2">
+  
+      <div class="experts_item">
+        <div class="top_block">
+          <img class="experts_avatar" src="../../../static/img/avatar.jpeg">
+          <div class="top_block_right">
+            <div class="experts_msg1">
+              <span class="experts_name">客户2</span>
+            </div>
+            <div class="experts_msg2">
+              <span class="customer_info">客户2的自我介绍</span>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+    </div> -->
 
   </div>
 </template>

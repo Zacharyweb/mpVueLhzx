@@ -25,6 +25,10 @@
       <div class="btn_block">
         <div class="btn large green" @click="updateUserBaseInfo">确认修改</div>
       </div>
+      <div class="btn_block2">
+        <div class="btn large green plain" @click="linkTo('/pages/becomeExpert/index')">专家用户进入</div>
+      </div>
+
     </div>
     
     <!-- <div class="change_mobile">
@@ -142,6 +146,9 @@ export default {
         }
       })
     },
+    linkTo(path){
+      this.$router.push(path);
+    }
   },
   onLoad(){
     this.getInitData();
@@ -186,6 +193,11 @@ export default {
   display: flex;
   justify-content: center;
   padding: 20px 0;
+}
+.btn_block2{
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .change_mobile{

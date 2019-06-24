@@ -4,8 +4,8 @@
     <div class="tab_fix_wrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabChange">
           <van-tab title="咨询过的"></van-tab>
-          <van-tab title="问候过的"></van-tab>
-          <van-tab title="已关注的"></van-tab>
+          <van-tab title="已关注的"></van-tab>  
+          <!-- <van-tab title="问候过的"></van-tab> -->
       </van-tabs>
     </div>
     <div style="height:32px;"></div>
@@ -34,25 +34,7 @@
       </div>
     </div>
 
-    
     <div class="experts_list type2_list" v-show="currentTab == 1">
-      <div class="experts_item" v-for="(item,index) in list2" :key="index">
-        <div class="top_block">
-          <img class="experts_avatar" :src="item.avatarUrl">
-          <div class="top_block_right">
-            <div class="experts_msg1">
-              <span class="experts_name">{{item.nickName}}</span>
-            </div>
-            <div class="experts_msg2">
-              <span class="experts_position">高级财务专家</span>
-            </div>
-          </div>
-       
-        </div>
-      </div>
-    </div>
-
-    <div class="experts_list type2_list" v-show="currentTab == 2">
       <div class="experts_item" v-for="(item,index) in list3" :key="index">
         <div class="top_block">
           <img class="experts_avatar" :src="item.avatarUrl">
@@ -72,6 +54,23 @@
         </div>
       </div>
     </div>
+
+    <!-- <div class="experts_list type2_list" v-show="currentTab == 2">
+      <div class="experts_item" v-for="(item,index) in list2" :key="index">
+        <div class="top_block">
+          <img class="experts_avatar" :src="item.avatarUrl">
+          <div class="top_block_right">
+            <div class="experts_msg1">
+              <span class="experts_name">{{item.nickName}}</span>
+            </div>
+            <div class="experts_msg2">
+              <span class="experts_position">高级财务专家</span>
+            </div>
+          </div>
+       
+        </div>
+      </div>
+    </div> -->
 
     <!-- 设置专家对好友的可见性 -->
     <div class="add_view_panel" @touchmove.stop="touchmoveStop" :class="{'show':addViewPanelShow}">
@@ -145,8 +144,8 @@ export default {
   onShow(){
     this.addViewPanelShow = false;  
     this.getConsultedExpertList();
-    this.getInquiredExpertList();
     this.getFollowedExpertList();
+    this.getInquiredExpertList();
   },
   methods: {
     onTabChange(event){
@@ -177,24 +176,24 @@ export default {
       })
     },
 
-    getInquiredExpertList(){
-      let url = API['GetInquiredExpertList'] + this.userData.userId;
-      this.$http.request({
-        url:url,
-      }).then(res => {
-        let result = res.data;
-        this.list2 = result;
-       
-      })
-    },
-
     getFollowedExpertList(){
       let url = API['GetFollowedExpertList'] + this.userData.userId;
       this.$http.request({
         url:url,
       }).then(res => {
         let result = res.data;
+        this.list2 = result;
+      })
+    },
+
+    getInquiredExpertList(){
+      let url = API['GetInquiredExpertList'] + this.userData.userId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        let result = res.data;
         this.list3 = result;
+       
       })
     }
   },
