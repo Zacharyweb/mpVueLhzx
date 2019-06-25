@@ -1,13 +1,14 @@
 module.exports = [
-  // {
-  //   path: 'pages/becomeExpert/index',
-  //   config: {
-  //     navigationBarTitleText: '成为专家',
-  //     usingComponents: {
-  //       "van-area": "/static/vant/area/index"
-  //     }
-  //   }
-  // },
+  {
+    path: 'pages/becomeExpert/index',
+    config: {
+      navigationBarTitleText: '专家信息',
+      usingComponents: {
+        "van-steps": "/static/vant/steps/index",
+        "van-area": "/static/vant/area/index"
+      }
+    }
+  },
  
   // 首页
   {
@@ -281,16 +282,17 @@ module.exports = [
       }
     }
   },
-  // 成为专家
-  {
-    path: 'pages/becomeExpert/index',
-    config: {
-      navigationBarTitleText: '成为专家',
-      usingComponents: {
-        "van-area": "/static/vant/area/index"
-      }
-    }
-  },
+  // 专家信息
+  // {
+  //   path: 'pages/becomeExpert/index',
+  //   config: {
+  //     navigationBarTitleText: '专家信息',
+  //     usingComponents: {
+  //       "van-steps": "/static/vant/steps/index",
+  //       "van-area": "/static/vant/area/index"
+  //     }
+  //   }
+  // },
 
 
   // 设置

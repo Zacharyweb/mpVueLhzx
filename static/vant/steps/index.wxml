@@ -12,7 +12,7 @@
       </view>
       <view class="van-step__circle-container">
         <view class="van-step__circle" wx:if="{{ item.status !== 'process' }}" style="{{ item.status === 'finish' ? 'background-color: ' + activeColor : '' }}" />
-        <van-icon wx:else name="checked" color="{{ activeColor }}" custom-class="van-step__active" />
+        <van-icon wx:else name="underway" color="{{ activeColor }}" custom-class="van-step__active" />
       </view>
       <view wx:if="{{ index !== steps.length - 1 }}" class="van-step__line" style="{{ item.status === 'finish' ? 'background-color: ' + activeColor : '' }}" />
     </view>

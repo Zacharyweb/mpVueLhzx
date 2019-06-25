@@ -197,7 +197,8 @@ export default {
 .btn_block2{
   display: flex;
   justify-content: center;
-  padding: 10px 0;
+  padding-top: 0px;
+  padding-bottom: 20px;
 }
 
 .change_mobile{

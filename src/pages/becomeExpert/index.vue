@@ -1,12 +1,43 @@
 <template>
   <div class="container">
+    <div class="steps_block">
+      <van-steps
+        :steps="fillSteps"
+        :active="stepFlag"
+        :active-color="'#1fb7b6'"
+      />
+    </div>
+
     <div class="order_form_panel">
-      <div class="panle_block">
+      <div class="panle_block" v-show="stepFlag == 0 || stepFlag == 3">
         <div class="block_title">基础信息</div>
+
         <ul class="form_list">
+          <li class="form_item required">
+            <div class="item_name">真实姓名</div>
+            <div class="item_content">
+              <input v-model="realName" type="text" placeholder="请输入真实姓名"  :disabled="isChecked == 'Y'">
+            </div>
+          </li>
+
+          <li class="form_item required tags_item textarea_item">
+            <div class="item_name">证件类型</div>
+            <div class="item_content">
+              <div class="item_tags">
+                <span class="tag_item" v-for="(item,index) in certType" :key="index" :class="{'active':item.flag}" @click="singleChange('certType',index)">{{item.name}}</span>
+              </div>
+            </div>
+          </li>
+
+          <li class="form_item required">
+            <div class="item_name">证件号</div>
+            <div class="item_content">
+              <input v-model="certNum" type="text" placeholder="请输入证件号"  :disabled="isChecked == 'Y'">
+            </div>
+          </li>
 
           <li class="form_item">
-            <div class="item_name">称呼</div>
+            <div class="item_name">昵称</div>
             <div class="item_content">
               <input type="text" v-model="nickName" placeholder="请输入昵称，用于平台展示" :disabled="isChecked == 'Y'">
             </div>
@@ -26,7 +57,7 @@
             </div>
           </li>
 
-          <li class="form_item required tags_item">
+          <li class="form_item required tags_item textarea_item">
             <div class="item_name">语言(可多选)</div>
             <div class="item_content">
               <div class="item_tags">
@@ -56,14 +87,23 @@
               <input v-model="companyPosition" type="text" placeholder="请输入职务" :disabled="isChecked == 'Y'">
             </div>
           </li>
-       
+          <li class="form_item no_border required textarea_item">
+            <div class="item_name">工作介绍</div>
+            <div class="item_content">
+              <textarea class="more_height" v-model="lifeAndFeelDesc" placeholder="介绍一下与专业工作相关的方方面面，比如：专业的培训、在单位部门的贡献、解决税务争议的窍门、处理涉税问题的心得等" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+            </div>
+          </li>
         </ul>
+
+        <div class="btn_block" v-show="stepFlag == 0">
+          <div class="btn green large" @click="toNextStep(1)">下一步</div>
+        </div>
+
       </div>
 
-      <div class="panle_block">
+      <div class="panle_block" v-show="stepFlag == 1 || stepFlag == 3">
         <div class="block_title">专业信息</div>
         <ul class="form_list">
-
           <li class="form_item required tags_item textarea_item">
             <div class="item_name">专业(单选)</div>
             <div class="item_content">
@@ -72,7 +112,6 @@
               </div>
             </div>
           </li>
-          
           
           <li class="form_item required tags_item textarea_item">
             <div class="item_name">从事年限(单选)</div>
@@ -83,16 +122,34 @@
             </div>
           </li>
 
-          <li class="form_item required textarea_item">
+          <li class="form_item required tags_item textarea_item">
+            <div class="item_name">行业(单选)</div>
+            <div class="item_content">
+              <div class="item_tags">
+                <span class="tag_item" v-for="(item,index) in businessArea" :key="index" :class="{'active':item.flag}" @click="singleChange('businessArea',index)">{{item.name}}</span>
+              </div>
+            </div>
+          </li>
+
+          <li class="form_item required tags_item textarea_item">
+            <div class="item_name">科室(单选)</div>
+            <div class="item_content">
+              <div class="item_tags">
+                <span class="tag_item" v-for="(item,index) in businessArea" :key="index" :class="{'active':item.flag}" @click="singleChange('businessArea',index)">{{item.name}}</span>
+              </div>
+            </div>
+          </li>
+
+          <!-- <li class="form_item required textarea_item">
             <div class="item_name">领域(可多选，最多5项，最少选一项)</div>
             <div class="item_content">
               <div class="item_tags">
                 <span class="tag_item" v-for="(item,index) in businessArea" :key="index" :class="{'active':item.flag}" @click="multipleChange('businessArea',index,5)">{{item.name}}</span>
               </div>
             </div>
-          </li>
+          </li> -->
 
-          <li class="form_item required textarea_item textarea_item">
+          <!-- <li class="form_item required textarea_item textarea_item">
             <div class="item_name">擅长业务(最多填五项，最少填一项)</div>
             <div class="item_content input_group_item">
               <span class="input_index">1、</span> <input v-model="gootAtList[0]" placeholder="例：申请高新企业税收优惠... " maxlength='150' :disabled="isChecked == 'Y'"></input>
@@ -109,12 +166,19 @@
             <div class="item_content input_group_item">
               <span class="input_index">5、</span> <input v-model="gootAtList[4]" placeholder="例：股权激励规划，... " maxlength='150' :disabled="isChecked == 'Y'"></input>
             </div>
+          </li> -->
+
+          <li class="form_item required textarea_item">
+            <div class="item_name">一句话</div>
+            <div class="item_content">
+              <textarea v-model="aboutUserDesc" class="more_height" placeholder="关于您最擅长的业务或最强的优势，比如，专攻股票税收"  maxlength='30' :disabled="isChecked == 'Y'"></textarea>
+            </div>
           </li>
 
           <li class="form_item required textarea_item">
-            <div class="item_name">专业心得</div>
+            <div class="item_name">政策解读</div>
             <div class="item_content">
-              <textarea class="more_height" v-model="lifeAndFeelDesc" placeholder="例：7号公告对美元基金的影响..." maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" v-model="lifeAndFeelDesc" placeholder="分享您对个别税收问题的解读，比如，政策出台的背景、对业务的的影响和应对的方法等" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
@@ -144,120 +208,115 @@
             </ul>
           </div>
 
-          <li class="form_item required textarea_item">
-            <div class="item_name">关于专家</div>
-            <div class="item_content">
-              <textarea v-model="aboutUserDesc" class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+          <div class="panle_block hb nb">
+            <div class="block_title">
+              <span>上传照片</span>
+              <div class="more_explain">
+                <p>专业证照、单位合影等</p>
+              </div>
             </div>
-          </li>
-
+            <div class="problem_content">
+              <div class="files_group">
+                  <div class="title">相关照片</div>
+                  <div class="img_file_item" v-for="(item,index) in photosList" :key="index">
+                    <img class="img_file" :src="item">
+                    <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
+                  </div>
+                  <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
+              </div>
+            </div>
+          </div>
         </ul>
+        <div class="btn_block" v-show="stepFlag == 1">
+          <div class="btn green large plain" @click="toNextStep(0)">上一步</div>
+          <div class="btn green large" @click="toNextStep(2)">下一步</div>
+        </div>
       </div>
       
-      <div class="panle_block hb">
-        <div class="block_title">
-          <span>上传照片</span>
-          <div class="more_explain">
-            <p>专业证照、单位合影等</p>
-          </div>
+     
+    <div v-show="stepFlag == 2 || stepFlag == 3">
+      <div class="extend_panel">
+        <div class="panel_top">
+          <span class="panel_title" @click="openConsultExplain = !openConsultExplain">咨询概述</span>
+          <img class="extend_icon" @click="openConsultExplain = !openConsultExplain" src="../../../static/img/extend_icon.png" :class="{'open':openConsultExplain}">
         </div>
-        <div class="problem_content">
-          <div class="files_group">
-              <div class="title">相关照片</div>
-              <div class="img_file_item" v-for="(item,index) in photosList" :key="index">
-                <img class="img_file" :src="item">
-                <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
+
+        <div class="panle_block" v-show="openConsultExplain">
+          <ul class="form_list">
+            <li class="form_item textarea_item no_paddingtop">
+              <div class="item_name">咨询:</div>
+              <div class="item_content">
+                <span>作为专家，您将通过本平台为用户提供有偿的提问作答服务。</span>
               </div>
-              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
-          </div>
+            </li>
+
+            <li class="form_item textarea_item">
+              <div class="item_name">接单:</div>
+              <div class="item_content">
+                <div> 
+                  <span>在服务时间内，您可收到用户提问的订单。</span>
+                </div>
+                <div> 
+                  <span>您将在接单时间内决定是否接单，您也可提出订单修改。（见注一）</span>
+                </div>
+              </div>
+            </li>
+
+            <li class="form_item textarea_item">
+              <div class="item_name">作答:</div>
+              <div class="item_content">
+                <div> 
+                  <span>当您同意接单时，您将在设定的作答时间内未用户的提问作答。</span>
+                </div>
+                <div> 
+                  <span>逾时不作答的，进黑名单。</span>
+                </div>
+              </div>
+            </li>
+
+            <li class="form_item textarea_item">
+              <div class="item_name">支付:</div>
+              <div class="item_content">
+                <div> 
+                  <span>作答后，用户将在24小时内通过微信向您直接支付咨询费。用户还可评价您的服务。</span>
+                </div>
+                <div> 
+                  <span>逾时不支付的，进黑名单。</span>
+                </div>
+              </div>
+            </li>
+
+            <li class="form_item textarea_item">
+              <div class="item_name">服务时间:</div>
+              <div class="item_content">
+                <span>平台默认的服务时间为每天早上8:00点至晚上8:00点。您可随时在我的状态里更改。</span>
+              </div>
+            </li>
+
+            <li class="form_item textarea_item">
+              <div class="item_name">介绍问候:</div>
+              <div class="item_content">
+                <span>在正式提问前，用户可向您发出不计费的即时聊天，方便相互介绍和问候。</span>
+              </div>
+            </li>
+
+            <li class="other_explain">
+              <div class="mt5">注一：</div>
+              <div>在看到问题后，如您觉得有需要调整作答时间或费用的，可向用户提出修改订单。在征得用户同意调整后，按修改后订单作答。</div>
+              <div class="mt5">注二：</div>
+              <div>面单优惠</div>
+              <div>这是您向用户提供优惠的一种方式。如果您认为有需要，可在确认收费前免除用户该次咨询收费。</div>
+            </li>
+          </ul>
         </div>
+
       </div>
 
       <div class="panle_block">
-        <div class="block_title">实名信息</div>
+        <div class="block_title">咨询设置</div>
         <ul class="form_list">
-          <li class="form_item required">
-            <div class="item_name">真实姓名</div>
-            <div class="item_content">
-              <input v-model="realName" type="text" placeholder="请输入真实姓名"  :disabled="isChecked == 'Y'">
-            </div>
-          </li>
-
-          <li class="form_item required tags_item">
-            <div class="item_name">证件类型</div>
-            <div class="item_content">
-              <div class="item_tags">
-                <span class="tag_item" v-for="(item,index) in certType" :key="index" :class="{'active':item.flag}" @click="singleChange('certType',index)">{{item.name}}</span>
-              </div>
-            </div>
-          </li>
-
-          <li class="form_item required">
-            <div class="item_name">证件号</div>
-            <div class="item_content">
-              <input v-model="certNum" type="text" placeholder="请输入证件号"  :disabled="isChecked == 'Y'">
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="panle_block">
-        <div class="block_title"> <span>咨询设置</span>
-          <div class="more_explain">
-            <p>咨询是按次收费的。</p>
-            <p>每次约占用您15-30分钟的时间。</p>
-            <p>收费标准由您自行设置。</p>
-          </div>
-        </div>
-        <ul class="form_list">
-          <li class="form_item required textarea_item">
-            <div class="item_name">每次收费人民币(元)</div>
-            <div class="item_content">
-              <input v-model="oneOfCost" type="digit" placeholder="请输入每节收费金额"  :disabled="isChecked == 'Y'">
-            </div>
-          </li>
-          <li class="form_item textarea_item">
-            <div class="item_name">支付方式</div>
-            <div class="item_content">
-              <span>咨询结束后，用户扫描您的微信收款二维码，向您直接支付，不经平台。</span>
-            </div>
-          </li>
-          <li class="form_item textarea_item">
-            <div class="item_name">免单优惠</div>
-            <div class="item_content">
-              <span>这是您向用户提供优惠的一种方式。如您认为有需要，可在确认收款前免除用户该次咨询费。</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-
-      <div class="panle_block hb">
-        <div class="block_title">微信收款码</div>
-        <div class="problem_content">
-          <div class="files_group">
-              <span class="title required">收款码</span>
-            
-              <div class="img_file_item" v-for="(item,index) in paymentCodeList" :key="index">
-               <img class="img_file" :src="item">
-               <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePaymentCode(index)">
-              </div>
-              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="paymentCodeList.length < 1" @click="upLoadPaymentCode">
-          </div>
-        </div>
-      </div>
-
-      <div class="panle_block">
-        <div class="block_title">
-          <span>咨询承诺</span>
-          <!-- <div class="more_explain">
-            <p>接单承诺：在收到订单后回应是否接单的时间。</p>
-            <p>作答承诺：在接单后能交付作答的时间。</p>
-          </div> -->
-        </div>
-        <ul class="form_list">
-           <li class="form_item required tags_item textarea_item">
-            <div class="item_name">接单承诺(在收到订单后的多少时间内回应是否同意接单)</div>
+          <li class="form_item required tags_item textarea_item">
+            <div class="item_name">接单时间</div>
             <div class="item_content">
               <div class="item_tags">
                 <span class="tag_item" v-for="(item,index) in responseTime" :key="index" :class="{'active':item.flag}" @click="singleChange('responseTime',index)">{{item.name}}</span>
@@ -265,37 +324,40 @@
             </div>
           </li>
           <li class="form_item required tags_item textarea_item">
-            <div class="item_name">作答承诺(在同意接单后的多少时间内完成作答)</div>
+            <div class="item_name">作答时间</div>
             <div class="item_content">
               <div class="item_tags">
                 <span class="tag_item" v-for="(item,index) in answeringTime" :key="index" :class="{'active':item.flag}" @click="singleChange('answeringTime',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
-          <li class="explain_item">注意：在接到订单看到问题后，需要更多时间作答的，可修改订单信息发送给客户，用户同意修改后的订单后，将按修改后的时间作答。</li>
+
+          <li class="form_item required textarea_item">
+            <div class="item_name">每次收费人民币(元)</div>
+            <div class="item_content">
+              <input v-model="oneOfCost" type="digit" placeholder="请输入每节收费金额"  :disabled="isChecked == 'Y'">
+            </div>
+          </li>
+          <li class="explain_item">咨询按此收费。每次所需时间由您自行决定，建议不超过30分钟。</li>
         </ul>
       </div>
 
-
-      <div class="panle_block">
-        <div class="block_title">
-          <span>服务状态</span>
+      <div class="panle_block hb nb">
+        <div class="block_title">微信收款码</div>
+        <div class="problem_content">
+          <div class="files_group">
+              <span class="title required">收款码</span>
+              <div class="img_file_item" v-for="(item,index) in paymentCodeList" :key="index">
+                <img class="img_file" :src="item">
+                <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePaymentCode(index)">
+              </div>
+              <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="paymentCodeList.length < 1" @click="upLoadPaymentCode">
+          </div>
         </div>
-        <ul class="form_list">
-           <li class="form_item tags_item textarea_item">
-            <div class="item_name">营业中：</div>
-            <div class="item_content">每天早上8:00点至晚上8:00点为坐堂时间。接收订单后，需在您设置的时间内回应是否接单。</div>
-          </li>
-          <li class="form_item tags_item textarea_item">
-            <div class="item_name">休息中：</div>
-            <div class="item_content">每天晚上8:00点至明早8:00点为休息时间，不接收订单。</div>
-          </li>
-          <li class="explain_item">注意：您可随时在我的设置里更改您的状态。</li>
-        </ul>
+        <div class="explain_item">我>支付>收付款>二维码收款>保存收款码>打开相册>截图>上传</div>
       </div>
 
-
-      <div class="panle_block">
+      <div class="panle_block" v-show="stepFlag == 3">
         <div class="block_title">
           <span>郑重声明：</span>
         </div>
@@ -313,24 +375,33 @@
         </ul>
       </div>
         
-      <div class="agree_bar">
+      <div class="agree_bar"  v-show="stepFlag == 3">
         <span class="custom_checkbox" :class="{'active':isReadSelect}" @click="isReadSelect = !isReadSelect" style="margin-right:20px;">阅读并同意专家的使用规则</span>
       </div>
+     
+      <div class="btn_block">
+        <div class="btn green large plain" v-show="stepFlag == 2" @click="toNextStep(1)">上一步</div>
+        <div class="btn green large" v-show="stepFlag == 2"  @click="toNextStep(3)">下一步</div>
 
-    </div>
-    <div class="btn_block">
-      <div class="btn grey large" v-if="isChecked == 'Y'">审核中,请等待</div>
-      <div class="btn green large" v-else @click="submitMsg">提交审核</div>
-    </div>
-    <div class="check_time_tips">平台将在24小时内完成验证，请耐心等待</div>
+        <div class="btn grey large" v-show="stepFlag == 3 && isChecked == 'Y'" >审核中,请等待</div>
 
-    <!-- 地区选择组件 -->
-    <div class="area_select_block">
-      <div class="mask" @click="areaSelectPanelShow = false" v-show="areaSelectPanelShow"></div>
-      <div class="area_select_panel" :class="{'show':areaSelectPanelShow}">
-        <van-area :area-list="areaList" @confirm="confirmArea" @cancel="areaSelectPanelShow = false"/>
+        <div class="btn green large plain" v-show="stepFlag == 3" @click="toNextStep(2)">上一步</div>
+
+        <div class="btn green large" v-show="stepFlag == 3 && isChecked != 'Y'" @click="submitMsg">确认提交</div>
       </div>
+      <div class="check_time_tips"  v-show="stepFlag == 3">提交信息后平台将在24小时内完成验证。</div>
+    </div> 
+  </div>  
+
+
+  <!-- 地区选择组件 -->
+  <div class="area_select_block">
+    <div class="mask" @click="areaSelectPanelShow = false" v-show="areaSelectPanelShow"></div>
+    <div class="area_select_panel" :class="{'show':areaSelectPanelShow}">
+      <van-area :area-list="areaList" @confirm="confirmArea" @cancel="areaSelectPanelShow = false"/>
     </div>
+  </div>
+ 
 
   </div>
 </template>
@@ -403,7 +474,24 @@ export default {
       isChecked:'N', // 当前是否是超级管理员审核状态
 
 
-      isUploadingFile:false
+      isUploadingFile:false,
+
+      fillSteps:[
+        {
+          text: '基础信息'
+        },
+        {
+          text: '专业信息'
+        },
+        {
+          text: '咨询设置'
+        },
+        {
+          text: '确认提交'
+        }
+      ],
+      stepFlag:0,
+      openConsultExplain:false
     }
   },
   computed: {
@@ -574,7 +662,6 @@ export default {
                 this.showToast('图片上传失败');
               }
             }
-           
             wx.hideLoading();
           })
         }
@@ -713,6 +800,27 @@ export default {
       })
     },
     checkData(){
+      if(!this.realName){
+        this.showToast('请填写真实姓名');
+        return false;
+      }
+
+      let certType = this.certType.filter((item)=>{
+        return item.flag;
+      });
+      if(certType.length > 0){
+        certType = certType[0].name;
+      }else{
+        this.showToast('请选择证件类型');
+        return false;
+      }
+
+      if(!this.certNum){
+        this.showToast('请填写证件号');
+        return false;
+      }
+
+
       if(!this.workPhoneNumber){
         this.showToast('请输入手机号');
         return false;
@@ -764,6 +872,8 @@ export default {
         return false;
       }
 
+
+
       let major = this.major.filter((item)=>{
         return item.flag;
       });
@@ -796,19 +906,19 @@ export default {
         });
         businessArea = businessArea.join('|zxt|');
       }else{
-        this.showToast('请选择专业领域');
+        this.showToast('请选择行业');
         return false;
       }
 
-      let goodAtBusiness = this.gootAtList.filter((item)=>{
-        return item;
-      });
-      if(goodAtBusiness.length > 0){
-        goodAtBusiness = goodAtBusiness.join('|zxt|');
-      }else{
-        this.showToast('请至少填写一项擅长业务');
-        return false;
-      }
+      // let goodAtBusiness = this.gootAtList.filter((item)=>{
+      //   return item;
+      // });
+      // if(goodAtBusiness.length > 0){
+      //   goodAtBusiness = goodAtBusiness.join('|zxt|');
+      // }else{
+      //   this.showToast('请至少填写一项擅长业务');
+      //   return false;
+      // }
       let outLink;
       if(this.outLink.length > 0){
         let outLinkFlag = this.outLink.every((item)=>{
@@ -837,30 +947,29 @@ export default {
            userFiles.push({userId:this.userData.userId,fileUrl:item})
          })
       }
-      if(!this.aboutUserDesc){
-        this.showToast('请填写关于专家');
-        return false;
-      }
-      if(!this.realName){
-        this.showToast('请填写真实姓名');
-        return false;
-      }
 
-      let certType = this.certType.filter((item)=>{
+      let responseTime = this.responseTime.filter((item)=>{
         return item.flag;
       });
-      if(certType.length > 0){
-        certType = certType[0].name;
+      if(responseTime.length > 0){
+        responseTime = responseTime[0].type;
       }else{
-        this.showToast('请选择证件类型');
+        this.showToast('请选择接单时间');
         return false;
       }
 
-      if(!this.certNum){
-        this.showToast('请填写证件号');
+      
+      let answeringTime = this.answeringTime.filter((item)=>{
+        return item.flag;
+      });
+      if(answeringTime.length > 0){
+        answeringTime = answeringTime[0].type;
+      }else{
+        this.showToast('请选择作答时间');
         return false;
       }
 
+     
       if(!this.oneOfCost){
         this.showToast('请填写咨询费用');
         return false;
@@ -877,26 +986,7 @@ export default {
         this.showToast('请上传收款二维码');
       }
 
-      let responseTime = this.responseTime.filter((item)=>{
-        return item.flag;
-      });
-      if(responseTime.length > 0){
-        responseTime = responseTime[0].type;
-      }else{
-        this.showToast('请选择回应时间');
-        return false;
-      }
-
-      
-      let answeringTime = this.answeringTime.filter((item)=>{
-        return item.flag;
-      });
-      if(answeringTime.length > 0){
-        answeringTime = answeringTime[0].type;
-      }else{
-        this.showToast('请选择作答时间');
-        return false;
-      }
+     
       if(!this.isReadSelect){
         this.showToast('请先阅读并同意专家的使用规则');
         return false;
@@ -962,6 +1052,20 @@ export default {
             },1500)
         } 
       })
+    },
+
+    toNextStep(flag){
+      this.backTop();
+      this.stepFlag = flag;
+      if(this.stepFlag == 3){
+        this.showToast('请再次确认填写的信息~');
+      }
+    },
+
+    backTop(){
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
     }
   },
 }
@@ -980,8 +1084,9 @@ export default {
   display: flex;
   justify-content: center;
   .btn{
-    width: 345px;
+    width: 160px;
     height: 45px;
+    margin-left: 7px;
   }
 }
 .check_time_tips{
@@ -990,7 +1095,10 @@ export default {
   text-align: center;
   color: #999;
 }
+.steps_block{
+  padding:5px 10px;
 
+}
 .order_form_panel{
     padding:0 15px;
     padding-bottom: 20px;
@@ -1002,10 +1110,20 @@ export default {
       padding-bottom: 15px;
       border-bottom:1px solid #ebedf0;
     }
+    &.nb{
+      border-bottom:0;
+    }
+    .explain_item{
+      padding: 10px 15px;
+      font-size: 13px;
+      border-bottom: 1px solid #ebedf0;
+      line-height: 18px;
+      color: #666;
+    }
   }
 
   .block_title{
-    font-size: 16px;
+    font-size: 14px;
     color: #333;
     margin-bottom: 10px;
     font-weight: bold;
@@ -1026,6 +1144,8 @@ export default {
       display: flex;
       flex-wrap: wrap;
       position: relative;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ebedf0;
       .title{
         position: absolute;
         font-size: 14px;
@@ -1085,6 +1205,12 @@ export default {
        input{
          width: 75px;
        }
+    }
+    &.no_border{
+      border-bottom: 0;
+    }
+    &.no_paddingtop{
+      padding-top: 0;
     }
     &.tags_item{
       padding-bottom: 0;
@@ -1170,13 +1296,7 @@ export default {
       padding-bottom: 20px;
     }
   }
-  .explain_item{
-    padding: 10px 15px;
-    font-size: 13px;
-    border-bottom: 1px solid #ebedf0;
-    line-height: 18px;
-    color: #666;
-  }
+
 }
 
 .area_select_block{
@@ -1258,5 +1378,47 @@ export default {
 .agree_bar{
   padding-left: 10px;
   margin-top: 10px;
+}
+.extend_panel{
+   padding:5px 5px 0px 5px;
+  .panel_top{
+    display: flex;
+    align-items: center;
+    .panel_title{
+      font-size: 14px;
+      color: #333;
+      font-weight: bold;
+      display: flex;
+      white-space: nowrap;
+    }
+    .extend_icon{
+      width: 10px;
+      height: 10px;
+      margin-left: 10px;
+      transform: rotate(0deg);
+      transition: all 0.3s;
+      &.open{
+        transform: rotate(180deg);
+      }
+    }
+  }
+  .form_list{
+    .form_item{
+      padding: 10px 0;
+      font-size: 14px;
+      &.no_paddingtop{
+        padding-top: 0;
+      }
+    }
+  }
+}
+.other_explain{
+  font-size: 12px;
+  color: #666;
+  font-weight: normal;
+  line-height: 1.5;
+  .mt5{
+    margin-top: 8px;
+  }
 }
 </style>
