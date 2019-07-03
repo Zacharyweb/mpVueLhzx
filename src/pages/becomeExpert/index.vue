@@ -90,7 +90,7 @@
           <li class="form_item no_border required textarea_item">
             <div class="item_name">工作介绍</div>
             <div class="item_content">
-              <textarea class="more_height" v-model="lifeAndFeelDesc" placeholder="介绍一下与专业工作相关的方方面面，比如：专业的培训、在单位部门的贡献、解决税务争议的窍门、处理涉税问题的心得等" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" v-model="workDesc" placeholder="介绍一下与专业工作相关的方方面面，比如：专业的培训、在单位部门的贡献、解决税务争议的窍门、处理涉税问题的心得等" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
         </ul>
@@ -135,7 +135,7 @@
             <div class="item_name">科室(单选)</div>
             <div class="item_content">
               <div class="item_tags">
-                <span class="tag_item" v-for="(item,index) in businessArea" :key="index" :class="{'active':item.flag}" @click="singleChange('businessArea',index)">{{item.name}}</span>
+                <span class="tag_item" v-for="(item,index) in goodAtBusiness" :key="index" :class="{'active':item.flag}" @click="singleChange('goodAtBusiness',index)">{{item.name}}</span>
               </div>
             </div>
           </li>
@@ -171,14 +171,14 @@
           <li class="form_item required textarea_item">
             <div class="item_name">一句话</div>
             <div class="item_content">
-              <textarea v-model="aboutUserDesc" class="more_height" placeholder="关于您最擅长的业务或最强的优势，比如，专攻股票税收"  maxlength='30' :disabled="isChecked == 'Y'"></textarea>
+              <textarea v-model="lifeAndFeelDesc" class="more_height" placeholder="关于您最擅长的业务或最强的优势，比如，专攻股票税收"  maxlength='30' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
           <li class="form_item required textarea_item">
             <div class="item_name">政策解读</div>
             <div class="item_content">
-              <textarea class="more_height" v-model="lifeAndFeelDesc" placeholder="分享您对个别税收问题的解读，比如，政策出台的背景、对业务的的影响和应对的方法等" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" v-model="policyInterpretation" placeholder="分享您对个别税收问题的解读，比如，政策出台的背景、对业务的的影响和应对的方法等" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
@@ -426,6 +426,7 @@ export default {
       areaBlock:'',
       companyName:'',
       companyPosition:'',
+      workDesc:'',
       major:[],
       majorYearsDesc:[
         {name:'5-10年',type:'1',flag:false},
@@ -435,9 +436,11 @@ export default {
       ],
       businessArea:[ ],
       gootAtList:['','','','',''],
+      goodAtBusiness:[{name:'内科',type:'nk',flag:false},{name:'外科',type:'wk',flag:false}],
       lifeAndFeelDesc:'',
+      policyInterpretation:'',
       outLink:[],
-      aboutUserDesc:'',
+    
       photosList:[],
       realName:'',
       certType:[
@@ -723,9 +726,10 @@ export default {
 
         this.companyName = result.companyName;
         this.companyPosition = result.companyPosition;
-
+     
         this.lifeAndFeelDesc = result.lifeAndFeelDesc;
-        this.aboutUserDesc = result.aboutUserDesc;
+        this.policyInterpretation = result.policyInterpretation;
+   
         this.realName = result.realName;
         this.certNum = result.certNum;
         this.oneOfCost = result.oneOfCost;
@@ -746,7 +750,9 @@ export default {
           })
         });
        
-        this.gootAtList = result.goodAtBusiness.split('|zxt|');
+        // this.gootAtList = result.goodAtBusiness.split('|zxt|');
+       
+
 
         let outLink = result.outLink.split('|zxt|');
         this.outLink = outLink.map((item)=>{
@@ -770,6 +776,15 @@ export default {
         let businessArea = result.businessArea.split('|zxt|');
         this.businessArea.forEach((item)=>{
           businessArea.forEach((item2)=>{
+            if(item.name == item2){
+              item.flag = true;
+            }
+          })
+        });
+
+        let goodAtBusiness = result.goodAtBusiness.split('|zxt|');
+        this.goodAtBusiness.forEach((item)=>{
+          goodAtBusiness.forEach((item2)=>{
             if(item.name == item2){
               item.flag = true;
             }
@@ -910,6 +925,21 @@ export default {
         return false;
       }
 
+
+      let goodAtBusiness = this.goodAtBusiness.filter((item)=>{
+        return item.flag;
+      });
+
+      if(goodAtBusiness.length > 0){
+        goodAtBusiness = goodAtBusiness.map((item)=>{
+          return item.name; 
+        });
+        goodAtBusiness = goodAtBusiness.join('|zxt|');
+      }else{
+        this.showToast('请选择科室');
+        return false;
+      }
+
       // let goodAtBusiness = this.gootAtList.filter((item)=>{
       //   return item;
       // });
@@ -936,10 +966,7 @@ export default {
         outLink = '';
       }
 
-      if(!this.aboutUserDesc){
-        this.showToast('请填写关于专家');
-        return false;
-      }
+     
       
       let userFiles  = [];
       if(this.photosList.length > 0){
@@ -1014,6 +1041,10 @@ export default {
       this.$http.request({
         url:'PutCurrentUser',
         data: {
+
+          realName: this.realName,
+          certType: flag.certType,
+          certNum: this.certNum,
           nickName: this.nickName,
           workPhoneNumber: this.workPhoneNumber,
           emailAddress: this.emailAddress,
@@ -1021,23 +1052,26 @@ export default {
           companyAddress: flag.address,
           companyName: this.companyName,
           companyPosition: this.companyPosition,
+          workDesc:this.workDesc,
+
           major:flag.major,
           majorYearsDesc: flag.majorYearsDesc,
           businessArea: flag.businessArea,
           goodAtBusiness: flag.goodAtBusiness,
+
           lifeAndFeelDesc: this.lifeAndFeelDesc,
+          policyInterpretation: this.policyInterpretation,
+
           outLink:flag.outLink,
-          aboutUserDesc: this.aboutUserDesc,
           userFiles:flag.userFiles,
-          realName: this.realName,
-          certType: flag.certType,
-          certNum: this.certNum,
-          oneOfCost: this.oneOfCost *1,
-          paymentCode: flag.paymentCode,
+
           responseTime: flag.responseTime*1,
           answeringTime: flag.answeringTime*1,
+          oneOfCost: this.oneOfCost *1,
+          paymentCode: flag.paymentCode,
+
           isReadSelect: this.isReadSelect?1:0,
-          workStatus: this.userData.workStatus 
+    
         },
         flyConfig:{
           method: 'post'
