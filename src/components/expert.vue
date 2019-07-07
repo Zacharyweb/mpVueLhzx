@@ -6,10 +6,12 @@
         <div class="experts_msg1">
           <div class="experts_name">
             <span class="experts_nickname">{{expertData.nickName}}</span>
-            <span class="status" v-if="expertData.workStatus == 1">营业中</span>
-            <span class="status grey" v-else>休息中</span>
-           </div>
-          <span class="consult_msg">{{expertData.relationCount}}位关系户已咨询过</span>
+            <span class="experts_experience">{{expertData.majorYearsDesc}}工作经验</span>
+          </div>
+          <span class="status" v-if="expertData.workStatus == 1">营业中</span>
+          <span class="status grey" v-else>休息中</span>
+
+          <!-- <span class="consult_msg">{{expertData.relationCount}}位关系户已咨询过</span> -->
         </div>
         <div class="experts_msg2">
           <span class="experts_position">{{expertData.companyPosition}}{{expertData.companyName?'（' + expertData.companyName + '）':''}}</span>
@@ -17,29 +19,34 @@
        
         <div class="experts_msg3">
           <div class="experts_location">
-            <img src="../../static/img/location_icon.png">{{expertData.companyAddress}}
+            <img src="../../static/img/hy_icon.png">工地技术
           </div>
           <span class="devide_line"></span>
           <div class="experts_experience">
-            <img src="../../static/img/time_icon.png">{{expertData.majorYearsDesc}}工作经验
+            <img src="../../static/img/zy_icon.png">挖掘机
+          </div>
+
+          <div class="has_relation">
+            <img src="../../static/img/index_relation_icon1.png">
           </div>
         </div>
 
-        <div class="good_at_area">
+        <!-- <div class="good_at_area">
           <span class="good_at_item" v-for="(item,index) in expertData.goodAtBusiness" :key="index">-&nbsp;{{item}}</span>
-        </div>
+        </div> -->
       
       </div>
     </div>
 
     <div class="bottom_block">
-      
       <div class="bottom_block_item">
-        <span class="item_title">回应作答时间：</span>
-        <span class="item_text">{{expertData.responseTime}}分钟内回应、{{expertData.answeringTime/60}}小时内作答</span>
+        <!-- <span class="item_title">回应作答时间：</span>
+        <span class="item_text">{{expertData.responseTime}}分钟内回应、{{expertData.answeringTime/60}}小时内作答</span> -->
+        <span class="item_text">一句话自我介绍一句话自我介绍一句话自我介绍一句话自我介绍一句话自我介绍</span>
+
       </div>
     </div>
-    
+
   </div>
 </template>
 
@@ -82,8 +89,11 @@ export default {
           color: #666;
         }
         .item_text{
-          color: #999;
-          width: 260px;
+          // color: #999;
+          color: #666;
+          // width: 260px;
+          width: 340px;
+
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

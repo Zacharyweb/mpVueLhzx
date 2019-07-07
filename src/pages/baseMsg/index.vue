@@ -26,7 +26,7 @@
         <div class="btn large green" @click="updateUserBaseInfo">确认修改</div>
       </div>
       <div class="btn_block2">
-        <div class="btn large green plain" @click="linkTo('/pages/becomeExpert/index')">专家用户进入</div>
+        <div class="btn large green plain" @click="linkTo('/pages/becomeExpert/index')">专家进入登记</div>
       </div>
 
     </div>

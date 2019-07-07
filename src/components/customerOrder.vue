@@ -76,6 +76,8 @@ export default {
     this.initCount();
   },
   onShow(){
+    clearInterval(this.timer);
+    this.showCount = false;
     if(!this.isCounting){
       this.initCount();
     } 

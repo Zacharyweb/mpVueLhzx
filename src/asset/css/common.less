@@ -183,22 +183,33 @@ button.btn_reset{
             white-space: nowrap;
             text-overflow: ellipsis;
           }
-          .status{
-            font-size: 12px;
-            color: #1fb7b6;
-            position: absolute;
-            top:0;
-            right: 0;
-            transform: translate(120%,0%);
-            padding: 1px 3px;
-            border:1px solid #1fb7b6;
-            border-radius: 3px;
-            white-space: nowrap;
-          }
-          .status.grey{
+          .experts_experience{
             color: #999;
-            border-color: #999;
+            font-size: 12px;
+            margin-left: 5px;
+            max-width: 110px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
+
+          // .status{
+          //   font-size: 12px;
+          //   color: #1fb7b6;
+          //   position: absolute;
+          //   top:0;
+          //   right: 0;
+          //   transform: translate(120%,0%);
+          //   padding: 1px 3px;
+          //   border:1px solid #1fb7b6;
+          //   border-radius: 3px;
+          //   white-space: nowrap;
+          // }
+          // .status.grey{
+          //   color: #999;
+          //   border-color: #999;
+          // }
+        
           .sub_position_text{
             font-size: 12px;
             color: #999;
@@ -209,6 +220,22 @@ button.btn_reset{
             margin-left: 5px;
           }
         }
+        .status{
+          font-size: 12px;
+          color: #1fb7b6;
+
+          padding: 1px 3px;
+          border:1px solid #1fb7b6;
+          border-radius: 3px;
+          white-space: nowrap;
+        }
+        .status.grey{
+          color: #999;
+          border-color: #999;
+        }
+
+
+
         .consult_msg{
           font-size: 12px;
           color: #999;
@@ -250,15 +277,17 @@ button.btn_reset{
         align-items: center;
         height: 16px;
         margin-top: 8px;
+        position: relative;
         .experts_location{
           display: flex;
           align-items: center;
           img{
             width: 15px;
             height: 15px;
-            margin-right: 2px;
+            margin-right: 4px;
           }
-          color: #d4d7da;
+          // color: #d4d7da;
+          color: #999;
           font-size: 12px;
         }
         .devide_line{
@@ -275,9 +304,22 @@ button.btn_reset{
             height: 15px;
             margin-right: 2px;
           }
-          color: #d4d7da;
+          color: #999;
+          // color: #d4d7da;
           font-size: 12px;
         }
+
+        .has_relation{
+          position: absolute;
+          top:-2px;
+          right: 5px;
+          img{
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+
       }
     }
   }
