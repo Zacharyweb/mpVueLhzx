@@ -10,11 +10,12 @@
               <span class="status" v-if="expertData.workStatus == 1">营业中</span>
               <span class="status grey" v-else>休息中</span>
             </div>
-            <span class="consult_msg">{{expertData.followCount}}人已关注</span>
+            <!-- <span class="consult_msg">{{expertData.followCount}}人已关注</span> -->
           </div>
           <div class="experts_msg2">
-            <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span>
-            <span class="order_num">{{expertData.consultedCount}}人已咨询</span>
+            <!-- <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span> -->
+            <span class="respond_time text_ellipsis">{{expertData.companyName}}（{{expertData.companyPosition}}）</span>
+            <!-- <span class="order_num">{{expertData.consultedCount}}人已咨询</span> -->
           </div>
           <div class="experts_msg3">
             <div class="experts_location">
@@ -25,56 +26,60 @@
               <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}从业经验
             </div>
           </div>
-        
         </div>
       </div>
-      
+      <div class="chat_block" @click="toChatRoom">
+        <img class="chat_icon" src="../../../static/img/chat_icon.png">
+        <div class="chat_text">聊天问候</div>
+      </div>
     </div>
+    
+    <div class="other_msg">
+        <div class="focus_block">
+          <img class="focus_icon" src="../../../static/img/collect_icon.png" v-if="!collected" @click="addUserFollow">
+          <img class="focus_icon" src="../../../static/img/collect_icon2.png" v-if="collected" @click="deleteUserFollow">
+          <span class="num_text">10人已关注</span>
+        </div>
+        <div class="orders_block">
+          <span class="num_text">1人已咨询</span>
+        </div>
+    </div>
+
     <div class="custom_tabs">
-      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">专业信息</div>
-      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">介绍信息</div>
-      <div class="tab_item" :class="{'active':currentTab == 2}" @click="changeTab(2)">关系户评价({{commentData.length}})</div>
-      <span class="active_bar" :class="{'active1':currentTab == 1,'active2':currentTab == 2}"></span>
+      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">关于专家</div>
+      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">关系户</div>
+      <span class="active_bar" :class="{'active25':currentTab == 0,'active75':currentTab == 1}"></span>
     </div>
 
     <div class="introduce_panel" v-show="currentTab == 0">
-      <div class="panle_block">
+      <div class="panle_block nb">
          <div class="base_msg">
-          <span class="msg_name">担任职位</span>
-          <span class="msg_content">{{expertData.companyPosition}}</span>
+          <span class="msg_name">行业</span>
+          <span class="msg_content">{{expertData.businessArea}}</span>
         </div>
         <div class="base_msg">
-          <span class="msg_name">任职企业</span>
-          <span class="msg_content">{{expertData.companyName}}</span>
-        </div>
-        <div class="base_msg">
-          <span class="msg_name">工作年限</span>
-          <span class="msg_content">{{expertData.majorYearsDesc}}</span>
+          <span class="msg_name">科室</span>
+          <span class="msg_content">{{expertData.goodAtBusiness}}</span>
         </div>
       </div>
-      <div class="panle_block">
-        <!-- <div class="block_title">领域与擅长业务</div> -->
-        <div class="base_msg">
-           <span class="msg_name">领域</span>
-           <span class="msg_content">{{expertData.businessArea}}</span>
-        </div>
-     
-        <div class="base_msg">
-           <span class="msg_name">擅长业务</span>
-           <span class="msg_content">{{expertData.gootAtList}}</span>
-        </div>
-      </div>
-      
-       <div class="panle_block nb">
-        <div class="block_title">专业见解</div>
-        <div class="block_content">{{expertData.lifeAndFeelDesc}}</div>
-      </div>
-    </div>
-    <div class="introduce_panel" v-show="currentTab == 1">
 
       <div class="panle_block">
-        <div class="block_title">自我介绍</div>
+        <div class="block_title">工作介绍</div>
         <div class="block_content">{{expertData.aboutUserDesc}}</div>
+      </div>
+
+      <div class="panle_block">
+        <div class="block_title">政策解读</div>
+        <div class="block_content">{{expertData.aboutUserDesc}}</div>
+      </div>
+
+
+      <div class="panle_block" v-if="expertData.outLink.length > 0">
+        <div class="block_title">作品链接</div>
+        <div class="base_msg no_name" v-for="(item,index) in expertData.outLink" :key="index" @click="copyText(item.link)">
+           <span class="msg_name"></span>
+           <span class="msg_content">{{item.name}}</span>
+        </div>
       </div>
 
       <div class="panle_block" v-if="expertData.photosList.length > 0">
@@ -83,15 +88,6 @@
           <img class="intro_img"  v-for="(item,index) in expertData.photosList" :src="item" :key="index" @click="showImgSwiper(index)">
         </div>
       </div>
-     
-      <div class="panle_block nb" v-if="expertData.outLink.length > 0">
-        <div class="block_title">作品链接</div>
-        <div class="base_msg no_name" v-for="(item,index) in expertData.outLink" :key="index" @click="copyText(item.link)">
-           <span class="msg_name"></span>
-           <span class="msg_content">{{item.name}}</span>
-        </div>
-      </div>
-
     </div>
 
     <!-- <div class="comment_panel" v-show="currentTab == 2">
@@ -132,28 +128,61 @@
       </div>
     </div> -->
 
-    <div class="comment_panel" v-show="currentTab == 2">
+    <div class="comment_panel" v-show="currentTab == 1">
+      <div class="friends_block">
+        <div class="block_title nb">关注</div>
+        <ul class="friends_list">
+          <li class="friend_item">
+            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
+            <span>关系户1</span>
+          </li>
+          <li class="friend_item">
+            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
+            <span>关系户1</span>
+          </li>
+          <li class="friend_item">
+            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
+            <span>关系户1</span>
+          </li>
+            <li class="friend_item">
+            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
+            <span>关系户1</span>
+          </li>
+            <li class="friend_item">
+            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
+            <span>关系户1</span>
+          </li>  <li class="friend_item">
+            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
+            <span>关系户1</span>
+          </li>
+        </ul>
+      </div>
 
-      <div class="comment_item" v-if="commentData.length > 0" v-for="(item,index) in commentData" :key="index">
-        <img class="user_avatar" src="../../../static/img/comment_avatar.png">
-        <div class="comment_content">
-          <div class="content_top">
-             <span class="user_name">关系户{{index + 1}}</span>
-             <span class="comment_time">{{item.creationTime}}</span>
+      <div class="friends_block">
+        <div class="block_title">评价</div>
+        <div class="comment_item" v-if="commentData.length > 0" v-for="(item,index) in commentData" :key="index">
+          <img class="user_avatar" src="../../../static/img/comment_avatar.png">
+          <span class="comment_tag">{{item.tag}}</span>
+          <div class="comment_content">
+            <div class="content_top">
+               <span class="user_name">关系户{{index + 1}}</span>
+               <span class="comment_time">{{item.creationTime}}</span>
+            </div>
+            <div class="comment_text">{{item.content}}</div>
           </div>
-          <div class="comment_text">{{item.content}}</div>
         </div>
       </div>
       <div class="no_data_tips" v-if="commentData.length == 0">
         <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-        <span>还没有关系户评价过哦~</span>
+        <span>还没有关系户关注或评价过哦~</span>
       </div> 
 
     </div>
 
-    <div class="to_chat_btn" @click="toChatRoom" :class="{'m_top':isX}">
+    <!-- <div class="to_chat_btn" @click="toChatRoom" :class="{'m_top':isX}">
         <img class="bounceIn" src="../../../static/img/chat_circle_icon.png">
-    </div>
+    </div> -->
+
     <div class="bottom_fixed" :class="{'isX':isX}">
       <div class="icon_btns">
         <div class="icon_btn" v-if="!collected" @click="addUserFollow">
@@ -230,7 +259,7 @@ export default {
       swiperCurrent:2,
       expertData:null,
       expertId:'',
-      commentData:[]
+      commentData:[{content:'不错不错还没有关系户评价过哦',creationTime:'2019-02-08 15:00:32',tag:'满意'},{content:'不错不错2',creationTime:'2019-02-08 15:00:32',tag:'不满意'}]
     }
   },
   computed: {
@@ -347,7 +376,7 @@ export default {
             item.creationTime = util.formatTime(new Date(item.creationTime));
           });
         }
-        this.commentData = result.comments || [];
+        // this.commentData = result.comments || [];
 
       })
     },
@@ -440,8 +469,68 @@ export default {
 }
 .experts_item{
   margin-bottom: 0;
+  position: relative;
+  .chat_block{
+    position: absolute;
+    right: 0;
+    top: 6px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    .chat_icon{
+      width: 30px;
+      height: 30px;
+    }
+    .chat_text{
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      margin-top: 5px;
+    
+    }
+  }
 }
 
+  .other_msg{
+    display: flex;
+    height: 32px;
+    align-items: center;
+    background-color: #f3fbfb;
+    .focus_block{
+      flex: 1;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .focus_icon{
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+     
+      }
+      .num_text{
+        font-size: 14px;
+        // color: #666;
+        color: #1fb7b6;
+      }
+    }
+    .orders_block{
+      flex: 1;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .num_text{
+         font-size: 14px;
+        //  color: #666;
+         color: #1fb7b6;
+      }
+    }
+  }
 .introduce_panel{
     padding:0 15px;
     padding-bottom: 20px;
@@ -449,10 +538,10 @@ export default {
     font-size: 14px;
   .panle_block{
     padding:20px 15px;
-    border-bottom: 1px solid #e6e8eb;
+    border-top: 1px solid #e6e8eb;
   }
   .panle_block.nb{
-    border-bottom: 0;
+    border-top: 0;
   }
   .block_title{
     font-size: 16px;
@@ -508,18 +597,80 @@ export default {
      }
   }
 }
+
+
+
 .comment_panel{
+  background-color: #fff;
+  .friends_block{
+    .block_title{
+      border-top: 1px solid #f3f5f7;
+      padding: 15px 15px;
+      padding-bottom: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #666;
+      font-weight: bold;
+      &.nb{
+         border-top: none;
+      }
+    }
+  }
+  .friends_list{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px;
+    padding-bottom: 8px;
+    .friend_item{
+      margin-right: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin-bottom: 7px;
+      .user_avatar{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border:3px solid #e6e8eb;
+        margin-bottom: 5px;
+      }
+      span{
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+      }
+
+    }
+
+  }
+
   .comment_item{
-    background-color: #fff;
     padding:15px;
     display: flex;
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
+    position: relative;
+    border-bottom: 1px solid #f3f5f7;
     .user_avatar{
       width: 40px;
       height: 40px;
       border-radius: 50%;
       border:3px solid #e6e8eb;
       margin-right: 15px;
+    }
+    .comment_tag{
+      position: absolute;
+      top:50px;
+      left: 39px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      padding:0 10px;
+      color: #1fb7b6;
+      background-color: #f3fbfb;;
+      border-radius: 10px;
+      font-size: 12px;
+      transform: translateX(-50%);
     }
     .comment_content{
       font-size: 13px;
@@ -543,21 +694,22 @@ export default {
         color: #666;
       }
       .comment_tags{
-        display: flex;
-        flex-wrap: wrap;
+        display: flex;  
+        margin-top: 10px;
         .tag_item{
           margin-right: 10px;
-          margin-top: 10px;
-          font-size: 12px;
-          height: 18px;
+          font-size: 14px;
+          height: 20px;
           display: flex;
           align-items: center;
           padding:0 10px;
-          color: #aaa;
-          border:1px solid #aaa;
+          color: #1fb7b6;
+          background-color: #f3fbfb;;
+          // border:1px solid #aaa;
           border-radius: 10px;
         }
       }
+     
     }
   }
 }
@@ -605,6 +757,8 @@ export default {
   .respond_time{
     font-size: 13px;
     color: #444;
+    width: 200px;
+
     span{
       font-weight: bold;
     }
