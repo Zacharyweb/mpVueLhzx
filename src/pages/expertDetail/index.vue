@@ -136,26 +136,8 @@
             <img class="user_avatar" src="../../../static/img/comment_avatar.png">
             <span>关系户1</span>
           </li>
-          <li class="friend_item">
-            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
-            <span>关系户1</span>
-          </li>
-          <li class="friend_item">
-            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
-            <span>关系户1</span>
-          </li>
-            <li class="friend_item">
-            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
-            <span>关系户1</span>
-          </li>
-            <li class="friend_item">
-            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
-            <span>关系户1</span>
-          </li>  <li class="friend_item">
-            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
-            <span>关系户1</span>
-          </li>
         </ul>
+
       </div>
 
       <div class="friends_block">
@@ -185,7 +167,7 @@
 
     <div class="bottom_fixed" :class="{'isX':isX}">
       <div class="icon_btns">
-        <div class="icon_btn" v-if="!collected" @click="addUserFollow">
+        <!-- <div class="icon_btn" v-if="!collected" @click="addUserFollow">
           <img src="../../../static/img/collect_icon.png">
           <span>关注</span>
         </div>
@@ -193,14 +175,15 @@
         <div class="icon_btn" v-if="collected" @click="deleteUserFollow">
           <img src="../../../static/img/collect_icon2.png">
           <span style="color:#1fb7b6;">已关注</span>
-        </div>
-
+        </div> -->
         <button open-type="share" class="icon_btn btn_reset">
           <img src="../../../static/img/share_icon.png">
           <span>分享</span>
         </button>
       </div>
-       <span class="action_btn1" @click="toContact">马上咨询&nbsp;￥{{expertData.oneOfCost}}</span>
+      
+      <span class="respond_time_tips">{{expertData.responseTime}}分钟内回应接单</span>
+      <span class="action_btn1" @click="toContact">马上咨询&nbsp;￥{{expertData.oneOfCost}}/次</span>
     </div>
 
     <van-action-sheet
@@ -736,8 +719,10 @@ export default {
         line-height: 1.5;
       }
     }
-    
-
+  }
+  .respond_time_tips{
+    font-size: 14px;
+    color: #999;
   }
 }
 

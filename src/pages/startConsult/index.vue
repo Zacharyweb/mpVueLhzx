@@ -8,63 +8,51 @@
           <div class="experts_msg1">
             <div class="experts_name">
               <span class="experts_nickname">{{expertData.nickName}}</span>
-              <span class="sub_position_text">{{expertData.companyPosition}}
-              <!-- &nbsp;|&nbsp;{{expertData.companyName}} -->
-              </span>
+              <!-- <span class="sub_position_text">{{expertData.companyPosition}}</span> -->
             </div>
-            <!-- <span class="consult_msg"><img class="query_icon" src="../../../static/img/query_icon.png">咨询流程</span> -->
           </div>
-          <div class="experts_msg2">
+          <!-- <div class="experts_msg2">
             <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span>
-          </div>
+          </div> -->
           <div class="experts_msg3">
             <div class="experts_location">
-              <img src="../../../static/img/location_icon.png">{{expertData.address}}
+              <!-- <img src="../../../static/img/location_icon.png"> -->
+              {{expertData.companyPosition}}
             </div>
             <span class="devide_line"></span>
             <div class="experts_experience">
-              <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}工作经验
+              {{expertData.companyName}}
+              <!-- <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}工作经验 -->
             </div>
           </div>
         </div>
       </div>
+      <div class="cost_tips">
+        <span class="cost_text">￥{{expertData.oneOfCost}}</span>
+      </div>
     </div>
 
     <div class="order_form_panel">
-      <div class="panle_block">
+      <!-- <div class="panle_block">
         <div class="block_title mb0">预计费用&nbsp;<span class="cost_text">{{expertData.oneOfCost}}</span>&nbsp;元</div>
-
-        <!-- <div class="class_num_block">
-          <van-stepper
-            :value="classNum"
-            integer
-            min="1"
-            max="99"
-            step="1"
-            @change="onClassNumChange"
-          />
-          <div class="cost_tips">
-            预计费用<span>{{40*classNum}}</span>元
-          </div>
-        </div> -->
+      </div> -->
+      <div class="panle_block">
+        <div class="block_title">自我介绍</div>
+        <div class="problem_content">
+          <textarea  cols="30" rows="10" v-model="orderUserDesc" placeholder="可填写相关介绍一下，例如您的自我介绍信息，让专家更了解您或您的问题。"></textarea>
+        </div>
       </div>
 
-      <div class="panle_block">
+      <div class="panle_block nb">
         <div class="block_title"><span class="require_icon">*</span>问题内容</div>
         <div class="problem_content">
           <textarea  cols="30" rows="10" v-model="questionRemark" placeholder="请输入咨询问题内容"></textarea>
         </div>
       </div>
-      <div class="panle_block">
-        <div class="block_title">其他介绍</div>
-        <div class="problem_content">
-          <textarea  cols="30" rows="10" v-model="orderUserDesc" placeholder="可填写相关介绍一下，例如您的自我介绍信息，让专家更了解您或您的问题。"></textarea>
-        </div>
-      </div>
-      <div class="panle_block npb">
+     
+      <!-- <div class="panle_block npb">
         <div class="block_title">问题附件</div>
         <div class="problem_content">
-          
           <div class="files_group">
               <div class="title">图片</div>
               <div class="img_file_item" v-for="(item,index) in photosList" :key="index">
@@ -74,8 +62,18 @@
               <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="photosList.length < 5" @click="upLoadPhoto">
           </div>
         </div>
-      </div>
-      
+      </div> -->
+
+      <div class="agreement_block">
+        <div class="agreement_title">咨询须知：</div>
+        <div class="agreement_content">
+          <p>您咨询的专家只是平台的一名用户，和本平台不存在任何雇佣或劳务关系。</p>
+          <p>您的咨询费将通过微信直接支付给专家，不经过平台。</p>
+          <p>专家的作答只供您作参考之用，如需专家出具监证意见，请与专家另行商议。</p>
+          <p>一切因为您采取专家的作答而产生的后果一律与平台无关。</p>
+        </div>
+      </div> 
+
     </div>
 
     <div class="agree_bar">
@@ -83,9 +81,9 @@
     </div>
 
     <div class="btn_block">
-      <!-- <div class="btn green large" @click="submitOrder">提交订单</div> -->
       <button class="btn green large" form-type="submit">提交订单</button>
-    </div>
+    </div> 
+    <div class="respond_tips">专家将在{{expertData.responseTime}}分钟内回应</div>
     </form>
   </div>
 </template>
@@ -274,8 +272,14 @@ export default {
     width: 345px;
     height: 45px;
   }
+  
 }
-
+.respond_tips{
+  font-size: 12px;
+  padding-top:15px;
+  text-align: center;
+  color: #999;
+}
 // 专家
 .experts_name{
   font-size: 16px;
@@ -299,6 +303,8 @@ export default {
 
 .experts_item{
   margin-bottom: 0;
+  position: relative;
+  height: 80px;
   .top_block{
     align-items: flex-start;
     height: 95px;
@@ -320,6 +326,15 @@ export default {
       }
     }
   }
+  .cost_tips{
+    position: absolute;
+    top:15px;
+    right: 25px;
+    font-size: 16px;
+    .cost_text{
+      color: #1fb7b6;
+    }
+  }
 }
 
 .order_form_panel{
@@ -330,6 +345,7 @@ export default {
   .panle_block{
     padding:10px 5px 20px 5px;
     border-top: 1px solid #e6e8eb;
+ 
   }
   .panle_block.npb{
     padding-bottom: 0;
@@ -490,13 +506,30 @@ export default {
   }
   .action_btn1{
     background-color: #f3fbfb;
-
   }
-
 }
 
 .agree_bar{
   padding-left: 20px;
   margin-top: 10px;
 }
+
+
+.agreement_block{
+  padding:0 5px;
+  .agreement_title{
+    font-size: 14px;
+    color: #999;
+    line-height: 1.5;
+
+  }
+  .agreement_content{
+    p{
+      font-size: 14px;
+      color: #999;
+      line-height: 1.5;
+    }
+  }
+  
+}  
 </style>

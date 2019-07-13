@@ -3,7 +3,7 @@
   <div class="order_msg0">
       <span class="order_no">订单编号：{{orderData.orderNo}}</span>
       <div class="order_status">
-        <span class="time_count" v-show="showCount">{{hh}}:{{mm}}:{{ss}}</span>
+        <!-- <span class="time_count" v-show="showCount">{{hh}}:{{mm}}:{{ss}}</span> -->
         <span class="status_text" v-if="orderData.status == 0">待接单</span>
         <span class="status_text" v-if="orderData.status == 1">待重新确认</span>
         <span class="status_text" v-if="orderData.status == 2">待作答</span>   
@@ -22,29 +22,42 @@
       <div class="top_block_right">
         <div class="order_msg1">
           <span class="experts_name">{{orderData.nickName}}</span>
+          <span class="consult_price">￥{{orderData.amount || '0'}}</span>
           <!-- <span class="consult_msg" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</span>
           <span class="consult_msg" v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</span>
           <span class="consult_msg" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8">作答时间：2888/08/18 18:28</span> -->
         </div>
-        <div class="consult_time_msg">
+        <!-- <div class="consult_time_msg">
           <span v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</span>
           <span v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</span>
           <span v-if="orderData.actualAnswerTime">作答时间：{{orderData.actualAnswerTime}}</span>
-        </div>
+        </div> -->
         <div class="order_msg2">
           <span class="customer_info">{{orderData.orderUserDesc}}</span>
-          <span class="consult_price">￥{{orderData.amount || '0'}}</span>
+          <!-- <span class="consult_price">￥{{orderData.amount || '0'}}</span> -->
         </div>
       </div>
     </div>
     <div class="bottom_block">
-      <div class="question">
+      <div class="question text_ellipsis">
           <span class="question_title">问题：</span>{{orderData.questionRemark}}
       </div>
-      <div class="order_time">{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 0 || orderData.status == 1">提问时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 2">接单时间：{{orderData.actualAnswerTime}}</div>
+      <div class="order_time" v-if="orderData.status == 3 || orderData.status == 8">作答时间：{{orderData.actualAnswerTime}}</div>
+      <div class="order_time" v-if="orderData.status == 4 || orderData.status == 5">发送专家收款二维码时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 6 || orderData.status == 7">到账时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == -1">取消时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.creationTime}}</div>
     </div>
+
+    <div class="other_msg_block" v-if="orderData.status == 0">
+      <span class="other_msg">请在X分钟内回应</span>
+      <span class="action_btn">看订单</span>
+    </div>
+    
     <div class="other_msg_block" v-if="orderData.status == 2">
-      <span class="other_msg">您已接单，请及时完成作答~</span>
+      <span class="other_msg">请在Y小时内作答</span>
       <span class="action_btn">马上作答</span>
     </div>
     <div class="other_msg_block" v-if="orderData.status == 5">

@@ -1,14 +1,15 @@
 module.exports = [
-  // {
-  //   path: 'pages/becomeExpert/index',
-  //   config: {
-  //     navigationBarTitleText: '专家信息',
-  //     usingComponents: {
-  //       "van-steps": "/static/vant/steps/index",
-  //       "van-area": "/static/vant/area/index"
-  //     }
-  //   }
-  // },
+  {
+    path: 'pages/consult/index',
+    config: {
+      navigationBarTitleText: '咨询订单',
+      usingComponents: {
+        "van-tag": "/static/vant/tag/index",
+        "van-action-sheet": "/static/vant/action-sheet/index"
+      }
+    }
+  },
+
   // 首页
   {
     path: 'pages/index/index',
@@ -122,16 +123,16 @@ module.exports = [
   },
 
   // 咨询订单列表
-  {
-    path: 'pages/consult/index',
-    config: {
-      navigationBarTitleText: '咨询订单',
-      usingComponents: {
-        "van-tag": "/static/vant/tag/index",
-        "van-action-sheet": "/static/vant/action-sheet/index"
-      }
-    }
-  },
+  // {
+  //   path: 'pages/consult/index',
+  //   config: {
+  //     navigationBarTitleText: '咨询订单',
+  //     usingComponents: {
+  //       "van-tag": "/static/vant/tag/index",
+  //       "van-action-sheet": "/static/vant/action-sheet/index"
+  //     }
+  //   }
+  // },
 
   // 咨询详情/订单详情
   {
