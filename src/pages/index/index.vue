@@ -1,6 +1,16 @@
 <template>
   <div class="container">
-    <van-search  background="#fff" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
+    <div class="top_bar">
+        <div class="location_select" @click="showAreaSelectPanel">
+          <img class="location_icon" src="../../../static/img/location_icon.png">
+          <span>{{city}}</span>
+        </div>
+        <div class="search_wrap">
+          <van-search  background="#fff" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
+        </div>
+        <img class="sx_icon" v-show="selectedHy || selectedKs" src="../../../static/img/sx_active.png" @click="sxPanelShow = true;">
+        <img class="sx_icon" v-show="!selectedHy && !selectedKs" src="../../../static/img/sx_grey.png" @click="sxPanelShow = true;">
+    </div>
     <div class="tab_fix_wrap" v-show="tabFixedFlag">
        <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
           <van-tab v-for="(item,index) in tagsList" :key="index" :title="item"></van-tab>
@@ -19,7 +29,7 @@
     <!-- <div class="top_tips" @click="toConsultList">
        <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
     </div> -->
-   
+
     <div class="experts_list" v-if="expertsList.length > 0">
       <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
     </div>
@@ -29,11 +39,68 @@
       <span>还没有相关专家哦~</span>
     </div> 
 
+    
+    <!-- 地区选择组件 -->
+    <div class="area_select_block">
+      <div class="mask" @click="areaSelectPanelShow = false" v-show="areaSelectPanelShow"></div>
+      <div class="area_select_panel" :class="{'show':areaSelectPanelShow}">
+        <van-area :area-list="areaList" :columns-num="2" @confirm="confirmArea" @cancel="cancelArea"/>
+      </div>
+    </div>
+
+    <div class="sx_panel" :class="{show:sxPanelShow}">
+      <div class="sx_top_bar">
+        <span class="cancel_btn" @click="sxPanelShow = false;">取消</span>
+        <span class="panel_title">筛选</span>
+        <span class="confirm_btn" @click="submitSx">完成</span>
+      </div>
+      <div class="sx_tabs">
+        <div class="tab_item">
+          <span class="tab_name" @click="sxType = 1 ">行业：</span>
+          <span class="tab_content" :class="{'active':selectedHy}" @click="sxType = 1 ">{{selectedHy?selectedHy:'未选择'}}</span>
+          <img class="arrow_icon" src="../../../static/img/arrow_down2.png" @click="sxType = 1 ">
+        </div>
+        <div class="tab_item">
+          <span class="tab_name" @click="sxType = 2 ">科室：</span>
+          <span class="tab_content"  :class="{'active':selectedKs}" @click="sxType = 2 ">{{selectedKs?selectedKs:'未选择'}}</span>
+          <img class="arrow_icon" src="../../../static/img/arrow_down2.png" @click="sxType = 2 ">
+
+        </div>
+      </div>
+
+      <div class="sx_body" v-show="sxType == 1">
+        <div class="body_top">
+          <span>行业</span>
+        </div>
+        <ul class="tags_list">
+          <li class="list_item" :class="{'active':item.flag}" v-for="(item,index) in hyList" @click="singleChange('hyList',index)" :key="index">{{item.name}}</li>
+        </ul>
+      </div>
+
+      <div class="sx_body" v-show="sxType == 2">
+        <div class="body_top">
+          <span>科室</span>
+        </div>
+        <ul class="tags_list">
+          <li class="list_item" :class="{'active':item.flag}" v-for="(item,index) in ksList" @click="singleChange('ksList',index)" :key="index">{{item.name}}</li>
+        </ul>
+       
+      </div>
+        <div class="btns_wrap">
+          <span class="clean_btn" @click="cleanSx">清空</span>
+          <span class="submit_btn" @click="submitSx">完成</span>
+        </div>
+    </div>
+
+
+ 
+
   </div>
 </template>
 <script>
 import expert from '@/components/expert'
 import { mapState, mapActions } from 'vuex'
+import AreaList from '../../../static/js/area.js';
 export default {
   data () {
     return {
@@ -45,7 +112,48 @@ export default {
       pageIndex:0,
       major:'',
       isNomore:false,
-      isLoading:false
+      isLoading:false,
+      areaList:AreaList,
+      areaSelectPanelShow:false,
+      sxType:1, // 1:筛选行业 2：筛选科室
+      city:'全国',
+      hyList:[
+        {name:'电讯航天',flag:false},
+        {name:'风投私募',flag:false},
+        {name:'风投私募',flag:false},
+        {name:'风投私募',flag:false},
+        {name:'风投私募',flag:false},
+        {name:'风投私募',flag:false},
+        {name:'风投私募',flag:false},
+        {name:'风投私募',flag:false},
+        {name:'风投私募',flag:false},
+        {name:'风投私募',flag:false}
+      ],
+      ksList:[
+        {name:'全科',flag:false},
+        {name:'国际税收',flag:false}
+      ],
+      sxPanelShow:false
+    }
+  },
+  computed:{
+    selectedHy(){
+      let l = this.hyList.length;
+      for(let i = 0; i < l; i++){
+        if(this.hyList[i].flag){
+          return this.hyList[i].name;
+        }
+      }
+      return '';
+    },
+    selectedKs(){
+      let l = this.ksList.length;
+      for(let i = 0; i < l; i++){
+        if(this.ksList[i].flag){
+          return this.ksList[i].name;
+        }
+      }
+      return '';
     }
   },
   
@@ -134,6 +242,38 @@ export default {
       wx.switchTab({
         url: '/pages/consult/index'
       });
+    },
+
+    showAreaSelectPanel(){
+      this.areaSelectPanelShow = true;
+    },
+    cancelArea(){
+      this.areaSelectPanelShow = false;
+      this.city = '全国';
+    },
+    confirmArea(e){
+      let result = e.mp.detail.values;
+      this.city = result[1].name;
+      this.areaSelectPanelShow = false;
+    },
+    // 单选变动
+    singleChange(itemName,index){
+      if(this[itemName][index].flag) return;
+      this[itemName].forEach(item => {
+        item.flag = false;
+      });
+      this[itemName][index].flag =  true;
+    },
+    cleanSx(){
+      this.hyList.forEach((item)=>{
+        item.flag = false;
+      })
+      this.ksList.forEach((item)=>{
+        item.flag = false;
+      })
+    },
+    submitSx(){
+      this.sxPanelShow = false;
     }
   },
   onPageScroll() {
@@ -308,4 +448,174 @@ export default {
 .experts_list{
   
 }
+
+.top_bar{
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  .location_select{
+    display: flex;
+    align-items: center;
+    // margin-right: 10px;
+    .location_icon{
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+    span{
+      font-size: 12px;
+      color: #999;
+    }
+  }
+  .search_wrap{
+    flex: 1;
+  }
+  .sx_icon{
+    width: 20px;
+    height: 20px;
+    // margin-left: 10px;
+  }
+}
+
+
+.sx_panel{
+  position: fixed;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 10;
+  transform: translateX(100%);
+  transition: all 0.3s;
+  &.show{
+    transform: translateX(0);
+  }
+  .sx_top_bar{
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding:0 10px;
+    border-bottom: 1px solid #e6e8eb;
+    .cancel_btn{
+      width: 60px;
+      font-size: 13px;
+      color: #333;
+    }
+    .panel_title{
+      flex: 1;
+      font-size: 15px;
+      text-align: center;
+      color: #333;
+    }
+    .confirm_btn{
+      width: 60px;
+      height: 24px;
+      border-radius: 3px;
+      font-size: 13px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #1fb7b6;
+    }
+  }
+  .sx_tabs{
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding:0 15px;
+    .tab_item{
+      display: flex;
+      flex: 1;
+      align-items: center;
+      .tab_name{
+        font-size: 14px;
+        margin-right: 10px;
+      }
+      .tab_content{
+        font-size: 14px;
+        color: #999;
+        &.active{
+          color: #666;
+        }
+      }
+      .arrow_icon{
+        margin-left: 5px;
+        width: 12px;
+        height: 9px;
+      }
+    }
+
+  }
+  .btns_wrap{
+    display: flex;
+    justify-content: space-between;
+    padding:0 20px;
+    .clean_btn{
+      width: 150px;
+      height: 36px;
+      border-radius: 3px;
+      font-size: 14px;
+      color: #1fb7b6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border:1px solid #1fb7b6;
+    }
+    .submit_btn{
+      width: 150px;
+      height: 36px;
+      border-radius: 3px;
+      font-size: 14px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #1fb7b6;
+    }
+  }
+}
+
+.sx_body{
+   padding:10px 15px;
+   font-size: 14px;
+    min-height: 230px;
+  .body_top{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    span{
+      color: #666;
+      font-weight: bold;
+    }
+    img{
+      height: 18px;
+      width: 18px;
+    }
+  }
+  .tags_list{
+    display: flex;
+    flex-wrap: wrap;
+    .list_item{
+      margin-right: 5px;
+      margin-top: 5px;
+      background-color: #f8f8f8;
+      color: #666;
+      font-size: 12px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      padding:0 15px;
+      border-radius: 16px; 
+      &.active{
+        color: #fff;
+        background-color: #1fb7b6;
+      }
+    }
+  }
+
+}
+
 </style>

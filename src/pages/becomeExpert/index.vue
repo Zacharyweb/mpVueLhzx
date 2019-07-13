@@ -1333,29 +1333,7 @@ export default {
 
 }
 
-.area_select_block{
-  .mask{
-    position: fixed;
-    left: 0;
-    right: 0;
-    top:0;
-    bottom: 0;
-    z-index: 1;
-    background-color: rgba(0, 0, 0, 0.6);
-  }
-  .area_select_panel{
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    transform: translateY(100%);
-    transition: all 0.3s;
-    z-index: 2;
-  }
-  .area_select_panel.show{
-    transform: translateY(0);
-  }
-}
+
 .link_list{
   .link_item{
     margin-top: 10px;

@@ -9,7 +9,6 @@ module.exports = [
   //     }
   //   }
   // },
- 
   // 首页
   {
     path: 'pages/index/index',
@@ -19,7 +18,8 @@ module.exports = [
         "van-search": "/static/vant/search/index",
         "van-tag": "/static/vant/tag/index",
         "van-tab": "/static/vant/tab/index",
-        "van-tabs": "/static/vant/tabs/index"
+        "van-tabs": "/static/vant/tabs/index",
+        "van-area": "/static/vant/area/index"
       }
     }
   },
