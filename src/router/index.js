@@ -1,11 +1,13 @@
 module.exports = [
+ 
   {
-    path: 'pages/consult/index',
+    path: 'pages/consultDetail/index',
     config: {
-      navigationBarTitleText: '咨询订单',
+      navigationBarTitleText: '咨询详情',
       usingComponents: {
-        "van-tag": "/static/vant/tag/index",
-        "van-action-sheet": "/static/vant/action-sheet/index"
+        "van-stepper": "/static/vant/stepper/index",
+        "van-datetime-picker": "/static/vant/datetime-picker/index",
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },
@@ -123,29 +125,29 @@ module.exports = [
   },
 
   // 咨询订单列表
-  // {
-  //   path: 'pages/consult/index',
-  //   config: {
-  //     navigationBarTitleText: '咨询订单',
-  //     usingComponents: {
-  //       "van-tag": "/static/vant/tag/index",
-  //       "van-action-sheet": "/static/vant/action-sheet/index"
-  //     }
-  //   }
-  // },
-
-  // 咨询详情/订单详情
   {
-    path: 'pages/consultDetail/index',
+    path: 'pages/consult/index',
     config: {
-      navigationBarTitleText: '咨询详情',
+      navigationBarTitleText: '咨询订单',
       usingComponents: {
-        "van-stepper": "/static/vant/stepper/index",
-        "van-datetime-picker": "/static/vant/datetime-picker/index",
-        "van-dialog": "/static/vant/dialog/index"
+        "van-tag": "/static/vant/tag/index",
+        "van-action-sheet": "/static/vant/action-sheet/index"
       }
     }
   },
+
+  // 咨询详情/订单详情
+  // {
+  //   path: 'pages/consultDetail/index',
+  //   config: {
+  //     navigationBarTitleText: '咨询详情',
+  //     usingComponents: {
+  //       "van-stepper": "/static/vant/stepper/index",
+  //       "van-datetime-picker": "/static/vant/datetime-picker/index",
+  //       "van-dialog": "/static/vant/dialog/index"
+  //     }
+  //   }
+  // },
 
   // 专家取消订单
    {
@@ -153,7 +155,7 @@ module.exports = [
     config: {
       navigationBarTitleText: '取消订单',
       usingComponents: {
-    
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },
@@ -164,7 +166,8 @@ module.exports = [
       navigationBarTitleText: '修改订单',
       usingComponents: {
         "van-stepper": "/static/vant/stepper/index",
-        "van-datetime-picker": "/static/vant/datetime-picker/index"
+        "van-datetime-picker": "/static/vant/datetime-picker/index",
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },
@@ -175,7 +178,7 @@ module.exports = [
     config: {
       navigationBarTitleText: '作答',
       usingComponents: {
-   
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },

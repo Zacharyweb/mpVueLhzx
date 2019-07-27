@@ -39,8 +39,32 @@ export default {
   data () {
     return {
       currentTab:0,
-      myOrders:[],
-      customerOrders:[],
+      myOrders:[
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:0,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:1,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:2,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:3,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:4,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:5,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:6,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:7,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:8,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:9,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:-1,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11'},
+      ],
+      customerOrders:[
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:0,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:1,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:2,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:3,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:4,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:5,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:6,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:7,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:8,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:9,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+        {id:1,avatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',status:-1,orderNo:'xy1223213',nickName:'朱两边',amount:'40',companyPosition:'前端工程师',companyName:'阿拉丁',questionRemark:'小问题问题内容内容容内容容内容容内容',creationTime:'2018-09-18 08:09:11',actualAnswerTime:'2018-09-19 08:09:11',orderUserDesc:'我是自我介绍'},
+      ],
       isLoading:false
     }
   },
@@ -83,7 +107,7 @@ export default {
             item.leaveAnswerTime = Math.ceil(((+new Date(item.lastAnswerTime)) - (+new Date())) / 1000);
             item.lastAnswerTime = util.formatTime(new Date(item.lastAnswerTime));
           });
-          this.myOrders = res.data;
+          // this.myOrders = res.data;
         }
       })
     },
@@ -110,7 +134,7 @@ export default {
       
             item.lastAnswerTime = util.formatTime(new Date(item.lastAnswerTime));
           });
-          this.customerOrders = res.data;
+          // this.customerOrders = res.data;
         }
       })
     },

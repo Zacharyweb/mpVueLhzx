@@ -42,7 +42,7 @@
       <div class="order_time" v-if="orderData.status == 0 || orderData.status == 1">提问时间：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == 2">接单时间：{{orderData.actualAnswerTime}}</div>
       <div class="order_time" v-if="orderData.status == 3 || orderData.status == 8">作答时间：{{orderData.actualAnswerTime}}</div>
-      <div class="order_time" v-if="orderData.status == 4 || orderData.status == 5">发送专家收款二维码时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 4 || orderData.status == 5">专家收款二维码发送时间：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == 6 || orderData.status == 7">到账时间：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == -1">取消时间：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.creationTime}}</div>
@@ -67,6 +67,9 @@
 
     <div class="other_msg_block" v-if="orderData.status == 8">
       <span class="other_msg">待专家与您联系协商调解不满之处</span>
+    </div>
+    <div class="other_msg_block" v-if="orderData.status == 9">
+      <span class="other_msg">专家未能接单</span>
     </div>
   </div>
 </template>

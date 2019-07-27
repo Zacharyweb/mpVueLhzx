@@ -3,7 +3,7 @@
     <div class="order_base_msg">
       <div class="order_no"><span>订单号：</span>{{orderData.orderNo}}</div>
       <div class="order_status">
-        <span class="time_count" v-show="showCount">{{hh}}:{{mm}}:{{ss}}</span>
+        <!-- <span class="time_count" v-show="showCount">{{hh}}:{{mm}}:{{ss}}</span> -->
         <span class="status" v-if="orderData.status == 0">待接单</span>
         <span class="status" v-if="orderData.status == 1">待重新确认</span>
         <span class="status" v-if="orderData.status == 2">待作答</span>   
@@ -23,15 +23,28 @@
         <div class="top_block">
           <img class="experts_avatar" :src="orderData.expertAvatarUrl">
           <div class="top_block_right">
+
             <div class="order_msg1">
-              <div class="experts_name">{{orderData.expertName}}<span>{{orderData.expertCompanyPosition}}&nbsp;|&nbsp;{{orderData.expertCompanyName}}</span></div>
+              <div class="experts_name">{{orderData.expertName}}</div>
             </div>
-            <div class="order_msg3">
-              <div class="order_response" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</div>
-              <div class="order_response" v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</div>
-              <div class="order_response" v-if="orderData.actualAnswerTime">作答时间：{{orderData.actualAnswerTime}}</div>
-              <div class="order_cost"><span>费用：{{orderData.amount}}元</span><span class="sub_text">{{orderData.responseTime}}分钟内回应&nbsp;|&nbsp;{{orderData.answeringTime/60}}小时内作答</span></div>
+
+            <div class="order_msg2">
+                <div class="experts_work_msg">
+                 <span>{{orderData.expertCompanyPosition}}&nbsp;|&nbsp;{{orderData.expertCompanyName}}</span>
+                </div>
             </div>
+            <span class="cost_amount">{{orderData.amount}}元</span>
+
+            <!-- <div class="order_msg3"> -->
+              <!-- <div class="order_response" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</div> -->
+              <!-- <div class="order_response" v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</div>
+              <div class="order_response" v-if="orderData.actualAnswerTime">作答时间：{{orderData.actualAnswerTime}}</div> -->
+              <!-- <div class="order_cost"> -->
+                <!-- <span>费用：{{orderData.amount}}元</span> -->
+                <!-- <span class="sub_text">{{orderData.responseTime}}分钟内回应&nbsp;|&nbsp;{{orderData.answeringTime/60}}小时内作答</span> -->
+                <!-- </div> -->
+            <!-- </div> -->
+
           </div>
         </div>
 
@@ -48,7 +61,7 @@
           <div class="question" style="margin-top:5px" v-if="orderData.orderUserDesc">
               <span class="question_title">相关介绍：</span>{{orderData.orderUserDesc}}
           </div>
-          <div class="order_time">咨询发起时间：{{orderData.creationTime}}</div>
+          <div class="order_time">提问时间：{{orderData.creationTime}}</div>
         </div>
 
         <!-- 用户取消订单 -->
@@ -79,9 +92,25 @@
         <!-- 专家修改订单-->
         <div class="bottom_block" v-if="orderData.status == 1">
           <div class="question">
-              <span class="question_title">订单变更：</span>专家已变更订单信息，<span class="colorful_text">订单费用为{{orderData.amount}}元，最晚作答时间为{{orderData.lastAnswerTime}}</span>，请用户重新确认订单信息。
+            <div>
+              <span class="question_title">订单变更：</span>
+            </div>
+            <div>
+              作答费用：<span class="colorful_text">{{orderData.amount}}元</span>
+            </div>
+            <div>
+              作答时间：<span class="colorful_text">{{orderData.lastAnswerTime}}</span>
+            </div>
+            <div>
+              修改原因：<span class="colorful_text">修改原因原因</span>
+            </div>
+            <!-- <span class="question_title">订单变更：</span>专家已变更订单信息，<span class="colorful_text">订单费用为{{orderData.amount}}元，最晚作答时间为{{orderData.lastAnswerTime}}</span>，请用户重新确认订单信息。 -->
           </div>
-          <div class="order_time">订单变更时间：{{orderData.lastModificationTime}}</div>
+          <div class="order_time">修改时间：{{orderData.lastModificationTime}}</div>
+          <!-- <div class="order_time">接单时间：{{orderData.lastModificationTime}}</div> -->
+          <!-- <div class="order_time">关闭时间：{{orderData.lastModificationTime}}</div> -->
+
+
         </div>
 
         <div class="bottom_block" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8">
@@ -101,15 +130,30 @@
         <div v-if="userType == 'u'">
            <!-- 待接单时客户的操作 -->
            <div class="other_msg_block" v-if="orderData.status == 0">
-             <span class="other_msg">在专家接单前，您可取消订单哦</span>
+             <div class="other_msg">
+               <div>专家将在{{orderData.responseTime}}分钟内接单</div>
+               <div>在专家接单前，您可取消订单哦</div>
+             </div>
              <span class="action_btn2" @click="userCloseOrder">取消订单</span>
            </div>
    
            <!-- 专家修改订单信息后客户的操作 -->
            <div class="other_msg_block" v-if="orderData.status == 1">
-             <span class="other_msg">订单信息已修改，请确认是否同意</span>
-             <span class="action_btn2" @click="userCloseOrder">不同意</span>
-             <span class="action_btn" @click="userResureOrder">同意</span>
+
+             <div class="other_msg">
+               <div>超过24小时未接受的</div>
+               <div>订单将自动关闭</div>
+             </div>
+             <div class="inner_block">
+                <span class="action_btn2" @click="userCloseOrder">不接受</span>
+                <span class="action_btn" @click="userResureOrder">接受</span>
+             </div>
+           
+           </div>
+
+
+           <div class="other_msg_block" v-if="orderData.status == 2">
+             <span class="other_msg">专家将在{{orderData.answeringTime/60}}小时内作答，请等待~</span>
            </div>
    
 
@@ -155,13 +199,22 @@
 
         <div v-if="userType == 'e'">
           <!-- 待接单时专家的操作 -->
-          <div class="ex_action_block" v-if="orderData.status == 0">
+          <!-- <div class="ex_action_block" v-if="orderData.status == 0">
               <div class="action_btn_bar">
-                <span class="action_btn2"  @click="toEditOrder">修改订单</span>
-                <span class="action_btn2" @click="toRejectOrder">取消订单</span>
+                <span class="action_btn2"  @click="toEditOrder">修改</span>
+                <span class="action_btn2" @click="toRejectOrder">取消</span>
                 <span class="action_btn" @click="receiptOrder">马上接单</span>
              </div>
-          </div>
+          </div> -->
+
+          <div class="other_msg_block" v-if="orderData.status == 0">
+              <span class="other_msg">请在{{orderData.responseTime}}分钟内接单</span>
+              <div class="action_btn_bar">
+                <span class="action_btn2"  @click="toEditOrder">修改</span>
+                <span class="action_btn2" @click="toRejectOrder">拒单</span>
+                <span class="action_btn" @click="receiptOrder">接单</span>
+              </div>
+           </div>
   
           <!-- 修改订单后等待用户确认 -->
           <div class="other_msg_block" v-if="orderData.status == 1">
@@ -169,15 +222,15 @@
           </div>
   
           <!-- 已接单时专家的操作 -->
-          <div class="ex_action_block" v-if="orderData.status == 2">
-              <div class="action_btn_bar">
-                <span class="action_btn" @click="toAnswerPage">马上作答</span>
-             </div>
+       
+          <div class="other_msg_block" v-if="orderData.status == 2">
+            <span class="other_msg">请在{{orderData.answeringTime/60}}小时内作答~</span>
+            <span class="action_btn" @click="toAnswerPage">马上作答</span>
           </div>
 
           <!-- 已作答等待用户确认 -->
           <div class="ex_action_block" v-if="orderData.status == 3">
-            <span class="other_msg">您已提交作答内容，请等待用户确认</span>
+            <span class="other_msg">已作答，请等待用户审阅并为本次服务点评和支付</span>
           </div>
 
           <!-- 用户支付前-->
@@ -250,19 +303,35 @@ export default {
     return {
       orderId:'',
       userType:'',
-
- 
-
       questionImgs: [],
-
       questionImgsSwiperShow: false,
       questionImgsswiperCurrent:2,
-
       answerImgs:[],
       answerImgsSwiperShow: false,
       answerImgsswiperCurrent:2,
-      orderData:{},
+      orderData:{
+        id:1,
+        expertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
+        status:2,
+        orderNo:'xy1223213',
+        expertName:'朱两边',
+        amount:'40',
+        expertCompanyPosition:'前端工程师',
+        expertCompanyName:'阿拉丁',
+        questionRemark:'小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容',
+        creationTime:'2018-09-18 08:09:11',
+        actualAnswerTime:'2018-09-19 08:09:11',
+        lastModificationTime:'2018-09-19 08:09:11',
+        responseTime:'66',
+        answeringTime:120,
+        orderUserDesc:'我是自我介绍',
+        questionAnswerText:'回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容',
 
+        usertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
+        userName:'阿笨',
+        lastAnswerTime:'2018-09-19 08:09:11'
+        
+      },
       timer:null,
       showCount:false,
       hh:'00',
@@ -277,40 +346,56 @@ export default {
   },
 
   methods: {
-
     // 专家修改订单
     toEditOrder(){
+
       this.$router.push({path:'/pages/editOrder/index',query:{
         orderId:this.orderId,
         price:this.orderData.price,
         quantity:this.orderData.quantity,
         amount:this.orderData.amount || '0',
-        lastAnswerTime:this.orderData.lastAnswerTime
+        lastAnswerTime:this.orderData.lastAnswerTime,
       }})
     },
     // 专家拒绝订单
     toRejectOrder(){
-      this.$router.push({path:'/pages/cancelOrder/index',query:{orderId:this.orderId}})
+      
+      this.$router.push({path:'/pages/cancelOrder/index',query:{
+          orderId:this.orderId,    
+          amount:this.orderData.amount || '0',
+          lastAnswerTime:this.orderData.lastAnswerTime,
+        }
+      })
     },
     // 专家接单
     receiptOrder(){
-      this.$http.request({
-        url:'ReceiptOrder',
-        data:this.orderId*1,
-        flyConfig:{
-          method: 'post'
-        }
-      }).then(res => {
-        if(res.code == 1){
-          this.showToast('接单成功');
-          this.getOrderDetail();
-        }
-      })
+      Dialog.confirm({
+        title: '确认接单',
+        message: '请在'+ (this.orderData.answeringTime / 60).toFixed(1) +'小时内接单',
+      }).then(() => {
+        this.$http.request({
+          url:'ReceiptOrder',
+          data:this.orderId*1,
+          flyConfig:{
+            method: 'post'
+          }
+        }).then(res => {
+          if(res.code == 1){
+            this.showToast('接单成功');
+            this.getOrderDetail();
+          }
+        })
+      }).catch(() => {
+        
+      });
     },
 
     // 专家去作答
     toAnswerPage(){
-      this.$router.push({path:'/pages/answer/index',query:{orderId:this.orderId}})
+      this.$router.push({path:'/pages/answer/index',query:{
+        orderId:this.orderId,
+        amount:this.orderData.amount
+      }})
     },
     
     // 专家未收款到账申诉
@@ -343,8 +428,8 @@ export default {
     // 用户取消订单
     userCloseOrder(){
       Dialog.confirm({
-        title: '确认取消订单？',
-        message: '您可在专家接单前取消订单'
+        title: '不接受订单修改？',
+        message: '点击确认后将关闭订单  '
       }).then(() => {
         this.$http.request({
           url:'ClosedOrder',
@@ -369,8 +454,8 @@ export default {
     // 用户重新确认订单信息
     userResureOrder(){
       Dialog.confirm({
-        title: '同意订单修改',
-        message: '专家已修改订单信息，请再次确认是否同意修改。'
+        title: '接受订单修改',
+        message: '确认后专家将按订单修改后作答。'
       }).then(() => {
         this.$http.request({
           url:'UserResureOrder',
@@ -454,6 +539,7 @@ export default {
     },
     // 获取订单
     getOrderDetail(loadingFlag){
+      wx.setStorageSync('orderData',this.orderData);
       if(loadingFlag){
         wx.showLoading({
           title: '载入中',
@@ -479,8 +565,6 @@ export default {
           });
           this.answerImgs = answerImgs;
 
-          
-          
           result.creationTime = util.formatTime(new Date(result.creationTime));
           result.lastModificationTime = util.formatTime(new Date(result.lastModificationTime));
  
@@ -496,7 +580,15 @@ export default {
             result.actualAnswerTime = util.formatTime(new Date(result.actualAnswerTime));
           }
 
-          this.orderData = result;
+          // wx.setStorageSync('orderUserMsg', {
+          //     usertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
+          //     userName:'阿笨',
+          //     orderNo: 'xr23213',
+          //     orderUserDesc: '用户自我介绍',
+          //     responseTime:66
+          // });
+
+          // this.orderData = result;
           this.initCount();
         }
       })
@@ -546,7 +638,7 @@ export default {
   },
   onLoad: function (options) {
     this.orderId = options.orderId;
-    this.userType = options.userType;
+    this.userType = options.userType || 'e';
   },
   onShow(){
     this.getOrderDetail(true);
@@ -559,7 +651,7 @@ export default {
 </script>
 <style lang="less" scoped>
   .order_item .top_block {
-    height: 96px;
+    height: 80px;
   }
   .order_base_msg{
     padding:15px;
@@ -597,5 +689,9 @@ export default {
         color: #2d8cf0;
       }
     }
+  }
+
+  .orders_list .order_item .bottom_block{
+    font-size: 14px;
   }
 </style>

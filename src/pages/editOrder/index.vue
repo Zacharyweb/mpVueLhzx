@@ -1,6 +1,31 @@
 <template>
   <div class="container">
     <div class="order_edit_panel show">
+      <div class="order_base_msg">
+        <div class="order_no"><span>订单号：</span>{{orderNo}}</div>
+        <div class="order_status">
+          <span class="status">待接单</span>
+        </div>
+      </div>
+  
+      <div class="orders_list">
+        <div class="order_item">
+          <div class="top_block">
+            <img class="experts_avatar" :src="usertAvatarUrl">
+            <div class="top_block_right">
+              <div class="order_msg1">
+                <div class="experts_name">{{userName}}</div>
+              </div>
+              <div class="order_msg2">
+                  <div class="experts_work_msg">
+                   <span>{{orderUserDesc}}</span>
+                  </div>
+              </div>
+              <span class="cost_amount">{{amount}}元</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- <div class="panel_top">
         <span class="cancel_btn" @click="orderEditPanelShow = false">取消</span>
         <span class="title">修改订单</span>
@@ -8,6 +33,11 @@
       </div> -->
 
       <div class="edit_list">
+     
+        <div class="edit_item alt">
+          <span class="item_name">修改原因：</span>
+          <textarea class="text_area" placeholder="请输入其他原因" v-model="closeDesc"></textarea>
+        </div>
 
         <div class="edit_item">
           <span class="item_name">作答费用：</span>
@@ -29,16 +59,12 @@
           <img class="item_icon" @click="timePickerShow = true" src="../../../static/img/edit_icon.png">
         </div>
 
-        <div class="edit_item">
-          <span class="item_name">推荐至其他专家：</span>
-          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId == 0">选择专家好友</span>
-          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId != 0">已选择专家：{{selectedOtherExpertName}}</span>
-          <img class="item_icon" @click="toSelectOtherExpert" src="../../../static/img/friend_icon2.png">
-        </div>
+     
 
-        <div class="btn_block">
+        <div class="btn_block" style="padding-bottom:10px;">
           <div class="btn large green" @click="submitModify">提交修改</div>
         </div>
+        <div class="btn_bottom_tips">请在{{responseTime}}分钟内修改</div>
 
         <div class="time_picker_block" :class="{'show':timePickerShow}">
           <van-datetime-picker
@@ -53,67 +79,38 @@
 
         <div class="time_picker_mask" v-show="timePickerShow" @click="timePickerShow = false"></div>
 
-        <div class="friends_list" :class="{'show':friendsListShow}">
-          <div class="panel_top">
-            <span class="cancel_btn" @click="cancelOtherExpert">取消推荐</span>
-            <span class="title">选择推荐专家</span>
-            <span class="submit_btn" @click="submitOtherExpert">提交</span>
-          </div>
-          
-          <div class="friend_item" v-for="(item,index) in friendsList" :key="index" @click="selectOtherExpertChange(index)">
-            <div class="left">
-              <img class="friend_avatar" :src="item.avatarUrl">
-              <div class="friend_msg">
-                <div class="friend_name">{{item.nickName}}</div>
-                <!-- <div class="friend_position">高级财务专家</div> -->
-              </div>
-            </div>
-            <span class="select_icon" :class="{'actived':item.flag}"></span>
-          </div>
-
-          <!-- <div class="friend_item">
-            <div class="left">
-              <img class="friend_avatar" src="../../../static/img/avatar.jpeg">
-              <div class="friend_msg">
-                <div class="friend_name">朱两边</div>
-                <div class="friend_position">高级财务专家</div>
-              </div>
-            </div>
-            <span class="select_icon"></span>
-          </div> -->
-
-        </div>
-
       </div>
+      
     </div>
+    <van-dialog id="van-dialog"/>
 
   </div>
 </template>
 <script>
 import util from '../../utils/index.js'
 import { mapState, mapActions } from 'vuex'
+import Dialog from '../../../static/vant/dialog/dialog';
 export default {
   data () {
     return {
       orderId:'',
       timePickerShow:false,
-      friendsListShow:false,
-
+    
       amount:0,
       oldAmount:'',
-
       otherExpertId:0,
-      selectedOtherExpertName:'',
-
       minDate: new Date().getTime(),
       maxDate: new Date(2030, 10, 1).getTime(),
       currentDate: new Date().getTime(),
 
       lastAnswerTime:"",
       newLastAnswerTime:"",
-      friendsList:[]
 
-
+      usertAvatarUrl:'',
+      orderNo:'',
+      userName:'',
+      orderUserDesc:'',
+      responseTime:''
     }
   },
   computed: {
@@ -131,62 +128,7 @@ export default {
       this.newLastAnswerTime = util.formatTime(new Date(e.mp.detail));
       this.timePickerShow = false;
     },
-    getExpertFriendsList(){
-      this.$http.request({
-        url:'GetUserFriendList',
-        data:{
-          userId: this.userData.userId,
-          isExpert:1
-        },
-        flyConfig:{
-          method: 'post',
-        },
-        config:{
-          hideMsg:true
-        }
-      }).then(res => {
-        if(res.code == 1){
-          res.data.forEach(item => {
-            item.flag = false;
-          }); 
-          this.friendsList = res.data || [];
-        }
-      })
-    },
-    toSelectOtherExpert(){
-      if(this.friendsList.length == 0){
-        this.showToast('没有可选择的专家好友');
-        return;
-      }
-      this.friendsListShow = true;
-    },
-    // 选择其他专家变动
-    selectOtherExpertChange(index){
-      let flag = this.friendsList[index].flag;
-      this.friendsList.forEach(item => {
-        item.flag = false;
-      });
-      if(!flag){
-        this.friendsList[index].flag =  true;
-      }
-    },
-    submitOtherExpert(){
-      this.otherExpertId = 0;
-      let obj = {};
-      this.friendsList.forEach(item => {
-        if(item.flag){
-          this.otherExpertId = item.id;
-          this.selectedOtherExpertName = item.nickName;
-        }
-      });
-    
 
-      this.friendsListShow = false;
-    },
-    cancelOtherExpert(){
-      this.otherExpertId = 0;
-      this.friendsListShow = false;
-    },
     submitModify(){
       let lastAnswerTime = +new Date(this.lastAnswerTime);
       let newLastAnswerTime = +new Date(this.newLastAnswerTime); 
@@ -196,25 +138,32 @@ export default {
         return;
       };
 
-      this.$http.request({
-        url:'ModifyOrderOrder',
-        data:{
-          id: this.orderId,
-          amount: this.amount*1,
-          lastAnswerTime: this.newLastAnswerTime,
-          otherExpertId: this.otherExpertId
-        },
-        flyConfig:{
-          method: 'post'
-        }
-      }).then(res => {
-        if(res.code == 1){
-          this.showToast('已提交修改');
-          setTimeout(()=>{
-            this.$router.go(-1);
-          },1500)
-        }
-      })
+      Dialog.confirm({
+        title: '确认修改',
+        message: '您对订单做出了修改,确定修改吗？'
+      }).then(() => {
+        this.$http.request({
+          url:'ModifyOrderOrder',
+          data:{
+            id: this.orderId,
+            amount: this.amount*1,
+            lastAnswerTime: this.newLastAnswerTime,
+            otherExpertId: this.otherExpertId
+          },
+          flyConfig:{
+            method: 'post'
+          }
+        }).then(res => {
+          if(res.code == 1){
+            this.showToast('已提交修改');
+            setTimeout(()=>{
+              this.$router.go(-1);
+            },1500)
+          }
+        })
+      }).catch(() => {
+        
+      });
     }
   },
   created () {
@@ -229,7 +178,13 @@ export default {
     this.newLastAnswerTime = util.formatTime(new Date(options.lastAnswerTime));
     this.currentDate = new Date(options.lastAnswerTime).getTime();
     this.otherExpertId = 0;
-    this.getExpertFriendsList();
+
+    let orderUserMsg = wx.getStorageSync('orderUserMsg');
+    this.orderNo = orderUserMsg.orderNo;
+    this.usertAvatarUrl = orderUserMsg.usertAvatarUrl;
+    this.userName = orderUserMsg.userName;
+    this.orderUserDesc = orderUserMsg.orderUserDesc;
+    this.responseTime = orderUserMsg.responseTime;
   },
   onShow(){
 
@@ -282,7 +237,10 @@ export default {
       .edit_item{
         display: flex;
         align-items: center;
-        height: 45px;
+        min-height: 45px;
+        &.alt{
+          align-items: flex-start;
+        }
         .item_name{
           margin-right: 5px;
           font-size: 14px;
@@ -312,6 +270,16 @@ export default {
 
         }
 
+        .text_area{
+          flex: 1;
+          height: 80px;
+          padding:10px;
+          font-size: 14px;
+          border:1px solid #eee;
+          border-radius: 4px;
+          background-color: #fafafa;
+        }
+
       }
 
     }
@@ -336,76 +304,54 @@ export default {
       background-color: rgba(0, 0, 0, 0.6);
       z-index: 1;
     }
-
-    .friends_list{
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-color: #fff;
-      transform: translateY(100%);
-      transition: all 0.3s;
-      z-index: 9;
-      &.show{
-         transform: translateY(0);
-      }
- 
-      .friend_item{
-        margin:0 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 64px;
-        border-bottom: 1px solid #f3f3f3;
-        padding-right: 10px;
-        .left{
-          display: flex;
-          align-items: center;
-          .friend_avatar{
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border:2px solid #eee;
-            margin-right: 10px;
-          }
-          .friend_msg{
-            .friend_name{
-              font-size: 14px;
-              color: #333;
-              margin-bottom: 5px;
-
-            }
-            .friend_position{
-              font-size: 13px;
-              color: #666;
-            }
-
-          }
-
-        }
-        .select_icon{
-          width: 16px;
-          height: 16px;
-          border: 1px solid #e3e3e3;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          &.actived::after{
-            content: '';
-            width: 10px;
-            height: 10px;
-            background-color: #1fb7b6;
-            border-radius: 50%;
-          }
-        }
-      }
-    }   
+  
   }
   .btn_block{
     display: flex;
     justify-content: center;
     padding: 20px 0;
+  }
+
+  .order_base_msg{
+    padding:15px;
+    background-color:#fff;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f3f5f7;
+    .order_no{
+      span{
+        font-size: 14px;
+      }
+      font-size: 12px;
+      color: #666;
+    }
+    .order_status{
+       display: flex;
+       align-items: center;
+       .time_count{
+         font-size: 14px;
+         color: #333;
+         margin-right: 10px;
+       }
+      .status{
+        font-size: 14px;
+        color:#1fb7b6;
+      }
+      .status.grey{
+        color: #ccc;
+      }
+      .status.red{
+        // color: #e96900;
+        color: #fa3200;
+      }
+      .status.blue{
+        color: #2d8cf0;
+      }
+    }
+  }
+  .btn_bottom_tips{
+    font-size: 12px;
+    color: #666;
+    text-align: center;
   }
 </style>
