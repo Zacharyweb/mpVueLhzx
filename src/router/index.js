@@ -213,6 +213,7 @@ module.exports = [
       navigationBarTitleText: '评价',
       usingComponents: {
         "van-action-sheet": "/static/vant/action-sheet/index",
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },

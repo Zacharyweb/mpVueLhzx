@@ -1,13 +1,29 @@
 <template>
   <div class="container">
-
-
     <!-- 用户评论组件 -->
     <div class="comment_panel show">
+      <div class="page_title">评价：</div>
+      <div class="actions_block">
+        <span class="action_tips">你对本次服务是否满意？</span> 
+        <div class="action_btn_bar">
+            <span class="action_btn" :class="{'active':commentType == 1}" @click="changeCommentType(1)">满意</span>
+            <span class="action_btn" :class="{'active':commentType == 2}" @click="changeCommentType(2)">一般</span>
+            <span class="action_btn" :class="{'active':commentType == 3}" @click="changeCommentType(3)">不满意</span>
+        </div>
+      </div>
+
       <div class="input_block">
         <textarea class="text_area" placeholder="请输入评价内容" v-model="commentContent" v-if="!visiblePanelShow && !addViewPanelShow"></textarea>
       </div>
-      <div class="select_list">
+
+      <div class="visible">
+          <div class="tips_title">注：</div>
+          <div>
+              只有您允许的关系户才能看到您的评价，可到<span @click="toMyExpert">我的专家</span>里进行设置。
+          </div>
+      </div>
+
+      <!-- <div class="select_list">
         <div class="select_item fbt">
          <div class="left">
             <img src="../../../static/img/comment_icon2.png">
@@ -32,8 +48,7 @@
            <img src="../../../static/img/arrow_right3.png">
          </div>
         </div>
-        
-      </div>
+      </div> -->
 
       <div class="submit_block">
          <div class="btn large green" @click="submitComment">提交</div>
@@ -152,7 +167,7 @@
         </ul>
        </scroll-view>
     </div>
-
+    <van-dialog id="van-dialog"/>
   </div>
 </template>
 <script>
@@ -194,6 +209,7 @@ export default {
 
       visibleFriendsList:[],
       notVisibleFriendsList:[],
+      commentType:0
     }
   },
   computed:{
@@ -261,7 +277,6 @@ export default {
     },
 
     showFriendsVisiblePanel(){
-      console.log('11111111111111')
       this.visiblePanelShow = true
     },
    
@@ -284,8 +299,6 @@ export default {
       this.friendsVisible = type;
     },
     
-  
-
     getUserFriendsList(){
       this.$http.request({
         url:'GetUserFriendList',
@@ -308,6 +321,7 @@ export default {
         }
       })
     },
+
     initSelectedFriends(flag){
       let list;
       this.selectFriendsFor = flag;
@@ -349,60 +363,92 @@ export default {
     },
 
     submitComment(){
+      if(!this.commentType){
+        this.showToast('请选择是否满意');
+        return;
+      };
       if(!this.commentContent){
         this.showToast('请输入评价内容');
         return;
       };
-      let list = [];
-      if(this.friendsVisible == 2){
-        if(this.visibleFriendsList.length == 0){
-          this.showToast('请选择可见好友');
-          return;
-        }else{
-          // list = this.visibleFriendsList;
-          this.visibleFriendsList.forEach((item)=>{
-            list.push({userId:item.userId})
-          })
-        }
-      }
-      if(this.friendsVisible == 3){
-        if(this.notVisibleFriendsList.length == 0){
-          this.showToast('请选择不可见好友');
-          return;
-        }else{
-          // list = this.notVisibleFriendsList;
-          this.notVisibleFriendsList.forEach((item)=>{
-            list.push({userId:item.userId})
-          })
-        }
-      }
 
-      this.$http.request({
-        url:'UseComment',
-        data:{
-          userId: this.userData.userId,
-          expertId: this.expertId,
-          orderId: this.orderId,
-          content:this.commentContent,
-          commentTag:'',
-          expertVisible:this.expertVisible,
-          friendsVisible:this.friendsVisible,
-          selectedFriends:list
-        },
-        flyConfig:{
-          method: 'post'
-        }
-      }).then(res => {
-        if(res.code == 1){
-          this.showToast('评价成功');
-          setTimeout(()=>{
-            this.$router.go(-1);
-          },1500)
-        }
-      })
+      if(this.commentType == 3){
+        Dialog.confirm({
+          title: '提示',
+          message: '您对本次服务不满意，是否继续支付服务费用？',
+          confirmButtonText:'继续支付',
+          cancelButtonText:'去申诉',
+        }).then(() => {
+          this.$router.go(-1);
+        }).catch(()=>{
+          this.$router.go(-1);
+        })
+      }else{
+        this.commitComment();
+      }
+      
+
+
+      // let list = [];
+      // if(this.friendsVisible == 2){
+      //   if(this.visibleFriendsList.length == 0){
+      //     this.showToast('请选择可见好友');
+      //     return;
+      //   }else{
+    
+      //     this.visibleFriendsList.forEach((item)=>{
+      //       list.push({userId:item.userId})
+      //     })
+      //   }
+      // }
+      // if(this.friendsVisible == 3){
+      //   if(this.notVisibleFriendsList.length == 0){
+      //     this.showToast('请选择不可见好友');
+      //     return;
+      //   }else{
+      //     this.notVisibleFriendsList.forEach((item)=>{
+      //       list.push({userId:item.userId})
+      //     })
+      //   }
+      // }
+
+      // this.$http.request({
+      //   url:'UseComment',
+      //   data:{
+      //     userId: this.userData.userId,
+      //     expertId: this.expertId,
+      //     orderId: this.orderId,
+      //     content:this.commentContent,
+      //     commentTag:'',
+      //     expertVisible:this.expertVisible,
+      //     friendsVisible:this.friendsVisible,
+      //     selectedFriends:list
+      //   },
+      //   flyConfig:{
+      //     method: 'post'
+      //   }
+      // }).then(res => {
+      //   if(res.code == 1){
+      //     this.showToast('评价成功');
+      //     setTimeout(()=>{
+      //       this.$router.go(-1);
+      //     },1500)
+      //   }
+      // })
+    },
+    commitComment(){
+      this.$router.go(-1);
+    },
+
+    changeCommentType(type){
+      if(this.commentType == type){
+        return;
+      }
+      this.commentType = type;
+    },
+    toMyExpert(){
+      this.$router.push({path:'/pages/myExpert/index'}) 
     }
-
-
   },
   created () {
    
@@ -412,8 +458,8 @@ export default {
     this.orderId= options.orderId;
     this.expertId = options.expertId;
     this.commentContent = '';
+    this.commentType = 0;
     this.getUserFriendsList();
-
   },
   onShow(){
 
@@ -539,6 +585,7 @@ export default {
         padding: 15px;
         background-color: #fbfbfb;
         border-radius: 2px;
+   
       }
     }
     .select_list{
@@ -707,5 +754,56 @@ export default {
       }
     }
   }
+
+.page_title{
+    padding: 15px 15px;
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+}
+.actions_block{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  padding-top: 0;
+  font-size: 12px;
+  .action_tips{
+    font-size: 14px;
+    color: #666;
+  }
+  .action_btn_bar{
+    display: flex;
+    align-items: center;
+  }
+  .action_btn{
+    height: 28px;
+    padding:0 10px;
+    border-radius: 4px;
+    color: #1fb7b6;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    border: 1px solid #1fb7b6;
+  }
+  .action_btn.active{
+    color: #fff;
+    background-color: #1fb7b6;
+  }
+}
+.visible{
+  padding:10px 15px;
+  display: flex;
+  font-size: 13px;
+  color: #999;
+  .tips_title{
+    color: #333;
+  }
+  span{
+      color: #1fb7b6;
+  }
+}
+
 
 </style>

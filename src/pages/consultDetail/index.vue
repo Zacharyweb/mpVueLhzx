@@ -109,8 +109,6 @@
           <div class="order_time">修改时间：{{orderData.lastModificationTime}}</div>
           <!-- <div class="order_time">接单时间：{{orderData.lastModificationTime}}</div> -->
           <!-- <div class="order_time">关闭时间：{{orderData.lastModificationTime}}</div> -->
-
-
         </div>
 
         <div class="bottom_block" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8">
@@ -125,6 +123,13 @@
           </div>
 
           <div class="order_time">作答时间：{{orderData.actualAnswerTime}}</div>
+        </div>
+
+        <div class="bottom_block" v-if="orderData.status == 2">
+          <div class="question">
+            <span class="question_title">作答费用：0元</span>
+          </div>
+          <div class="order_time">免单时间：{{orderData.lastModificationTime}}</div>
         </div>
         
         <div v-if="userType == 'u'">
@@ -159,11 +164,17 @@
 
            <!-- 专家回答后用户可进行的操作 -->
            <div class="other_msg_block" v-if="orderData.status == 3">
-             <span class="other_msg">是否满意此次作答？</span>
-             <div class="action_btn_bar">
-                <span class="action_btn" @click="userConfirmOrder('很满意')">满意</span>
+              <div class="other_msg">
+                <div>请评价服务并在24小时内支付费用</div>
+                <div>逾期未支付专家将直接联系您</div>
+              </div>
+             <div class="inner_block">
+
+                <span class="action_btn" @click="toComment">评价</span>
+                <span class="action_btn2" @click="toPay">支付</span>
+                <!-- <span class="action_btn" @click="userConfirmOrder('很满意')">满意</span>
                 <span class="action_btn2" @click="userConfirmOrder('一般满意')">一般</span>
-                <span class="action_btn2" @click="toAppeal">不满意</span>
+                <span class="action_btn2" @click="toAppeal">不满意</span> -->
              </div>
            </div>
 
@@ -312,7 +323,7 @@ export default {
       orderData:{
         id:1,
         expertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
-        status:2,
+        status:3,
         orderNo:'xy1223213',
         expertName:'朱两边',
         amount:'40',
@@ -508,12 +519,20 @@ export default {
 
     // 用户去支付
     toPay(){
-      this.$router.push({path:'/pages/pay/index',query:{
-        orderId:this.orderId,
-        amount:this.orderData.amount,
-        price:this.orderData.price,
-        quantity:this.orderData.quantity
-      }})
+      Dialog.confirm({
+        title: '提示',
+        message: '不写点评，直接去支付吗？'
+      }).then(() => {
+        this.$router.push({path:'/pages/pay/index',query:{
+          orderId:this.orderId,
+          amount:this.orderData.amount,
+          price:this.orderData.price,
+          quantity:this.orderData.quantity
+        }})
+      }).catch(() => {
+        
+      });
+     
     },
 
 
@@ -638,7 +657,7 @@ export default {
   },
   onLoad: function (options) {
     this.orderId = options.orderId;
-    this.userType = options.userType || 'e';
+    this.userType = options.userType || 'u';
   },
   onShow(){
     this.getOrderDetail(true);
