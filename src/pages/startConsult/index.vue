@@ -127,7 +127,7 @@ export default {
         url:url,
       }).then(res => {
         let result = res.data;
-        result.address = result.companyAddress.split('-')[1] || result.companyAddress.split('市')[0] + '市';
+        // result.address = result.companyAddress.split('-')[1] || result.companyAddress.split('市')[0] + '市';
         this.expertData = result;
       })
     },
@@ -249,10 +249,9 @@ export default {
 
   onLoad(options){
     this.parentOrderId = options.parentOrderId || 0;
-
     this.expertId = options.expertId;
     this.questionRemark = '';
-    this.orderUserDesc = '';
+    this.orderUserDesc = this.userData.aboutUserDesc;
     this.photosList = [];
     this.getExpertMsgData();
   },

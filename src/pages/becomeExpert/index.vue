@@ -70,7 +70,7 @@
             <div class="item_name">所在地区</div>
             <div class="item_content"  @click="showAreaSelectPanel">
               <span class="select_tips"  v-show="!provice">请选择地区</span>
-              <span class="select_content" v-show="provice">{{provice}}{{city?'-' + city:''}}{{areaBlock?'-' + areaBlock:''}}</span>
+              <span class="select_content" v-show="provice">{{provice}}{{city?'-' + city:''}}</span>
             </div>
           </li>
 
@@ -382,11 +382,8 @@
       <div class="btn_block">
         <div class="btn green large plain" v-show="stepFlag == 2" @click="toNextStep(1)">上一步</div>
         <div class="btn green large" v-show="stepFlag == 2"  @click="toNextStep(3)">下一步</div>
-
         <div class="btn grey large" v-show="stepFlag == 3 && isChecked == 'Y'" >审核中,请等待</div>
-
         <div class="btn green large plain" v-show="stepFlag == 3" @click="toNextStep(2)">上一步</div>
-
         <div class="btn green large" v-show="stepFlag == 3 && isChecked != 'Y'" @click="submitMsg">确认提交</div>
       </div>
       <div class="check_time_tips"  v-show="stepFlag == 3">提交信息后平台将在24小时内完成验证。</div>
@@ -398,7 +395,7 @@
   <div class="area_select_block">
     <div class="mask" @click="areaSelectPanelShow = false" v-show="areaSelectPanelShow"></div>
     <div class="area_select_panel" :class="{'show':areaSelectPanelShow}">
-      <van-area :area-list="areaList" @confirm="confirmArea" @cancel="areaSelectPanelShow = false"/>
+      <van-area :area-list="areaList" :columns-num="2" @confirm="confirmArea" @cancel="areaSelectPanelShow = false"/>
     </div>
   </div>
  
@@ -423,7 +420,6 @@ export default {
       ],
       provice:'',
       city:'',
-      areaBlock:'',
       companyName:'',
       companyPosition:'',
       workDesc:'',
@@ -473,12 +469,8 @@ export default {
       isReadSelect:true,
       areaList:AreaList,
       areaSelectPanelShow:false,
-
       isChecked:'N', // 当前是否是超级管理员审核状态
-
-
       isUploadingFile:false,
-
       fillSteps:[
         {
           text: '基础信息'
@@ -509,7 +501,8 @@ export default {
     this.major = [];
     this.businessArea = [];
     this.getAllMajor();
-    this.getAllBusinessArea();
+    this.getLhzxBusinessAreas();
+    this.getLhzxGoodAtBusiness();
   },
   methods: {
     checkedStatus(){
@@ -570,7 +563,6 @@ export default {
       let result = e.mp.detail.values;
       this.provice = result[0].name;
       this.city = result[1].name;
-      this.areaBlock = result[2].name;
       this.areaSelectPanelShow = false;
     },
     upLoadPhoto(){
@@ -691,25 +683,43 @@ export default {
         res.data.forEach((item)=>{
          this.major.push({name:item,flag:false});
         })
-        if(this.businessArea.length){
+        if(this.businessArea.length && this.goodAtBusiness.length){
           this.getInitData();
         }
       })
     },
 
-    getAllBusinessArea(){
+    getLhzxBusinessAreas(){
       this.businessArea = [];
       this.$http.request({
-        url:'GetAllBusinessArea',
+        url:'GetLhzxBusinessAreas',
       }).then(res => {
         res.data.forEach((item)=>{
-          this.businessArea.push({name:item,flag:false});
+          this.businessArea.push({ name:item.businessAreaName,id:item.id, flag:false});
         })
-        if(this.major.length){
+        if(this.major.length && this.goodAtBusiness.length){
          this.getInitData();
         }
       })
     },
+    getLhzxGoodAtBusiness(){
+      this.goodAtBusiness = [];
+      let that = this;
+      that.$http.request({
+        url:'GetLhzxGoodAtBusiness',
+        flyConfig:{
+          method: 'get'
+        }
+      }).then(res => {
+        res.data.forEach(item => {
+          this.goodAtBusiness.push({name:item.goodAtBusinessName,id:item.id, flag:false})
+        }); 
+        if(this.major.length && this.businessArea.length){
+         this.getInitData();
+        }
+      })
+    },
+
     getInitData(){
       let url = API['GetUserDetail'] + this.userData.userId;
       this.$http.request({
@@ -719,17 +729,17 @@ export default {
         this.nickName = result.nickName;
         this.workPhoneNumber = result.workPhoneNumber;
         this.emailAddress = result.emailAddress;
-        let address = result.companyAddress.split('-');
+
+        let address = result.address.split('-');
         this.provice = address[0];
         this.city = address[1];
-        this.areaBlock = address[2];
 
         this.companyName = result.companyName;
         this.companyPosition = result.companyPosition;
      
         this.lifeAndFeelDesc = result.lifeAndFeelDesc;
         this.policyInterpretation = result.policyInterpretation;
-   
+        this.workDesc = result.workDesc;
         this.realName = result.realName;
         this.certNum = result.certNum;
         this.oneOfCost = result.oneOfCost;
@@ -751,10 +761,14 @@ export default {
         });
        
         // this.gootAtList = result.goodAtBusiness.split('|zxt|');
-       
 
-
-        let outLink = result.outLink.split('|zxt|');
+        let outLink;
+        if(result.outLink){
+          outLink = result.outLink.split('|zxt|');
+        }else{
+          outLink =[];
+        }
+     
         this.outLink = outLink.map((item)=>{
           return JSON.parse(item);
         });
@@ -773,7 +787,9 @@ export default {
           }
         });
         
-        let businessArea = result.businessArea.split('|zxt|');
+        // let businessArea = result.businessArea.split('|zxt|');
+        let businessArea = [result.businessArea];
+
         this.businessArea.forEach((item)=>{
           businessArea.forEach((item2)=>{
             if(item.name == item2){
@@ -782,7 +798,8 @@ export default {
           })
         });
 
-        let goodAtBusiness = result.goodAtBusiness.split('|zxt|');
+        // let goodAtBusiness = result.goodAtBusiness.split('|zxt|');
+        let goodAtBusiness = [result.goodAtBusiness];
         this.goodAtBusiness.forEach((item)=>{
           goodAtBusiness.forEach((item2)=>{
             if(item.name == item2){
@@ -871,11 +888,11 @@ export default {
         return false;
       }
 
-      if(!this.provice || !this.city || !this.areaBlock){
+      if(!this.provice || !this.city ){
         this.showToast('请选择所在地区');
         return false;
       }
-      let address = this.provice + '-' + this.city + '-' + this.areaBlock;
+      let address = this.provice + '-' + this.city;
 
       if(!this.companyName){
         this.showToast('请输入工作单位');
@@ -919,7 +936,9 @@ export default {
         businessArea = businessArea.map((item)=>{
          return item.name; 
         });
-        businessArea = businessArea.join('|zxt|');
+        // businessArea = businessArea.join('|zxt|');
+        businessArea = businessArea.join('');
+
       }else{
         this.showToast('请选择行业');
         return false;
@@ -934,7 +953,9 @@ export default {
         goodAtBusiness = goodAtBusiness.map((item)=>{
           return item.name; 
         });
-        goodAtBusiness = goodAtBusiness.join('|zxt|');
+        // goodAtBusiness = goodAtBusiness.join('|zxt|');
+        goodAtBusiness = goodAtBusiness.join('');
+
       }else{
         this.showToast('请选择科室');
         return false;
@@ -1041,7 +1062,6 @@ export default {
       this.$http.request({
         url:'PutCurrentUser',
         data: {
-
           realName: this.realName,
           certType: flag.certType,
           certNum: this.certNum,
@@ -1049,29 +1069,23 @@ export default {
           workPhoneNumber: this.workPhoneNumber,
           emailAddress: this.emailAddress,
           language: flag.language,
-          companyAddress: flag.address,
+          address: flag.address,
           companyName: this.companyName,
           companyPosition: this.companyPosition,
           workDesc:this.workDesc,
-
           major:flag.major,
           majorYearsDesc: flag.majorYearsDesc,
           businessArea: flag.businessArea,
           goodAtBusiness: flag.goodAtBusiness,
-
           lifeAndFeelDesc: this.lifeAndFeelDesc,
           policyInterpretation: this.policyInterpretation,
-
           outLink:flag.outLink,
           userFiles:flag.userFiles,
-
           responseTime: flag.responseTime*1,
           answeringTime: flag.answeringTime*1,
           oneOfCost: this.oneOfCost *1,
           paymentCode: flag.paymentCode,
-
           isReadSelect: this.isReadSelect?1:0,
-    
         },
         flyConfig:{
           method: 'post'

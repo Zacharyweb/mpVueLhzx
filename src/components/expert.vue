@@ -19,31 +19,25 @@
        
         <div class="experts_msg3">
           <div class="experts_location">
-            <img src="../../static/img/hy_icon.png">工地技术
+            <img src="../../static/img/hy_icon.png">{{expertData.businessArea}}
           </div>
           <span class="devide_line"></span>
           <div class="experts_experience">
-            <img src="../../static/img/zy_icon.png">挖掘机
+            <img src="../../static/img/zy_icon.png">{{expertData.goodAtBusiness}}
           </div>
 
           <div class="has_relation">
             <img src="../../static/img/index_relation_icon1.png">
           </div>
         </div>
-
-        <!-- <div class="good_at_area">
-          <span class="good_at_item" v-for="(item,index) in expertData.goodAtBusiness" :key="index">-&nbsp;{{item}}</span>
-        </div> -->
-      
       </div>
     </div>
 
-    <div class="bottom_block">
+    <div class="bottom_block" v-if="expertData.lifeAndFeelDesc">
       <div class="bottom_block_item">
         <!-- <span class="item_title">回应作答时间：</span>
         <span class="item_text">{{expertData.responseTime}}分钟内回应、{{expertData.answeringTime/60}}小时内作答</span> -->
-        <span class="item_text">一句话自我介绍一句话自我介绍一句话自我介绍一句话自我介绍一句话自我介绍</span>
-
+        <span class="item_text">{{expertData.lifeAndFeelDesc}}</span>
       </div>
     </div>
 

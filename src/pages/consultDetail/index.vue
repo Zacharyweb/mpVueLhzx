@@ -7,13 +7,11 @@
         <span class="status" v-if="orderData.status == 0">待接单</span>
         <span class="status" v-if="orderData.status == 1">待重新确认</span>
         <span class="status" v-if="orderData.status == 2">待作答</span>   
-        <span class="status" v-if="orderData.status == 3">已作答/待确认</span>  
-        <span class="status" v-if="orderData.status == 4">已作答/待支付</span>
-        <span class="status" v-if="orderData.status == 5">待专家确认收款</span> 
-        <span class="status" v-if="orderData.status == 6">已支付/待评价</span>    
-        <span class="status grey" v-if="orderData.status == 7">已完成</span> 
-        <span class="status red" v-if="orderData.status == 8">申诉中</span>   
-        <span class="status grey" v-if="orderData.status == 9">已关闭</span>  
+        <span class="status" v-if="orderData.status == 3">已作答/待支付</span>
+        <span class="status" v-if="orderData.status == 4">待专家确认收款</span> 
+        <span class="status" v-if="orderData.status == 5">已完成</span>
+        <span class="status red" v-if="orderData.status == 6">待协商</span>   
+        <span class="status grey" v-if="orderData.status == 7">已关闭</span> 
         <span class="status grey" v-if="orderData.status == -1">已取消</span>
       </div>
     </div>
@@ -34,17 +32,6 @@
                 </div>
             </div>
             <span class="cost_amount">{{orderData.amount}}元</span>
-
-            <!-- <div class="order_msg3"> -->
-              <!-- <div class="order_response" v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</div> -->
-              <!-- <div class="order_response" v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</div>
-              <div class="order_response" v-if="orderData.actualAnswerTime">作答时间：{{orderData.actualAnswerTime}}</div> -->
-              <!-- <div class="order_cost"> -->
-                <!-- <span>费用：{{orderData.amount}}元</span> -->
-                <!-- <span class="sub_text">{{orderData.responseTime}}分钟内回应&nbsp;|&nbsp;{{orderData.answeringTime/60}}小时内作答</span> -->
-                <!-- </div> -->
-            <!-- </div> -->
-
           </div>
         </div>
 
@@ -65,7 +52,7 @@
         </div>
 
         <!-- 用户取消订单 -->
-        <div class="bottom_block" v-if="orderData.status == 9 && !orderData.closeDesc && !orderData.otherExpertId">
+        <div class="bottom_block" v-if="orderData.status == 7 && !orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
               <span class="question_title">订单关闭：</span>用户&nbsp;<span style="font-weight:bold;">{{orderData.closerNickName}}</span>&nbsp;已取消订单。
           </div>
@@ -74,7 +61,7 @@
 
 
         <!-- 专家取消订单 -->
-        <div class="bottom_block" v-if="orderData.status == 9 && orderData.closeDesc && !orderData.otherExpertId">
+        <div class="bottom_block" v-if="orderData.status == 7 && orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
               <span class="question_title">订单关闭：</span>专家取消订单，原因：{{orderData.closeDesc}}
           </div>
@@ -82,11 +69,11 @@
         </div>
 
         <!-- 专家拒绝并推荐其他专家 -->
-        <div class="bottom_block" v-if="orderData.status == 9 && orderData.otherExpertId">
+        <div class="bottom_block" v-if="orderData.status == 7 && orderData.otherExpertId">
           <div class="question">
               <span class="question_title">订单关闭：</span>专家取消订单，并推荐了相关专家&nbsp;<span class="link_text" @click="toOtherExpertDetail(orderData.otherExpertId)">{{orderData.otherExpertName}}</span>&nbsp;,可转至其推荐专家详情页了解推荐专家并重新发起咨询。
           </div>
-          <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
+          <div class="order_time">关闭时间：{{orderData.lastModificationTime}}</div>
         </div>
 
         <!-- 专家修改订单-->
@@ -104,14 +91,12 @@
             <div>
               修改原因：<span class="colorful_text">修改原因原因</span>
             </div>
-            <!-- <span class="question_title">订单变更：</span>专家已变更订单信息，<span class="colorful_text">订单费用为{{orderData.amount}}元，最晚作答时间为{{orderData.lastAnswerTime}}</span>，请用户重新确认订单信息。 -->
           </div>
           <div class="order_time">修改时间：{{orderData.lastModificationTime}}</div>
-          <!-- <div class="order_time">接单时间：{{orderData.lastModificationTime}}</div> -->
-          <!-- <div class="order_time">关闭时间：{{orderData.lastModificationTime}}</div> -->
         </div>
 
-        <div class="bottom_block" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8">
+  
+        <div class="bottom_block" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6">
           <div class="question">
               <span class="question_title">作答内容：</span>{{orderData.questionAnswerText}}
           </div>
@@ -121,11 +106,17 @@
                <img v-for="(item,index) in answerImgs" :key="index" :src="item" alt="" @click="showAnswerImgsSwiper(index)">
              </div>
           </div>
-
           <div class="order_time">作答时间：{{orderData.actualAnswerTime}}</div>
         </div>
 
-        <div class="bottom_block" v-if="orderData.status == 2">
+        <div class="bottom_block" v-if="(orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 ) && '已评价'">
+          <div class="question">
+              <span class="question_title">评价内容：</span>{{orderData.questionAnswerText}}
+          </div>
+          <div class="order_time">评价时间：{{orderData.actualAnswerTime}}</div>
+        </div>
+
+        <div class="bottom_block" v-if="orderData.status == 5 && '免单'">
           <div class="question">
             <span class="question_title">作答费用：0元</span>
           </div>
@@ -163,7 +154,7 @@
    
 
            <!-- 专家回答后用户可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 3">
+           <div class="other_msg_block" v-if="orderData.status == 3 && '未评价'">
               <div class="other_msg">
                 <div>请评价服务并在24小时内支付费用</div>
                 <div>逾期未支付专家将直接联系您</div>
@@ -179,7 +170,7 @@
            </div>
 
            <!-- 专家回答后用户可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 4">
+           <div class="other_msg_block" v-if="orderData.status == 3  && '已评价'">
              <span class="other_msg">请24小时内完成本次费用支付~</span>
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(1)">追问</span>
@@ -188,12 +179,12 @@
            </div>
    
             <!-- 用户支付中时的提示 -->
-           <div class="other_msg_block" v-if="orderData.status == 5">
+           <div class="other_msg_block" v-if="orderData.status == 4">
              <span class="other_msg">您已提交支付，请等待专家确认。专家确认后您可继续追问~</span>
            </div>
    
            <!-- 用户支付完成后可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 6">
+           <div class="other_msg_block" v-if="orderData.status == 5">
              <span class="other_msg">您已完成支付，可进行评价或追问~</span>
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(2)">追问</span>
@@ -201,23 +192,20 @@
              </div>
            </div>
 
-          <!-- 用户不满意作答申诉 -->
-          <div class="other_msg_block" v-if="orderData.status == 8">
-             <span class="other_msg">申诉已提交，平台正在处理中，请稍后</span>
+          <!-- 用户申诉待协商 -->
+          <div class="other_msg_block" v-if="orderData.status == 6 && '用户不满'">
+            <span class="other_msg">您不满此次作答并拒绝支付费用，专家可能会联系您进行协商处理~</span>
+          </div>
+
+          <div class="other_msg_block" v-if="orderData.status == 6 && '专家未到账'">
+            <span class="other_msg">专家未收到您支付的费用，可能会联系您进行协商处理~</span>
           </div>
         </div>
 
 
         <div v-if="userType == 'e'">
-          <!-- 待接单时专家的操作 -->
-          <!-- <div class="ex_action_block" v-if="orderData.status == 0">
-              <div class="action_btn_bar">
-                <span class="action_btn2"  @click="toEditOrder">修改</span>
-                <span class="action_btn2" @click="toRejectOrder">取消</span>
-                <span class="action_btn" @click="receiptOrder">马上接单</span>
-             </div>
-          </div> -->
 
+          <!-- 待接单时专家的操作 -->
           <div class="other_msg_block" v-if="orderData.status == 0">
               <span class="other_msg">请在{{orderData.responseTime}}分钟内接单</span>
               <div class="action_btn_bar">
@@ -233,24 +221,18 @@
           </div>
   
           <!-- 已接单时专家的操作 -->
-       
           <div class="other_msg_block" v-if="orderData.status == 2">
             <span class="other_msg">请在{{orderData.answeringTime/60}}小时内作答~</span>
             <span class="action_btn" @click="toAnswerPage">马上作答</span>
           </div>
 
-          <!-- 已作答等待用户确认 -->
+          <!-- 已作答等待用户支付 -->
           <div class="ex_action_block" v-if="orderData.status == 3">
             <span class="other_msg">已作答，请等待用户审阅并为本次服务点评和支付</span>
           </div>
 
-          <!-- 用户支付前-->
-          <div class="other_msg_block" v-if="orderData.status == 4">
-            <span class="other_msg">用户已确认作答内容，请等待用户完成支付~</span>
-          </div>
-
           <!-- 用户支付完成后专家可进行的操作 -->
-          <div class="other_msg_block" v-if="orderData.status == 5">
+          <div class="other_msg_block" v-if="orderData.status == 4">
             <span class="other_msg">用户已提交支付，请及时确认~</span>
             <div class="action_btn_bar">
                 <span class="action_btn2" @click="toPayAppeal">未到账</span>
@@ -258,14 +240,31 @@
             </div>
           </div>
 
-          <!-- 用户不满意作答申诉 -->
-          <div class="other_msg_block" v-if="orderData.status == 8">
-             <span class="other_msg">申诉已提交，平台正在处理中，请稍后~</span>
+          <!-- 用户申诉待协商 -->
+          <div class="other_msg_block" v-if="orderData.status == 6 && '用户不满'">
+            <div class="other_msg">
+                <div>用户不满此次作答并拒绝支付费用</div>
+                <div>您可联系用户进行协商</div>
+              </div>
+             <div class="inner_block">
+                <span class="action_btn" @click="showUserMoblie">马上联系</span>
+             </div>
           </div>
-          
+
+          <div class="other_msg_block" v-if="orderData.status == 6 && '专家未到账'">
+            <div class="other_msg">
+                <div>您未收到用户支付的费用</div>
+                <div>可联系用户进行协商</div>
+              </div>
+             <div class="inner_block">
+                <span class="action_btn" @click="showUserMoblie">马上联系</span>
+             </div>
+          </div>
+
         </div>
       </div>
     </div>
+
     <swiper class="imgs_swiper"
       v-if="questionImgsSwiperShow"
       :indicator-dots="true"
@@ -275,7 +274,6 @@
       indicator-color="rgba(255,255,255,0.6)"
       indicator-active-color="#fff"
     >
-
       <block v-for="(item,index) in questionImgs" :key="index">
         <swiper-item class="img_item" @click="questionImgsSwiperShow = false">
           <image :src="item" mode="widthFix" class="slide-image"/>
@@ -293,7 +291,6 @@
       indicator-color="rgba(255,255,255,0.6)"
       indicator-active-color="#fff"
     >
-
       <block v-for="(item,index) in answerImgs" :key="index">
         <swiper-item class="img_item" @click="answerImgsSwiperShow = false">
           <image :src="item" mode="widthFix" class="slide-image"/>
@@ -321,27 +318,26 @@ export default {
       answerImgsSwiperShow: false,
       answerImgsswiperCurrent:2,
       orderData:{
-        id:1,
-        expertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
-        status:3,
-        orderNo:'xy1223213',
-        expertName:'朱两边',
-        amount:'40',
-        expertCompanyPosition:'前端工程师',
-        expertCompanyName:'阿拉丁',
-        questionRemark:'小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容',
-        creationTime:'2018-09-18 08:09:11',
-        actualAnswerTime:'2018-09-19 08:09:11',
-        lastModificationTime:'2018-09-19 08:09:11',
-        responseTime:'66',
-        answeringTime:120,
-        orderUserDesc:'我是自我介绍',
-        questionAnswerText:'回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容',
+        // id:1,
+        // expertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
+        // status:5,
+        // orderNo:'xy1223213',
+        // expertName:'朱两边',
+        // amount:'40',
+        // expertCompanyPosition:'前端工程师',
+        // expertCompanyName:'阿拉丁',
+        // questionRemark:'小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容',
+        // creationTime:'2018-09-18 08:09:11',
+        // actualAnswerTime:'2018-09-19 08:09:11',
+        // lastModificationTime:'2018-09-19 08:09:11',
+        // responseTime:'66',
+        // answeringTime:120,
+        // orderUserDesc:'我是自我介绍',
+        // questionAnswerText:'回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容',
 
-        usertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
-        userName:'阿笨',
-        lastAnswerTime:'2018-09-19 08:09:11'
-        
+        // usertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
+        // userName:'阿笨',
+        // lastAnswerTime:'2018-09-19 08:09:11'
       },
       timer:null,
       showCount:false,
@@ -411,7 +407,24 @@ export default {
     
     // 专家未收款到账申诉
     toPayAppeal(){
-      this.$router.push({path:'/pages/appeal/index',query:{orderId:this.orderId}})
+      // this.$router.push({path:'/pages/appeal/index',query:{orderId:this.orderId}})
+      Dialog.confirm({
+        title: '提示',
+        message: '已查看微信记录，确实没收到咨询费用？',
+        confirmButtonText:'是的'
+      }).then(() => {
+
+        Dialog.confirm({
+          title: '提示',
+          message: '需要联系用户查询吗',
+          confirmButtonText:'是的'
+        }).then(() => {
+           this.showUserMoblie();
+        }).catch(() => {
+          
+        });
+      })
+
     },
 
     // 专家确认收款
@@ -484,7 +497,7 @@ export default {
         
       });
     },
-     
+
     // 用户确认收到专家的回答
     userConfirmOrder(flag){
       Dialog.confirm({
@@ -558,7 +571,7 @@ export default {
     },
     // 获取订单
     getOrderDetail(loadingFlag){
-      wx.setStorageSync('orderData',this.orderData);
+      
       if(loadingFlag){
         wx.showLoading({
           title: '载入中',
@@ -599,18 +612,33 @@ export default {
             result.actualAnswerTime = util.formatTime(new Date(result.actualAnswerTime));
           }
 
-          // wx.setStorageSync('orderUserMsg', {
-          //     usertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
-          //     userName:'阿笨',
-          //     orderNo: 'xr23213',
-          //     orderUserDesc: '用户自我介绍',
-          //     responseTime:66
-          // });
+          this.orderData = result;
 
-          // this.orderData = result;
+          wx.setStorageSync('orderUserMsg',result);
+
           this.initCount();
         }
       })
+    },
+    showUserMoblie(){
+      Dialog.confirm({
+        title: '用户信息',
+        message: '用户昵称：朱两边；手机号：1575177498',
+        cancelButtonText:'关闭',
+        confirmButtonText:'复制手机号'
+      }).then(() => {
+        wx.setClipboardData({
+          data: '15757177498',
+          success (res) {
+            wx.showToast({
+              title: '已复制手机号',
+              icon: 'none',
+              duration: 1500
+            });
+           
+          }
+        })
+      });
     },
 
     initCount(){
@@ -657,7 +685,7 @@ export default {
   },
   onLoad: function (options) {
     this.orderId = options.orderId;
-    this.userType = options.userType || 'u';
+    this.userType = options.userType || 'e';
   },
   onShow(){
     this.getOrderDetail(true);

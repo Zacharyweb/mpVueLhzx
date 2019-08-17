@@ -51,6 +51,9 @@ const API = {
   'GetConsultedExpertList':'/api/LhzxFriend/GetConsultedList/',//获取咨询过的专家
   'GetInquiredExpertList':'/api/LhzxFriend/GetInquiredList/', //获取询问过的专家
   'GetFollowedExpertList':'/api/LhzxFriend/GetFollowedList/', //获取询问过的专家
+  'GetLhzxBusinessAreas':'/api/LhzxBusinessArea/GetLhzxBusinessAreas',//获取所有行业
+  'GetLhzxGoodAtBusiness':'/api/LhzxGoodAtBusiness/GetLhzxBusinessAreas', // 获取所有科室
+
 
 }
 

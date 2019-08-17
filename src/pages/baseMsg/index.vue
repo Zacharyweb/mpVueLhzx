@@ -132,7 +132,12 @@ export default {
       }).then(res => {
         if(res.code == 1){
           let data = this.userData || {};
-          this.updateUserMsg({...data,avatarUrl:this.avatarUrl,nickName:this.nickName});
+          this.updateUserMsg({
+            ...data,
+            avatarUrl:this.avatarUrl,
+            nickName:this.nickName,
+            aboutUserDesc: this.aboutUserDesc
+          });
           wx.showToast({
             title: '提交成功',
             icon: 'none',

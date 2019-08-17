@@ -36,7 +36,7 @@
      
         <div class="edit_item alt">
           <span class="item_name">修改原因：</span>
-          <textarea class="text_area" placeholder="请输入其他原因" v-model="closeDesc"></textarea>
+          <textarea class="text_area" placeholder="请输入修改原因" v-model="closeDesc"></textarea>
         </div>
 
         <div class="edit_item">
@@ -95,17 +95,14 @@ export default {
     return {
       orderId:'',
       timePickerShow:false,
-    
       amount:0,
       oldAmount:'',
       otherExpertId:0,
       minDate: new Date().getTime(),
       maxDate: new Date(2030, 10, 1).getTime(),
       currentDate: new Date().getTime(),
-
       lastAnswerTime:"",
       newLastAnswerTime:"",
-
       usertAvatarUrl:'',
       orderNo:'',
       userName:'',
@@ -180,6 +177,7 @@ export default {
     this.otherExpertId = 0;
 
     let orderUserMsg = wx.getStorageSync('orderUserMsg');
+    console.log(orderUserMsg);
     this.orderNo = orderUserMsg.orderNo;
     this.usertAvatarUrl = orderUserMsg.usertAvatarUrl;
     this.userName = orderUserMsg.userName;

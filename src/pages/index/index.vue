@@ -3,10 +3,10 @@
     <div class="top_bar">
         <div class="location_select" @click="showAreaSelectPanel">
           <img class="location_icon" src="../../../static/img/location_icon.png">
-          <span>{{city}}</span>
+          <span>{{cityKey}}</span>
         </div>
         <div class="search_wrap">
-          <van-search  background="#fff" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
+          <van-search  background="#fff" :value="searchKey" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
         </div>
         <img class="sx_icon" v-show="selectedHy || selectedKs" src="../../../static/img/sx_active.png" @click="sxPanelShow = true;">
         <img class="sx_icon" v-show="!selectedHy && !selectedKs" src="../../../static/img/sx_grey.png" @click="sxPanelShow = true;">
@@ -91,10 +91,6 @@
           <span class="submit_btn" @click="submitSx">完成</span>
         </div>
     </div>
-
-
- 
-
   </div>
 </template>
 <script>
@@ -117,23 +113,15 @@ export default {
       areaSelectPanelShow:false,
       sxType:1, // 1:筛选行业 2：筛选科室
       city:'全国',
+      cityKey:'全国',
       hyList:[
-        {name:'电讯航天',flag:false},
-        {name:'风投私募',flag:false},
-        {name:'风投私募',flag:false},
-        {name:'风投私募',flag:false},
-        {name:'风投私募',flag:false},
-        {name:'风投私募',flag:false},
-        {name:'风投私募',flag:false},
-        {name:'风投私募',flag:false},
-        {name:'风投私募',flag:false},
-        {name:'风投私募',flag:false}
+    
       ],
       ksList:[
-        {name:'全科',flag:false},
-        {name:'国际税收',flag:false}
+      
       ],
-      sxPanelShow:false
+      sxPanelShow:false,
+      searchKey:''
     }
   },
   computed:{
@@ -184,6 +172,45 @@ export default {
         }
       })
     },
+    getLhzxBusinessAreas(){
+      let that = this;
+      that.$http.request({
+        url:'GetLhzxBusinessAreas',
+        flyConfig:{
+          method: 'get'
+        }
+      }).then(res => {
+        let hyList = [];
+        res.data.forEach(item => {
+          hyList.push({
+            name:item.businessAreaName,
+            id:item.id,
+            flag:false
+          })
+        });
+        this.hyList = hyList;
+     
+      })
+    },
+    getLhzxGoodAtBusiness(){
+      let that = this;
+      that.$http.request({
+        url:'GetLhzxGoodAtBusiness',
+        flyConfig:{
+          method: 'get'
+        }
+      }).then(res => {
+        let ksList = [];
+        res.data.forEach(item => {
+          ksList.push({
+            name:item.goodAtBusinessName,
+            id:item.id,
+            flag:false
+          })
+        });
+        this.ksList = ksList;
+      })
+    },
     
     // 获取专家列表
     getAllExperts () {
@@ -192,6 +219,9 @@ export default {
       that.$http.request({
         url:'GetExpertList',
         data: {
+          businessArea: this.selectedHy,
+          goodAtBusiness: this.selectedKs,
+          address: this.city == '全国'? '':this.city,
           major: this.major,
           keyword: '',
           pageIndex: this.pageIndex,
@@ -205,8 +235,7 @@ export default {
           that.isNomore = true;
         }else{
           res.data.forEach(item => {
-            item.companyAddress = item.companyAddress.split('-')[1] || item.companyAddress.split('市')[0] + '市';
-            item.goodAtBusiness = item.goodAtBusiness.split('|zxt|');
+            // item.companyAddress = item.companyAddress.split('-')[1] || item.companyAddress.split('市')[0] + '市';
           });
         }
         if(that.pageIndex == 0){
@@ -250,11 +279,15 @@ export default {
     cancelArea(){
       this.areaSelectPanelShow = false;
       this.city = '全国';
+      this.cityKey = '全国';
+      this.getAllExperts();
     },
     confirmArea(e){
       let result = e.mp.detail.values;
-      this.city = result[1].name;
+      this.city = result[0].name + '-' + result[1].name;
+      this.cityKey = result[1].name;
       this.areaSelectPanelShow = false;
+      this.getAllExperts();
     },
     // 单选变动
     singleChange(itemName,index){
@@ -274,6 +307,7 @@ export default {
     },
     submitSx(){
       this.sxPanelShow = false;
+      this.getAllExperts();
     }
   },
   onPageScroll() {
@@ -295,8 +329,11 @@ export default {
     })
   },
   onShow(){
+    this.searchKey = '';
     if(!this.major){
       this.GetAllMajor();
+      this.getLhzxBusinessAreas();
+      this.getLhzxGoodAtBusiness();
     }else{
       // this.expertsList = [];
       this.pageIndex = 0;
@@ -317,7 +354,6 @@ export default {
     //     showLoaing:true // 不传默认就是true
     //   }
     // }).then(res => {
-    
     // })
     
     // post请求
@@ -339,9 +375,7 @@ export default {
     //     showLoaing:true
     //   }
     // }).then(res => {
-      
     // })
-   
   },
   onReachBottom(){
     if(!this.isNomore && !this.isLoading){

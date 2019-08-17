@@ -15,7 +15,7 @@
     </div> 
 
     <div class="experts_list type2_list" v-show="currentTab == 0">
-      <div class="experts_item" v-for="(item,index) in list1" :key="index">
+      <div class="experts_item" v-for="(item,index) in list1" :key="index"  @click="toExpertDetail(item)">
         <div class="top_block">
           <img class="experts_avatar" :src="item.avatarUrl">
           <div class="top_block_right">
@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="action_btns">
-            <img src="../../../static/img/list_icon4.png" alt="" @click="addViewPanelShow = true">
+            <img src="../../../static/img/list_icon4.png"  @click.stop="addViewPanelShow = true">
             <!-- <img src="../../../static/img/list_icon4_active.png" alt=""> -->
           </div>
         </div>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="experts_list type2_list" v-show="currentTab == 1">
-      <div class="experts_item" v-for="(item,index) in list3" :key="index">
+      <div class="experts_item" v-for="(item,index) in list2" :key="index" @click="toExpertDetail(item)">
         <div class="top_block">
           <img class="experts_avatar" :src="item.avatarUrl">
           <div class="top_block_right">
@@ -47,7 +47,7 @@
             </div>
           </div>
           <div class="action_btns">
-            <img src="../../../static/img/list_icon3.png" alt="">
+            <img src="../../../static/img/list_icon4.png"  @click.stop="addViewPanelShow = true">
             <!-- <img src="../../../static/img/list_icon3_active.png" alt=""> -->
           </div>
 
@@ -55,22 +55,7 @@
       </div>
     </div>
 
-    <!-- <div class="experts_list type2_list" v-show="currentTab == 2">
-      <div class="experts_item" v-for="(item,index) in list2" :key="index">
-        <div class="top_block">
-          <img class="experts_avatar" :src="item.avatarUrl">
-          <div class="top_block_right">
-            <div class="experts_msg1">
-              <span class="experts_name">{{item.nickName}}</span>
-            </div>
-            <div class="experts_msg2">
-              <span class="experts_position">高级财务专家</span>
-            </div>
-          </div>
-       
-        </div>
-      </div>
-    </div> -->
+   
 
     <!-- 设置专家对好友的可见性 -->
     <div class="add_view_panel" @touchmove.stop="touchmoveStop" :class="{'show':addViewPanelShow}">
@@ -85,6 +70,7 @@
         </div>
       </scroll-view>
       <scroll-view scroll-y class="friend_list_wrap" :class="{'less_top':showSelectedPanel}"> -->
+
       <scroll-view scroll-y class="friend_list_wrap" style="top:48px;">
         <ul class="friend_list">
           <li class="friend_item" v-for="(item,index) in friendsList" :key="index" @click="selectFriend(index)">
@@ -145,7 +131,7 @@ export default {
     this.addViewPanelShow = false;  
     this.getConsultedExpertList();
     this.getFollowedExpertList();
-    this.getInquiredExpertList();
+    // this.getInquiredExpertList();
   },
   methods: {
     onTabChange(event){
@@ -195,6 +181,9 @@ export default {
         this.list3 = result;
        
       })
+    },
+    toExpertDetail(item){
+      this.$router.push({path:'/pages/expertDetail/index',query:{id:item.expertId}});
     }
   },
   created () {

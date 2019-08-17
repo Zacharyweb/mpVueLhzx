@@ -7,32 +7,26 @@
         <span class="status_text" v-if="orderData.status == 0">待接单</span>
         <span class="status_text" v-if="orderData.status == 1">待重新确认</span>
         <span class="status_text" v-if="orderData.status == 2">待作答</span>   
-        <span class="status_text" v-if="orderData.status == 3">已作答/待确认</span>  
-        <span class="status_text" v-if="orderData.status == 4">已作答/待支付</span>
-        <span class="status_text" v-if="orderData.status == 5">待专家确认收款</span> 
-        <span class="status_text" v-if="orderData.status == 6">已支付/待评价</span>    
-        <span class="status_text grey" v-if="orderData.status == 7">已完成</span> 
-        <span class="status_text red" v-if="orderData.status == 8">待协商</span>   
-        <span class="status_text grey" v-if="orderData.status == 9">已关闭</span>  
-        <span class="status_text grey" v-if="orderData.status == -1">已取消</span>
+        <span class="status_text" v-if="orderData.status == 3">已作答/待支付</span>  
+        <span class="status_text" v-if="orderData.status == 4">待确认收款</span>
+        <span class="status_text grey" v-if="orderData.status == 5">已完成</span> 
+        <span class="status_text red" v-if="orderData.status == 6">待协商</span>   
+        <span class="status_text grey" v-if="orderData.status == 7">已关闭</span>  
+        <span class="status_text grey" v-if="orderData.status == -1">已取消</span>  
       </div>
     </div>
     <div class="top_block">
       <img class="experts_avatar" :src="orderData.avatarUrl">
       <div class="top_block_right">
+
         <div class="order_msg1">
           <span class="experts_name">{{orderData.nickName}}</span>
           <span class="consult_price">￥{{orderData.amount || '0'}}</span>
         </div>
-        <!-- <div class="consult_time_msg">
-          <span v-if="orderData.status == 0 || orderData.status == 1">作答时间：接单后确认</span>
-          <span v-if="orderData.status == 2">最晚作答时间：{{orderData.lastAnswerTime}}</span>
-          <span v-if="orderData.actualAnswerTime">作答时间：{{orderData.actualAnswerTime}}</span>
-        </div> -->
         <div class="order_msg2">
           <span class="experts_position">{{orderData.companyPosition}}&nbsp;|&nbsp;{{orderData.companyName}}</span>
-          <!-- <span class="consult_price">￥{{orderData.amount || '0'}}</span> -->
         </div>
+
       </div>
     </div>
     <div class="bottom_block">
@@ -41,11 +35,11 @@
       </div>
       <div class="order_time" v-if="orderData.status == 0 || orderData.status == 1">提问时间：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == 2">接单时间：{{orderData.actualAnswerTime}}</div>
-      <div class="order_time" v-if="orderData.status == 3 || orderData.status == 8">作答时间：{{orderData.actualAnswerTime}}</div>
-      <div class="order_time" v-if="orderData.status == 4 || orderData.status == 5">专家收款二维码发送时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == 6 || orderData.status == 7">到账时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == -1">取消时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 3 || orderData.status == 6">作答时间：{{orderData.actualAnswerTime}}</div>
+      <div class="order_time" v-if="orderData.status == 4">专家收款二维码发送时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 5">到账时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 7">关闭时间：{{orderData.creationTime}}</div>
+     <div class="order_time" v-if="orderData.status == -1">取消时间：{{orderData.creationTime}}</div>
     </div>
     <div class="other_msg_block" v-if="orderData.status == 1">
       <span class="other_msg">专家提出订单修改，请重新确认</span>
@@ -56,21 +50,17 @@
       <span class="action_btn">前往</span>
     </div>
     <div class="other_msg_block" v-if="orderData.status == 4">
-      <span class="other_msg">等待完成全部支付与收款流程</span>
+      <span class="other_msg">等待专家确认费用到账</span>
       <span class="action_btn">前往支付</span>
     </div>
 
-    <!-- <div class="other_msg_block" v-if="orderData.status == 6">
-      <span class="other_msg">订单支付完成，可对专家进行评价</span>
-      <span class="action_btn" @click="toComment">去评价</span>
-    </div> -->
-
-    <div class="other_msg_block" v-if="orderData.status == 8">
+    <div class="other_msg_block" v-if="orderData.status == 6">
       <span class="other_msg">待专家与您联系协商调解不满之处</span>
     </div>
-    <div class="other_msg_block" v-if="orderData.status == 9">
+    <div class="other_msg_block" v-if="orderData.status == 7">
       <span class="other_msg">专家未能接单</span>
     </div>
+    
   </div>
 </template>
 

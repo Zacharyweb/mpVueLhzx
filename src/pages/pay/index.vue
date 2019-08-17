@@ -2,7 +2,7 @@
   <div class="container">
 
     <div class="top_tips">
-      <img src="../../../static/img/notice_icon.png">请在24小时内上传转账截图，逾期将不能再使用平台服务。
+      <img src="../../../static/img/notice_icon.png">请在24小时内完成支付，逾期专家可打您电话查询。
     </div>
 
     <div class="order_form_panel">
@@ -24,13 +24,13 @@
               <span class="item_content">{{amount}}元</span>
             </li>
           </ul>
-          <div class="tips2">专家的收款二维码已通过公众号发送给您，请先将付款码保存至手机相册，再用微信扫码完成转账支付。</div>
+          <div class="tips2">咨询费将由用户通过二维码直接支付给专家。</div>
         </div>
       </div>
     
       <div class="panle_block npb">
-        <div class="block_title">上传转账截图</div>
-        <div class="problem_content">
+        <div class="block_title">支付操作如下</div>
+        <!-- <div class="problem_content">
           <div class="files_group">
             <span class="title">转账截图</span>
             <div class="img_file_item"  v-for="(item,index) in photosList" :key="index">
@@ -40,12 +40,31 @@
             <img class="add_files_icon" src="../../../static/img/add_files_icon.png"  v-show="photosList.length < 1" @click="upLoadPhoto">
 
           </div>
+        </div> -->
+        <div class="pay_step">
+          <div class="step_text">1、点击下面“发送二维码”按钮</div>
+          <div class="step_sub_tetx">二维码将通过平台的公众号发送给您</div>
+          
+
+          <div class="step_text">2、从公众号打开二维码</div>
+          <div class="step_sub_tetx">上面注有专家的昵称和咨询费金额</div>
+
+          <div class="step_text">3、长按二维码选择“识别图中二维码”</div>
+          <div class="step_sub_tetx"> </div>
+
+          <div class="step_text">4、支付</div>
+          <div class="step_sub_tetx">请在作答后24小时内支付，逾时的专家可打您电话查询</div>
+        </div>
+        <div class="pay_step_imgs">
+          <img src="../../../static/img/pay_step1.jpg" alt="">
+          <img src="../../../static/img/pay_step2.jpg" alt="">
+          <img src="../../../static/img/pay_step3.jpg" alt="">
         </div>
       </div>
     </div>
 
     <div class="btn_block">
-      <div class="btn green large" @click="submitPhoto">提交凭证</div>
+      <div class="btn green large" @click="submitPhoto">发送二维码</div>
     </div>
   </div>
 </template>
@@ -327,4 +346,27 @@ export default {
     }
   }
 }
+.pay_step{
+  
+  .step_text{
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 2px;
+  }
+  .step_sub_tetx{
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 15px;
+    padding-left: 19px;
+  }
+}
+.pay_step_imgs{
+  display: flex;
+  justify-content: space-between;
+  img{
+    width: 100px;
+    height: 177px;
+  }
+}
+
 </style>

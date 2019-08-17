@@ -1,16 +1,16 @@
 module.exports = [
  
-  {
-    path: 'pages/consultDetail/index',
-    config: {
-      navigationBarTitleText: '咨询详情',
-      usingComponents: {
-        "van-stepper": "/static/vant/stepper/index",
-        "van-datetime-picker": "/static/vant/datetime-picker/index",
-        "van-dialog": "/static/vant/dialog/index"
-      }
-    }
-  },
+  // {
+  //   path: 'pages/consultDetail/index',
+  //   config: {
+  //     navigationBarTitleText: '咨询详情',
+  //     usingComponents: {
+  //       "van-stepper": "/static/vant/stepper/index",
+  //       "van-datetime-picker": "/static/vant/datetime-picker/index",
+  //       "van-dialog": "/static/vant/dialog/index"
+  //     }
+  //   }
+  // },
 
   // 首页
   {
@@ -137,17 +137,17 @@ module.exports = [
   },
 
   // 咨询详情/订单详情
-  // {
-  //   path: 'pages/consultDetail/index',
-  //   config: {
-  //     navigationBarTitleText: '咨询详情',
-  //     usingComponents: {
-  //       "van-stepper": "/static/vant/stepper/index",
-  //       "van-datetime-picker": "/static/vant/datetime-picker/index",
-  //       "van-dialog": "/static/vant/dialog/index"
-  //     }
-  //   }
-  // },
+  {
+    path: 'pages/consultDetail/index',
+    config: {
+      navigationBarTitleText: '咨询详情',
+      usingComponents: {
+        "van-stepper": "/static/vant/stepper/index",
+        "van-datetime-picker": "/static/vant/datetime-picker/index",
+        "van-dialog": "/static/vant/dialog/index"
+      }
+    }
+  },
 
   // 专家取消订单
    {
@@ -288,16 +288,16 @@ module.exports = [
     }
   },
   // 专家信息
-  // {
-  //   path: 'pages/becomeExpert/index',
-  //   config: {
-  //     navigationBarTitleText: '专家信息',
-  //     usingComponents: {
-  //       "van-steps": "/static/vant/steps/index",
-  //       "van-area": "/static/vant/area/index"
-  //     }
-  //   }
-  // },
+  {
+    path: 'pages/becomeExpert/index',
+    config: {
+      navigationBarTitleText: '专家信息',
+      usingComponents: {
+        "van-steps": "/static/vant/steps/index",
+        "van-area": "/static/vant/area/index"
+      }
+    }
+  },
 
 
   // 设置

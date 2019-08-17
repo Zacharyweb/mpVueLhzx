@@ -98,6 +98,9 @@ export default {
       that.$http.request({
         url:'GetExpertList',
         data: {
+          businessArea: '',
+          goodAtBusiness: '',
+          address: '',
           major: '',
           keyword: this.searchKey,
           pageIndex: this.pageIndex,
@@ -110,11 +113,11 @@ export default {
           that.isNomore = true;
         }else{
           res.data.forEach(item => {
-            item.companyAddress = item.companyAddress.split('-')[1] || item.companyAddress.split('市')[0] + '市';
-            item.goodAtBusiness = item.goodAtBusiness.split('|zxt|');
+           
           });
         };
         that.expertsList = [...that.expertsList,...res.data];
+        console.log(that.expertsList);
         that.isLoading = false; 
         wx.hideLoading()
       })

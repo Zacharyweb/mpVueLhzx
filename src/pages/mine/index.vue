@@ -152,6 +152,7 @@ export default {
   },
   onShow(){
     this.getMineData();
+    console.log(this.userData)
   },
   methods: {
     ...mapActions('counter', [
@@ -168,7 +169,14 @@ export default {
         let result = res.data;
         this.mineData = res.data;
         let data = this.userData || {};
-        this.updateUserMsg({...data,workStatus:result.workStatus,nickName:result.nickName,avatarUrl:result.avatarUrl});
+        this.updateUserMsg({
+          ...data,
+          workStatus:result.workStatus,
+          nickName:result.nickName,
+          avatarUrl:result.avatarUrl,
+          isExpert: result.isExpert,
+          aboutUserDesc:result.aboutUserDesc
+        });
       })
     },
 

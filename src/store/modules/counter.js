@@ -45,6 +45,8 @@ const actions = {
     commit('UPDATEISX',flag)
   },
   updateUserMsg({commit},data) {
+    let userDataStr = JSON.stringify(data);
+    wx.setStorageSync('userData', userDataStr);
     commit('UPDATEUSER',data)
   },
   updateLanguage({commit},data) {

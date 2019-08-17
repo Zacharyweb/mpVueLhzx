@@ -13,7 +13,7 @@
       </div>
 
       <div class="input_block">
-        <textarea class="text_area" placeholder="请输入评价内容" v-model="commentContent" v-if="!visiblePanelShow && !addViewPanelShow"></textarea>
+        <textarea class="text_area" placeholder="请输入评价内容或评价理由" v-model="commentContent" v-if="!visiblePanelShow && !addViewPanelShow"></textarea>
       </div>
 
       <div class="visible">
@@ -367,6 +367,16 @@ export default {
         this.showToast('请选择是否满意');
         return;
       };
+      if(this.commentType == 3 && !this.commentContent){
+        Dialog.alert({
+          title: '提示',
+          message: '请填写不满的理由，以便专家了解改进',
+          confirmButtonText:'我知道了'
+        }).then(() => {
+          
+        });
+      }
+
       if(!this.commentContent){
         this.showToast('请输入评价内容');
         return;
@@ -381,13 +391,28 @@ export default {
         }).then(() => {
           this.$router.go(-1);
         }).catch(()=>{
-          this.$router.go(-1);
+          Dialog.confirm({
+            title: '提示',
+            message: '为便于专家与您联系协商，您的手机号将会同时发送给专家。',
+            confirmButtonText:'同意发送',
+            cancelButtonText:'取消',
+          }).then(() => {
+            Dialog.alert({
+              title: '提示',
+              message: '申诉已提交，专家到时可能会联系您进行协商，请留意。',
+              confirmButtonText:'我知道了'
+            }).then(() => {
+          
+        });
+           
+          }).catch(()=>{
+
+          })
         })
       }else{
         this.commitComment();
       }
       
-
 
       // let list = [];
       // if(this.friendsVisible == 2){

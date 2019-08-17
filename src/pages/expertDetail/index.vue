@@ -14,7 +14,7 @@
           </div>
           <div class="experts_msg2">
             <!-- <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span> -->
-            <span class="respond_time text_ellipsis">{{expertData.companyName}}（{{expertData.companyPosition}}）</span>
+            <span class="respond_time text_ellipsis">{{expertData.companyPosition}}（{{expertData.companyName}}）</span>
             <!-- <span class="order_num">{{expertData.consultedCount}}人已咨询</span> -->
           </div>
           <div class="experts_msg3">
@@ -38,10 +38,10 @@
         <div class="focus_block">
           <img class="focus_icon" src="../../../static/img/collect_icon.png" v-if="!collected" @click="addUserFollow">
           <img class="focus_icon" src="../../../static/img/collect_icon2.png" v-if="collected" @click="deleteUserFollow">
-          <span class="num_text">10人已关注</span>
+          <span class="num_text">{{expertData.followCount}}人已关注</span>
         </div>
         <div class="orders_block">
-          <span class="num_text">1人已咨询</span>
+          <span class="num_text">{{expertData.consultedCount}}人已咨询</span>
         </div>
     </div>
 
@@ -65,12 +65,12 @@
 
       <div class="panle_block">
         <div class="block_title">工作介绍</div>
-        <div class="block_content">{{expertData.aboutUserDesc}}</div>
+        <div class="block_content">{{expertData.lifeAndFeelDesc}}</div>
       </div>
 
       <div class="panle_block">
         <div class="block_title">政策解读</div>
-        <div class="block_content">{{expertData.aboutUserDesc}}</div>
+        <div class="block_content">{{expertData.policyInterpretation}}</div>
       </div>
 
 
@@ -167,15 +167,6 @@
 
     <div class="bottom_fixed" :class="{'isX':isX}">
       <div class="icon_btns">
-        <!-- <div class="icon_btn" v-if="!collected" @click="addUserFollow">
-          <img src="../../../static/img/collect_icon.png">
-          <span>关注</span>
-        </div>
-
-        <div class="icon_btn" v-if="collected" @click="deleteUserFollow">
-          <img src="../../../static/img/collect_icon2.png">
-          <span style="color:#1fb7b6;">已关注</span>
-        </div> -->
         <button open-type="share" class="icon_btn btn_reset">
           <img src="../../../static/img/share_icon.png">
           <span>分享</span>
@@ -183,7 +174,9 @@
       </div>
       
       <span class="respond_time_tips">{{expertData.responseTime}}分钟内回应接单</span>
-      <span class="action_btn1" @click="toContact">马上咨询&nbsp;￥{{expertData.oneOfCost}}/次</span>
+      <span class="action_btn2" @click="toContact" v-if="expertData.workStatus == 1">马上咨询&nbsp;￥{{expertData.oneOfCost}}/次</span>
+      <span class="action_btn3" v-else>休息中&nbsp;￥{{expertData.oneOfCost}}/次</span>
+
     </div>
 
     <van-action-sheet
@@ -326,7 +319,12 @@ export default {
         expertData.orderCount = result.orderCount;
 
         expertData.nickName = result.nickName;
-        expertData.address = result.companyAddress.split('-')[1] || result.companyAddress.split('市')[0] + '市';
+        if(result.address){
+           expertData.address = result.address.split('-')[1] || result.address.split('市')[0] + '市';
+        }else{
+          expertData.address ='未知';
+        }
+       
         expertData.companyName = result.companyName;
         expertData.companyPosition = result.companyPosition;
         expertData.lifeAndFeelDesc = result.lifeAndFeelDesc;
@@ -337,8 +335,15 @@ export default {
           photosList.push(item.fileUrl);
         })
         expertData.photosList = photosList;
-        expertData.gootAtList = result.goodAtBusiness.split('|zxt|').join('、');
-        let outLink = result.outLink.split('|zxt|');
+ 
+
+        let outLink;
+        if(result.outLink){
+          outLink = result.outLink.split('|zxt|');
+        }else{
+          outLink =[];
+        }
+
         if(outLink.length > 0 && outLink[0].indexOf('{') != -1){
           expertData.outLink = outLink.map((item)=>{
             return JSON.parse(item);
@@ -346,9 +351,11 @@ export default {
         }else{
           expertData.outLink = [];
         }
+
         expertData.major = result.major;
         expertData.majorYearsDesc = result.majorYearsDesc;
-        expertData.businessArea = result.businessArea.split('|zxt|').join('、');
+        expertData.businessArea = result.businessArea;
+        expertData.goodAtBusiness = result.goodAtBusiness;
         expertData.responseTime = result.responseTime;
         expertData.answeringTime = result.answeringTime;
         expertData.workStatus = result.workStatus;
@@ -398,6 +405,7 @@ export default {
              icon: 'none',
              duration: 1000
           });
+          this.expertData.followCount++;
           this.collected = true;
         }
       })
@@ -419,6 +427,7 @@ export default {
              icon: 'none',
              duration: 1000
           });
+          this.expertData.followCount--;
           this.collected = false;
         }
       })
