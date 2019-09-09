@@ -55,6 +55,37 @@ const API = {
   'GetLhzxGoodAtBusiness':'/api/LhzxGoodAtBusiness/GetLhzxBusinessAreas', // 获取所有科室
 
 
+  
+  'AddShareDisplay':'/api/LhzxFriend/AddShareDisplay', //设置自己咨询、询问、关注的专家对关系户的可见性
+  'GetWorkStatus':'/api/Users/GetWorkStatus/{expertid}',// 根据专家ID获取专家状态
+  'LoginGetToken':'/api/Users/LoginGetToken', // 用户名密码登录获取Token
+
+  'UserHasNoPayedCount':'/api/LhzxOrderClient/GetUserHasNoPayedCount/{userid}', // 当前客户是否有还未支付的订单
+  'UserPostOrder':'/api/LhzxOrderClient/PostOrder', //  客户《发起咨询》
+  'UserOrderList':'/api/LhzxOrderClient/UserOrderList/{userid}', // 客户的《我的咨询列表》
+  'UserOrderListDetail':'/api/LhzxOrderClient/UserOrderListDetail/{orderid}', // 客户的《我的咨询详细信息》
+  'UserClosed':'/api/LhzxOrderClient/UserClosed', // 客户取消关闭订单
+  'UserGetModifyDetail':'/api/LhzxOrderClient/UserGetModifyDetail/{orderid}', // 客户获取专家修改后的订单详细信息
+  'UserDoSureOrderInfo':'/api/LhzxOrderClient/DoSureOrderInfo', // 用户接受专家修改后的订单
+  'UserNotSureOrderInfo':'/api/LhzxOrderClient/NotSureOrderInfo', // 用户不接受专家修改后的订单
+  'UserGetAnswerDetail':'/api/LhzxOrderClient/UserGetAnswerDetail/{orderid}', // 用户获取专家作答后的详细情况，包括评价信息
+  'UserDoSure':'/api/LhzxOrderClient/UserDoSure',  // 用户确认并填写满意度（超过最后确认时间还未操作会自动确认且为满意） 当满意度为不满意时，会自动讲用户的手机号发送给专家
+  'UserPaying':'/api/LhzxOrderClient/Paying', // 发送二维码，获取专家二维码支付（操作后系统将专家的收款二维码以模板消息发送给用户）
+
+  'ExpertOrderList':'/api/LhzxOrderExpert/ExpertOrderList/{userid}', // 专家的客户咨询
+  'ExpertOrderListDetail':'/api/LhzxOrderExpert/ExpertOrderListDetail/{orderid}', // 专家的客户咨询的详细信息
+  'ExpertReceiptOrder':'/api/LhzxOrderExpert/Receipt',  // 专家接单
+  'ExpertClosed':'/api/LhzxOrderExpert/ExpertClosed', // 专家取消关闭订单
+  'ExpertFriendList':'/api/LhzxOrderExpert/UserFriendList', // 专家取消关闭订单时获取同业好友（我的关系户） 
+  'ExpertModifyOrder':'/api/LhzxOrderExpert/ModifyOrder', // 专家修改订单
+  'ExpertAnswer':'/api/LhzxOrderExpert/Answer', // 专家作答
+  'ExpertGetAnswerDetail':'/api/LhzxOrderExpert/ExpertGetAnswerDetail/{orderid}', // 专家获取作答后的详细情况，包括评价信息
+  'ExpertAskingForMoney':'/api/LhzxOrderExpert/AskingForMoney/{orderid}', // 专家去收款 操作后系统将专家的收款二维码以模板消息发送给用户
+  'ExpertFreeOrder':'/api/LhzxOrderExpert/FreeOrder/{orderid}', // 专家免单操作
+  'ExpertGetUserPhoneNum':'/api/LhzxOrderExpert/GetUserPhoneNum/orderid', // 专家获取用户手机号
+  'ExpertReceived':'/api/LhzxOrderExpert/Received/{orderid}',  // 专家操作已到账
+
+
 }
 
 export {API, BASE_URL}

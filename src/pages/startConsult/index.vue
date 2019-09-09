@@ -161,18 +161,19 @@ export default {
 
       let that = this;
       that.$http.request({
-        url:'CreateOrder',
+        url:'UserPostOrder',
         data: {
           parentOrderId: this.parentOrderId,
           userId: this.userData.userId,
           expertId: this.expertId,
+          userDesc: this.orderUserDesc,
           questionRemark: this.questionRemark,
           price: this.expertData.oneOfCost,
-          quantity: 1,
           formId:e.mp.detail.formId,
-          orderUserDesc: this.orderUserDesc,
-          remark: '',
-          userOrderFiles: userFiles
+          // quantity: 1,
+          // orderUserDesc: this.orderUserDesc,
+          // remark: '',
+          // userOrderFiles: userFiles
         },
         flyConfig:{
           method: 'post'
