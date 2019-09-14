@@ -11,13 +11,13 @@
       <div class="orders_list">
         <div class="order_item">
           <div class="top_block">
-            <img class="experts_avatar" :src="usertAvatarUrl">
+            <img class="experts_avatar" :src="userAvatarUrl">
             <div class="top_block_right">
               <div class="order_msg1">
                 <div class="experts_name">{{userName}}</div>
               </div>
               <div class="order_msg2">
-                  <div class="experts_work_msg">
+                  <div class="customer_info">
                    <span>{{orderUserDesc}}</span>
                   </div>
               </div>
@@ -26,6 +26,7 @@
           </div>
         </div>
       </div>
+
       <!-- <div class="panel_top">
         <span class="cancel_btn" @click="orderEditPanelShow = false">取消</span>
         <span class="title">修改订单</span>
@@ -97,17 +98,18 @@ export default {
       timePickerShow:false,
       amount:0,
       oldAmount:'',
-      otherExpertId:0,
+  
       minDate: new Date().getTime(),
       maxDate: new Date(2030, 10, 1).getTime(),
       currentDate: new Date().getTime(),
       lastAnswerTime:"",
       newLastAnswerTime:"",
-      usertAvatarUrl:'',
+      userAvatarUrl:'',
       orderNo:'',
       userName:'',
       orderUserDesc:'',
-      responseTime:''
+      responseTime:'',
+      closeDesc:''
     }
   },
   computed: {
@@ -130,8 +132,13 @@ export default {
       let lastAnswerTime = +new Date(this.lastAnswerTime);
       let newLastAnswerTime = +new Date(this.newLastAnswerTime); 
 
-      if(lastAnswerTime == newLastAnswerTime && this.amount == this.oldAmount && this.otherExpertId == 0){
+      if(lastAnswerTime == newLastAnswerTime && this.amount == this.oldAmount){
         this.showToast('未对订单做任何修改');
+        return;
+      };
+
+      if(!this.closeDesc){
+        this.showToast('请填写修改原因');
         return;
       };
 
@@ -140,12 +147,12 @@ export default {
         message: '您对订单做出了修改,确定修改吗？'
       }).then(() => {
         this.$http.request({
-          url:'ModifyOrderOrder',
+          url:'ExpertModifyOrder',
           data:{
             id: this.orderId,
-            amount: this.amount*1,
-            lastAnswerTime: this.newLastAnswerTime,
-            otherExpertId: this.otherExpertId
+            modifyAmount: this.amount*1,
+            modifyLastAnswerTime: this.newLastAnswerTime,
+            modifyDesc:this.closeDesc
           },
           flyConfig:{
             method: 'post'
@@ -168,21 +175,19 @@ export default {
   },
   onLoad: function (options) {
     this.orderId = options.orderId;
-    // this.oldAmount = options.price* options.quantity;
-    this.oldAmount = options.amount;
-    this.amount = options.amount;
-    this.lastAnswerTime = options.lastAnswerTime;
-    this.newLastAnswerTime = util.formatTime(new Date(options.lastAnswerTime));
-    this.currentDate = new Date(options.lastAnswerTime).getTime();
-    this.otherExpertId = 0;
 
-    let orderUserMsg = wx.getStorageSync('orderUserMsg');
-    console.log(orderUserMsg);
-    this.orderNo = orderUserMsg.orderNo;
-    this.usertAvatarUrl = orderUserMsg.usertAvatarUrl;
-    this.userName = orderUserMsg.userName;
-    this.orderUserDesc = orderUserMsg.orderUserDesc;
-    this.responseTime = orderUserMsg.responseTime;
+    let orderData = wx.getStorageSync('orderData');
+    this.oldAmount = orderData.amount;
+    this.amount = orderData.amount || '0';
+    this.lastAnswerTime = orderData.lastAnswerTime;
+    this.newLastAnswerTime = util.formatTime(new Date(orderData.lastAnswerTime));
+    this.currentDate = new Date(orderData.lastAnswerTime).getTime();
+
+    this.orderNo = orderData.orderNo;
+    this.userAvatarUrl = orderData.userAvataUrl;
+    this.userName = orderData.userNickName;
+    this.orderUserDesc = orderData.userDesc;
+    this.responseTime = orderData.responseTime;
   },
   onShow(){
 

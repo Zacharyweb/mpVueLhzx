@@ -172,6 +172,7 @@
 </template>
 <script>
 import Dialog from '../../../static/vant/dialog/dialog';
+import util from '../../utils/index.js'
 import { mapState, mapActions } from 'vuex'
 import { setTimeout } from 'timers';
 export default {
@@ -383,32 +384,14 @@ export default {
       };
 
       if(this.commentType == 3){
-        Dialog.confirm({
-          title: '提示',
-          message: '您对本次服务不满意，是否继续支付服务费用？',
-          confirmButtonText:'继续支付',
-          cancelButtonText:'去申诉',
-        }).then(() => {
-          this.$router.go(-1);
-        }).catch(()=>{
           Dialog.confirm({
             title: '提示',
             message: '为便于专家与您联系协商，您的手机号将会同时发送给专家。',
             confirmButtonText:'同意发送',
             cancelButtonText:'取消',
           }).then(() => {
-            Dialog.alert({
-              title: '提示',
-              message: '申诉已提交，专家到时可能会联系您进行协商，请留意。',
-              confirmButtonText:'我知道了'
-            }).then(() => {
-          
-        });
-           
-          }).catch(()=>{
-
+            this.commitComment()
           })
-        })
       }else{
         this.commitComment();
       }
@@ -436,41 +419,51 @@ export default {
       //     })
       //   }
       // }
-
-      // this.$http.request({
-      //   url:'UseComment',
-      //   data:{
-      //     userId: this.userData.userId,
-      //     expertId: this.expertId,
-      //     orderId: this.orderId,
-      //     content:this.commentContent,
-      //     commentTag:'',
-      //     expertVisible:this.expertVisible,
-      //     friendsVisible:this.friendsVisible,
-      //     selectedFriends:list
-      //   },
-      //   flyConfig:{
-      //     method: 'post'
-      //   }
-      // }).then(res => {
-      //   if(res.code == 1){
-      //     this.showToast('评价成功');
-      //     setTimeout(()=>{
-      //       this.$router.go(-1);
-      //     },1500)
-      //   }
-      // })
     },
     commitComment(){
-      this.$router.go(-1);
+      let falg = '';
+      if(this.commentType == 3){
+        flag = '不满意';
+      }else if(this.commentType == 2){
+        flag = '一般';
+      }else{
+        flag = '满意';
+      }
+      this.$http.request({
+        url:'UserDoSure',
+        data:{
+          orderId: this.orderId*1,
+          satisfactionDegree: flag,
+          satisfactionDegreeDesc:this.commentContent,
+          satisfactionDegreeTim: util.formatTime(new Date())
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          if(this.commentType == 3){
+            Dialog.alert({
+              title: '提示',
+              message: '申诉已提交，专家到时可能会联系您进行协商，请留意。',
+              confirmButtonText:'我知道了'
+            }).then(() => {
+                this.$router.go(-1);   
+            });
+          }else{
+            this.$router.go(-1);
+          }
+        }
+      });
     },
-
+    
     changeCommentType(type){
       if(this.commentType == type){
         return;
       }
       this.commentType = type;
     },
+
     toMyExpert(){
       this.$router.push({path:'/pages/myExpert/index'}) 
     }
@@ -484,7 +477,7 @@ export default {
     this.expertId = options.expertId;
     this.commentContent = '';
     this.commentType = 0;
-    this.getUserFriendsList();
+    // this.getUserFriendsList();
   },
   onShow(){
 

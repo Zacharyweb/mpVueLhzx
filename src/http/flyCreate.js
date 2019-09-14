@@ -21,7 +21,7 @@ request.interceptors.request.use((request) => {
      request.headers.Authorization = 'Bearer ' + store.state.counter.userData.accessToken;
   }else{
     let userDataStr = wx.getStorageSync('userData');
-    if (userDataStr) {
+    if(userDataStr && userDataStr != 'null'){
       let userData = JSON.parse(userDataStr);
       store.dispatch('counter/updateUserMsg',userData);
       if(userData.accessToken){

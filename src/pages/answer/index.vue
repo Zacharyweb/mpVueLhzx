@@ -68,6 +68,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import Dialog from '../../../static/vant/dialog/dialog';
+import {API, BASE_URL} from  '../../http/api.js';
 export default {
   data(){
     return{
@@ -157,7 +158,7 @@ export default {
         message: '确认提交作答内容',
       }).then(() => {
         this.$http.request({
-          url:'AnswerOrder',
+          url:'ExpertAnswer',
           data: {
             orderId: this.orderId,
             questionAnswerText:this.answer,
@@ -167,12 +168,40 @@ export default {
             method: 'post'
           }
         }).then(res => {
-          Dialog.confirm({
-            title: '谢谢作答！',
-            message: '本次咨询费'+ this.amount +'元',
-            cancelButtonText:'给免单',
-            confirmButtonText:'去收款'
-          }).then(() => {
+           this.chooseIfFreeOrder()
+        })
+      });
+    },
+
+    chooseIfFreeOrder(){
+      Dialog.confirm({
+        title: '谢谢作答！',
+        message: '本次咨询费'+ this.amount +'元',
+        confirmButtonText:'去收款',
+        cancelButtonText:'给免单'
+      }).then(() => {
+         this.noFreeOrder();
+      }).catch(() => {
+        Dialog.confirm({
+          title: '提示',
+          message: '确认免除本次咨询费'+ this.amount +'元',
+          cancelButtonText:'取消',
+          confirmButtonText:'确定'
+        }).then(() => {
+          this.freeOrder()
+        });
+      });
+    },
+    noFreeOrder(){
+        let url = API['ExpertAskingForMoney'] + this.orderId;
+        // 免单接口
+        this.$http.request({
+          url:url,
+          flyConfig:{
+            // method: 'post'
+          }
+        }).then(res => {
+          if(res.code == 1){
             Dialog.alert({
               title: '提示',
               message: '已通知用户支付，请在24小时内查看微信收款确认到账',
@@ -180,49 +209,33 @@ export default {
             }).then(() => {
                this.$router.go(-1);
             });
-          }).catch(() => {
-
-            Dialog.confirm({
-              title: '提示',
-              message: '确认免除本次咨询费'+ this.amount +'元',
-              cancelButtonText:'取消',
-              confirmButtonText:'确定'
-            }).then(() => {
-
-              Dialog.alert({
-                title: '免单成功！',
-                message: '已通知客户',
-                confirmButtonText:'我知道了'
-              }).then(() => {
-                 this.$router.go(-1);
-              });
-
-              // 免单接口
-              // this.$http.request({
-              //   url:'DeleteUserFriend',
-              //   data:{
-              //     userId: this.userData.userId,
-              //     friendId: item.id,
-              //   },
-              //   flyConfig:{
-              //     method: 'post'
-              //   }
-              // }).then(res => {
-              //   if(res.code == 1){
-              //     this.$router.go(-1);
-              //   }
-              // })
-
-             
-            });
-
-
-          
+          }
+        });
+    },
+    freeOrder(){
+      let url = API['ExpertFreeOrder'] + this.orderId;
+      // 免单接口
+      this.$http.request({
+        url:url,
+        flyConfig:{
+          // method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          Dialog.alert({
+            title: '免单成功！',
+            message: '已通知客户',
+            confirmButtonText:'我知道了'
+          }).then(() => {
+             this.$router.go(-1);
           });
-        })
+        }
       });
     },
+
+
   },
+
   onLoad(options){
     this.orderId = options.orderId*1;
     this.amount = options.amount;

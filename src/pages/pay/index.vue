@@ -64,7 +64,7 @@
     </div>
 
     <div class="btn_block">
-      <div class="btn green large" @click="submitPhoto">发送二维码</div>
+      <div class="btn green large" @click="postPayMsg">发送二维码</div>
     </div>
   </div>
 </template>
@@ -94,7 +94,7 @@ export default {
     this.price = options.price;
     this.amount = options.amount;
     this.quantity = options.quantity || 1;
-    this.postPayMsg();
+    // this.postPayMsg();
   },
   methods: {
     postPayMsg(){

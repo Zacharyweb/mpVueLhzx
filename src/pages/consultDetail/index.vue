@@ -7,23 +7,23 @@
         <span class="status" v-if="orderData.status == 0">待接单</span>
         <span class="status" v-if="orderData.status == 1">待重新确认</span>
         <span class="status" v-if="orderData.status == 2">待作答</span>   
-        <span class="status" v-if="orderData.status == 3">已作答/待支付</span>
-        <span class="status" v-if="orderData.status == 4">待专家确认收款</span> 
-        <span class="status" v-if="orderData.status == 5">已完成</span>
-        <span class="status red" v-if="orderData.status == 6">待协商</span>   
-        <span class="status grey" v-if="orderData.status == 7">已关闭</span> 
+        <span class="status" v-if="orderData.status == 4">已作答/待支付</span>
+        <span class="status" v-if="orderData.status == 6">待专家确认收款</span> 
+        <span class="status" v-if="orderData.status == 7">已完成</span>
+        <span class="status red" v-if="orderData.status == 8">待协商</span>   
+        <span class="status grey" v-if="orderData.status == 9">已关闭</span> 
         <span class="status grey" v-if="orderData.status == -1">已取消</span>
       </div>
     </div>
 
     <div class="orders_list">
       <div class="order_item">
-        <div class="top_block">
-          <img class="experts_avatar" :src="orderData.expertAvatarUrl">
+        <div class="top_block" v-if="userType == 'u'">
+          <img class="experts_avatar" :src="orderData.expertAvataUrl">
           <div class="top_block_right">
 
             <div class="order_msg1">
-              <div class="experts_name">{{orderData.expertName}}</div>
+              <div class="experts_name">{{orderData.expertNickName}}</div>
             </div>
 
             <div class="order_msg2">
@@ -35,8 +35,22 @@
           </div>
         </div>
 
+        <div class="top_block" v-if="userType == 'e'">
+          <img class="experts_avatar" :src="orderData.userAvataUrl">
+          <div class="top_block_right">
+            <div class="order_msg1">
+              <div class="experts_name">{{orderData.userNickName}}</div>
+            </div>
+            <span class="cost_amount">{{orderData.amount}}元</span>
+          </div>
+        </div>
+
+
         <div class="bottom_block">
-          <div class="question">
+          <div class="question"  v-if="orderData.userDesc">
+              <span class="question_title">客户自我介绍：</span>{{orderData.userDesc}}
+          </div>
+          <div class="question" :class="{mt5:orderData.userDesc}">
               <span class="question_title">问题详情：</span>{{orderData.questionRemark}}
           </div>
           <div class="question_files" v-if="questionImgs.length > 0">
@@ -45,14 +59,14 @@
                <img v-for="(item,index) in questionImgs" :key="index" :src="item" alt="" @click="showQuestionImgsSwiper(index)">
              </div>
           </div>
-          <div class="question" style="margin-top:5px" v-if="orderData.orderUserDesc">
+          <!-- <div class="question" style="margin-top:5px" v-if="orderData.orderUserDesc">
               <span class="question_title">相关介绍：</span>{{orderData.orderUserDesc}}
-          </div>
+          </div> -->
           <div class="order_time">提问时间：{{orderData.creationTime}}</div>
         </div>
 
         <!-- 用户取消订单 -->
-        <div class="bottom_block" v-if="orderData.status == 7 && !orderData.closeDesc && !orderData.otherExpertId">
+        <div class="bottom_block" v-if="orderData.status == 9 && !orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
               <span class="question_title">订单关闭：</span>用户&nbsp;<span style="font-weight:bold;">{{orderData.closerNickName}}</span>&nbsp;已取消订单。
           </div>
@@ -61,7 +75,7 @@
 
 
         <!-- 专家取消订单 -->
-        <div class="bottom_block" v-if="orderData.status == 7 && orderData.closeDesc && !orderData.otherExpertId">
+        <div class="bottom_block" v-if="orderData.status == 9 && orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
               <span class="question_title">订单关闭：</span>专家取消订单，原因：{{orderData.closeDesc}}
           </div>
@@ -69,7 +83,7 @@
         </div>
 
         <!-- 专家拒绝并推荐其他专家 -->
-        <div class="bottom_block" v-if="orderData.status == 7 && orderData.otherExpertId">
+        <div class="bottom_block" v-if="orderData.status == 9 && orderData.otherExpertId">
           <div class="question">
               <span class="question_title">订单关闭：</span>专家取消订单，并推荐了相关专家&nbsp;<span class="link_text" @click="toOtherExpertDetail(orderData.otherExpertId)">{{orderData.otherExpertName}}</span>&nbsp;,可转至其推荐专家详情页了解推荐专家并重新发起咨询。
           </div>
@@ -96,7 +110,7 @@
         </div>
 
   
-        <div class="bottom_block" v-if="orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6">
+        <div class="bottom_block" v-if="orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8">
           <div class="question">
               <span class="question_title">作答内容：</span>{{orderData.questionAnswerText}}
           </div>
@@ -109,7 +123,7 @@
           <div class="order_time">作答时间：{{orderData.actualAnswerTime}}</div>
         </div>
 
-        <div class="bottom_block" v-if="(orderData.status == 3 || orderData.status == 4 || orderData.status == 5 || orderData.status == 6 ) && '已评价'">
+        <div class="bottom_block" v-if="(orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8 ) && '已评价'">
           <div class="question">
               <span class="question_title">评价内容：</span>{{orderData.questionAnswerText}}
           </div>
@@ -141,7 +155,7 @@
                <div>订单将自动关闭</div>
              </div>
              <div class="inner_block">
-                <span class="action_btn2" @click="userCloseOrder">不接受</span>
+                <span class="action_btn2" @click="userNotSureOrderInfo">不接受</span>
                 <span class="action_btn" @click="userResureOrder">接受</span>
              </div>
            
@@ -154,7 +168,7 @@
    
 
            <!-- 专家回答后用户可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 3 && '未评价'">
+           <div class="other_msg_block" v-if="orderData.status == 4 && '未评价'">
               <div class="other_msg">
                 <div>请评价服务并在24小时内支付费用</div>
                 <div>逾期未支付专家将直接联系您</div>
@@ -170,7 +184,7 @@
            </div>
 
            <!-- 专家回答后用户可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 3  && '已评价'">
+           <div class="other_msg_block" v-if="orderData.status == 4  && '已评价'">
              <span class="other_msg">请24小时内完成本次费用支付~</span>
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(1)">追问</span>
@@ -179,25 +193,25 @@
            </div>
    
             <!-- 用户支付中时的提示 -->
-           <div class="other_msg_block" v-if="orderData.status == 4">
+           <div class="other_msg_block" v-if="orderData.status == 6">
              <span class="other_msg">您已提交支付，请等待专家确认。专家确认后您可继续追问~</span>
            </div>
    
            <!-- 用户支付完成后可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 5">
+           <div class="other_msg_block" v-if="orderData.status == 7">
              <span class="other_msg">您已完成支付，可进行评价或追问~</span>
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(2)">追问</span>
-                 <span class="action_btn" @click="toComment">立即评价</span>
+                 <!-- <span class="action_btn" @click="toComment">立即评价</span> -->
              </div>
            </div>
 
           <!-- 用户申诉待协商 -->
-          <div class="other_msg_block" v-if="orderData.status == 6 && '用户不满'">
+          <div class="other_msg_block" v-if="orderData.status == 8 && '用户不满'">
             <span class="other_msg">您不满此次作答并拒绝支付费用，专家可能会联系您进行协商处理~</span>
           </div>
 
-          <div class="other_msg_block" v-if="orderData.status == 6 && '专家未到账'">
+          <div class="other_msg_block" v-if="orderData.status == 8 && '专家未到账'">
             <span class="other_msg">专家未收到您支付的费用，可能会联系您进行协商处理~</span>
           </div>
         </div>
@@ -227,12 +241,12 @@
           </div>
 
           <!-- 已作答等待用户支付 -->
-          <div class="ex_action_block" v-if="orderData.status == 3">
+          <div class="ex_action_block" v-if="orderData.status == 4">
             <span class="other_msg">已作答，请等待用户审阅并为本次服务点评和支付</span>
           </div>
 
           <!-- 用户支付完成后专家可进行的操作 -->
-          <div class="other_msg_block" v-if="orderData.status == 4">
+          <div class="other_msg_block" v-if="orderData.status == 6">
             <span class="other_msg">用户已提交支付，请及时确认~</span>
             <div class="action_btn_bar">
                 <span class="action_btn2" @click="toPayAppeal">未到账</span>
@@ -241,7 +255,7 @@
           </div>
 
           <!-- 用户申诉待协商 -->
-          <div class="other_msg_block" v-if="orderData.status == 6 && '用户不满'">
+          <div class="other_msg_block" v-if="orderData.status == 8 && '用户不满'">
             <div class="other_msg">
                 <div>用户不满此次作答并拒绝支付费用</div>
                 <div>您可联系用户进行协商</div>
@@ -251,7 +265,7 @@
              </div>
           </div>
 
-          <div class="other_msg_block" v-if="orderData.status == 6 && '专家未到账'">
+          <div class="other_msg_block" v-if="orderData.status == 8 && '专家未到账'">
             <div class="other_msg">
                 <div>您未收到用户支付的费用</div>
                 <div>可联系用户进行协商</div>
@@ -302,6 +316,7 @@
   </div>
 </template>
 <script>
+
 import util from '../../utils/index.js'
 import Dialog from '../../../static/vant/dialog/dialog';
 import { mapState, mapActions } from 'vuex'
@@ -343,7 +358,8 @@ export default {
       showCount:false,
       hh:'00',
       mm:'mm',
-      ss:'ss'
+      ss:'ss',
+      orderStatus:-1
     }
   },
   computed: {
@@ -355,18 +371,12 @@ export default {
   methods: {
     // 专家修改订单
     toEditOrder(){
-
       this.$router.push({path:'/pages/editOrder/index',query:{
         orderId:this.orderId,
-        price:this.orderData.price,
-        quantity:this.orderData.quantity,
-        amount:this.orderData.amount || '0',
-        lastAnswerTime:this.orderData.lastAnswerTime,
       }})
     },
     // 专家拒绝订单
     toRejectOrder(){
-      
       this.$router.push({path:'/pages/cancelOrder/index',query:{
           orderId:this.orderId,    
           amount:this.orderData.amount || '0',
@@ -381,8 +391,11 @@ export default {
         message: '请在'+ (this.orderData.answeringTime / 60).toFixed(1) +'小时内接单',
       }).then(() => {
         this.$http.request({
-          url:'ReceiptOrder',
-          data:this.orderId*1,
+          url:'ExpertReceiptOrder',
+          data:{
+            expertId:this.userData.userId,
+            orderId:this.orderId*1
+          },
           flyConfig:{
             method: 'post'
           }
@@ -396,6 +409,7 @@ export default {
         
       });
     },
+
 
     // 专家去作答
     toAnswerPage(){
@@ -413,31 +427,29 @@ export default {
         message: '已查看微信记录，确实没收到咨询费用？',
         confirmButtonText:'是的'
       }).then(() => {
-
         Dialog.confirm({
           title: '提示',
           message: '需要联系用户查询吗',
           confirmButtonText:'是的'
         }).then(() => {
            this.showUserMoblie();
-        }).catch(() => {
-          
-        });
+        })
       })
 
     },
 
     // 专家确认收款
     expertPaySure(){
+      let url = API['ExpertReceived'] + this.orderId;
       Dialog.confirm({
         title: '确认收款',
         message: '请确认用户已支付到账？'
       }).then(() => {
         this.$http.request({
-          url:'ExpertPaySure',
-          data:this.orderId,
+          url,
+          // data:this.orderId,
           flyConfig:{
-            method: 'post'
+            // method: 'post'
           }
         }).then(res => {
           if(res.code == 1){
@@ -452,17 +464,38 @@ export default {
     // 用户取消订单
     userCloseOrder(){
       Dialog.confirm({
-        title: '不接受订单修改？',
+        title: '确认关闭订单？',
         message: '点击确认后将关闭订单  '
       }).then(() => {
         this.$http.request({
-          url:'ClosedOrder',
+          url:'UserClosed',
           data:{
+            orderId:this.orderId,
             closeType: 1,
             closeDesc: '',
             closerId: this.userData.userId,
-            orderId:this.orderId
+            otherExpertId:''
           },
+          flyConfig:{
+            method: 'post'
+          }
+        }).then(res => {
+          if(res.code == 1){
+            this.getOrderDetail();
+          }
+        })
+      }).catch(() => {
+        
+      });
+    },
+    userNotSureOrderInfo(){
+      Dialog.confirm({
+        title: '不接受订单修改？',
+        message: '点击确认后将关闭订单。'
+      }).then(() => {
+        this.$http.request({
+          url:'UserNotSureOrderInfo',
+          data:this.orderId*1,
           flyConfig:{
             method: 'post'
           }
@@ -482,7 +515,7 @@ export default {
         message: '确认后专家将按订单修改后作答。'
       }).then(() => {
         this.$http.request({
-          url:'UserResureOrder',
+          url:'UserDoSureOrderInfo',
           data:this.orderId*1,
           flyConfig:{
             method: 'post'
@@ -492,7 +525,6 @@ export default {
             this.getOrderDetail();
           }
         });
-
       }).catch(() => {
         
       });
@@ -536,18 +568,19 @@ export default {
         title: '提示',
         message: '不写点评，直接去支付吗？'
       }).then(() => {
-        this.$router.push({path:'/pages/pay/index',query:{
-          orderId:this.orderId,
-          amount:this.orderData.amount,
-          price:this.orderData.price,
-          quantity:this.orderData.quantity
-        }})
+        this.$router.push({
+          path:'/pages/pay/index',
+          query:{
+            orderId:this.orderId,
+            amount:this.orderData.amount,
+            price:this.orderData.price,
+            quantity:this.orderData.quantity
+          }})
       }).catch(() => {
         
       });
      
     },
-
 
     // 用户去评论
     toComment(){
@@ -569,16 +602,36 @@ export default {
       this.answerImgsSwiperShow= true;
       this.answerImgsswiperCurrent = index;
     },
+
+    getDetailUer(){
+      let url = '';
+      if(this.userType == 'e'){
+        if(this.orderStatus*1 > 3 &&  this.orderStatus != 9){
+          url = API['ExpertGetAnswerDetail'] + this.orderId;
+        }else{
+          url = API['ExpertOrderListDetail'] + this.orderId;
+        }
+      }else{
+        if(this.orderStatus == 1){
+          url = API['UserGetModifyDetail'] + this.orderId;
+        }else if(this.orderStatus*1 > 3 &&  this.orderStatus != 9){
+          url = API['UserGetAnswerDetail'] + this.orderId;
+        }else{
+          url = API['UserOrderListDetail'] + this.orderId;
+        }
+      };
+      return url;
+
+    },
     // 获取订单
     getOrderDetail(loadingFlag){
-      
       if(loadingFlag){
         wx.showLoading({
           title: '载入中',
           mask: false
         });
       }
-      let url = API['GetOrderDetail'] + this.orderId;
+      let url = this.getDetailUer();
       this.$http.request({
         url:url,
       }).then(res => {
@@ -586,58 +639,71 @@ export default {
         if(res.code == 1){
           let result = res.data;
           let questionImgs = [];
-          result.userOrderFiles.forEach((item)=>{
-            questionImgs.push(item.fileUrl);
-          })
+          // result.userOrderFiles.forEach((item)=>{
+          //   questionImgs.push(item.fileUrl);
+          // })
           this.questionImgs = questionImgs;
 
           let answerImgs = [];
-          result.answerOrderFiles.forEach((item)=>{
-            answerImgs.push(item.fileUrl);
-          });
+          // result.answerOrderFiles.forEach((item)=>{
+          //   answerImgs.push(item.fileUrl);
+          // });
           this.answerImgs = answerImgs;
 
-          result.creationTime = util.formatTime(new Date(result.creationTime));
-          result.lastModificationTime = util.formatTime(new Date(result.lastModificationTime));
- 
-          result.leaveReceiptTime = Math.ceil(((+new Date(result.lastReceiptTime)) - (+new Date()))  / 1000);
-          result.lastReceiptTime = util.formatTime(new Date(result.lastReceiptTime));
-          if(!result.lastAnswerTime){
-             result.lastAnswerTime = util.formatTime(new Date());
-          }
-          result.leaveAnswerTime = Math.ceil(((+new Date(result.lastAnswerTime)) - (+new Date())) / 1000);
-          result.lastAnswerTime = util.formatTime(new Date(result.lastAnswerTime));
+          // result.creationTime = util.formatTime(new Date(result.creationTime));
+          // result.lastReceiptTime = util.formatTime(new Date(result.lastReceiptTime));
+          // result.closerTime = util.formatTime(new Date(result.closerTime));
 
-          if(result.actualAnswerTime){
-            result.actualAnswerTime = util.formatTime(new Date(result.actualAnswerTime));
-          }
+          // result.lastModificationTime = util.formatTime(new Date(result.lastModificationTime));
+          // result.leaveReceiptTime = Math.ceil(((+new Date(result.lastReceiptTime)) - (+new Date()))  / 1000);
+         
+          // if(!result.lastAnswerTime){
+          //    result.lastAnswerTime = util.formatTime(new Date());
+          // }
+          // result.leaveAnswerTime = Math.ceil(((+new Date(result.lastAnswerTime)) - (+new Date())) / 1000);
+          // result.lastAnswerTime = util.formatTime(new Date(result.lastAnswerTime));
+
+          // if(result.actualAnswerTime){
+          //   result.actualAnswerTime = util.formatTime(new Date(result.actualAnswerTime));
+          // }
 
           this.orderData = result;
 
-          wx.setStorageSync('orderUserMsg',result);
+          wx.setStorageSync('orderData',result);
 
           this.initCount();
         }
       })
     },
+
     showUserMoblie(){
-      Dialog.confirm({
-        title: '用户信息',
-        message: '用户昵称：朱两边；手机号：1575177498',
-        cancelButtonText:'关闭',
-        confirmButtonText:'复制手机号'
-      }).then(() => {
-        wx.setClipboardData({
-          data: '15757177498',
-          success (res) {
-            wx.showToast({
-              title: '已复制手机号',
-              icon: 'none',
-              duration: 1500
-            });
-           
-          }
-        })
+      let url = API['ExpertGetUserPhoneNum'] + this.orderId;
+      this.$http.request({
+        url:url,
+        flyConfig:{
+          // method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          Dialog.confirm({
+            title: '用户信息',
+            message: '用户昵称：朱两边；手机号：1575177498',
+            cancelButtonText:'关闭',
+            confirmButtonText:'复制手机号'
+          }).then(() => {
+            wx.setClipboardData({
+              data: '15757177498',
+              success (res) {
+                wx.showToast({
+                  title: '已复制手机号',
+                  icon: 'none',
+                  duration: 1500
+                });
+               
+              }
+            })
+          });
+        }
       });
     },
 
@@ -686,6 +752,7 @@ export default {
   onLoad: function (options) {
     this.orderId = options.orderId;
     this.userType = options.userType || 'e';
+    this.orderStatus = options.orderStatus;
   },
   onShow(){
     this.getOrderDetail(true);
@@ -698,7 +765,7 @@ export default {
 </script>
 <style lang="less" scoped>
   .order_item .top_block {
-    height: 80px;
+    min-height: 80px;
   }
   .order_base_msg{
     padding:15px;

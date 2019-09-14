@@ -11,14 +11,14 @@
       <div class="orders_list">
         <div class="order_item">
           <div class="top_block">
-            <img class="experts_avatar" :src="orderData.usertAvatarUrl">
+            <img class="experts_avatar" :src="orderData.userAvataUrl">
             <div class="top_block_right">
               <div class="order_msg1">
-                <div class="experts_name">{{orderData.userName}}</div>
+                <div class="experts_name">{{orderData.userNickName}}</div>
               </div>
               <div class="order_msg2">
-                  <div class="experts_work_msg">
-                   <span>{{orderData.orderUserDesc}}</span>
+                  <div class="customer_info">
+                   <span>{{orderData.userDesc}}</span>
                   </div>
               </div>
               <span class="cost_amount">{{orderData.amount}}元</span>
@@ -38,13 +38,6 @@
           <span class="custom_checkbox" :class="{'active': rejectResonId == 2}"></span>
           <span class="reson_text">不好意思，这个问题不在我的专业领域，希望下次能再为你服务。</span>
         </div>
-
-        <!-- <div class="reson_item"  @click="changeResonId(3)">
-          <span class="custom_checkbox" :class="{'active': rejectResonId == 3}"></span>
-          <span class="reson_text">推荐至其他专家:</span>
-          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId == 0">去选择专家好友</span>
-          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId != 0">已选择专家-{{selectedOtherExpertName}}</span>
-        </div> -->
 
         <div class="reson_item" @click="changeResonId(4)">
           <span class="custom_checkbox" :class="{'active': rejectResonId == 4}"></span>
@@ -70,7 +63,7 @@
       <div class="btn_block" style="padding-bottom:10px;">
         <div class="btn large green" @click="submit">提交</div>
       </div> 
-      <div class="btn_bottom_tips">请在{{responseTime}}分钟内修改</div>
+      <div class="btn_bottom_tips">请在{{orderData.responseTime}}分钟内回应</div>
 
     </div>
 
@@ -86,7 +79,7 @@
           <img class="friend_avatar" :src="item.avatarUrl">
           <div class="friend_msg">
             <div class="friend_name">{{item.nickName}}</div>
-            <div class="friend_position">高级财务专家</div>
+            <!-- <div class="friend_position">{{item.position}}</div> -->
           </div>
         </div>
         <span class="select_icon" :class="{'actived':item.flag}"></span>
@@ -111,7 +104,7 @@ export default {
       friendsList:[],
       friendsListShow:false,
       amount: this.amount*1,
-      lastAnswerTime: this.newLastAnswerTime,
+     
 
       orderData:{}
      
@@ -141,18 +134,16 @@ export default {
           res.data.forEach(item => {
             item.flag = false;
           }); 
-          // this.friendsList = res.data || [];
+          this.friendsList = res.data || [];
         }
       })
     },
+    
     changeResonId(flag){
       if(this.rejectResonId == flag) return;
-      // if(flag == 3 && this.friendsList.length == 0){
-      //   this.showToast('没有可选择的专家好友');
-      //   return;
-      // };
       this.rejectResonId = flag;
     },
+
     toSelectOtherExpert(){
       if(this.friendsList.length == 0){
         this.showToast('没有可选择的专家好友');
@@ -181,31 +172,15 @@ export default {
       });
       this.friendsListShow = false;
     },
+
     cancelOtherExpert(){
       this.otherExpertId = 0;
+      this.friendsList.forEach(item => {
+        item.flag = false;
+      }); 
       this.friendsListShow = false;
     },
-    submitModify(){
-      this.$http.request({
-        url:'ModifyOrderOrder',
-        data:{
-          id: this.orderId,
-          amount: this.amount*1,
-          lastAnswerTime: this.lastAnswerTime,
-          otherExpertId: this.otherExpertId
-        },
-        flyConfig:{
-          method: 'post'
-        }
-      }).then(res => {
-        if(res.code == 1){
-          // this.showToast('已取消订单');
-          // setTimeout(()=>{
-          //   this.$router.go(-1);
-          // },1500)
-        }
-      })
-    },
+  
     submit(){
       let closeDesc;
       if(this.rejectResonId == 1){
@@ -220,21 +195,19 @@ export default {
           closeDesc = this.closeDesc;
         }
       }
-
       Dialog.confirm({
         title: '确认取消',
         message: '您确定取消该订单吗？'
       }).then(() => {
-        if(this.otherExpertId){
-            this.submitModify();
-        }
+    
         this.$http.request({
-          url:'ClosedOrder',
+          url:'ExpertClosed',
           data:{
             closeType: 2,
             closeDesc: closeDesc,
             closerId: this.userData.userId,
-            orderId:this.orderId*1
+            orderId:this.orderId*1,
+            otherExpertId:this.otherExpertId?this.otherExpertId:''
           },
           flyConfig:{
             method: 'post'
@@ -260,8 +233,7 @@ export default {
     this.otherExpertId = 0;
     this.amount = options.amount;
     this.friendsListShow = false;
-    this.lastAnswerTime = options.lastAnswerTime;
-
+    
     this.orderData = wx.getStorageSync('orderData');
     this.getExpertFriendsList();
   },

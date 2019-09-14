@@ -161,6 +161,7 @@ export default {
       that.$http.request({
         url:'GetAllMajor',
       }).then(res => {
+        console.log('111111111111111111111')
         wx.hideLoading();
         that.isLoading = false;
         if(res && res.code == 1){

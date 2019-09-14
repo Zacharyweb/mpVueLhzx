@@ -79,6 +79,7 @@ Flyio.request = function(obj){
            return res;
        }
     }).catch(err => {
+        console.log(err);
         if(err.response.status == 401){
             wx.navigateTo({
               url: '/pages/login/index'

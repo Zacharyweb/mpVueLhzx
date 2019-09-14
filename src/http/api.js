@@ -61,10 +61,12 @@ const API = {
   'LoginGetToken':'/api/Users/LoginGetToken', // 用户名密码登录获取Token
 
   'UserHasNoPayedCount':'/api/LhzxOrderClient/GetUserHasNoPayedCount/{userid}', // 当前客户是否有还未支付的订单
+
   'UserPostOrder':'/api/LhzxOrderClient/PostOrder', //  客户《发起咨询》
-  'UserOrderList':'/api/LhzxOrderClient/UserOrderList/{userid}', // 客户的《我的咨询列表》
-  'UserOrderListDetail':'/api/LhzxOrderClient/UserOrderListDetail/{orderid}', // 客户的《我的咨询详细信息》
+  'UserOrderList':'/api/LhzxOrderClient/UserOrderList/', // 客户的《我的咨询列表》
+  'UserOrderListDetail':'/api/LhzxOrderClient/UserOrderListDetail/', // 客户的《我的咨询详细信息》
   'UserClosed':'/api/LhzxOrderClient/UserClosed', // 客户取消关闭订单
+  
   'UserGetModifyDetail':'/api/LhzxOrderClient/UserGetModifyDetail/{orderid}', // 客户获取专家修改后的订单详细信息
   'UserDoSureOrderInfo':'/api/LhzxOrderClient/DoSureOrderInfo', // 用户接受专家修改后的订单
   'UserNotSureOrderInfo':'/api/LhzxOrderClient/NotSureOrderInfo', // 用户不接受专家修改后的订单
@@ -72,8 +74,9 @@ const API = {
   'UserDoSure':'/api/LhzxOrderClient/UserDoSure',  // 用户确认并填写满意度（超过最后确认时间还未操作会自动确认且为满意） 当满意度为不满意时，会自动讲用户的手机号发送给专家
   'UserPaying':'/api/LhzxOrderClient/Paying', // 发送二维码，获取专家二维码支付（操作后系统将专家的收款二维码以模板消息发送给用户）
 
-  'ExpertOrderList':'/api/LhzxOrderExpert/ExpertOrderList/{userid}', // 专家的客户咨询
-  'ExpertOrderListDetail':'/api/LhzxOrderExpert/ExpertOrderListDetail/{orderid}', // 专家的客户咨询的详细信息
+  'ExpertOrderList':'/api/LhzxOrderExpert/ExpertOrderList/', // 专家的客户咨询
+  'ExpertOrderListDetail':'/api/LhzxOrderExpert/ExpertOrderListDetail/', // 专家的客户咨询的详细信息
+
   'ExpertReceiptOrder':'/api/LhzxOrderExpert/Receipt',  // 专家接单
   'ExpertClosed':'/api/LhzxOrderExpert/ExpertClosed', // 专家取消关闭订单
   'ExpertFriendList':'/api/LhzxOrderExpert/UserFriendList', // 专家取消关闭订单时获取同业好友（我的关系户） 

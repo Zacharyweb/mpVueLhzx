@@ -34,7 +34,7 @@ import util from '../../utils/index.js'
 import { setInterval, setTimeout, clearInterval } from 'timers';
 import myOrder from '@/components/myOrder'
 import customerOrder from '@/components/customerOrder'
-
+import {API, BASE_URL} from  '../../http/api.js'
 export default {
   data () {
     return {
@@ -90,11 +90,9 @@ export default {
   
     getUserOrderList(){
       this.isLoading = true;
+      let url = API['UserOrderList'] + this.userData.userId;
       this.$http.request({
-        url:'GetUserOrderList',
-        data:{
-          userid:this.userData.userId
-        }
+        url:url
       }).then(res => {
         this.isLoading = false;
         if(res.code == 1){
@@ -113,11 +111,9 @@ export default {
     
     getExpertOrderList(){
       this.isLoading = true;
+      let url = API['ExpertOrderList'] + this.userData.userId;
       this.$http.request({
-        url:'GetExpertOrderList',
-        data:{
-          userid:this.userData.userId
-        }
+        url:url
       }).then(res => {
         this.isLoading = false;
         if(res.code == 1){
