@@ -26,7 +26,7 @@
             <img src="../../static/img/zy_icon.png">{{expertData.goodAtBusiness}}
           </div>
 
-          <div class="has_relation">
+          <div class="has_relation" @click.stop="linkTo('/pages/expertDetail/index',1)">
             <img src="../../static/img/index_relation_icon1.png">
           </div>
         </div>
@@ -48,8 +48,14 @@
 export default {
   props: ['expertData'],
   methods:{
-    linkTo(path){
-      this.$router.push({path:path,query:{id:this.expertData.id}});
+    linkTo(path,tab){
+      this.$router.push({
+        path:path,
+        query:{
+          id:this.expertData.id,
+          tab:tab|| 0
+        }
+      });
     }
   },
   create(){

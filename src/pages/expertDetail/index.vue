@@ -99,7 +99,6 @@
             <span>{{item.userNickName}}</span>
           </li>
         </ul>
-        
       </div>
 
       <div class="friends_block" v-if="commentData.length > 0">
@@ -210,6 +209,7 @@ export default {
   },
   onLoad(options){
     this.expertId = options.id;
+    this.currentTab = options.tab || 0;
     this.getInitData(options.id);
     this.CheckHasFollowed();
   },
@@ -410,8 +410,9 @@ export default {
       })
     }
   },
+ 
   onShow(){
-    this.currentTab = 0;
+    // this.currentTab = 0;
   }
 }
 </script>

@@ -3,17 +3,6 @@
   <div class="order_msg0">
       <span class="order_no">订单编号：{{orderData.orderNo}}</span>
       <div class="order_status">
-        <!-- <span class="time_count" v-show="showCount">{{hh}}:{{mm}}:{{ss}}</span> -->
-        <!-- <span class="status_text" v-if="orderData.status == 0">待接单</span>
-        <span class="status_text" v-if="orderData.status == 1">待重新确认</span>
-        <span class="status_text" v-if="orderData.status == 2">待作答</span>   
-        <span class="status_text" v-if="orderData.status == 3">已作答/待支付</span>  
-        <span class="status_text" v-if="orderData.status == 4">待确认收款</span>
-        <span class="status_text grey" v-if="orderData.status == 5">已完成</span> 
-        <span class="status_text red" v-if="orderData.status == 6">待协商</span>   
-        <span class="status_text grey" v-if="orderData.status == 7">已关闭</span>  
-        <span class="status_text grey" v-if="orderData.status == -1">已取消</span>   -->
-
         <span class="status_text" v-if="orderData.status == 0">待接单</span>
         <span class="status_text" v-if="orderData.status == 1">待重新确认</span>
         <span class="status_text" v-if="orderData.status == 2">待作答</span>   
@@ -42,15 +31,12 @@
       <div class="question text_ellipsis">
           <span class="question_title">问题：</span>{{orderData.questionRemark}}
       </div>
- 
       <div class="order_time" v-if="orderData.status == 0 || orderData.status == 1">提问时间：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == 2">接单时间：{{orderData.actualAnswerTime}}</div>
       <div class="order_time" v-if="orderData.status == 4 || orderData.status == 8">作答时间：{{orderData.actualAnswerTime}}</div>
       <div class="order_time" v-if="orderData.status == 6">专家收款二维码发送时间：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == 7">到账时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == -1">取消时间：{{orderData.closerTime}}</div>
-
+      <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.closerTime}}}</div>
     </div>
 
     <div class="other_msg_block" v-if="orderData.status == 0">
@@ -107,7 +93,14 @@ export default {
   },
   methods: {
     toOrderDetail(orderId,userType,status){
-      this.$router.push({path:'/pages/consultDetail/index',query:{orderId:orderId,userType:userType,orderStatus:status}});
+      this.$router.push({
+        path:'/pages/consultDetail/index',
+        query:{
+          orderId:orderId,
+          userType:userType,
+          orderStatus:status
+        }
+      });
     },
     initCount(){
       // this.countDown(300);
@@ -117,7 +110,6 @@ export default {
           this.countDown(this.orderData.leaveReceiptTime);
         }
       }else if(this.orderData.status == 2 && this.orderData.leaveAnswerTime >=0){
-        console.log(this.orderData.leaveAnswerTime);
         if(this.orderData.leaveReceiptTime <= 3600){
           this.countDown(this.orderData.leaveAnswerTime);
         }
