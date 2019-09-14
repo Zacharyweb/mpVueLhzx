@@ -19,16 +19,16 @@
     <div class="orders_list">
       <div class="order_item">
         <div class="top_block" v-if="userType == 'u'">
-          <img class="experts_avatar" :src="orderData.expertAvataUrl">
+          <img class="experts_avatar" :src="orderData.expertAvataUrl || orderData.expertAvatarUrl">
           <div class="top_block_right">
 
             <div class="order_msg1">
-              <div class="experts_name">{{orderData.expertNickName}}</div>
+              <div class="experts_name">{{orderData.expertNickName || orderData.expertName}}</div>
             </div>
 
             <div class="order_msg2">
                 <div class="experts_work_msg">
-                 <span>{{orderData.expertCompanyPosition}}&nbsp;|&nbsp;{{orderData.expertCompanyName}}</span>
+                 <span>{{orderData.expertCompanyPosition || orderData.expergtCompanyPosition}}&nbsp;|&nbsp;{{orderData.expertCompanyName}}</span>
                 </div>
             </div>
             <span class="cost_amount">{{orderData.amount}}元</span>
@@ -68,7 +68,7 @@
         <!-- 用户取消订单 -->
         <div class="bottom_block" v-if="orderData.status == 9 && !orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">订单关闭：</span>用户&nbsp;<span style="font-weight:bold;">{{orderData.closerNickName}}</span>&nbsp;已取消订单。
+              <span class="question_title">订单关闭：</span>用户&nbsp;<span style="font-weight:bold;">{{orderData.closerNickName}}</span>已取消订单。
           </div>
           <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
         </div>
@@ -97,13 +97,13 @@
               <span class="question_title">订单变更：</span>
             </div>
             <div>
-              作答费用：<span class="colorful_text">{{orderData.amount}}元</span>
+              作答费用：<span class="colorful_text">{{orderData.modifyAmount}}元</span>
             </div>
             <div>
-              作答时间：<span class="colorful_text">{{orderData.lastAnswerTime}}</span>
+              作答时间：<span class="colorful_text">{{orderData.modifyLastAnswerTime}}</span>
             </div>
             <div>
-              修改原因：<span class="colorful_text">修改原因原因</span>
+              修改原因：<span class="colorful_text">{{orderData.modifyDesc}}</span>
             </div>
           </div>
           <div class="order_time">修改时间：{{orderData.lastModificationTime}}</div>
@@ -606,7 +606,9 @@ export default {
     getDetailUer(){
       let url = '';
       if(this.userType == 'e'){
-        if(this.orderStatus*1 > 3 &&  this.orderStatus != 9){
+        if(this.orderStatus == 1){
+          url = API['UserGetModifyDetail'] + this.orderId;
+        }else if(this.orderStatus*1 > 3 &&  this.orderStatus != 9){
           url = API['ExpertGetAnswerDetail'] + this.orderId;
         }else{
           url = API['ExpertOrderListDetail'] + this.orderId;
@@ -666,6 +668,10 @@ export default {
           // if(result.actualAnswerTime){
           //   result.actualAnswerTime = util.formatTime(new Date(result.actualAnswerTime));
           // }
+
+          if(result.modifyLastAnswerTime){
+            result.modifyLastAnswerTime = util.formatTime(new Date(result.modifyLastAnswerTime));
+          }
 
           this.orderData = result;
 

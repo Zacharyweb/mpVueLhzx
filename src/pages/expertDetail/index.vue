@@ -132,9 +132,9 @@
       <div class="friends_block">
         <div class="block_title nb">关注</div>
         <ul class="friends_list">
-          <li class="friend_item">
-            <img class="user_avatar" src="../../../static/img/comment_avatar.png">
-            <span>关系户1</span>
+          <li class="friend_item" v-for="(item,index) in followUserList" :key="index">
+            <img class="user_avatar" :src="item.userAvatarUrl">
+            <span>{{item.userNickName}}</span>
           </li>
         </ul>
 
@@ -143,11 +143,11 @@
       <div class="friends_block">
         <div class="block_title">评价</div>
         <div class="comment_item" v-if="commentData.length > 0" v-for="(item,index) in commentData" :key="index">
-          <img class="user_avatar" src="../../../static/img/comment_avatar.png">
-          <span class="comment_tag">{{item.tag}}</span>
+          <img class="user_avatar" :src="item.avatarUrl">
+          <span class="comment_tag">{{item.commentTag}}</span>
           <div class="comment_content">
             <div class="content_top">
-               <span class="user_name">关系户{{index + 1}}</span>
+               <span class="user_name">{{item.nickName}}</span>
                <span class="comment_time">{{item.creationTime}}</span>
             </div>
             <div class="comment_text">{{item.content}}</div>
@@ -235,7 +235,8 @@ export default {
       swiperCurrent:2,
       expertData:null,
       expertId:'',
-      commentData:[{content:'不错不错还没有关系户评价过哦',creationTime:'2019-02-08 15:00:32',tag:'满意'},{content:'不错不错2',creationTime:'2019-02-08 15:00:32',tag:'不满意'}]
+      commentData:[],
+      followUserList:[]
     }
   },
   computed: {
@@ -253,7 +254,7 @@ export default {
 
   },
   onShareAppMessage(obj){
-      console.log(obj);
+ 
       return {
         title:'您的好友' + this.userData.nickName + '向你推荐一位咨询堂专家',
         path:'/pages/login/index?userId=' + this.userData.userId + '&expertId=' + this.expertId + '&fromType=1',
@@ -360,13 +361,13 @@ export default {
         expertData.answeringTime = result.answeringTime;
         expertData.workStatus = result.workStatus;
         this.expertData = expertData;
-    
         if(result.comments && result.comments.length){
           result.comments.forEach((item)=>{
             item.creationTime = util.formatTime(new Date(item.creationTime));
           });
         }
-        // this.commentData = result.comments || [];
+        this.followUserList = result.followUserList || [];
+        this.commentData = result.comments || [];
 
       })
     },

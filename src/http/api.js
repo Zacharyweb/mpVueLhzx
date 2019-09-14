@@ -33,7 +33,7 @@ const API = {
   'UserResureOrder':'/api/LhzxOrder/DoSureOrderInfo', //用户重新确认订单
   'AnswerOrder':'/api/LhzxOrder/Answer', //专家作答
   'UserDoSureAnswer':'/api/LhzxOrder/UserDoSure', // 用户确认（超过最后确认时间还未操作会自动确认）
-  'UserPaying':'/api/LhzxOrder/Paying',//  用户支付订单（操作后系统将专家的收款二维码以模板消息发送给用户）
+  // 'UserPaying':'/api/LhzxOrder/Paying',//  用户支付订单（操作后系统将专家的收款二维码以模板消息发送给用户）
   'PaymentVoucher':'/api/LhzxOrder/PaymentVoucher', // 用户提交支付凭证
   'ExpertPaySure':'/api/LhzxOrder/PaySure', // 专家确认订单（操作后系统将订单完成的消息推送给用户）
   'UseComment':'/api/LhzxOrder/OrderComment', //用户评价(超过最后评价时间后系统将自动好评)
@@ -66,29 +66,28 @@ const API = {
   'UserOrderList':'/api/LhzxOrderClient/UserOrderList/', // 客户的《我的咨询列表》
   'UserOrderListDetail':'/api/LhzxOrderClient/UserOrderListDetail/', // 客户的《我的咨询详细信息》
   'UserClosed':'/api/LhzxOrderClient/UserClosed', // 客户取消关闭订单
-  
-  'UserGetModifyDetail':'/api/LhzxOrderClient/UserGetModifyDetail/{orderid}', // 客户获取专家修改后的订单详细信息
+  'UserGetModifyDetail':'/api/LhzxOrderClient/UserGetModifyDetail/', // 客户获取专家修改后的订单详细信息
   'UserDoSureOrderInfo':'/api/LhzxOrderClient/DoSureOrderInfo', // 用户接受专家修改后的订单
   'UserNotSureOrderInfo':'/api/LhzxOrderClient/NotSureOrderInfo', // 用户不接受专家修改后的订单
-  'UserGetAnswerDetail':'/api/LhzxOrderClient/UserGetAnswerDetail/{orderid}', // 用户获取专家作答后的详细情况，包括评价信息
+  'UserGetAnswerDetail':'/api/LhzxOrderClient/UserGetAnswerDetail/', // 用户获取专家作答后的详细情况，包括评价信息
+
   'UserDoSure':'/api/LhzxOrderClient/UserDoSure',  // 用户确认并填写满意度（超过最后确认时间还未操作会自动确认且为满意） 当满意度为不满意时，会自动讲用户的手机号发送给专家
   'UserPaying':'/api/LhzxOrderClient/Paying', // 发送二维码，获取专家二维码支付（操作后系统将专家的收款二维码以模板消息发送给用户）
 
+
+
   'ExpertOrderList':'/api/LhzxOrderExpert/ExpertOrderList/', // 专家的客户咨询
   'ExpertOrderListDetail':'/api/LhzxOrderExpert/ExpertOrderListDetail/', // 专家的客户咨询的详细信息
-
   'ExpertReceiptOrder':'/api/LhzxOrderExpert/Receipt',  // 专家接单
   'ExpertClosed':'/api/LhzxOrderExpert/ExpertClosed', // 专家取消关闭订单
   'ExpertFriendList':'/api/LhzxOrderExpert/UserFriendList', // 专家取消关闭订单时获取同业好友（我的关系户） 
   'ExpertModifyOrder':'/api/LhzxOrderExpert/ModifyOrder', // 专家修改订单
   'ExpertAnswer':'/api/LhzxOrderExpert/Answer', // 专家作答
-  'ExpertGetAnswerDetail':'/api/LhzxOrderExpert/ExpertGetAnswerDetail/{orderid}', // 专家获取作答后的详细情况，包括评价信息
-  'ExpertAskingForMoney':'/api/LhzxOrderExpert/AskingForMoney/{orderid}', // 专家去收款 操作后系统将专家的收款二维码以模板消息发送给用户
-  'ExpertFreeOrder':'/api/LhzxOrderExpert/FreeOrder/{orderid}', // 专家免单操作
-  'ExpertGetUserPhoneNum':'/api/LhzxOrderExpert/GetUserPhoneNum/orderid', // 专家获取用户手机号
-  'ExpertReceived':'/api/LhzxOrderExpert/Received/{orderid}',  // 专家操作已到账
-
-
+  'ExpertGetAnswerDetail':'/api/LhzxOrderExpert/ExpertGetAnswerDetail/', // 专家获取作答后的详细情况，包括评价信息
+  'ExpertAskingForMoney':'/api/LhzxOrderExpert/AskingForMoney/', // 专家去收款 操作后系统将专家的收款二维码以模板消息发送给用户
+  'ExpertFreeOrder':'/api/LhzxOrderExpert/FreeOrder/', // 专家免单操作
+  'ExpertGetUserPhoneNum':'/api/LhzxOrderExpert/GetUserPhoneNum/', // 专家获取用户手机号
+  'ExpertReceived':'/api/LhzxOrderExpert/Received/',  // 专家操作已到账
 }
 
 export {API, BASE_URL}
