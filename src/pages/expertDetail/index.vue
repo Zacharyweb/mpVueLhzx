@@ -89,47 +89,9 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="comment_panel" v-show="currentTab == 2">
-      <div class="comment_item">
-        <img class="user_avatar" src="../../../static/img/avatar.jpeg">
-        <div class="comment_content">
-          <div class="content_top">
-             <span class="user_name">王小花</span>
-             <span class="comment_time">2019-02-08 15:00:32</span>
-          </div>
-          <div class="comment_text">
-            张老师回答得不错哦，给个赞呢
-          </div>
-          <div class="comment_tags">
-            <span class="tag_item">值得推荐</span>
-            <span class="tag_item">将会再次咨询</span>
-            <span class="tag_item">专业</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="comment_item">
-        <img class="user_avatar" src="../../../static/img/avatar.jpeg">
-        <div class="comment_content">
-          <div class="content_top">
-             <span class="user_name">王小花</span>
-             <span class="comment_time">2019-02-08 15:00:32</span>
-          </div>
-          <div class="comment_text">
-            张老师回答得不错哦，给个赞呢
-          </div>
-          <div class="comment_tags">
-            <span class="tag_item">值得推荐</span>
-            <span class="tag_item">将会再次咨询</span>
-            <span class="tag_item">专业</span>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
     <div class="comment_panel" v-show="currentTab == 1">
-      <div class="friends_block">
+
+      <div class="friends_block" v-if="followUserList.length > 0">
         <div class="block_title nb">关注</div>
         <ul class="friends_list">
           <li class="friend_item" v-for="(item,index) in followUserList" :key="index">
@@ -137,12 +99,12 @@
             <span>{{item.userNickName}}</span>
           </li>
         </ul>
-
+        
       </div>
 
-      <div class="friends_block">
+      <div class="friends_block" v-if="commentData.length > 0">
         <div class="block_title">评价</div>
-        <div class="comment_item" v-if="commentData.length > 0" v-for="(item,index) in commentData" :key="index">
+        <div class="comment_item" v-for="(item,index) in commentData" :key="index">
           <img class="user_avatar" :src="item.avatarUrl">
           <span class="comment_tag">{{item.commentTag}}</span>
           <div class="comment_content">
@@ -154,7 +116,8 @@
           </div>
         </div>
       </div>
-      <div class="no_data_tips" v-if="commentData.length == 0">
+
+      <div class="no_data_tips" v-if="commentData.length == 0 && followUserList.length == 0">
         <img class="no_data_img" src="../../../static/img/no_data_tips.png">
         <span>还没有关系户关注或评价过哦~</span>
       </div> 
