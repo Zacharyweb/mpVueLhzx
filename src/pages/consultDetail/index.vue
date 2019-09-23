@@ -36,10 +36,10 @@
         </div>
 
         <div class="top_block" v-if="userType == 'e'">
-          <img class="experts_avatar" :src="orderData.userAvataUrl">
+          <img class="experts_avatar" :src="orderData.userAvataUrl || orderData.userAvatarUrl">
           <div class="top_block_right">
             <div class="order_msg1">
-              <div class="experts_name">{{orderData.userNickName}}</div>
+              <div class="experts_name">{{orderData.userNickName || orderData.userName}}</div>
             </div>
             <span class="cost_amount">{{orderData.amount}}元</span>
           </div>
@@ -68,18 +68,18 @@
         <!-- 用户取消订单 -->
         <div class="bottom_block" v-if="orderData.status == 9 && !orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">订单关闭：</span>用户&nbsp;<span style="font-weight:bold;">{{orderData.closerNickName}}</span>已取消订单。
+              <span class="question_title">订单关闭：</span>订单已被取消。
           </div>
-          <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
+          <div class="order_time">关闭时间：{{orderData.closerTime}}</div>
         </div>
 
 
         <!-- 专家取消订单 -->
         <div class="bottom_block" v-if="orderData.status == 9 && orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">订单关闭：</span>专家取消订单，原因：{{orderData.closeDesc}}
+              <span class="question_title">订单关闭：</span>{{orderData.closeDesc}}
           </div>
-          <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
+          <div class="order_time">关闭时间：{{orderData.closerTime}}</div>
         </div>
 
         <!-- 专家拒绝并推荐其他专家 -->
@@ -87,7 +87,7 @@
           <div class="question">
               <span class="question_title">订单关闭：</span>专家取消订单，并推荐了相关专家&nbsp;<span class="link_text" @click="toOtherExpertDetail(orderData.otherExpertId)">{{orderData.otherExpertName}}</span>&nbsp;,可转至其推荐专家详情页了解推荐专家并重新发起咨询。
           </div>
-          <div class="order_time">关闭时间：{{orderData.lastModificationTime}}</div>
+          <div class="order_time">关闭时间：{{orderData.closerTime}}</div>
         </div>
 
         <!-- 专家修改订单-->
@@ -123,11 +123,11 @@
           <div class="order_time">作答时间：{{orderData.actualAnswerTime}}</div>
         </div>
 
-        <div class="bottom_block" v-if="(orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8 ) && '已评价'">
+        <div class="bottom_block" v-if="(orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8 ) && orderData.satisfactionDegreeDesc">
           <div class="question">
-              <span class="question_title">评价内容：</span>{{orderData.questionAnswerText}}
+              <span class="question_title">评价内容：</span>{{orderData.satisfactionDegreeDesc}}
           </div>
-          <div class="order_time">评价时间：{{orderData.actualAnswerTime}}</div>
+          <div class="order_time">评价时间：{{orderData.satisfactionDegreeTime}}</div>
         </div>
 
         <div class="bottom_block" v-if="orderData.status == 5 && '免单'">
@@ -168,7 +168,7 @@
    
 
            <!-- 专家回答后用户可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 4 && '未评价'">
+           <div class="other_msg_block" v-if="orderData.status == 4 && !orderData.satisfactionDegreeDesc">
               <div class="other_msg">
                 <div>请评价服务并在24小时内支付费用</div>
                 <div>逾期未支付专家将直接联系您</div>
@@ -184,7 +184,7 @@
            </div>
 
            <!-- 专家回答后用户可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 4  && '已评价'">
+           <div class="other_msg_block" v-if="orderData.status == 4  && orderData.satisfactionDegreeDesc">
              <span class="other_msg">请24小时内完成本次费用支付~</span>
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(1)">追问</span>
@@ -333,26 +333,7 @@ export default {
       answerImgsSwiperShow: false,
       answerImgsswiperCurrent:2,
       orderData:{
-        // id:1,
-        // expertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
-        // status:5,
-        // orderNo:'xy1223213',
-        // expertName:'朱两边',
-        // amount:'40',
-        // expertCompanyPosition:'前端工程师',
-        // expertCompanyName:'阿拉丁',
-        // questionRemark:'小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容小问题问题内容内容容内容容内容容内容',
-        // creationTime:'2018-09-18 08:09:11',
-        // actualAnswerTime:'2018-09-19 08:09:11',
-        // lastModificationTime:'2018-09-19 08:09:11',
-        // responseTime:'66',
-        // answeringTime:120,
-        // orderUserDesc:'我是自我介绍',
-        // questionAnswerText:'回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容',
-
-        // usertAvatarUrl:'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4112766760,3919855354&fm=179&app=42&f=JPG?w=56&h=56',
-        // userName:'阿笨',
-        // lastAnswerTime:'2018-09-19 08:09:11'
+    
       },
       timer:null,
       showCount:false,
@@ -470,7 +451,7 @@ export default {
         this.$http.request({
           url:'UserClosed',
           data:{
-            orderId:this.orderId,
+            orderId:this.orderId*1,
             closeType: 1,
             closeDesc: '',
             closerId: this.userData.userId,
@@ -564,22 +545,26 @@ export default {
 
     // 用户去支付
     toPay(){
-      Dialog.confirm({
-        title: '提示',
-        message: '不写点评，直接去支付吗？'
-      }).then(() => {
+      if(!this.orderStatus.satisfactionDegree){
+        Dialog.confirm({
+          title: '提示',
+          message: '不写点评，直接去支付吗？'
+        }).then(() => {
+           this.toPayPage();
+        })
+      }else{
+         this.toPayPage();
+      }
+    },
+    toPayPage(){
         this.$router.push({
           path:'/pages/pay/index',
           query:{
-            orderId:this.orderId,
+            orderId:this.orderId*1,
             amount:this.orderData.amount,
             price:this.orderData.price,
             quantity:this.orderData.quantity
-          }})
-      }).catch(() => {
-        
-      });
-     
+        }})
     },
 
     // 用户去评论
@@ -607,7 +592,7 @@ export default {
       let url = '';
       if(this.userType == 'e'){
         if(this.orderStatus == 1){
-          url = API['UserGetModifyDetail'] + this.orderId;
+          url = API['ExpertGetModifyDetail'] + this.orderId;
         }else if(this.orderStatus*1 > 3 &&  this.orderStatus != 9){
           url = API['ExpertGetAnswerDetail'] + this.orderId;
         }else{
@@ -639,6 +624,15 @@ export default {
       }).then(res => {
         wx.hideLoading();
         if(res.code == 1){
+          if(res.data.status != this.orderStatus){
+            wx.showLoading({
+              title: '载入中',
+              mask: false
+            });
+            this.orderStatus = res.data.status;
+            this.getOrderDetail(true);
+            return;
+          }
           let result = res.data;
           let questionImgs = [];
           // result.userOrderFiles.forEach((item)=>{

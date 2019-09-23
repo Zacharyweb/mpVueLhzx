@@ -60,7 +60,7 @@
       <span class="other_msg">{{orderData.remark}}</span>
     </div>
     <div class="other_msg_block" v-if="orderData.status == 9">
-      <span class="other_msg">{{orderData.closeType == 1?'用户':'专家'}}关闭订单{{orderData.remark?',' + orderData.remark:''}}</span>
+      <span class="other_msg">{{orderData.closeType == 1?'用户':'专家'}}关闭订单{{orderData.remark?'，' + orderData.remark:''}}</span>
     </div>
     
   </div>

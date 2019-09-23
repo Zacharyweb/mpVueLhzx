@@ -81,6 +81,8 @@ const API = {
   'ExpertReceiptOrder':'/api/LhzxOrderExpert/Receipt',  // 专家接单
   'ExpertClosed':'/api/LhzxOrderExpert/ExpertClosed', // 专家取消关闭订单
   'ExpertFriendList':'/api/LhzxOrderExpert/UserFriendList', // 专家取消关闭订单时获取同业好友（我的关系户） 
+  
+  'ExpertGetModifyDetail':'/api/LhzxOrderExpert/UserGetModifyDetail/', //专家获取用户同意修改后的订单详细信息
   'ExpertModifyOrder':'/api/LhzxOrderExpert/ModifyOrder', // 专家修改订单
   'ExpertAnswer':'/api/LhzxOrderExpert/Answer', // 专家作答
   'ExpertGetAnswerDetail':'/api/LhzxOrderExpert/ExpertGetAnswerDetail/', // 专家获取作答后的详细情况，包括评价信息

@@ -5,21 +5,21 @@
      <div class="order_base_msg">
         <div class="order_no"><span>订单号：</span>{{orderData.orderNo}}</div>
         <div class="order_status">
-          <span class="status">待接单</span>
+          <span class="status">待作答</span>
         </div>
       </div>
   
       <div class="orders_list">
         <div class="order_item">
           <div class="top_block">
-            <img class="experts_avatar" :src="orderData.usertAvatarUrl">
+            <img class="experts_avatar" :src="orderData.userAvataUrl">
             <div class="top_block_right">
               <div class="order_msg1">
-                <div class="experts_name">{{orderData.userName}}</div>
+                <div class="experts_name">{{orderData.userNickName}}</div>
               </div>
               <div class="order_msg2">
                   <div class="experts_work_msg">
-                   <span>{{orderData.orderUserDesc}}</span>
+                   <span>{{orderData.userDesc}}</span>
                   </div>
               </div>
               <span class="cost_amount">{{orderData.amount}}元</span>
@@ -242,6 +242,7 @@ export default {
     this.answer = '';
     this.photosList = [];
     this.orderData = wx.getStorageSync('orderData');
+    console.log(this.orderData)
  
   },
   onShow(){

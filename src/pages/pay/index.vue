@@ -105,7 +105,15 @@ export default {
           method: 'post'
         }
       }).then(result => {
-
+        if(res.code == 1){
+          Dialog.alert({
+            title: '提示',
+            message: '收款码已发送，请通过公众号查收',
+            confirmButtonText:'我知道了'
+          }).then(() => {
+             this.$router.go(-1);
+          });
+        }
       })
     },
     upLoadPhoto(){

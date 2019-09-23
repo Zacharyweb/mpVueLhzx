@@ -435,7 +435,7 @@ export default {
           orderId: this.orderId*1,
           satisfactionDegree: flag,
           satisfactionDegreeDesc:this.commentContent,
-          satisfactionDegreeTim: util.formatTime(new Date())
+          satisfactionDegreeTime: util.formatTime(new Date())
         },
         flyConfig:{
           method: 'post'

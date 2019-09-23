@@ -323,6 +323,7 @@ export default {
         expertData.responseTime = result.responseTime;
         expertData.answeringTime = result.answeringTime;
         expertData.workStatus = result.workStatus;
+        expertData.policyInterpretation = result.policyInterpretation;
         this.expertData = expertData;
         if(result.comments && result.comments.length){
           result.comments.forEach((item)=>{
