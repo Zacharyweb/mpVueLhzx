@@ -65,21 +65,12 @@
           <div class="order_time">提问时间：{{orderData.creationTime}}</div>
         </div>
 
-        <!-- 用户取消订单 -->
-        <div class="bottom_block" v-if="orderData.status == 9 && !orderData.closeDesc && !orderData.otherExpertId">
-          <div class="question">
-              <span class="question_title">订单关闭：</span>用户&nbsp;<span style="font-weight:bold;">{{orderData.closerNickName}}</span>已取消订单。
-          </div>
-          <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
-        </div>
-
-
-        <!-- 专家取消订单 -->
+        <!-- 专家/用户取消订单 -->
         <div class="bottom_block" v-if="orderData.status == 9 && orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">订单关闭：</span>专家取消订单，原因：{{orderData.closeDesc}}
+              <span class="question_title">订单关闭：</span>原因：{{orderData.closeDesc}}
           </div>
-          <div class="order_time">订单关闭时间：{{orderData.lastModificationTime}}</div>
+          <div class="order_time">订单关闭时间：{{orderData.closerTime}}</div>
         </div>
 
         <!-- 专家拒绝并推荐其他专家 -->
@@ -87,7 +78,7 @@
           <div class="question">
               <span class="question_title">订单关闭：</span>专家取消订单，并推荐了相关专家&nbsp;<span class="link_text" @click="toOtherExpertDetail(orderData.otherExpertId)">{{orderData.otherExpertName}}</span>&nbsp;,可转至其推荐专家详情页了解推荐专家并重新发起咨询。
           </div>
-          <div class="order_time">关闭时间：{{orderData.lastModificationTime}}</div>
+          <div class="order_time">关闭时间：{{orderData.closerTime}}</div>
         </div>
 
         <!-- 专家修改订单-->
@@ -125,9 +116,9 @@
 
         <div class="bottom_block" v-if="(orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8 ) && '已评价'">
           <div class="question">
-              <span class="question_title">评价内容：</span>{{orderData.questionAnswerText}}
+              <span class="question_title">评价内容：</span>{{orderData.satisfactionDegreeDesc}}
           </div>
-          <div class="order_time">评价时间：{{orderData.actualAnswerTime}}</div>
+          <div class="order_time">评价时间：{{orderData.satisfactionDegreeTime}}</div>
         </div>
 
         <div class="bottom_block" v-if="orderData.status == 5 && '免单'">
@@ -221,7 +212,7 @@
 
           <!-- 待接单时专家的操作 -->
           <div class="other_msg_block" v-if="orderData.status == 0">
-              <span class="other_msg">请在{{orderData.responseTime}}分钟内接单</span>
+              <span class="other_msg">请在{{orderData.lastReceiptTimeOfMinute}}分钟内接单</span>
               <div class="action_btn_bar">
                 <span class="action_btn2"  @click="toEditOrder">修改</span>
                 <span class="action_btn2" @click="toRejectOrder">拒单</span>
@@ -388,7 +379,7 @@ export default {
     receiptOrder(){
       Dialog.confirm({
         title: '确认接单',
-        message: '请在'+ (this.orderData.answeringTime / 60).toFixed(1) +'小时内接单',
+        message: '请在'+ (this.orderData.answeringTime / 60).toFixed(1) +'小时内作答',
       }).then(() => {
         this.$http.request({
           url:'ExpertReceiptOrder',
@@ -472,9 +463,8 @@ export default {
           data:{
             orderId:this.orderId,
             closeType: 1,
-            closeDesc: '',
-            closerId: this.userData.userId,
-            otherExpertId:''
+            closeDesc: '用户自主取消订单',
+            closerId: this.userData.userId
           },
           flyConfig:{
             method: 'post'

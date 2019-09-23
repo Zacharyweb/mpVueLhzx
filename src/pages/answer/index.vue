@@ -12,7 +12,7 @@
       <div class="orders_list">
         <div class="order_item">
           <div class="top_block">
-            <img class="experts_avatar" :src="orderData.usertAvatarUrl">
+            <img class="experts_avatar" :src="orderData.userAvataUrl || orderData.userAvataUrl">
             <div class="top_block_right">
               <div class="order_msg1">
                 <div class="experts_name">{{orderData.userName}}</div>

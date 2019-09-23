@@ -86,6 +86,12 @@ export default {
         return;
       }
       this.currentTab = num;
+
+      if(num==0)
+        this.getUserOrderList();
+      if(num==1)
+        this.getExpertOrderList();        
+
     },
   
     getUserOrderList(){

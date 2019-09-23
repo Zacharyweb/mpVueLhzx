@@ -1,7 +1,7 @@
 <template>
  <div class="order_item"  @click="toOrderDetail(orderData.id,'u',orderData.status)">
     <div class="order_msg0">
-      <span class="order_no">订单号：{{orderData.orderNo}}</span>
+      <span class="order_no">订单编号：{{orderData.orderNo}}</span>
       <div class="order_status">
         <!-- <span class="time_count" v-show="showCount">{{hh}}:{{mm}}:{{ss}}</span> -->
         <span class="status_text" v-if="orderData.status == 0">待接单</span>
@@ -60,7 +60,9 @@
       <span class="other_msg">{{orderData.remark}}</span>
     </div>
     <div class="other_msg_block" v-if="orderData.status == 9">
-      <span class="other_msg">{{orderData.closeType == 1?'用户':'专家'}}关闭订单{{orderData.remark?',' + orderData.remark:''}}</span>
+      <span class="other_msg" v-if="orderData.closeType==0" >系统关闭{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==1" >用户关闭{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==2" >专家关闭{{orderData.remark?','+orderData.remark:""}}</span>
     </div>
     
   </div>
@@ -137,8 +139,8 @@ export default {
     },
     toComment(){
        this.$router.push({path:'/pages/comment/index',query:{orderId:1}});
-    },
-
+    }
+    
   }
 }
 </script>
