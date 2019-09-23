@@ -187,7 +187,7 @@ export default {
     this.userAvatarUrl = orderData.userAvataUrl;
     this.userName = orderData.userNickName;
     this.orderUserDesc = orderData.userDesc;
-    this.responseTime = orderData.responseTime;
+    this.responseTime = orderData.lastReceiptTimeOfMinute;
   },
   onShow(){
 

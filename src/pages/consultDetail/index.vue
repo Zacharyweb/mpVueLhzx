@@ -65,21 +65,12 @@
           <div class="order_time">提问时间：{{orderData.creationTime}}</div>
         </div>
 
-        <!-- 用户取消订单 -->
-        <div class="bottom_block" v-if="orderData.status == 9 && !orderData.closeDesc && !orderData.otherExpertId">
-          <div class="question">
-              <span class="question_title">订单关闭：</span>订单已被取消。
-          </div>
-          <div class="order_time">关闭时间：{{orderData.closerTime}}</div>
-        </div>
-
-
-        <!-- 专家取消订单 -->
+        <!-- 专家/用户取消订单 -->
         <div class="bottom_block" v-if="orderData.status == 9 && orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">订单关闭：</span>{{orderData.closeDesc}}
+              <span class="question_title">订单关闭：</span>原因：{{orderData.closeDesc}}
           </div>
-          <div class="order_time">关闭时间：{{orderData.closerTime}}</div>
+          <div class="order_time">订单关闭时间：{{orderData.closerTime}}</div>
         </div>
 
         <!-- 专家拒绝并推荐其他专家 -->
@@ -221,7 +212,7 @@
 
           <!-- 待接单时专家的操作 -->
           <div class="other_msg_block" v-if="orderData.status == 0">
-              <span class="other_msg">请在{{orderData.responseTime}}分钟内接单</span>
+              <span class="other_msg">请在{{orderData.lastReceiptTimeOfMinute}}分钟内接单</span>
               <div class="action_btn_bar">
                 <span class="action_btn2"  @click="toEditOrder">修改</span>
                 <span class="action_btn2" @click="toRejectOrder">拒单</span>
@@ -369,7 +360,7 @@ export default {
     receiptOrder(){
       Dialog.confirm({
         title: '确认接单',
-        message: '请在'+ (this.orderData.answeringTime / 60).toFixed(1) +'小时内接单',
+        message: '请在'+ (this.orderData.answeringTime / 60).toFixed(1) +'小时内作答',
       }).then(() => {
         this.$http.request({
           url:'ExpertReceiptOrder',
@@ -453,9 +444,8 @@ export default {
           data:{
             orderId:this.orderId*1,
             closeType: 1,
-            closeDesc: '',
-            closerId: this.userData.userId,
-            otherExpertId:''
+            closeDesc: '用户自主取消订单',
+            closerId: this.userData.userId
           },
           flyConfig:{
             method: 'post'

@@ -40,7 +40,7 @@
     </div>
 
     <div class="other_msg_block" v-if="orderData.status == 0">
-      <span class="other_msg">请在{{orderData.responseTime}}分钟内接单</span>
+      <span class="other_msg">请在{{orderData.lastReceiptTimeOfMinute}}分钟内接单</span>
       <span class="action_btn">看订单</span>
     </div>
     
@@ -56,7 +56,11 @@
       <span class="other_msg">{{orderData.remark}}</span>
     </div>
     <div class="other_msg_block" v-if="orderData.status == 9">
-      <span class="other_msg">{{orderData.closeType == 1?'用户':'专家'}}关闭订单{{orderData.remark?'，' + orderData.remark:''}}</span>
+
+      <span class="other_msg" v-if="orderData.closeType==0" >系统关闭{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==1" >用户关闭{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==2" >专家关闭{{orderData.remark?','+orderData.remark:""}}</span>
+      
     </div>
   </div>
 </template>
