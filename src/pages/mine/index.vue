@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="mine_top_block">
-      <img class="bg_img" src="../../../static/img/center_bg.png">
+      <!-- <img class="bg_img" src="../../../static/img/center_bg.png"> -->
+      <img class="bg_img" src="../../../static/img/center_bg2.png">
+
       <div class="mine_msg">
  
         <img class="mine_avatar" v-if="userData" :src="userData.avatarUrl">
@@ -37,18 +39,20 @@
         </div>
       </div>
 
-      <!-- <div class="mine_account">
-        <div class="mine_amount">
-          <div class="amount">
-            <span>￥</span>2300
-          </div>
-          <div class="item_name">账户余额</div>
+      <form  @submit="addUserFormId" :report-submit="true">
+        <div class="mine_account">
+            <div class="mine_amount">
+              <div class="amount">
+                {{noticeNum}}<span>次</span>
+              </div>
+              <div class="item_name">剩余通知次数</div>
+            </div>
+            <div class="action_btns">
+              <button class="action_btn" form-type="submit">点击增加</button>
+              <!-- <div class="action_btn" @click="linkTo('/pages/billList/index')">账单明细</div> -->
+            </div>
         </div>
-        <div class="action_btns">
-          <div class="action_btn" @click="linkTo('/pages/cash/index')">提现</div>
-          <div class="action_btn" @click="linkTo('/pages/billList/index')">账单明细</div>
-        </div>
-      </div> -->
+      </form>
     </div>
 
     <ul class="router_list">
@@ -112,6 +116,7 @@
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
+      
 
       <li class="router_item" @click="linkTo('/pages/useNotice/index',true)">
         <div class="item_left">
@@ -142,7 +147,8 @@ export default {
  data () {
     return {
       loginStatus:'Y',
-      mineData:{}
+      mineData:{},
+      noticeNum:0
     }
   },
   computed: {
@@ -175,7 +181,8 @@ export default {
           nickName:result.nickName,
           avatarUrl:result.avatarUrl,
           isExpert: result.isExpert,
-          aboutUserDesc:result.aboutUserDesc
+          aboutUserDesc:result.aboutUserDesc,
+          openId:result.openId
         });
       })
     },
@@ -222,6 +229,25 @@ export default {
         }
       })
     },
+    addUserFormId(e){
+      console.log(e);
+      let that = this;
+      that.$http.request({
+        url:'AddUserFormId',
+        data: {
+          userId: that.userData.userId,
+          userOpenId: that.userData.openId,
+          formId: e.mp.detail.formId,
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          this.noticeNum = this.noticeNum +1;
+        }
+      })
+    },
 
     onGotUserInfo(e){
       if (e.mp.detail.rawData){
@@ -239,13 +265,16 @@ export default {
 
 <style lang="less">
 .mine_top_block {
-  height: 126px;
+  // height: 126px;
+  height: 180px;
+
   font-size: 14px;
   color: #fff;
   position: relative;
   .bg_img{
     width: 375px;
-    height: 126px;
+    // height: 126px;
+    height: 180px;
   }
   .mine_msg{
     position: absolute;
@@ -314,7 +343,8 @@ export default {
   }
   .mine_account{
       position: absolute;
-      top: 137px;
+      top: 100px;
+      // top: 20px;
       left: 20px;
       right: 0;
       box-sizing: border-box;
@@ -350,6 +380,7 @@ export default {
         color: #ffe288;
         padding: 0 8px;
         border-radius: 14px;
+             font-size: 14px;
         margin-right: 15px;
       }
   }

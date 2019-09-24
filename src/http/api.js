@@ -90,6 +90,8 @@ const API = {
   'ExpertFreeOrder':'/api/LhzxOrderExpert/FreeOrder/', // 专家免单操作
   'ExpertGetUserPhoneNum':'/api/LhzxOrderExpert/GetUserPhoneNum/', // 专家获取用户手机号
   'ExpertReceived':'/api/LhzxOrderExpert/Received/',  // 专家操作已到账
+
+  'AddUserFormId':'/api/Users/SetUserFormId'  // 批量插入用户FormId
 }
 
 export {API, BASE_URL}
