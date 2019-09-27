@@ -388,9 +388,9 @@ export default {
             title: '提示',
             message: '为便于专家与您联系协商，您的手机号将会同时发送给专家。',
             confirmButtonText:'同意发送',
-            cancelButtonText:'取消',
+            cancelButtonText:'取消'
           }).then(() => {
-            this.commitComment()
+            this.commitComment();
           })
       }else{
         this.commitComment();
@@ -421,7 +421,7 @@ export default {
       // }
     },
     commitComment(){
-      let falg = '';
+      let flag = '';
       if(this.commentType == 3){
         flag = '不满意';
       }else if(this.commentType == 2){
