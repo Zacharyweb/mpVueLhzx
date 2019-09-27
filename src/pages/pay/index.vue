@@ -42,11 +42,11 @@
           </div>
         </div> -->
         <div class="pay_step">
-          <div class="step_text">1、点击下面“发送二维码”按钮</div>
+          <div class="step_text">1、点击下面“获取付款二维码”按钮</div>
           <div class="step_sub_tetx">二维码将通过平台的公众号发送给您</div>
           
 
-          <div class="step_text">2、从公众号打开二维码</div>
+          <div class="step_text">2、从公众号消息打开二维码</div>
           <div class="step_sub_tetx">上面注有专家的昵称和咨询费金额</div>
 
           <div class="step_text">3、长按二维码选择“识别图中二维码”</div>
@@ -64,7 +64,7 @@
     </div>
 
     <div class="btn_block">
-      <div class="btn green large" @click="postPayMsg">发送二维码</div>
+      <div class="btn green large" @click="postPayMsg">获取付款二维码</div>
     </div>
   </div>
 </template>

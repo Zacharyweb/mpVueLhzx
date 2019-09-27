@@ -116,6 +116,14 @@
 
         <div class="bottom_block" v-if="(orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8 ) && orderData.satisfactionDegreeDesc">
           <div class="question">
+              <span class="question_title">评价级别：</span>
+                        <div class="action_btn_bar">
+              <span class="action_btn active" v-if="orderData.satisfactionDegree=='满意'">满意</span>
+              <span class="action_btn active" v-if="orderData.satisfactionDegree=='一般'">一般</span>
+              <span class="action_btn active" v-if="orderData.satisfactionDegree=='不满意'">不满意</span>
+          </div>
+          </div>          
+          <div class="question">
               <span class="question_title">评价内容：</span>{{orderData.satisfactionDegreeDesc}}
           </div>
           <div class="order_time">评价时间：{{orderData.satisfactionDegreeTime}}</div>
@@ -535,7 +543,7 @@ export default {
 
     // 用户去支付
     toPay(){
-      if(!this.orderStatus.satisfactionDegree){
+      if(!this.orderData.satisfactionDegree){
         Dialog.confirm({
           title: '提示',
           message: '不写点评，直接去支付吗？'
@@ -797,5 +805,25 @@ export default {
 
   .orders_list .order_item .bottom_block{
     font-size: 14px;
+  }
+
+   .action_btn_bar{
+    display: flex;
+    align-items: center;
+  }
+  .action_btn{
+    height: 28px;
+    padding:0 10px;
+    border-radius: 4px;
+    color: #1fb7b6;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    border: 1px solid #1fb7b6;
+  }
+  .action_btn.active{
+    color: #fff;
+    background-color: #1fb7b6;
   }
 </style>
