@@ -332,6 +332,8 @@ export default {
       orderData:{
     
       },
+      userName:'',
+      userPhoneNum:'',
       timer:null,
       showCount:false,
       hh:'00',
@@ -682,14 +684,16 @@ export default {
         }
       }).then(res => {
         if(res.code == 1){
+          this.userName=res.data.nickName;
+          this.userPhoneNum=res.data.phoneNumber;
           Dialog.confirm({
             title: '用户信息',
-            message: '用户昵称：朱两边；手机号：1575177498',
+            message: '用户昵称：'+ this.userName+'； 手机号：'+this.userPhoneNum,
             cancelButtonText:'关闭',
             confirmButtonText:'复制手机号'
           }).then(() => {
             wx.setClipboardData({
-              data: '15757177498',
+              data: this.userPhoneNum,
               success (res) {
                 wx.showToast({
                   title: '已复制手机号',
