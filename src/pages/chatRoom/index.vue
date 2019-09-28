@@ -58,7 +58,8 @@ export default {
   },
   computed: {
     ...mapState({
-      isX: state => state.counter.isX
+      isX: state => state.counter.isX,
+      i18n: state => state.counter.i18n
     })
   },
 

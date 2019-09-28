@@ -71,7 +71,8 @@ export default {
   computed:{
     ...mapState({
       consultListTab: state => state.counter.consultListTab,
-      userData: state => state.counter.userData
+      userData: state => state.counter.userData,
+      i18n: state => state.counter.i18n
     })
   },
 

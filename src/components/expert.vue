@@ -6,10 +6,10 @@
         <div class="experts_msg1">
           <div class="experts_name">
             <span class="experts_nickname">{{expertData.nickName}}</span>
-            <span class="experts_experience">{{expertData.majorYearsDesc}}工作经验</span>
+            <span class="experts_experience">{{expertData.majorYearsDesc}}{{i18n.experience}}</span>
           </div>
-          <span class="status" v-if="expertData.workStatus == 1">营业中</span>
-          <span class="status grey" v-else>休息中</span>
+          <span class="status" v-if="expertData.workStatus == 1">{{i18n.Open}}</span>
+          <span class="status grey" v-else>{{i18n.Closed}}</span>
 
           <!-- <span class="consult_msg">{{expertData.relationCount}}位关系户已咨询过</span> -->
         </div>
@@ -45,8 +45,14 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   props: ['expertData'],
+  computed:{
+    ...mapState({
+      i18n: state => state.counter.i18n
+    })
+  },
   methods:{
     linkTo(path,tab){
       this.$router.push({

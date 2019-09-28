@@ -72,10 +72,10 @@ export default {
           targetId:'cn_j',
           name: '简体中文',
         },
-        {
-          targetId:'cn_f',
-          name: '繁體中文',
-        },
+        // {
+        //   targetId:'cn_f',
+        //   name: '繁體中文',
+        // },
         {
           targetId:'en',
           name: 'English',

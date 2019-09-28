@@ -76,7 +76,7 @@
         <!-- 专家拒绝并推荐其他专家 -->
         <div class="bottom_block" v-if="orderData.status == 9 && orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">订单关闭：</span>专家取消订单，并推荐了相关专家&nbsp;<span class="link_text" @click="toOtherExpertDetail(orderData.otherExpertId)">{{orderData.otherExpertName}}</span>&nbsp;,可转至其推荐专家详情页了解推荐专家并重新发起咨询。
+              <span class="question_title">订单关闭：</span>专家取消订单，并推荐了相关专家&nbsp;<span class="link_text" @click="toOtherExpertDetail(orderData.otherExpertId)">{{orderData.recommendExpertName}}</span>&nbsp;,可转至其推荐专家详情页了解推荐专家并重新发起咨询。
           </div>
           <div class="order_time">关闭时间：{{orderData.closerTime}}</div>
         </div>
@@ -115,13 +115,11 @@
         </div>
 
         <div class="bottom_block" v-if="(orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8 ) && orderData.satisfactionDegreeDesc">
-          <div class="question">
+          <div class="question" style="padding-bottom:6px;">
               <span class="question_title">评价级别：</span>
-                        <div class="action_btn_bar">
-              <span class="action_btn active" v-if="orderData.satisfactionDegree=='满意'">满意</span>
-              <span class="action_btn active" v-if="orderData.satisfactionDegree=='一般'">一般</span>
-              <span class="action_btn active" v-if="orderData.satisfactionDegree=='不满意'">不满意</span>
-          </div>
+              <span class="satisfaction_degree" v-if="orderData.satisfactionDegree=='满意'">满意</span>
+              <span class="satisfaction_degree" v-if="orderData.satisfactionDegree=='一般'">一般</span>
+              <span class="satisfaction_degree" v-if="orderData.satisfactionDegree=='不满意'">不满意</span>
           </div>          
           <div class="question">
               <span class="question_title">评价内容：</span>{{orderData.satisfactionDegreeDesc}}
@@ -344,7 +342,8 @@ export default {
   },
   computed: {
     ...mapState({
-      userData: state => state.counter.userData
+      userData: state => state.counter.userData,
+      i18n: state => state.counter.i18n
     })
   },
 

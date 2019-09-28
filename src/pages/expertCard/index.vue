@@ -52,7 +52,7 @@ import {API, BASE_URL} from  '../../http/api.js'
 export default {
   computed: {
     ...mapState({
-  
+      i18n: state => state.counter.i18n      
     })
   },
   data(){

@@ -36,7 +36,7 @@
 
     <div class="no_data_tips" v-if="expertsList.length == 0 && !isLoading">
       <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-      <span>还没有相关专家哦~</span>
+      <span>{{i18n.No_relevant_data}}</span>
     </div> 
 
     
@@ -56,13 +56,13 @@
       </div>
       <div class="sx_tabs">
         <div class="tab_item">
-          <span class="tab_name" @click="sxType = 1 ">行业：</span>
-          <span class="tab_content" :class="{'active':selectedHy}" @click="sxType = 1 ">{{selectedHy?selectedHy:'未选择'}}</span>
+          <span class="tab_name" @click="sxType = 1 ">{{i18n.Sector}}：</span>
+          <span class="tab_content" :class="{'active':selectedHy}" @click="sxType = 1 ">{{selectedHy?selectedHy:i18n.unselected}}</span>
           <img class="arrow_icon" src="../../../static/img/arrow_down2.png" @click="sxType = 1 ">
         </div>
         <div class="tab_item">
-          <span class="tab_name" @click="sxType = 2 ">科室：</span>
-          <span class="tab_content"  :class="{'active':selectedKs}" @click="sxType = 2 ">{{selectedKs?selectedKs:'未选择'}}</span>
+          <span class="tab_name" @click="sxType = 2 ">{{i18n.Speciality}}：</span>
+          <span class="tab_content"  :class="{'active':selectedKs}" @click="sxType = 2 ">{{selectedKs?selectedKs:i18n.unselected}}</span>
           <img class="arrow_icon" src="../../../static/img/arrow_down2.png" @click="sxType = 2 ">
 
         </div>
@@ -142,7 +142,10 @@ export default {
         }
       }
       return '';
-    }
+    },
+    ...mapState({
+      i18n: state => state.counter.i18n
+    })
   },
   
 

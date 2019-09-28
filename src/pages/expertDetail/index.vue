@@ -7,8 +7,8 @@
         <div class="top_block_right">
           <div class="experts_msg1">
             <div class="experts_name">{{expertData.nickName}}
-              <span class="status" v-if="expertData.workStatus == 1">营业中</span>
-              <span class="status grey" v-else>休息中</span>
+              <span class="status" v-if="expertData.workStatus == 1">{{i18n.Open}}</span>
+              <span class="status grey" v-else>{{i18n.Closed}}</span>
             </div>
             <!-- <span class="consult_msg">{{expertData.followCount}}人已关注</span> -->
           </div>
@@ -23,14 +23,14 @@
             </div>
             <span class="devide_line"></span>
             <div class="experts_experience">
-              <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}从业经验
+              <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}{{i18n.experience}}
             </div>
           </div>
         </div>
       </div>
       <div class="chat_block" @click="toChatRoom">
         <img class="chat_icon" src="../../../static/img/chat_icon.png">
-        <div class="chat_text">聊天问候</div>
+        <div class="chat_text">{{i18n.chat}}</div>
       </div>
     </div>
     
@@ -38,44 +38,44 @@
         <div class="focus_block">
           <img class="focus_icon" src="../../../static/img/collect_icon.png" v-if="!collected" @click="addUserFollow">
           <img class="focus_icon" src="../../../static/img/collect_icon2.png" v-if="collected" @click="deleteUserFollow">
-          <span class="num_text">{{expertData.followCount}}人已关注</span>
+          <span class="num_text">{{expertData.followCount}}{{i18n.followers}}</span>
         </div>
         <div class="orders_block">
-          <span class="num_text">{{expertData.consultedCount}}人已咨询</span>
+          <span class="num_text">{{expertData.consultedCount}}{{i18n.clients}}</span>
         </div>
     </div>
 
     <div class="custom_tabs">
-      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">关于专家</div>
-      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">关系户</div>
+      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">{{i18n.About}}</div>
+      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">{{i18n.Shared_by_friends}}</div>
       <span class="active_bar" :class="{'active25':currentTab == 0,'active75':currentTab == 1}"></span>
     </div>
 
     <div class="introduce_panel" v-show="currentTab == 0">
       <div class="panle_block nb">
          <div class="base_msg">
-          <span class="msg_name">行业</span>
+          <span class="msg_name">{{i18n.Sector}}</span>
           <span class="msg_content">{{expertData.businessArea}}</span>
         </div>
         <div class="base_msg">
-          <span class="msg_name">科室</span>
+          <span class="msg_name">{{i18n.Speciality}}</span>
           <span class="msg_content">{{expertData.goodAtBusiness}}</span>
         </div>
       </div>
 
       <div class="panle_block">
-        <div class="block_title">工作介绍</div>
+        <div class="block_title">{{i18n.Experience}}</div>
         <div class="block_content">{{expertData.lifeAndFeelDesc}}</div>
       </div>
 
       <div class="panle_block">
-        <div class="block_title">政策解读</div>
+        <div class="block_title">{{i18n.Point_of_view}}</div>
         <div class="block_content">{{expertData.policyInterpretation}}</div>
       </div>
 
 
       <div class="panle_block" v-if="expertData.outLink.length > 0">
-        <div class="block_title">作品链接</div>
+        <div class="block_title">{{i18n.Link}}</div>
         <div class="base_msg no_name" v-for="(item,index) in expertData.outLink" :key="index" @click="copyText(item.link)">
            <span class="msg_name"></span>
            <span class="msg_content">{{item.name}}</span>
@@ -83,7 +83,7 @@
       </div>
 
       <div class="panle_block" v-if="expertData.photosList.length > 0">
-        <div class="block_title">相关照片</div>
+        <div class="block_title">{{i18n.Photos}}</div>
         <div class="block_content">
           <img class="intro_img"  v-for="(item,index) in expertData.photosList" :src="item" :key="index" @click="showImgSwiper(index)">
         </div>
@@ -92,7 +92,7 @@
     <div class="comment_panel" v-show="currentTab == 1">
 
       <div class="friends_block" v-if="followUserList.length > 0">
-        <div class="block_title nb">关注</div>
+        <div class="block_title nb">{{i18n.follower}}</div>
         <ul class="friends_list">
           <li class="friend_item" v-for="(item,index) in followUserList" :key="index">
             <img class="user_avatar" :src="item.userAvatarUrl">
@@ -102,7 +102,7 @@
       </div>
 
       <div class="friends_block" v-if="commentData.length > 0">
-        <div class="block_title">评价</div>
+        <div class="block_title">{{i18n.review}}</div>
         <div class="comment_item" v-for="(item,index) in commentData" :key="index">
           <img class="user_avatar" :src="item.avatarUrl">
           <span class="comment_tag">{{item.commentTag}}</span>
@@ -118,7 +118,7 @@
 
       <div class="no_data_tips" v-if="commentData.length == 0 && followUserList.length == 0">
         <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-        <span>还没有关系户关注或评价过哦~</span>
+        <span>{{i18n.No_relevant_data}}</span>
       </div> 
 
     </div>
@@ -131,13 +131,13 @@
       <div class="icon_btns">
         <button open-type="share" class="icon_btn btn_reset">
           <img src="../../../static/img/share_icon.png">
-          <span>分享</span>
+          <span>{{i18n.Share}}</span>
         </button>
       </div>
       
-      <span class="respond_time_tips">{{expertData.responseTime}}分钟内回应接单</span>
-      <span class="action_btn2" @click="toContact" v-if="expertData.workStatus == 1">马上咨询&nbsp;￥{{expertData.oneOfCost}}/次</span>
-      <span class="action_btn3" v-else>休息中&nbsp;￥{{expertData.oneOfCost}}/次</span>
+      <span class="respond_time_tips">{{responseTimeText}}</span>
+      <span class="action_btn2" @click="toContact" v-if="expertData.workStatus == 1">{{i18n.Ask}}&nbsp;￥{{expertData.oneOfCost}}/{{i18n.query}}</span>
+      <span class="action_btn3" v-else>{{i18n.Closed}}&nbsp;￥{{expertData.oneOfCost}}/{{i18n.query}}</span>
 
     </div>
 
@@ -204,8 +204,20 @@ export default {
   computed: {
     ...mapState({
       isX: state => state.counter.isX,
-      userData: state => state.counter.userData
-    })
+      userData: state => state.counter.userData,
+      i18n: state => state.counter.i18n
+    }),
+    responseTimeText(){
+      if(this.expertData && this.expertData.responseTime){
+        if(this.i18n.LANGTYPE  == 'en'){
+          return 'respond in ' + this.expertData.responseTime + ' min';
+        }else{
+          return this.expertData.responseTime + '分钟内回应'
+        }
+      }
+      return ''
+    },
+    
   },
   onLoad(options){
     this.expertId = options.id;

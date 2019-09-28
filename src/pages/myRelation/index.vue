@@ -92,7 +92,8 @@ export default {
   computed:{
     ...mapState({
       isX: state => state.counter.isX,
-      userData: state => state.counter.userData
+      userData: state => state.counter.userData,
+      i18n: state => state.counter.i18n
     })
   },
   components: {

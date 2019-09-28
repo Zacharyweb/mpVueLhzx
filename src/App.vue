@@ -22,9 +22,9 @@ export default {
     // en 英文
 
     let systemLang = 'cn_j';
-    if(systemInfo.language == 'zh_HK' || systemInfo.language == 'zh_TW '){
-      systemLang = 'cn_f';
-    }
+    // if(systemInfo.language == 'zh_HK' || systemInfo.language == 'zh_TW '){
+    //   systemLang = 'cn_f';
+    // }
     if(systemInfo.language == 'en'){
       systemLang = 'en';
     }

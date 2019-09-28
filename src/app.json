@@ -2,7 +2,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "咨询堂",
+    "navigationBarTitleText": "咨询堂/Advisory",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -13,19 +13,19 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
+        "text": "首页/Home",
         "iconPath": "static/img/home.png",
         "selectedIconPath": "static/img/home2.png"
       },
       {
         "pagePath": "pages/consult/index",
-        "text": "咨询",
+        "text": "咨询/Querise",
         "iconPath": "static/img/chat.png",
         "selectedIconPath": "static/img/chat2.png"
       },
       {
         "pagePath": "pages/mine/index",
-        "text": "我的",
+        "text": "我的/Me",
         "iconPath": "static/img/mine.png",
         "selectedIconPath": "static/img/mine2.png"
       }

@@ -69,8 +69,14 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   props: ['orderData'],
+  computed:{
+    ...mapState({
+      i18n: state => state.counter.i18n
+    })
+  },
   data () {
     return {
       hh:'00',

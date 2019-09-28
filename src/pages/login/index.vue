@@ -59,7 +59,7 @@ export default {
   computed: {
     ...mapState({
       userData: state => state.counter.userData,
-      
+      i18n: state => state.counter.i18n
     })
   },
 

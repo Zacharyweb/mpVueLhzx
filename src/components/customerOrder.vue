@@ -36,7 +36,7 @@
       <div class="order_time" v-if="orderData.status == 4 || orderData.status == 8">作答时间：{{orderData.actualAnswerTime}}</div>
       <div class="order_time" v-if="orderData.status == 6">专家收款二维码发送时间：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == 7">到账时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.closerTime}}}</div>
+      <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.closerTime}}</div>
     </div>
 
     <div class="other_msg_block" v-if="orderData.status == 0">
@@ -66,8 +66,14 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   props: ['orderData'],
+  computed:{
+    ...mapState({
+      i18n: state => state.counter.i18n
+    })
+  },
   data () {
     return {
       hh:'00',
