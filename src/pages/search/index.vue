@@ -1,15 +1,15 @@
 <template>
   <div class="container">
     <div class="search_block">
-      <van-search :value="searchKey" background="#fff" use-action-slot placeholder="请输入搜索关键词" @change="handleSearchChange">  
-        <view slot="action" @click="onSearch">搜索</view>
+      <van-search :value="searchKey" background="#fff" use-action-slot :placeholder="i18n.search_tips" @change="handleSearchChange">  
+        <view slot="action" @click="onSearch">{{i18n.search}}</view>
       </van-search>
     </div>
     <div class="fixed_fill_block"></div>
 
     <div class="search_history" v-show="expertsList.length == 0 && !searchHandle ">
       <div class="block_top">
-        <span>最近搜索</span>
+        <span>{{i18n.search_record}}</span>
         <img src="../../../static/img/delete_icon.png" @click="triggerDelete">
       </div>
       <ul class="history_list">
@@ -19,13 +19,13 @@
 
     <div class="no_data_tips" v-show="expertsList.length == 0 && searchHandle && !isLoading">
       <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-      <span>没有相关结果哦~</span>
+      <span>{{i18n.No_relevant_data}}</span>
     </div>
 
     <div class="experts_list" v-if="expertsList.length > 0">
       <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
     </div>
-    <div class="no_more_tips" v-show="expertsList.length > 0 && isNomore && !isLoading">没有更多了哦~</div>
+    <div class="no_more_tips" v-show="expertsList.length > 0 && isNomore && !isLoading">{{i18n.No_more_data}}</div>
     <van-dialog id="van-dialog"/>
   </div>
 </template>

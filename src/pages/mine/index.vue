@@ -10,8 +10,8 @@
         <img class="mine_avatar" v-else src="../../../static/img/df_avatar.jpg">
         <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
         <div class="login_block" v-if="!userData || !userData.accessToken">
-         <div class="no_login_tip">未登录</div>
-         <div class="action_btn" @click="toLoginPage">登录/注册</div>
+         <div class="no_login_tip">{{i18n.not_logged_in}}</div>
+         <div class="action_btn" @click="toLoginPage">{{i18n.login_or_register}}</div>
          <!-- <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button> -->
         </div>
 
@@ -22,9 +22,9 @@
                <!-- <span class="mine_position" v-show="mineData.companyPositio">{{mineData.companyPosition}}</span> -->
             </div>
             <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')" v-show="userData.workStatus">
-              <span class="mine_status" v-if="userData.workStatus == 1">营业中</span>
-              <span class="mine_status" v-else-if="userData.workStatus == 3">休息至明早8:00</span>
-              <span class="mine_status" v-else>休息中</span>
+              <span class="mine_status" v-if="userData.workStatus == 1">{{i18n.Open}}</span>
+              <span class="mine_status" v-else-if="userData.workStatus == 3">{{i18n.Rest_until_tomorrow}}</span>
+              <span class="mine_status" v-else>{{i18n.Closed}}</span>
               <img class="arrow_icon" src="../../../static/img/arrow_down.png">
             </div>
           </div>
@@ -33,7 +33,7 @@
                <span class="mine_nick">{{userData.nickName}}</span>
             </div>
             <div class="mine_txt_line mt-10">
-              <span class="mine_status">普通用户</span>
+              <span class="mine_status">{{i18n.ordinary_users}}</span>
             </div>
           </div>
         </div>
@@ -42,13 +42,13 @@
       <form  @submit="addUserFormId" :report-submit="true">
         <div class="mine_account">
             <div class="mine_amount">
-              <div class="amount">
+              <!-- <div class="amount">
                 {{noticeNum}}<span>次</span>
-              </div>
-              <div class="item_name">剩余通知次数</div>
+              </div> -->
+              <div class="item_name">{{i18n.LANGTYPE == 'cn_j'?'剩余推送消息通知次数':'Number of Remaining Push Message Notifications'}}<span class="amount">{{noticeNum}}</span></div>
             </div>
             <div class="action_btns">
-              <button class="action_btn" form-type="submit">点击增加</button>
+              <button class="action_btn" form-type="submit">{{i18n.increase}}</button>
               <!-- <div class="action_btn" @click="linkTo('/pages/billList/index')">账单明细</div> -->
             </div>
         </div>
@@ -59,7 +59,7 @@
       <li class="router_item" @click="linkTo('/pages/baseMsg/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon6.png">
-          我的信息
+          {{i18n.me}}
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -69,7 +69,7 @@
       <li class="router_item" @click="linkTo('/pages/myRelation/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon2.png">
-          我的关系户
+          {{i18n.friends}}
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -79,7 +79,7 @@
       <li class="router_item" @click="linkTo('/pages/myExpert/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon1.png">
-          我的专家
+          {{i18n.advisors}}
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -89,7 +89,7 @@
       <li class="router_item" @click="linkTo('/pages/myCustomer/index')" v-if="userData && userData.isExpert == 1">
         <div class="item_left">
           <img src="../../../static/img/center_icon2.png">
-          我的客户
+          {{i18n.clients}}
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -110,7 +110,7 @@
       <li class="router_item" @click="linkTo('/pages/set/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon5.png">
-          设置
+          {{i18n.settings}}
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -121,7 +121,7 @@
       <li class="router_item" @click="linkTo('/pages/useNotice/index',true)">
         <div class="item_left">
           <img src="../../../static/img/center_icon7.png">
-          使用说明
+           {{i18n.user_guide}}
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -357,8 +357,9 @@ export default {
       .mine_amount{
         padding-left: 20px;
         .amount{
-           font-size: 20px;
+           font-size: 18px;
            font-weight: bold;
+           margin-left:10px;
           span{
             font-size: 12px;
             font-weight: normal;
@@ -366,8 +367,10 @@ export default {
         }
         .item_name{
           font-size: 12px;
-          text-align: center;
-          margin-top: 5px;
+          // text-align: center;
+          // margin-top: 5px;
+          width: 200px;
+          
         }
       }
       .action_btns{

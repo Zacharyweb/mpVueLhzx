@@ -186,7 +186,7 @@ export default {
         Dialog.confirm({
           title: '提示',
           message: '确认免除本次咨询费'+ this.amount +'元',
-          cancelButtonText:'取消',
+          cancelButtonText:this.i18n.cancel,
           confirmButtonText:'确定'
         }).then(() => {
           this.freeOrder()

@@ -6,7 +6,7 @@
           <span>{{cityKey}}</span>
         </div>
         <div class="search_wrap">
-          <van-search  background="#fff" :value="searchKey" placeholder="请输入搜索关键词" @focus="onSearchFocus"/>
+          <van-search  background="#fff" :value="searchKey" :placeholder="i18n.search_tips" @focus="onSearchFocus"/>
         </div>
         <img class="sx_icon" v-show="selectedHy || selectedKs" src="../../../static/img/sx_active.png" @click="sxPanelShow = true;">
         <img class="sx_icon" v-show="!selectedHy && !selectedKs" src="../../../static/img/sx_grey.png" @click="sxPanelShow = true;">
@@ -50,9 +50,9 @@
 
     <div class="sx_panel" :class="{show:sxPanelShow}">
       <div class="sx_top_bar">
-        <span class="cancel_btn" @click="sxPanelShow = false;">取消</span>
-        <span class="panel_title">筛选</span>
-        <span class="confirm_btn" @click="submitSx">完成</span>
+        <span class="cancel_btn" @click="sxPanelShow = false;">{{i18n.cancel}}</span>
+        <span class="panel_title">{{i18n.Filter}}</span>
+        <span class="confirm_btn" @click="submitSx">{{i18n.done}}</span>
       </div>
       <div class="sx_tabs">
         <div class="tab_item">
