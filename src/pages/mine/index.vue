@@ -175,6 +175,7 @@ export default {
       }).then(res => {
         let result = res.data;
         this.mineData = res.data;
+        this.noticeNum=result.noticeNum;
         let data = this.userData || {};
         this.updateUserMsg({
           ...data,
@@ -235,11 +236,11 @@ export default {
       let that = this;
       that.$http.request({
         url:'AddUserFormId',
-        data: {
+        data: [{
           userId: that.userData.userId,
           userOpenId: that.userData.openId,
           formId: e.mp.detail.formId,
-        },
+        }],
         flyConfig:{
           method: 'post'
         }

@@ -32,10 +32,10 @@
           <span class="question_title">问题：</span>{{orderData.questionRemark}}
       </div>
       <div class="order_time" v-if="orderData.status == 0 || orderData.status == 1">提问时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == 2">接单时间：{{orderData.actualAnswerTime}}</div>
+      <div class="order_time" v-if="orderData.status == 2">接单时间：{{orderData.actualReceiptTime}}</div>
       <div class="order_time" v-if="orderData.status == 4 || orderData.status == 8">作答时间：{{orderData.actualAnswerTime}}</div>
-      <div class="order_time" v-if="orderData.status == 6">专家收款二维码发送时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == 7">到账时间：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 6">专家收款二维码发送时间：{{orderData.Confirm1Datetime}}</div>
+      <div class="order_time" v-if="orderData.status == 7">到账时间：{{orderData.Confirm3Datetime}}</div>
       <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.closerTime}}</div>
     </div>
 
