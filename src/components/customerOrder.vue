@@ -40,7 +40,7 @@
     </div>
 
     <div class="other_msg_block" v-if="orderData.status == 0">
-      <span class="other_msg">请在{{orderData.lastReceiptTimeOfMinute}}分钟内接单</span>
+      <span class="other_msg">请在<span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span>分钟内接单</span>
       <span class="action_btn">看订单</span>
     </div>
     
@@ -150,5 +150,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
+.other_msg_text{
+  font-size: 0.5rem;
+  color: red;
+}
 </style>
