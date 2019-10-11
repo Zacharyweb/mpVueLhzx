@@ -202,7 +202,7 @@ export default {
           that.updateUserMsg({...data,...that.originalData});
           let userDataStr = JSON.stringify({...data,...that.originalData});
           wx.setStorageSync('userData', userDataStr);
-         
+         console.log(this.fromType);
           if(this.fromType == 1){
             this.shareExpert();
           }else if(this.fromType == 2){
@@ -210,7 +210,10 @@ export default {
           }else if(this.fromType == 3){
             this.addUserFriend();
           }else{
-            that.$router.go(-1);
+            //that.$router.go(-1);
+            wx.switchTab({
+              url: '/pages/index/index'
+            });
           } 
         }
       })

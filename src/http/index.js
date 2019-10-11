@@ -16,23 +16,23 @@ let loadingTimer = [] // loading的定时器
 
 // 处理Loading逻辑
 function handleRequest(rqConfig){
+    Config.loading.loadingShow()
+    // rqConfig.isLoading && clearTimeout(loadingTimer);
 
-    rqConfig.isLoading && clearTimeout(loadingTimer);
+    // loadingTimer = setTimeout(() => {
+    //    rqConfig.isLoading && Config.loading.loadingShow();
+    // }, Config.loading.limitTime);
 
-    loadingTimer = setTimeout(() => {
-       rqConfig.isLoading && Config.loading.loadingShow();
-    }, Config.loading.limitTime);
+    // Promise.all(promises).then(data => {
+    //     if (data.length !== promises.length) return
 
-    Promise.all(promises).then(data => {
-        if (data.length !== promises.length) return
-
-        promises = [] // 所有请求完后清除promise数组
-        clearTimeout(loadingTimer) // 当请求在xxxms内完成则直接清除loading计时器
-    })
-    .catch(function(error){
-        promises = [] // 请求异常完后清除promise数组
-        clearTimeout(loadingTimer) // 请求异常则直接清除loading计时器
-    })
+    //     promises = [] // 所有请求完后清除promise数组
+    //     clearTimeout(loadingTimer) // 当请求在xxxms内完成则直接清除loading计时器
+    // })
+    // .catch(function(error){
+    //     promises = [] // 请求异常完后清除promise数组
+    //     clearTimeout(loadingTimer) // 请求异常则直接清除loading计时器
+    // })
 }
 
 
@@ -80,8 +80,9 @@ Flyio.request = function(obj){
        }
     }).catch(err => {
         console.log(err);
+        Config.loading.loadingHide();
         if(err.response.status == 401){
-            wx.navigateTo({
+            wx.redirectTo({
               url: '/pages/login/index'
             })
         }else{
@@ -91,8 +92,6 @@ Flyio.request = function(obj){
                duration: 1500
             });
         }
-        Config.loading.loadingHide();
-        // rqConfig.isLoading && Config.loading.loadingHide();
     })
 }
 
