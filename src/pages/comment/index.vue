@@ -66,7 +66,7 @@
 
     <div class="visible_panel" :class="{'show':visiblePanelShow}">
       <div class="panel_top">
-        <span class="cancel_btn" @click="visiblePanelShow = false">取消</span>
+        <span class="cancel_btn" @click="visiblePanelShow = false">{{i18n.cancel}}</span>
         <span class="title">设置可见性</span>
         <span class="submit_btn" @click="visiblePanelShow = false">提交</span>
       </div>
@@ -139,7 +139,7 @@
     <!-- 设置评论的可见性 -->
     <div class="add_view_panel" @touchmove.stop="touchmoveStop" :class="{'show':addViewPanelShow}">
       <div class="panel_top">
-        <span class="cancel_btn" @click="addViewPanelShow = false">取消</span>
+        <span class="cancel_btn" @click="addViewPanelShow = false">{{i18n.cancel}}</span>
         <span class="title">{{addViewPanelTitle}}</span>
         <span class="submit_btn" @click="submitSelectFriends">提交</span>
       </div>
@@ -389,7 +389,7 @@ export default {
             title: '提示',
             message: '为便于专家与您联系协商，您的手机号将会同时发送给专家。',
             confirmButtonText:'同意发送',
-            cancelButtonText:'取消'
+            cancelButtonText:this.i18n.cancel
           }).then(() => {
             this.commitComment();
           })

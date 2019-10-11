@@ -3,12 +3,12 @@
     <ul class="router_list">
 
       <li class="router_item" v-if="userData && userData.isExpert == 1">
-        <div class="item_left">服务状态</div>
+        <div class="item_left">{{i18n.Status}}</div>
         <div class="item_right" @click="actionSheetShow = true">
-          <span class="status_text" v-if="userData && userData.workStatus == 1">营业中</span>
-          <span class="status_text" v-else-if="userData && userData.workStatus == 2">休息中</span>
-          <span class="status_text" v-else-if="userData && userData.workStatus == 3">休息至明早8:00</span>
-          <span class="status_text" v-else>获取中</span>
+          <span class="status_text" v-if="userData && userData.workStatus == 1">{{i18n.Open}}</span>
+          <span class="status_text" v-else-if="userData && userData.workStatus == 2">{{i18n.Closed}}</span>
+          <span class="status_text" v-else-if="userData && userData.workStatus == 3">{{i18n.Rest_until_tomorrow}}</span>
+          <span class="status_text" v-else>{{i18n.Loaidng}}</span>
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
@@ -24,7 +24,7 @@
       </li>
 
     </ul>
-    <div class="log_out_btn" @click="logout">退出登录</div>
+    <div class="log_out_btn" @click="logout">{{i18n.Logout}}</div>
     <van-dialog id="van-dialog"/>
     <van-action-sheet
       :show="actionSheetShow"
@@ -49,22 +49,7 @@ export default {
   data () {
     return {
       actionSheetShow:false,
-      actions:[
-        {
-          targetId:1,
-          name: '营业中',
-        },
-        {
-          targetId:2,
-          name: '休息中',
-          subname: '休息至下次登入',
-        },
-        {
-          targetId:3,
-          name: '休息中',
-          subname: '休息至明早8:00',
-        }
-      ],
+     
 
       actionSheet2Show:false,
       actions2:[
@@ -87,7 +72,25 @@ export default {
     ...mapState({
       userData: state => state.counter.userData,
       i18n: state => state.counter.i18n
-    })
+    }),
+    actions:function(){
+      return [
+        {
+          targetId:1,
+          name: this.i18n.Open,
+        },
+        {
+          targetId:2,
+          name: this.i18n.Closed,
+          subname: this.i18n.Rest_until_next_login,
+        },
+        {
+          targetId:3,
+          name: this.i18n.Closed,
+          subname:  this.i18n.Rest_until_tomorrow,
+        }
+      ]
+    },
   },
   mounted(){
   
