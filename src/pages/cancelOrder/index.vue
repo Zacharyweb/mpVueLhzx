@@ -21,7 +21,7 @@
                    <span>{{orderData.userDesc}}</span>
                   </div>
               </div>
-              <span class="cost_amount">{{orderData.amount}}元</span>
+              <span class="cost_amount">￥{{orderData.amount}}</span>
             </div>
           </div>
         </div>
@@ -31,47 +31,47 @@
   
         <div class="reson_item"  @click="changeResonId(1)">
           <span class="custom_checkbox" :class="{'active': rejectResonId == 1}"></span>
-          <span class="reson_text">不好意思，最近忙不过来，希望下次能再为你服务。</span>
+          <span class="reson_text">{{i18n.LANGTYPE == 'cn_j'?'不好意思，最近忙不过来，希望下次能再为你服务。':'Sorry,too busy to work on this.Hope that Ican be of service next time'}}</span>
         </div>
 
         <div class="reson_item"  @click="changeResonId(2)">
           <span class="custom_checkbox" :class="{'active': rejectResonId == 2}"></span>
-          <span class="reson_text">不好意思，这个问题不在我的专业领域，希望下次能再为你服务。</span>
+          <span class="reson_text">{{i18n.LANGTYPE == 'cn_j'?'不好意思，这个问题不在我的专业领域，希望下次能再为你服务。':'Sorry,this question is beyond my area of expertise.Hope that Ican be of servise next time'}}</span>
         </div>
 
         <div class="reson_item" @click="changeResonId(4)">
           <span class="custom_checkbox" :class="{'active': rejectResonId == 4}"></span>
-          <span class="reson_text">其他原因</span>
+          <span class="reson_text">{{i18n.Other_reasons}}</span>
         </div>
       </div>
 
       <div class="input_block" v-if="rejectResonId == 4">
-        <textarea class="text_area" placeholder="请输入其他原因" v-model="closeDesc"></textarea>
+        <textarea class="text_area" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入其他原因':'please enter other reason'" v-model="closeDesc"></textarea>
       </div>
 
 
       <div class="quick_reson_list">
         <div class="reson_item" >
-          <span class="reson_text">推荐同业好友：</span>
-          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId == 0">去选择专家好友</span>
-          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId != 0">已选择专家-{{selectedOtherExpertName}}</span>
+          <span class="reson_text">{{i18n.LANGTYPE == 'cn_j'?'推荐同业好友':'recommend other advisors'}}</span>
+          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId == 0">{{i18n.LANGTYPE == 'cn_j'?'去选择专家好友 ':'choose from "my friends"'}}</span>
+          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId != 0">{{i18n.LANGTYPE == 'cn_j'?'已选择专家':'advisors you want to be recommend'}}-{{selectedOtherExpertName}}</span>
         </div>
       </div>
 
     
 
       <div class="btn_block" style="padding-bottom:10px;">
-        <div class="btn large green" @click="submit">提交</div>
+        <div class="btn large green" @click="submit">{{i18n.done}}</div>
       </div> 
-      <div class="btn_bottom_tips">请在{{orderData.responseTime}}分钟内回应</div>
+      <div class="btn_bottom_tips">{{i18n.LANGTYPE == 'cn_j'? '请在'+ orderData.responseTime + '分钟内回应':'please submit in '+ orderData.responseTime + ' minutes'}}</div>
 
     </div>
 
     <div class="friends_list" :class="{'show':friendsListShow}">
       <div class="panel_top">
-        <span class="cancel_btn" @click="cancelOtherExpert">取消推荐</span>
-        <span class="title">选择推荐专家</span>
-        <span class="submit_btn" @click="submitOtherExpert">提交</span>
+        <span class="cancel_btn" @click="cancelOtherExpert">{{i18n.cancel}}</span>
+        <span class="title">{{i18n.LANGTYPE == 'cn_j'?'选择推荐专家':'select advisors'}}</span>
+        <span class="submit_btn" @click="submitOtherExpert">{{i18n.done}}</span>
       </div>
       
       <div class="friend_item" v-for="(item,index) in friendsList" :key="index" @click="selectOtherExpertChange(index)">
@@ -147,7 +147,7 @@ export default {
 
     toSelectOtherExpert(){
       if(this.friendsList.length == 0){
-        this.showToast('没有可选择的专家好友');
+        this.showToast(this.i18n.LANGTYPE == 'cn_j'?'没有可选择的专家好友':'no relevant data');
         return;
       }
       this.friendsListShow = true;
@@ -185,20 +185,20 @@ export default {
     submit(){
       let closeDesc;
       if(this.rejectResonId == 1){
-        closeDesc = '不好意思，最近忙不过来，希望下次能再为你服务。';
+        closeDesc = this.i18n.LANGTYPE == 'cn_j'?'不好意思，最近忙不过来，希望下次能再为你服务。':'Sorry,too busy to work on this.Hope that Ican be of service next time';
       }else if(this.rejectResonId == 2){
-        closeDesc = '不好意思，这个问题不在我的专业领域，希望下次能再为你服务。';
+        closeDesc = this.i18n.LANGTYPE == 'cn_j'?'不好意思，这个问题不在我的专业领域，希望下次能再为你服务。':'Sorry,this question is beyond my area of expertise.Hope that Ican be of servise next time';
       }else{
         if(!this.closeDesc){
-           this.showToast('请填写其他原因');
+           this.showToast(this.i18n.LANGTYPE == 'cn_j'?'请填写其他原因':'please enter other reason');
            return;
         }else{
           closeDesc = this.closeDesc;
         }
       }
       Dialog.confirm({
-        title: '确认取消',
-        message: '您确定取消该订单吗？'
+        title: this.i18n.Confirm_decline,
+        message: this.i18n.LANGTYPE == 'cn_j'?'您确定取消该订单吗？':'Are you sure close this order?'
       }).then(() => {
     
         this.$http.request({
@@ -215,7 +215,7 @@ export default {
           }
         }).then(res => {
           if(res.code == 1){
-            this.showToast('订单已取消');
+            this.showToast(this.i18n.LANGTYPE == 'cn_j'?'订单已取消':'Order closed');
             setTimeout(()=>{
               this.$router.go(-1);
             },1500);

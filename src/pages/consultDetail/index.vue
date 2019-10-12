@@ -557,33 +557,6 @@ export default {
       });
     },
 
-    // 用户确认收到专家的回答
-    userConfirmOrder(flag){
-      Dialog.confirm({
-        title: '确认回答',
-        message: '确认已收到专家的回答，并对回答内容' +  flag + '。'
-      }).then(() => {
-        this.$http.request({
-          url:'UserDoSureAnswer',
-          data:{
-            orderId: this.orderId*1,
-            satisfactionDegree: flag
-          },
-          flyConfig:{
-            method: 'post'
-          }
-        }).then(res => {
-          if(res.code == 1){
-            this.showToast('确认成功，稍后请及时支付账单。');
-            this.getOrderDetail();
-          }
-        });
-
-      }).catch(() => {
-        
-      });
-    },
-
     // 不满意去申诉
     toAppeal(){
       this.$router.push({path:'/pages/appeal/index',query:{orderId:this.orderId}})
@@ -593,8 +566,8 @@ export default {
     toPay(){
       if(!this.orderData.satisfactionDegree){
         Dialog.confirm({
-          title: '提示',
-          message: '不写点评，直接去支付吗？'
+          title: this.i18n.Tips,
+          message: this.i18n.LANGTYPE == 'cn_j'?'不写点评，直接去支付吗？':'making payment without giving any comments?'
         }).then(() => {
            this.toPayPage();
         })
@@ -620,7 +593,7 @@ export default {
     // 用户去追问
     toAskMore(flag){
       if(flag == 1){
-        this.showToast('请先完成支付~');
+        this.showToast(this.i18n.LANGTYPE == 'cn_j'?'请先完成支付~':'please pay for the answer first');
         return;
       }
       this.$router.push({path:'/pages/startConsult/index',query:{expertId:this.orderData.expertId,parentOrderId:this.orderData.id}});
@@ -660,7 +633,7 @@ export default {
     getOrderDetail(loadingFlag){
       if(loadingFlag){
         wx.showLoading({
-          title: '载入中',
+          title: this.i18n.loading,
           mask: false
         });
       }
@@ -672,7 +645,7 @@ export default {
         if(res.code == 1){
           if(res.data.status != this.orderStatus){
             wx.showLoading({
-              title: '载入中',
+              title: this.i18n.loading,
               mask: false
             });
             this.orderStatus = res.data.status;
@@ -734,16 +707,16 @@ export default {
           this.userName=res.data.nickName;
           this.userPhoneNum=res.data.phoneNumber;
           Dialog.confirm({
-            title: '用户信息',
-            message: '用户昵称：'+ this.userName+'； 手机号：'+this.userPhoneNum,
-            cancelButtonText:'关闭',
-            confirmButtonText:'复制手机号'
+            title: this.i18n.LANGTYPE == 'cn_j'?'用户信息':'User information',
+            message: this.i18n.LANGTYPE == 'cn_j'?'用户昵称：'+ this.userName+'； 手机号：'+this.userPhoneNum:'User nickname：'+ this.userName+'； Mobile no.：'+this.userPhoneNum,
+            cancelButtonText: this.i18n.Close,
+            confirmButtonText: this.i18n.LANGTYPE == 'cn_j'?'复制手机号':'Copy'
           }).then(() => {
             wx.setClipboardData({
               data: this.userPhoneNum,
               success (res) {
                 wx.showToast({
-                  title: '已复制手机号',
+                  title: this.i18n.LANGTYPE == 'cn_j'?'已复制手机号':'Copy successful',
                   icon: 'none',
                   duration: 1500
                 });

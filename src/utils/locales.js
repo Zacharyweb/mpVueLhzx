@@ -79,6 +79,7 @@ export default {
       'upload_failed':'上传失败',
       'submitted_successfully':'提交成功',
       'uploading':'上传中',
+      'loading':'加载中',
       'Introduction':'自我介绍',
       'Confirm':'确认',
       'Advisor_registration':'专家进入登记',
@@ -280,7 +281,8 @@ export default {
       'Tips':'提示',
       'Yes':'是的',
       'Back':'返回',
-      'Cancel':'取消'
+      'Cancel':'取消',
+      'Close':'关闭'
     },
 
     'en' : {
@@ -362,7 +364,7 @@ export default {
         'upload_failed':'upload failed',
         'submitted_successfully':'completed',
         'uploading':'uploading',
-
+        'loading':'loading',
         'Introduction':'Introduction',
       
         'Advisor_registration':'Advisor registration',
@@ -565,6 +567,7 @@ export default {
         'Tips':'Tips',
         'Yes':'Yes',
         'Back':'Back',
-        'Cancel':'Cancel'
+        'Cancel':'Cancel',
+        'Close':'Close'
       }, 
   }
