@@ -26,7 +26,7 @@
         <span class="text_r">201812010000000000001</span>
       </div>
       <div class="bill_msg_line">
-        <span class="text_l">订单号：</span>
+        <span class="text_l">{{i18n.orderNo}}：</span>
         <span class="text_r">trade1111111111111111111</span>
       </div>
     </div>

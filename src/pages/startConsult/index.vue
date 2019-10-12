@@ -37,16 +37,16 @@
         <div class="block_title mb0">预计费用&nbsp;<span class="cost_text">{{expertData.oneOfCost}}</span>&nbsp;元</div>
       </div> -->
       <div class="panle_block">
-        <div class="block_title">自我介绍</div>
+        <div class="block_title">{{i18n.Introduction}}</div>
         <div class="problem_content">
-          <textarea  cols="30" rows="10" v-model="orderUserDesc" placeholder="可填写相关介绍一下，例如您的自我介绍信息，让专家更了解您或您的问题。"></textarea>
+          <textarea  cols="30" rows="10" v-model="orderUserDesc" :placeholder="i18n.LANGTYPE == 'cn_j'?'可填写相关介绍一下，例如您的自我介绍信息，让专家更了解您或您的问题。':'please enter'"></textarea>
         </div>
       </div>
 
       <div class="panle_block nb">
-        <div class="block_title"><span class="require_icon">*</span>问题内容</div>
+        <div class="block_title"><span class="require_icon">*</span>{{i18n.query}}</div>
         <div class="problem_content">
-          <textarea  cols="30" rows="10" v-model="questionRemark" placeholder="请输入咨询问题内容"></textarea>
+          <textarea  cols="30" rows="10" v-model="questionRemark" :placeholder="i18n.LANGTYPE == 'cn_j'?'请先写上您问题的标题，随后详细描述您问题。比如：股权转让税收, 我公司从事房地产开发，大股东将出让一部分股权，请问有什么税收吗？':'please state your questions beginning with a heading followed with details.For example, tax on equity transfer, our company shareholder is disposing his shares, we would like to learn about the tax implications.'"></textarea>
         </div>
       </div>
      
@@ -77,13 +77,17 @@
     </div>
 
     <div class="agree_bar">
-      <span class="custom_checkbox" :class="{'active':agreeRule}" @click="agreeRule = !agreeRule" style="margin-right:20px;">阅读并同意专家的使用规则</span>
+      <span class="custom_checkbox" :class="{'active':agreeRule}" @click="agreeRule = !agreeRule" style="margin-right:20px;">
+        {{i18n.LANGTYPE == 'cn_j'?'阅读并同意专家的使用规则':'I have read and agreed to the requirements of being registered as an advisor'}}
+      </span>
     </div>
 
     <div class="btn_block">
-      <button class="btn green large" form-type="submit">提交订单</button>
+      <button class="btn green large" form-type="submit">{{i18n.submit}}</button>
     </div> 
-    <div class="respond_tips">专家将在{{expertData.responseTime}}分钟内回应</div>
+    <div class="respond_tips">
+      {{i18n.LANGTYPE == 'cn_j'?'专家将在' + expertData.responseTime +  '分钟内回应':'The advisor will confirm this order in ' + expertData.responseTime +  ' minutes'}}
+      </div>
     </form>
   </div>
 </template>
@@ -138,7 +142,7 @@ export default {
      
       if(!this.agreeRule){
           wx.showToast({
-             title: '请先阅读并同意专家的使用规则',
+             title: this.i18n.LANGTYPE == 'cn_j'?'请先阅读并同意专家的使用规则':"please read and agree to the expert's rules of use first",
              icon: 'none',
              duration: 1500
           });
@@ -146,7 +150,7 @@ export default {
       };
       if(!this.questionRemark){
           wx.showToast({
-             title: '请输入问题内容',
+             title: this.i18n.LANGTYPE == 'cn_j'?'请填写咨询费用':'please enter query',
              icon: 'none',
              duration: 1500
           });
@@ -182,7 +186,7 @@ export default {
       }).then(res => {
         if(res.code == 1){
           wx.showToast({
-             title: '订单提交成功，请等待专家回应',
+             title: this.i18n.LANGTYPE == 'cn_j'?'订单提交成功，请等待专家回应':"Successful order submission, please wait for expert's response",
              icon: 'none',
              duration: 1500
           });
@@ -203,7 +207,7 @@ export default {
         success(res) {
           that.isUploadingFile = false;
           wx.showLoading({
-            title: '图片上传中',
+            title: this.i18n.uploading,
             mask: true
           })
 
@@ -511,7 +515,7 @@ export default {
 }
 
 .agree_bar{
-  padding-left: 20px;
+  padding: 0 20px;
   margin-top: 10px;
 }
 

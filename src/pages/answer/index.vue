@@ -3,9 +3,9 @@
 
     <div class="order_form_panel">
      <div class="order_base_msg">
-        <div class="order_no"><span>订单号：</span>{{orderData.orderNo}}</div>
+        <div class="order_no"><span>{{i18n.orderNo}}：</span>{{orderData.orderNo}}</div>
         <div class="order_status">
-          <span class="status">待作答</span>
+          <span class="status">{{i18n.to_be_answer}}</span>
         </div>
       </div>
   
@@ -33,7 +33,7 @@
               <span class="question_title">问题详情：</span>{{orderData.questionRemark}}
           </div>
         
-          <div class="order_time">提问时间：{{orderData.creationTime}}</div>
+          <div class="order_time">{{i18n.Asked_at}}：{{orderData.creationTime}}</div>
         </div>
 
       <div class="panle_block nb">

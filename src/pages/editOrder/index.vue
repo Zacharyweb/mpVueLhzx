@@ -2,9 +2,9 @@
   <div class="container">
     <div class="order_edit_panel show">
       <div class="order_base_msg">
-        <div class="order_no"><span>订单号：</span>{{orderNo}}</div>
+        <div class="order_no"><span>{{i18n.orderNo}}：</span>{{orderNo}}</div>
         <div class="order_status">
-          <span class="status">待接单</span>
+          <span class="status">{{i18n.to_be_confirmed}}</span>
         </div>
       </div>
   
@@ -55,7 +55,7 @@
         </div>
 
         <div class="edit_item">
-          <span class="item_name">作答时间：</span>
+          <span class="item_name">{{i18n.replied_at}}：</span>
           <span class="item_content" @click="timePickerShow = true">{{newLastAnswerTime}}</span>
           <img class="item_icon" @click="timePickerShow = true" src="../../../static/img/edit_icon.png">
         </div>

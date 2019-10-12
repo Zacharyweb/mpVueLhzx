@@ -3,15 +3,15 @@
 
     <div class="tab_fix_wrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabChange">
-          <van-tab title="咨询过的"></van-tab>
-          <van-tab title="已关注的"></van-tab>  
+          <van-tab :title="i18n.used"></van-tab>
+          <van-tab :title="i18n.followed"></van-tab>  
           <!-- <van-tab title="问候过的"></van-tab> -->
       </van-tabs>
     </div>
     <div style="height:32px;"></div>
     <div class="no_data_tips" v-show="(currentTab == 0 && list1.length == 0) || (currentTab == 1 && list2.length == 0) || (currentTab == 2 && list3.length == 0)">
       <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-      <span>还没有相关专家哦~</span>
+      <span>{{i18n.No_relevant_data}}</span>
     </div> 
 
     <div class="experts_list type2_list" v-show="currentTab == 0">
@@ -23,7 +23,7 @@
               <span class="experts_name">{{item.nickName}}</span>
             </div>
             <div class="experts_msg2">
-              <span class="experts_position">高级财务专家</span>
+              <span class="experts_position">{{item.companyPosition}}</span>
             </div>
           </div>
           <div class="action_btns">
@@ -43,7 +43,7 @@
               <span class="experts_name">{{item.nickName}}</span>
             </div>
             <div class="experts_msg2">
-              <span class="experts_position">高级财务专家</span>
+              <span class="experts_position">{{item.companyPosition}}</span>
             </div>
           </div>
           <div class="action_btns">
@@ -55,14 +55,12 @@
       </div>
     </div>
 
-   
-
     <!-- 设置专家对好友的可见性 -->
     <div class="add_view_panel" @touchmove.stop="touchmoveStop" :class="{'show':addViewPanelShow}">
       <div class="panel_top">
-        <span class="cancel_btn" @click="addViewPanelShow = false">取消</span>
-        <span class="title">设置对谁可见</span>
-        <span class="submit_btn">提交</span>
+        <span class="cancel_btn" @click="addViewPanelShow = false">{{i18n.cancel}}</span>
+        <span class="title">{{i18n.Who_can_see}}</span>
+        <span class="submit_btn">{{i18n.done}}</span>
       </div>
       <!-- <scroll-view scroll-y :scroll-top="sTop" class="select_list" v-show="!showSelectedPanel">
         <div class="friend_avatar_list"  id='chat-ref'>
@@ -183,6 +181,7 @@ export default {
        
       })
     },
+    
     toExpertDetail(item){
       this.$router.push({path:'/pages/expertDetail/index',query:{id:item.expertId}});
     }

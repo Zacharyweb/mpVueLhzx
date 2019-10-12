@@ -2,14 +2,14 @@
   <div class="container hpb" :class="{'isX': isX}">
     <div class="tab_fix_wrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabChange">
-          <van-tab title="已添加的"></van-tab>
-          <van-tab title="未添加的"></van-tab>
+          <van-tab :title="i18n.added"></van-tab>
+          <van-tab :title="i18n.yet_to_add"></van-tab>
       </van-tabs>
     </div>
     <div style="height:32px;"></div>
     <div class="no_data_tips" v-show="(currentTab == 0 && friendsList.length == 0) || (currentTab == 1 && newFriendsList.length == 0) ">
       <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-      <span>还没有相关的关系户哦~</span>
+      <span>{{i18n.No_relevant_data}}</span>
     </div> 
     <div class="experts_list type3_list" v-show="currentTab == 0">
       <div class="experts_item" style="padding-bottom:0px;" v-for="(item,index) in friendsList" :key="index">
@@ -21,15 +21,15 @@
             </div>
             <div class="experts_msg2">
               <div class="share_expert_btn" @click="extendExperts(index)" v-if="item.shareUserList && item.shareUserList.length > 0">
-                <span>TA分享的专家</span>
+                <span>{{i18n.LANGTYPE == 'cn_j'?'TA分享的专家':'shared advisor'}}</span>
                 <img src="../../../static/img/extend_icon.png" :class="{'extend': item.extend}">
               </div>
               <div class="share_expert_btn" v-else>
-                <span>TA还没有分享专家哦</span>
+                <span>{{i18n.LANGTYPE == 'cn_j'?'TA还没有分享专家哦':'not have shared advisor'}}</span>
               </div>
             </div>
           </div>
-          <span class="action_btn1" @click="deleteFriend(item,index)">删除好友</span>
+          <span class="action_btn1" @click="deleteFriend(item,index)">{{i18n.delete_friend}}</span>
         </div>
 
         <div class="share_experts"  v-show="item.extend">
@@ -40,7 +40,7 @@
                 <!-- <span>(财务)</span> -->
               </div>
             </div>
-            <span class="right" @click="toExpertDetail(e.shareUserId)">查看详情</span>
+            <span class="right" @click="toExpertDetail(e.shareUserId)">{{i18n.view_details}}</span>
           </div>
          
         </div>
@@ -58,12 +58,12 @@
             </div>
             <div class="experts_msg2">
               <div class="share_expert_btn">
-                <span>申请添加您为关系户</span>
+                <span>{{i18n.LANGTYPE == 'cn_j'?'申请添加您为关系户':'wants to add you'}}</span>
               </div>
             </div>
           </div>
-          <span class="action_btn" @click="sureAddFriend(item,index)" v-if="item.isAgree == 0">同意添加</span>
-          <span class="action_btn2" v-if="item.isAgree == 1">已添加</span>
+          <span class="action_btn" @click="sureAddFriend(item,index)" v-if="item.isAgree == 0">{{i18n.LANGTYPE == 'cn_j'?'同意添加':'Accept'}}</span>
+          <span class="action_btn2" v-if="item.isAgree == 1">{{i18n.LANGTYPE == 'cn_j'?'已添加':'Added'}}</span>
 
         </div>
 
@@ -71,7 +71,7 @@
     </div>
 
     <div class="bottom_fixed" :class="{'isX':isX}">
-       <button open-type="share" class="action_btn1">添加关系户</button>
+       <button open-type="share" class="action_btn1">{{i18n.Add_new_friend}}</button>
     </div>
     <van-dialog id="van-dialog"/>
 
@@ -101,7 +101,7 @@ export default {
   },
   onShareAppMessage(obj){
       return {
-        title:'您的好友邀请您加入咨询堂',
+        title: this.i18n.LANGTYPE == 'cn_j'?'您的好友邀请您加入咨询堂':'Your friends invite you to join the Advisory',
         path:'/pages/login/index?userId=' + this.userData.userId + '&fromType=3',
         // imageUrl:'/static/img/share_test_img.png'
       }
@@ -123,8 +123,8 @@ export default {
     deleteFriend(item,index){
       var that = this;
       Dialog.confirm({
-        title: '确认解除关系？',
-        message: '解除关系后，您将从对方的关系户中删除'
+        title: this.i18n.LANGTYPE == 'cn_j'?'确认解除关系？':'Confirm delete',
+        message: this.i18n.LANGTYPE == 'cn_j'?'解除关系后，您将从对方的关系户中删除':"You will be deleted from each other's friends"
       }).then(() => {
         this.$http.request({
           url:'DeleteUserFriend',
@@ -207,7 +207,7 @@ export default {
         }
       }).then(res => {
         if(res.code == 1){
-          this.showToast('添加成功');
+          this.showToast(this.i18n.LANGTYPE == 'cn_j'?'添加成功':'added successfully');
           this.newFriendsList[index].isAgree = 1;
         }
       })

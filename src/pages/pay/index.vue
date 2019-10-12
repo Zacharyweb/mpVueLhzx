@@ -2,11 +2,11 @@
   <div class="container">
 
     <div class="top_tips">
-      <img src="../../../static/img/notice_icon.png">请在24小时内完成支付，逾期专家可打您电话查询。
+      <img src="../../../static/img/notice_icon.png">{{i18n.LANGTYPE == 'cn_j'?'请在24小时内完成支付，逾期专家可打您电话查询。':'please make payment in 24 hours following the reply.If not,the advisor may call to inquire'}}
     </div>
 
     <div class="order_form_panel">
-      <div class="panle_block nb">
+      <!-- <div class="panle_block nb">
         <div class="block_title">结算信息</div>
         <div class="pay_detail">
           <div class="tips1">专家已为您完成作答，订单结算如下：</div>
@@ -24,12 +24,18 @@
               <span class="item_content">{{amount}}元</span>
             </li>
           </ul>
-          <div class="tips2">咨询费将由用户通过二维码直接支付给专家。</div>
+          <div class="tips2">{{i18n.LANGTYPE == 'cn_j'?'咨询费将由用户通过二维码直接支付给专家。':'Fee shall be paid to advisor directly via his/her WeChat QR Code'}}</div>
+        </div>
+      </div> -->
+
+      <div class="panle_block nb">
+        <div class="pay_detail">
+          <div class="tips1">{{i18n.LANGTYPE == 'cn_j'?'咨询费将由用户通过二维码直接支付给专家。':'Fee shall be paid to advisor directly via his/her WeChat QR Code'}}</div>
         </div>
       </div>
     
       <div class="panle_block npb">
-        <div class="block_title">支付操作如下</div>
+        <div class="block_title">{{i18n.LANGTYPE == 'cn_j'?'支付操作如下':'Steps'}}</div>
         <!-- <div class="problem_content">
           <div class="files_group">
             <span class="title">转账截图</span>
@@ -41,9 +47,9 @@
 
           </div>
         </div> -->
-        <div class="pay_step">
-          <div class="step_text">1、点击下面“获取付款二维码”按钮</div>
-          <div class="step_sub_tetx">二维码将通过平台的公众号发送给您</div>
+        <div class="pay_step" v-if="i18n.LANGTYPE == 'cn_j'">
+          <div class="step_text">1、点击下面“发送二维码”按钮</div>
+          <div class="step_sub_tetx">二维码将通过平台的公众号将专家的收款二维码发送给您</div>
           
 
           <div class="step_text">2、从公众号消息打开二维码</div>
@@ -55,6 +61,21 @@
           <div class="step_text">4、支付</div>
           <div class="step_sub_tetx">请在作答后24小时内支付，逾时的专家可打您电话查询</div>
         </div>
+
+        <div class="pay_step" v-else>
+          <div class="step_text">1.Click below to send QR Code</div>
+          <div class="step_sub_tetx">QR Code will be sent to you via our Official Account</div>
+          
+
+          <div class="step_text">2.Tab on the QR Code from our Official Account</div>
+          <div class="step_sub_tetx">It contains the advisor's username and the fee amount</div>
+
+          <div class="step_text">3.Tab (long) on the QR Code to recognize”</div>
+          <div class="step_sub_tetx"> </div>
+
+          <div class="step_text">4.Pay</div>
+          <div class="step_sub_tetx">please pay in 24 hours following the reply.  If not, the advisor may call to inquire.</div>
+        </div>
         <div class="pay_step_imgs">
           <img src="../../../static/img/pay_step1.jpg" alt="">
           <img src="../../../static/img/pay_step2.jpg" alt="">
@@ -64,7 +85,7 @@
     </div>
 
     <div class="btn_block">
-      <div class="btn green large" @click="postPayMsg">获取付款二维码</div>
+      <div class="btn green large" @click="postPayMsg">{{i18n.send_QR_Code}}</div>
     </div>
   </div>
 </template>

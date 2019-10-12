@@ -54,7 +54,7 @@
     <div class="order_detail">
       <div class="order_detail_title">订单信息</div>
       <div class="order_msg_line">
-        <span class="text_l">订单编号：</span>
+        <span class="text_l">{{i18n.orderNo}}：</span>
         <span class="text_r">no1234567890</span>
         <span class="copy_btn">复制</span>
       </div>

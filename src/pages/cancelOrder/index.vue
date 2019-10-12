@@ -2,9 +2,9 @@
   <div class="container">
     <div class="order_reject_panel show">
       <div class="order_base_msg">
-        <div class="order_no"><span>订单号：</span>{{orderData.orderNo}}</div>
+        <div class="order_no"><span>{{i18n.orderNo}}：</span>{{orderData.orderNo}}</div>
         <div class="order_status">
-          <span class="status">待接单</span>
+          <span class="status">{{i18n.to_be_confirmed}}</span>
         </div>
       </div>
   

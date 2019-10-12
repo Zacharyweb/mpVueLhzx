@@ -1,16 +1,16 @@
 <template>
  <div class="order_item"  @click="toOrderDetail(orderData.id,'e',orderData.status)">
   <div class="order_msg0">
-      <span class="order_no">订单编号：{{orderData.orderNo}}</span>
+      <span class="order_no">{{i18n.orderNo}}：{{orderData.orderNo}}</span>
       <div class="order_status">
-        <span class="status_text" v-if="orderData.status == 0">待接单</span>
-        <span class="status_text" v-if="orderData.status == 1">待重新确认</span>
-        <span class="status_text" v-if="orderData.status == 2">待作答</span>   
-        <span class="status_text" v-if="orderData.status == 4">已作答/待支付</span>  
-        <span class="status_text" v-if="orderData.status == 6">待确认收款</span>
-        <span class="status_text grey" v-if="orderData.status == 7">已完成</span> 
-        <span class="status_text red" v-if="orderData.status == 8">待协商</span>   
-        <span class="status_text grey" v-if="orderData.status == 9">已关闭</span> 
+        <span class="status_text" v-if="orderData.status == 0">{{i18n.to_be_confirmed}}</span>
+        <span class="status_text" v-if="orderData.status == 1">{{i18n.to_be_reconfirmed}}</span>
+        <span class="status_text" v-if="orderData.status == 2">{{i18n.to_be_answer}}</span>   
+        <span class="status_text" v-if="orderData.status == 4">{{i18n.to_be_paid}}</span>  
+        <span class="status_text" v-if="orderData.status == 6">{{i18n.to_be_receipt}}</span>
+        <span class="status_text grey" v-if="orderData.status == 7">{{i18n.completed}}</span> 
+        <span class="status_text red" v-if="orderData.status == 8">{{i18n.to_be_resolved}}</span>   
+        <span class="status_text grey" v-if="orderData.status == 9">{{i18n.closed}}</span> 
       </div>
     </div>
     
@@ -29,37 +29,43 @@
 
     <div class="bottom_block">
       <div class="question text_ellipsis">
-          <span class="question_title">问题：</span>{{orderData.questionRemark}}
+          <span class="question_title">{{i18n.query}}：</span>{{orderData.questionRemark}}
       </div>
-      <div class="order_time" v-if="orderData.status == 0 || orderData.status == 1">提问时间：{{orderData.creationTime}}</div>
-      <div class="order_time" v-if="orderData.status == 2">接单时间：{{orderData.actualReceiptTime}}</div>
-      <div class="order_time" v-if="orderData.status == 4 || orderData.status == 8">作答时间：{{orderData.actualAnswerTime}}</div>
-      <div class="order_time" v-if="orderData.status == 6">专家收款二维码发送时间：{{orderData.Confirm1Datetime}}</div>
-      <div class="order_time" v-if="orderData.status == 7">到账时间：{{orderData.Confirm3Datetime}}</div>
-      <div class="order_time" v-if="orderData.status == 9">关闭时间：{{orderData.closerTime}}</div>
+      <div class="order_time" v-if="orderData.status == 0 || orderData.status == 1">{{i18n.Asked_at}}：{{orderData.creationTime}}</div>
+      <div class="order_time" v-if="orderData.status == 2">{{i18n.accepted_at}}：{{orderData.actualReceiptTime}}</div>
+      <div class="order_time" v-if="orderData.status == 4 || orderData.status == 8">{{i18n.replied_at}}：{{orderData.actualAnswerTime}}</div>
+      <div class="order_time" v-if="orderData.status == 6">{{i18n.QR_Code_sent_at}}：{{orderData.Confirm1Datetime}}</div>
+      <div class="order_time" v-if="orderData.status == 7">{{i18n.paid_at}}：{{orderData.Confirm3Datetime}}</div>
+      <div class="order_time" v-if="orderData.status == 9">{{i18n.Close_at}}：{{orderData.closerTime}}</div>
     </div>
 
     <div class="other_msg_block" v-if="orderData.status == 0">
-      <span class="other_msg">请在<span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span>分钟内接单</span>
-      <span class="action_btn">看订单</span>
+      <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">请在<span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span>分钟内接单</span>
+      <span class="other_msg" v-else>please respond in <span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span> minutes</span>
+      <span class="action_btn">{{i18n.Details}}</span>
     </div>
     
-    <div class="other_msg_block" v-if="orderData.status == 2">
-      <span class="other_msg">请在{{orderData.answeringTime/60}}小时内作答</span>
-      <span class="action_btn">马上作答</span>
-    </div>
     <div class="other_msg_block" v-if="orderData.status == 6">
       <span class="other_msg">{{orderData.remark}}</span>
-      <span class="action_btn">前往确认</span>
+      <span class="action_btn">{{i18n.To_confirm}}</span>
     </div>
+
+       
+    <div class="other_msg_block" v-if="orderData.status == 2">
+      <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">请在{{orderData.answeringTime/60}}小时内作答</span>
+      <span class="other_msg" v-else>please answer in {{orderData.answeringTime/60}} hours</span>
+      <span class="action_btn">{{i18n.Answer}}</span>
+    </div>
+
+
     <div class="other_msg_block" v-if="orderData.status == 8">
       <span class="other_msg">{{orderData.remark}}</span>
     </div>
     <div class="other_msg_block" v-if="orderData.status == 9">
 
-      <span class="other_msg" v-if="orderData.closeType==0" >系统关闭{{orderData.remark?','+orderData.remark:""}}</span>
-      <span class="other_msg" v-if="orderData.closeType==1" >用户关闭{{orderData.remark?','+orderData.remark:""}}</span>
-      <span class="other_msg" v-if="orderData.closeType==2" >专家关闭{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==0" >{{i18n.LANGTYPE == 'cn_j'?'系统关闭':'closed by system'}}{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==1" >{{i18n.LANGTYPE == 'cn_j'?'用户关闭':'closed by user'}}{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==2" >{{i18n.LANGTYPE == 'cn_j'?'专家关闭':'closed by advisor'}}{{orderData.remark?','+orderData.remark:""}}</span>
       
     </div>
   </div>
@@ -151,7 +157,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .other_msg_text{
-  font-size: 0.5rem;
+  font-size: 14px;
   color: red;
 }
 </style>

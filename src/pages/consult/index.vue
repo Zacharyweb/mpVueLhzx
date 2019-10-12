@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="custom_tabs" v-if="userData && userData.isExpert == 1">
-      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">我的咨询</div>
-      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">客户咨询</div>
+      <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">{{i18n.My_Query}}</div>
+      <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">{{i18n.Client_Query}}</div>
       <span class="active_bar active25" :class="{'active75':currentTab == 1}"></span>
     </div>
     <div style="height:45px;"  v-if="userData && userData.isExpert == 1"></div>
@@ -11,7 +11,7 @@
       <my-order v-for="(item,index) in myOrders" :key="index" :order-data="item"></my-order>
       <div class="no_data_tips" v-if="myOrders.length == 0 && !isLoading">
         <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-        <span>还没有相关订单哦~</span>
+        <span>{{i18n.No_relevant_data}}</span>
       </div>   
     </div>
 
@@ -21,7 +21,7 @@
 
       <div class="no_data_tips" v-if="customerOrders.length == 0 && !isLoading">
         <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-        <span>还没有相关订单哦~</span>
+        <span>{{i18n.No_relevant_data}}</span>
       </div>   
 
     </div>

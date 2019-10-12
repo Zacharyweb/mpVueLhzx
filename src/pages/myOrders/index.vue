@@ -11,7 +11,7 @@
               <span class="consult_msg">高级财务专家</span>
             </div>
             <div class="order_msg2">
-              <span class="order_status">待接单</span>
+              <span class="order_status">{{i18n.to_be_confirmed}}</span>
               <span class="consult_price">￥66/节</span>
             </div>
           </div>
@@ -31,7 +31,7 @@
               <span class="consult_msg">高级财务专家</span>
             </div>
             <div class="order_msg2">
-              <span class="order_status">待接单</span>
+              <span class="order_status">{{i18n.to_be_confirmed}}</span>
               <span class="consult_price">￥66/节</span>
             </div>
           </div>
