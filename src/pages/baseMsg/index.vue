@@ -3,38 +3,35 @@
     <div class="user_avatar_panel">
         <img class="user_avatar" v-if="avatarUrl" :src="avatarUrl">
         <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg">
-        <span class="change_avatar_btn" @click="upLoadAvatar">更换头像</span>
+        <span class="change_avatar_btn" @click="upLoadAvatar">{{i18n.change_head_shot}}</span>
     </div>
     <div class="base_msg_panel">
 
       <ul class="form_list">
         <li class="form_item">
-          <div class="item_name">昵称</div>
+          <div class="item_name">{{i18n.user_name}}</div>
           <div class="item_content">
-            <input type="text" placeholder="请输入昵称，用于平台展示" v-model="nickName">
+            <input type="text" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入昵称，用于平台展示':'please enter'" v-model="nickName">
           </div>
         </li>
         <li class="form_item textarea_item">
-          <div class="item_name">自我介绍</div>
+          <div class="item_name">{{i18n.Introduction}}</div>
           <div class="item_content">
-            <textarea class="more_height" placeholder="请输入自我介绍信息"  maxlength='-1' v-model="aboutUserDesc"></textarea>
+            <textarea class="more_height" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入自我介绍信息':'please enter'"  maxlength='-1' v-model="aboutUserDesc"></textarea>
           </div>
         </li>
       </ul>
   
       <div class="btn_block">
-        <div class="btn large green" @click="updateUserBaseInfo">确认修改</div>
+        <div class="btn large green" @click="updateUserBaseInfo">{{i18n.Confirm}}</div>
       </div>
       <div class="btn_block2">
-        <div class="btn large green plain" @click="linkTo('/pages/becomeExpert/index')">专家进入登记</div>
+        <div class="btn large green plain" @click="linkTo('/pages/becomeExpert/index')">{{i18n.Advisor_registration}}</div>
       </div>
-
     </div>
-    
     <!-- <div class="change_mobile">
       <span @click="chageMobile">更换手机号</span>
     </div> -->
-
   </div>
 </template>
 <script>
@@ -69,7 +66,7 @@ export default {
         count: 1,
         success(res) {
           wx.showLoading({
-            title: '图片上传中',
+            title: this.i18n.uploading,
             mask: true
           })
           let tempFilePaths = res.tempFilePaths;
@@ -95,7 +92,7 @@ export default {
               if(data[0].uploadCode == 1){
                 that.avatarUrl = data[0].data.originalurl;
               }else{
-                this.showToast('图片上传失败');
+                this.showToast(this.i18n.upload_failed);
               }
             }
             wx.hideLoading();
@@ -140,7 +137,7 @@ export default {
             aboutUserDesc: this.aboutUserDesc
           });
           wx.showToast({
-            title: '提交成功',
+            title: this.i18n.submitted_successfully,
             icon: 'none',
             duration: 1500
           })

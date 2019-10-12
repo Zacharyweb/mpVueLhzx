@@ -75,16 +75,21 @@ export default {
       'clients':'我的客户',
       'settings':'设置',
       'user_guide':'使用说明',
+
       'change_head_shot':'更换头像',
       'user_name':'昵称',
 
+      'upload_failed':'上传失败',
+      'submitted_successfully':'提交成功',
+      'uploading':'上传中',
       'Introduction':'自我介绍',
       'Confirm':'确认修改',
       'Advisor_registration':'专家进入登记',
+
       'advisor_registration':'成为专家',
       'general':'基础信息',
       'Professional':'专业信息',
-      'settings':'咨询设置',
+      'advisory_settings':'咨询设置',
       'Real_Name':'真实姓名',
       'ID_Type':'证件类型',
       'Identity_Card':'身份证',
@@ -92,9 +97,11 @@ export default {
       'Permit':'通行证',
       'ID_number':'证件号码',
       'alias':'昵称',
-      'Mobile_no.':'手机号',
+      'Mobile_no':'手机号',
       'Email':'电子邮件',
       'Language':'语言',
+      'multiSelect':'多选',
+      'singleSelect':'单选',
       'Chinese':'中文',
       'English':'英语',
       'Location':'所在地区',
@@ -102,6 +109,7 @@ export default {
       'position':'职务',
       'About_your_work':'工作介绍',
       'Next':'下一步',
+      'Prev':'上一步',
       'Years_of_experience':'工作年限',
       'Profession':'专业',
       'Industry':'行业',
@@ -109,7 +117,19 @@ export default {
       'In_one_line':'一句话',
       'policy_commentary':'政策解读',
       'external_links':'外部链接',
+      'as_works_link':'作品链接等',
+      'link_name':'链接名称',
+      'link_url':'链接地址',
+      'consultation_overview':'咨询概述',
+      'response_time':'接单时间',
+      'consultancy_fees':'咨询费用',
+      'answer_time':'作答时间',
       'upload_photos':'上传照片',
+      'wechat_receipt_QR_Code':'微信收款码',
+      'QR_Code':'二维码',
+      'Acknowledge':'郑重声明',
+
+
       'added':'已添加的',
       'yet_to_add':'未添加的',
       'Add_new_friend':'添加关系户',
@@ -226,7 +246,7 @@ export default {
       '':'This Order will be closed in 48 hours after the reply',
       'To_resolve':'去协商',
       '':"To obtain user's number and call to resolve his/her concerns?",
-      'Mobile_no.':'手机号',
+      'Mobile_no':'手机号',
       'Payment':'支付',
       'Steps':'步骤',
       '':'Fee shall be paid to advisor directly via his/her WeChat QR Code',
@@ -334,13 +354,17 @@ export default {
         'change_head_shot':'change head shot',
         'user_name':'user name',
 
+        'upload_failed':'upload failed',
+        'submitted_successfully':'completed',
+        'uploading':'uploading',
+
         'Introduction':'Introduction',
         'Confirm':'Confirm',
         'Advisor_registration':'Advisor registration',
         'advisor_registration':'advisor registration',
         'general':'general',
         'Professional':'Professional',
-        'settings':'settings',
+        'advisory_settings':'settings',
         'Real_Name':'Real Name',
         'ID_Type':'ID Type',
         'Identity_Card':'Identity Card',
@@ -348,9 +372,11 @@ export default {
         'Permit':'Permit',
         'ID_number':'ID number',
         'alias':'alias',
-        'Mobile_no.':'Mobile no.',
+        'Mobile_no':'Mobile no.',
         'Email':'Email',
         'Language':'Language',
+        'multiSelect':'multiSelect',
+        'singleSelect':'singleSelect',
         'Chinese':'Chinese',
         'English':'English',
         'Location':'Location',
@@ -358,6 +384,7 @@ export default {
         'position':'position',
         'About_your_work':'About your work',
         'Next':'Next',
+        'Prev':'Prev',
         'Years_of_experience':'Years of experience',
         'Profession':'Profession',
         'Industry':'Industry',
@@ -365,7 +392,18 @@ export default {
         'In_one_line':'In one line',
         'policy_commentary':'policy commentary',
         'external_links':'external links',
+        'as_works_link':'such as works_link',
+        'link_name':'link_name',
+        'link_url':'link_url',
+        'consultation_overview':'Introduction',
+        'response_time':'response time',
+        'consultancy_fees':'consultancy fees',
+        'answer_time':'answer time',
         'upload_photos':'upload photos',
+        'wechat_receipt_QR_Code':'wechat receipt QR Code',
+        'QR_Code':'QR Code',
+        'Acknowledge':'Acknowledge',
+
         'added':'added',
         'yet_to_add':'yet to add',
         'Add_new_friend':'Add new friend',
@@ -482,7 +520,7 @@ export default {
         '':'This Order will be closed in 48 hours after the reply',
         'To_resolve':'To resolve',
         '':"To obtain user's number and call to resolve his/her concerns?",
-        'Mobile_no.':'Mobile no.',
+        'Mobile_no':'Mobile no.',
         'Payment':'Payment',
         'Steps':'Steps',
         '':'Fee shall be paid to advisor directly via his/her WeChat QR Code',
@@ -513,46 +551,4 @@ export default {
         'Discussion':'Discussion',
         'plwase fill in the outcome of the discussion with the client':'请输入协商结果',
       }, 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    'cn_f' : {
-      'LANGTYPE':'cn_f',
-      'languageName':'語言',
-      'language': '繁體中文',
-      'login': '登錄',
-      'logout': '登出',
-      'authorization' : '授權',
-      'pay' : '支付',
-      'changeLanguage': '切換語言',
-      'search' : '搜索',
-      'investment' : '投資金額',
-      'invest_industry': '投資行業',
-      'invest_stage': '投資階段',
-      'address': '地址',
-      'createdate': '成立時間',
-      'clubregisternum': '協會人數',
-      'classification': '分類',
-      'area' : '區域',
-      'essential_information': '基本信息',
-      'association_name': '社團名稱',
-      'association_address': '社團地址',
-      'contacts': '聯 繫 人',
-      'phone': '聯繫電話',
-    },
-
   }
