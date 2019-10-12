@@ -208,7 +208,7 @@ export default {
             closeDesc: closeDesc,
             closerId: this.userData.userId,
             orderId:this.orderId*1,
-            otherExpertId:this.otherExpertId?this.otherExpertId:''
+            otherExpertId:this.otherExpertId?this.otherExpertId:0
           },
           flyConfig:{
             method: 'post'
