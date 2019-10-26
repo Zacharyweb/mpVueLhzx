@@ -7,88 +7,84 @@
         <div class="top_block_right">
           <div class="experts_msg1">
             <div class="experts_name">{{expertData.nickName}}
-              <span class="status" v-if="expertData.workStatus == 1">{{i18n.Open}}</span>
-              <span class="status grey" v-else>{{i18n.Closed}}</span>
+                <button open-type="share" class="icon_btn btn_reset">
+                  <img src="../../../static/img/share_icon.png">
+                </button>
             </div>
-            <!-- <span class="consult_msg">{{expertData.followCount}}人已关注</span> -->
           </div>
+
           <div class="experts_msg2">
-            <!-- <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span> -->
             <span class="respond_time text_ellipsis">{{expertData.companyPosition}}（{{expertData.companyName}}）</span>
-            <!-- <span class="order_num">{{expertData.consultedCount}}人已咨询</span> -->
           </div>
+
           <div class="experts_msg3">
             <div class="experts_location">
               <img src="../../../static/img/location_icon.png">{{expertData.address}}
             </div>
-            <span class="devide_line"></span>
-            <div class="experts_experience">
-              <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}{{i18n.experience}}
-            </div>
           </div>
         </div>
       </div>
-      <div class="chat_block" @click="toChatRoom">
-        <img class="chat_icon" src="../../../static/img/chat_icon.png">
-        <div class="chat_text">{{i18n.chat}}</div>
+
+      <div class="absolute_msg">
+        <div class="query_fee">每次￥{{expertData.oneOfCost}}</div>
+        <div class="work_status">
+          <span class="status" v-if="expertData.workStatus == 1">{{i18n.Open}}</span>
+          <span class="status grey" v-else>{{i18n.Closed}}</span>
+        </div>
       </div>
+
     </div>
     
     <div class="other_msg">
-        <div class="focus_block">
-          <img class="focus_icon" src="../../../static/img/collect_icon.png" v-if="!collected" @click="addUserFollow">
-          <img class="focus_icon" src="../../../static/img/collect_icon2.png" v-if="collected" @click="deleteUserFollow">
-          <span class="num_text">{{expertData.followCount}}{{i18n.followers}}</span>
-        </div>
-        <div class="orders_block">
-          <span class="num_text">{{expertData.consultedCount}}{{i18n.clients}}</span>
-        </div>
+      <span class="msg_item tl">{{responseTimeText}}</span>
+      <span class="msg_item">{{expertData.answeringTime/60}}小时内作答</span>
+      <span class="msg_item tr">已帮助{{expertData.consultedCount}}人</span>
     </div>
 
-    <div class="custom_tabs">
+    <div class="custom_tabs2">
       <div class="tab_item" :class="{'active':currentTab == 0}" @click="changeTab(0)">{{i18n.About}}</div>
       <div class="tab_item" :class="{'active':currentTab == 1}" @click="changeTab(1)">{{i18n.Shared_by_friends}}</div>
-      <span class="active_bar" :class="{'active25':currentTab == 0,'active75':currentTab == 1}"></span>
     </div>
 
     <div class="introduce_panel" v-show="currentTab == 0">
       <div class="panle_block nb">
-         <div class="base_msg">
-          <span class="msg_name">{{i18n.Sector}}</span>
+        <div class="base_msg">
+          <span class="msg_name">从业经验：</span>
+          <span class="msg_content">{{expertData.majorYearsDesc}}</span>
+        </div>
+        <div class="base_msg">
+          <span class="msg_name">擅长行业：</span>
           <span class="msg_content">{{expertData.businessArea}}</span>
         </div>
         <div class="base_msg">
-          <span class="msg_name">{{i18n.Speciality}}</span>
+          <span class="msg_name">业务科室：</span>
           <span class="msg_content">{{expertData.goodAtBusiness}}</span>
         </div>
-      </div>
-
-      <div class="panle_block">
-        <div class="block_title">{{i18n.Experience}}</div>
-        <div class="block_content">{{expertData.lifeAndFeelDesc}}</div>
-      </div>
-
-      <div class="panle_block">
-        <div class="block_title">{{i18n.Point_of_view}}</div>
-        <div class="block_content">{{expertData.policyInterpretation}}</div>
-      </div>
-
-
-      <div class="panle_block" v-if="expertData.outLink.length > 0">
-        <div class="block_title">{{i18n.Link}}</div>
-        <div class="base_msg no_name" v-for="(item,index) in expertData.outLink" :key="index" @click="copyText(item.link)">
-           <span class="msg_name"></span>
-           <span class="msg_content">{{item.name}}</span>
+        <div class="base_msg">
+          <span class="msg_name">工作介绍：</span>
+          <span class="msg_content">{{expertData.lifeAndFeelDesc}}</span>
         </div>
-      </div>
+        <div class="base_msg">
+          <span class="msg_name">政策解读：</span>
+          <span class="msg_content">{{expertData.policyInterpretation}}</span>
+        </div>
 
-      <div class="panle_block" v-if="expertData.photosList.length > 0">
-        <div class="block_title">{{i18n.Photos}}</div>
-        <div class="block_content">
-          <img class="intro_img"  v-for="(item,index) in expertData.photosList" :src="item" :key="index" @click="showImgSwiper(index)">
+        <div class="base_msg">
+          <span class="msg_name">文章链接：</span>
+          <div class="msg_content link_name">
+             <span v-for="(item,index) in expertData.outLink" :key="index" @click="copyText(item.link)">{{index > 0 ?'、'+ item.name:item.name}}</span>
+          </div>
+        </div>
+
+        <div class="base_msg">
+          <span class="msg_name">相关照片：</span>
+          <span class="msg_content img_list">
+             <img class="intro_img"  v-for="(item,index) in expertData.photosList" :src="item" :key="index" @click="showImgSwiper(index)">
+          </span>
         </div>
       </div>
     </div>
+
     <div class="comment_panel" v-show="currentTab == 1">
 
       <div class="friends_block" v-if="followUserList.length > 0">
@@ -123,21 +119,20 @@
 
     </div>
 
-    <!-- <div class="to_chat_btn" @click="toChatRoom" :class="{'m_top':isX}">
-        <img class="bounceIn" src="../../../static/img/chat_circle_icon.png">
-    </div> -->
-
     <div class="bottom_fixed" :class="{'isX':isX}">
-      <div class="icon_btns">
-        <button open-type="share" class="icon_btn btn_reset">
-          <img src="../../../static/img/share_icon.png">
-          <span>{{i18n.Share}}</span>
-        </button>
+      <div class="follow_btn flex_btn">
+          <img class="focus_icon" src="../../../static/img/collect_icon.png" v-if="!collected" @click="addUserFollow">
+          <img class="focus_icon" src="../../../static/img/collect_icon2.png" v-if="collected" @click="deleteUserFollow">
+          <span class="num_text">{{expertData.followCount}}{{i18n.followers}}</span>
       </div>
-      
-      <span class="respond_time_tips">{{responseTimeText}}</span>
-      <span class="action_btn2" @click="toContact" v-if="expertData.workStatus == 1">{{i18n.Ask}}&nbsp;￥{{expertData.oneOfCost}}/{{i18n.query}}</span>
-      <span class="action_btn3" v-else>{{i18n.Closed}}&nbsp;￥{{expertData.oneOfCost}}/{{i18n.query}}</span>
+      <div class="chat_btn flex_btn" @click="toChatRoom">
+          <img class="chat_icon" src="../../../static/img/chat_icon.png">
+          <div class="chat_text">{{i18n.chat}}</div>
+      </div>
+      <div class="query_btn flex_btn" :class="{'disabled': expertData.workStatus != 1}">
+        <span @click="toContact" v-if="expertData.workStatus == 1">{{i18n.Ask}}</span>
+        <span v-else>{{i18n.Closed}}</span>
+      </div>
 
     </div>
 
@@ -196,6 +191,25 @@ export default {
       imgSwiperShow: false,
       swiperCurrent:2,
       expertData:null,
+      // expertData:{
+      //   avatarUrl:'',
+      //   nickName:'朱两边',
+      //   workStatus:1,
+      //   companyPosition:'工程师',
+      //   companyName:'阿拉丁',
+      //   address:'杭州',
+      //   majorYearsDesc:'10-15年',
+      //   followCount:'10',
+      //   consultedCount:'20',
+      //   businessArea:'国内挂科',
+        
+      //   goodAtBusiness:'内科',
+      //   responseTime:'5',
+      //   lifeAndFeelDesc:'三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是',
+      //   outLink:[{name:'作品1',link:'www.baidu.com'},{name:'作品2',link:'www.baidu.com'},{name:'作品333333',link:'www.baidu.com'},],
+      //   photosList:['https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=320178652,790985626&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=320178652,790985626&fm=26&gp=0.jpg',],
+      //   policyInterpretation:'萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达',
+      // },
       expertId:'',
       commentData:[],
       followUserList:[]
@@ -215,7 +229,7 @@ export default {
           return this.expertData.responseTime + '分钟内回应'
         }
       }
-      return ''
+      return '';
     },
     
   },
@@ -229,7 +243,6 @@ export default {
 
   },
   onShareAppMessage(obj){
- 
       return {
         title:'您的好友' + this.userData.nickName + '向你推荐一位咨询堂专家',
         path:'/pages/login/index?userId=' + this.userData.userId + '&expertId=' + this.expertId + '&fromType=1',
@@ -248,7 +261,7 @@ export default {
     changeTab(num){
       if(this.currentTab == num){
         return;
-      }
+      };
       this.currentTab = num;
     },
     toContact(){
@@ -440,27 +453,31 @@ export default {
 .experts_item{
   margin-bottom: 0;
   position: relative;
-  .chat_block{
+  .absolute_msg{
     position: absolute;
-    right: 0;
-    top: 6px;
-    width: 60px;
-    height: 60px;
+    right: 20px;
+    top: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    .chat_icon{
-      width: 30px;
-      height: 30px;
+    align-items: flex-end;
+    .query_fee{
+      font-size: 16px;
+      color: #1fb7b6;
     }
-    .chat_text{
-      font-size: 12px;
-      color: #999;
-      text-align: center;
+    .work_status{
       margin-top: 5px;
-    
+      .status{
+          font-size: 12px;
+          color: #1fb7b6;
+          padding: 1px 3px;
+          border:1px solid #1fb7b6;
+          border-radius: 3px;
+          white-space: nowrap;
+        &.gery{
+          color: #999;
+          border-color: #999;
+        }
+      }
     }
   }
 }
@@ -470,34 +487,17 @@ export default {
     height: 32px;
     align-items: center;
     background-color: #f3fbfb;
-    .focus_block{
-      flex: 1;
-      height: 32px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .focus_icon{
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
-     
+    padding:0 15px;
+    .msg_item{
+      width: 33%;
+      text-align: center;
+      font-size: 13px;
+      color: #1fb7b6;
+      &.tl{
+        text-align: left;
       }
-      .num_text{
-        font-size: 14px;
-        // color: #666;
-        color: #1fb7b6;
-      }
-    }
-    .orders_block{
-      flex: 1;
-      height: 32px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .num_text{
-         font-size: 14px;
-        //  color: #666;
-         color: #1fb7b6;
+      &.tr{
+        text-align: right;
       }
     }
   }
@@ -507,7 +507,7 @@ export default {
     background-color: #fff;
     font-size: 14px;
   .panle_block{
-    padding:20px 15px;
+    padding:20px 5px;
     border-top: 1px solid #e6e8eb;
   }
   .panle_block.nb{
@@ -522,53 +522,37 @@ export default {
   .base_msg{
     font-size: 13px;
     min-height: 20px;
-    color: #777;
+    color: #333;
     display: flex;
     &+.base_msg{
       margin-top: 8px;
     }
-   
     .msg_name{
-       position: relative;
-       padding-left: 12px;
-       width: 64px;
-    }
-    &.no_name{
-      .msg_name{
-        width: 0px;
-      }
-      .msg_content{
-        margin-left: 5px;
-      }
-    }
-    .msg_name::before{
-      content:'';
-      width: 6px;
-      height: 6px;
-      border-radius: 3px;
-      background-color: #999;
-      position: absolute;
-      left: 0;
-      top:6px;
+      position: relative;
+      width: 72px;
     }
     .msg_content{
       flex: 1;
-      margin-left: 10px;
+      white-space: wrap;
+      margin-left: 5px;
       color: #333;
+      line-height: 1.5;
+      &.link_name{
+        color: #1fb7b6;
+      }
+      &.img_list{
+        display: flex;
+        flex-wrap: wrap;
+        .intro_img{
+          width: 50px;
+          height: 50px;
+          margin-right: 5px;
+          margin-top: 5px;
+        }
+      }
     }
   }
-  .block_content{
-     font-size: 13px;
-     color: #777;
-     .intro_img{
-       width: 50px;
-       height: 50px;
-       margin-left: 5px;
-     }
-  }
 }
-
-
 
 .comment_panel{
   background-color: #fff;
@@ -610,9 +594,7 @@ export default {
         font-size: 12px;
         color: #666;
       }
-
     }
-
   }
 
   .comment_item{
@@ -679,37 +661,54 @@ export default {
           border-radius: 10px;
         }
       }
-     
     }
   }
 }
+
 .bottom_fixed{
   justify-content: space-between;
-  .icon_btns{
-    margin-left: 20px;
+  .flex_btn{
+    height: 50px;
     display: flex;
     align-items: center;
-    .icon_btn{
-      width: 38px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-right: 15px;
-      img{
-        width: 24px;
-        height: 24px;
-      }
-      span{
-        font-size: 12px;
-        margin-top: 2px;
-        line-height: 1.5;
-      }
+    justify-content: center;
+  }
+  .follow_btn{
+    width: 30%;
+    border-right:1px solid #e6e8eb;
+    .focus_icon{
+      width: 24px;
+      height: 24px;
+    }
+    .num_text{
+      font-size: 12px;
+      margin-left: 5px;
+      color: #666;
     }
   }
-  .respond_time_tips{
+  .chat_btn{
+    width: 30%;
+    .chat_icon{
+      width: 24px;
+      height: 24px;
+    }
+    .chat_text{
+      font-size: 12px;
+      margin-left: 5px;
+        color: #666;
+    }
+  }
+  .query_btn{
+    width: 40%;
+    background-color: #1fb7b6;
+    color: #fff;
     font-size: 14px;
-    color: #999;
+    span{
+      padding:15px;
+    }
+    .disabled{
+      background-color: #cccccc;
+    }
   }
 }
 
@@ -719,12 +718,17 @@ export default {
 .experts_name{
   font-size: 16px;
   color: #333;
-  span{
-    font-size: 13px;
-    margin-left: 5px;
-    color: #666;
-  }
+  line-height: 24px;
+  .icon_btn{
+      margin-left: 5px;
+      line-height: 1;
+      img{
+        width: 24px;
+        height: 24px;
+      }
+    }
 }
+
 .experts_msg2{
   .respond_time{
     font-size: 13px;
@@ -736,47 +740,28 @@ export default {
     }
   }
 }
-.to_chat_btn{
-  position: fixed;
-  bottom: 60px;
-  right: 15px;
-  width: 40px;
-  height: 40px;
-  background: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border:1px solid #1fb7b6;
-  background-color: #f3fbfb;
-  &.m_top{
-    bottom: 92px;
-  }
-  img{
-    width: 22px;
-    height: 22px;
-  }
+
+.custom_tabs2{
+ display: flex;
+ padding: 0 15px;
+ padding-top: 5px;
+ border-bottom: 1px solid #1fb7b6;
+ background-color: #fff;
+ .tab_item{
+   font-size: 14px;
+   line-height: 20px;
+   padding:8px 16px;
+   background-color: #fff;
+   position: relative;
+   bottom:-1px;
+   border-bottom: 1px solid #1fb7b6;
+   border-radius: 4px 4px 0 0;
+   color: #999;
+   &.active{
+     border: 1px solid #1fb7b6;
+     border-bottom: none;
+     color:#1fb7b6
+   }
+ }
 }
-// .imgs_swiper{
-//   position: fixed;
-//   top:0;
-//   left: 0;
-//   background-color: #000;
-//   z-index: 9;
-//   height: 100%;
-//   width: 100%;
-
-//   .img_item{
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     image{
-//       width: 375px;
-//     }
-
-//   }
-
-// }
-
- 
 </style>

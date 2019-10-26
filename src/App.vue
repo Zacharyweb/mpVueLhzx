@@ -34,7 +34,9 @@ export default {
       wx.setStorage({key: 'langFlag', data: systemLang});
     }
 
-    this.$t.setLocale( defaultLang || systemLang || 'cn_j');
+    // this.$t.setLocale( defaultLang || systemLang || 'cn_j');
+    this.$t.setLocale('cn_j'); // 现在强制中文 后面需多语言解除上面注释即可
+
     let lang = this.$t.getLanguage();
     that.updateLanguage(lang)
 

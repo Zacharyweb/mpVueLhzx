@@ -13,7 +13,7 @@
         </div>
       </li>
 
-      <li class="router_item">
+      <!-- <li class="router_item">
         <div class="item_left">{{i18n.languageName}}</div>
         <div class="item_right" @click="actionSheet2Show = true">
           <span class="status_text" v-if="i18n.LANGTYPE == 'cn_j'">简体中文</span>
@@ -21,7 +21,7 @@
           <span class="status_text" v-else-if="i18n.LANGTYPE == 'en'">English</span>
           <img  src="../../../static/img/arrow_right.png">
         </div>
-      </li>
+      </li> -->
 
     </ul>
     <div class="log_out_btn" @click="logout">{{i18n.Logout}}</div>

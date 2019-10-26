@@ -13,19 +13,19 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页/Home",
+        "text": "首页",
         "iconPath": "static/img/home.png",
         "selectedIconPath": "static/img/home2.png"
       },
       {
         "pagePath": "pages/consult/index",
-        "text": "咨询/Querise",
+        "text": "咨询",
         "iconPath": "static/img/chat.png",
         "selectedIconPath": "static/img/chat2.png"
       },
       {
         "pagePath": "pages/mine/index",
-        "text": "我的/Me",
+        "text": "我的",
         "iconPath": "static/img/mine.png",
         "selectedIconPath": "static/img/mine2.png"
       }

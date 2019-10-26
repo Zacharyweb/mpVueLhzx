@@ -175,7 +175,7 @@ export default {
       }).then(res => {
         let result = res.data;
         this.mineData = res.data;
-        this.noticeNum=result.noticeNum;
+        this.noticeNum = result.noticeNum;
         let data = this.userData || {};
         this.updateUserMsg({
           ...data,

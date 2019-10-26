@@ -1,13 +1,11 @@
 module.exports = [
  
   // {
-  //   path: 'pages/consultDetail/index',
+  //   path: 'pages/expertDetail/index',
   //   config: {
-  //     navigationBarTitleText: '咨询详情',
+  //     navigationBarTitleText: '专家详情',
   //     usingComponents: {
-  //       "van-stepper": "/static/vant/stepper/index",
-  //       "van-datetime-picker": "/static/vant/datetime-picker/index",
-  //       "van-dialog": "/static/vant/dialog/index"
+  //       "van-action-sheet": "/static/vant/action-sheet/index"
   //     }
   //   }
   // },
