@@ -1,15 +1,4 @@
 module.exports = [
- 
-  // {
-  //   path: 'pages/expertDetail/index',
-  //   config: {
-  //     navigationBarTitleText: '专家详情',
-  //     usingComponents: {
-  //       "van-action-sheet": "/static/vant/action-sheet/index"
-  //     }
-  //   }
-  // },
-
   // 首页
   {
     path: 'pages/index/index',
@@ -90,8 +79,18 @@ module.exports = [
     config: {
       navigationBarTitleText: '咨询室',
       usingComponents: {
-        "van-field":"/static/vant/field/index",
-        "van-stepper": "/static/vant/stepper/index"
+        // "van-field":"/static/vant/field/index",
+        // "van-stepper": "/static/vant/stepper/index"
+      }
+    }
+  },
+  // 消息列表页
+  {
+    path: 'pages/msgList/index',
+    config: {
+      navigationBarTitleText: '消息列表',
+      usingComponents: {
+         "van-dialog": "/static/vant/dialog/index"
       }
     }
   },
