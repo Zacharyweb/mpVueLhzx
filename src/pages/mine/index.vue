@@ -2,8 +2,12 @@
   <div>
     <div class="mine_top_block">
       <!-- <img class="bg_img" src="../../../static/img/center_bg.png"> -->
+      <div class="msg_icon_box">
+        <img class="msg_icon" src="../../../static/img/msg_icon.png" @click="toMsgList">
+        <span class="new_msg_dot"></span>
+      </div>
+      
       <img class="bg_img" src="../../../static/img/center_bg2.png">
-
       <div class="mine_msg">
  
         <img class="mine_avatar" v-if="userData" :src="userData.avatarUrl">
@@ -203,7 +207,10 @@ export default {
     toLoginPage(){
       this.$router.push({path:'/pages/login/index'});
     },
-
+    toMsgList(){
+      console.log('111111111111');
+      this.$router.push({path:'/pages/msgList/index'});
+    },
     toLoginByWX(){
       let that = this;
        wx.login({
@@ -277,6 +284,26 @@ export default {
     width: 375px;
     // height: 126px;
     height: 180px;
+  }
+
+  .msg_icon_box{
+    position: absolute;
+    top:25px;
+    right: 15px;
+    z-index: 10;
+    .msg_icon{
+      width: 28px;
+      height: 28px;
+    }
+    .new_msg_dot{
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #F95454;
+      top:0px;
+      right: -2px;
+    }
   }
   .mine_msg{
     position: absolute;
