@@ -254,6 +254,7 @@ export default {
   },
 
   onLoad(options){
+
     this.parentOrderId = options.parentOrderId || 0;
     this.expertId = options.expertId;
     this.questionRemark = '';

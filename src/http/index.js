@@ -82,7 +82,7 @@ Flyio.request = function(obj){
         console.log(err);
         Config.loading.loadingHide();
         if(err.response.status == 401){
-            wx.redirectTo({
+            wx.navigateTo({
               url: '/pages/login/index'
             })
         }else{
