@@ -2,7 +2,7 @@
   <div>
     <div class="mine_top_block">
       <!-- <img class="bg_img" src="../../../static/img/center_bg.png"> -->
-      <div class="msg_icon_box">
+      <div class="msg_icon_box" v-if="userData && userData.accessToken">
         <img class="msg_icon" src="../../../static/img/msg_icon.png" @click="toMsgList">
         <span class="new_msg_dot"></span>
       </div>
@@ -10,7 +10,7 @@
       <img class="bg_img" src="../../../static/img/center_bg2.png">
       <div class="mine_msg">
  
-        <img class="mine_avatar" v-if="userData" :src="userData.avatarUrl">
+        <img class="mine_avatar" v-if="userData && userData.avatarUrl" :src="userData.avatarUrl">
         <img class="mine_avatar" v-else src="../../../static/img/df_avatar.jpg">
         <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
         <div class="login_block" v-if="!userData || !userData.accessToken">
@@ -19,7 +19,7 @@
          <!-- <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button> -->
         </div>
 
-        <div class="mine_txt_msg" v-if="userData">
+        <div class="mine_txt_msg" v-if="userData && userData.accessToken">
           <div v-if="userData.isExpert == 1">
             <div class="mine_txt_line">
                <span class="mine_nick">{{userData.nickName}}</span>
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <form  @submit="addUserFormId" :report-submit="true">
+      <form  @submit="addUserFormId" :report-submit="true" v-if="userData && userData.accessToken">
         <div class="mine_account">
             <div class="mine_amount">
               <!-- <div class="amount">
@@ -163,7 +163,7 @@ export default {
   },
   onShow(){
     this.getMineData();
-    console.log(this.userData)
+    console.log(this.userData);
   },
   methods: {
     ...mapActions('counter', [

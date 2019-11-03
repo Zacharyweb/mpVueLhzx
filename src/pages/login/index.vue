@@ -3,7 +3,7 @@
     <div v-if="showLoginPage">
       <div class="user_avatar_panel">
           <!-- <img class="user_avatar" src="../../../static/img/avatar.jpeg"> -->
-          <img class="user_avatar" v-if="userData" :src="userData.avatarUrl">
+          <img class="user_avatar" v-if="userData && userData.avatarUrl" :src="userData.avatarUrl">
           <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg">
           <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
       </div>
