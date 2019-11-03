@@ -235,6 +235,7 @@ export default {
       //   photosList:['https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=320178652,790985626&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=320178652,790985626&fm=26&gp=0.jpg',],
       //   policyInterpretation:'萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达',
       // },
+      userId:"0",
       expertId: "",
       commentData: [],
       followUserList: []
@@ -258,16 +259,16 @@ export default {
     }
   },
   onLoad(options) {
-    if (!this.userData) {
-      wx.redirectTo({
-        url: "/pages/login/index"
-      });
-    } else {
       this.expertId = options.id;
       this.currentTab = options.tab || 0;
+      console.log(this.userData)
+      if(this.userData==null)
+      {this.userId="0"}
+      else
+      {this.userId=this.userData.userId}
+      
       this.getInitData(options.id);
       this.CheckHasFollowed();
-    }
   },
   mounted() {},
   onShareAppMessage(obj) {
@@ -275,7 +276,7 @@ export default {
       title: "您的好友" + this.userData.nickName + "向你推荐一位咨询堂专家",
       path:
         "/pages/login/index?userId=" +
-        this.userData.userId +
+        this.userId +
         "&expertId=" +
         this.expertId +
         "&fromType=1"
@@ -314,7 +315,7 @@ export default {
       this.$router.push({
         path: "/pages/chatRoom/index",
         query: {
-          userId: this.userData.userId,
+          userId: this.userId,
           expertId: this.expertId,
           cost: this.expertData.oneOfCost
         }
@@ -397,7 +398,7 @@ export default {
         .request({
           url: "CheckHasFollowed",
           data: {
-            userId: this.userData.userId,
+            userId: this.userId,
             expertId: this.expertId * 1
           },
           config: {
@@ -417,7 +418,7 @@ export default {
         .request({
           url: "AddUserFollow",
           data: {
-            userId: this.userData.userId,
+            userId: this.userId,
             expertId: this.expertId * 1
           },
           flyConfig: {
@@ -441,7 +442,7 @@ export default {
         .request({
           url: "DeleteUserFollow",
           data: {
-            userId: this.userData.userId,
+            userId: this.userId,
             expertId: this.expertId * 1
           },
           flyConfig: {

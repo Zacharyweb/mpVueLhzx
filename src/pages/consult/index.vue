@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <div class="noLogin" v-if="!userData">请登录后查看</div>
+    <div class="noLogin" v-if="!userData">
+      未登录
+    </div>
 
     <div class="custom_tabs" v-if="userData && userData.isExpert == 1">
       <div
@@ -179,8 +181,11 @@ export default {
 }
 .noLogin{
   margin: 0 auto;
-  width: 10rem;
- text-align: center;
- color: #ccc;
+  height: 5rem;
+  line-height: 5rem;
+  width: 3rem;
+  text-align: center;
+  color: rgb(102, 99, 99);
+  font-size: 12px;
 }
 </style>
