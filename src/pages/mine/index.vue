@@ -14,9 +14,9 @@
         <img class="mine_avatar" v-else src="../../../static/img/df_avatar.jpg">
         <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
         <div class="login_block" v-if="!userData || !userData.accessToken">
-         <div class="no_login_tip">{{i18n.not_logged_in}}</div>
-         <div class="action_btn" @click="toLoginPage">{{i18n.login_or_register}}</div>
-         <!-- <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button> -->
+          <div class="no_login_tip">{{i18n.not_logged_in}}</div>
+          <div class="action_btn" @click="toLoginPage">{{i18n.login_or_register}}</div>
+          <!-- <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button> -->
         </div>
 
         <div class="mine_txt_msg" v-if="userData && userData.accessToken">
@@ -57,6 +57,7 @@
             </div>
         </div>
       </form>
+
     </div>
 
     <ul class="router_list">
@@ -100,7 +101,6 @@
         </div>
       </li>
 
-    
       <!-- <li class="router_item" @click="linkTo('/pages/becomeExpert/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon4.png">
@@ -121,7 +121,6 @@
         </div>
       </li>
       
-
       <li class="router_item" @click="linkTo('/pages/useNotice/index',true)">
         <div class="item_left">
           <img src="../../../static/img/center_icon7.png">
@@ -164,6 +163,9 @@ export default {
   onShow(){
     this.getMineData();
     console.log(this.userData);
+    // wx.showTabBarRedDot({
+    //   index: 2,
+    // })
   },
   methods: {
     ...mapActions('counter', [

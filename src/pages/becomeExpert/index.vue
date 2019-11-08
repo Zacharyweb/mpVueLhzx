@@ -235,223 +235,34 @@
       
      
     <div v-show="stepFlag == 2 || stepFlag == 3">
-      <div class="extend_panel">
-        <div class="panel_top">
-          <span class="panel_title" @click="openConsultExplain = !openConsultExplain">{{i18n.consultation_overview}}</span>
-          <img class="extend_icon" @click="openConsultExplain = !openConsultExplain" src="../../../static/img/extend_icon.png" :class="{'open':openConsultExplain}">
-        </div>
-
-        <div class="panle_block" v-if="openConsultExplain && i18n.LANGTYPE == 'cn_j'">
-          <ul class="form_list">
-            <li class="form_item textarea_item no_paddingtop">
-              <div class="item_name">咨询:</div>
-              <div class="item_content">
-                <div> 
-                  <span>作为专家，您将通过本平台为用户提供有偿的提问作答服务。</span>
-                </div>
-                <div> 
-                  <span>作为一款工具类产品，本小程序不对你的服务（包括服务费）负责，一切因此而产生的问题（包括但不限于，服务投诉、追收费用等）均由您自行解决。</span>
-                </div>
+      <div class="panle_block">
+        <div class="block_title">{{i18n.advisory_settings}}</div>
+        <ul class="form_list">
+          <li class="form_item required tags_item textarea_item">
+            <div class="item_name">{{i18n.response_time}}</div>
+            <div class="item_content">
+              <div class="item_tags">
+                <span class="tag_item" v-for="(item,index) in responseTime" :key="index" :class="{'active':item.flag}" @click="singleChange('responseTime',index)">{{item.name}}</span>
               </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">接单:</div>
-              <div class="item_content">
-                <div> 
-                  <span>在服务时间内，您可收到用户提问的订单。</span>
-                </div>
-                <div> 
-                  <span>您将在接单时间内决定是否接单，您也可提出订单修改。（见注一）</span>
-                </div>
+            </div>
+          </li>
+          <li class="form_item required tags_item textarea_item">
+            <div class="item_name">{{i18n.answer_time}}</div>
+            <div class="item_content">
+              <div class="item_tags">
+                <span class="tag_item" v-for="(item,index) in answeringTime" :key="index" :class="{'active':item.flag}" @click="singleChange('answeringTime',index)">{{item.name}}</span>
               </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">作答:</div>
-              <div class="item_content">
-                <div> 
-                  <span>当您同意接单时，您将在设定的作答时间内未用户的提问作答。</span>
-                </div>
-                <div> 
-                  <span>逾时不作答的，进黑名单，不再享受小程序的服务。</span>
-                </div>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">评价:</div>
-              <div class="item_content">
-                <div> 
-                  <span>作答后，用户可点评“满意”、“一般“、“不满”，还可以填写意见和感受，分享给他/她允许的关系户和您看。</span>
-                </div>
-                <div> 
-                  <span>用户点评“不满”的，会告知你不满意的理由。你可在作答后的48小时内打电话给用户与他/她磋商处理。</span>
-                </div>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">支付:</div>
-              <div class="item_content">
-                <div> 
-                  <span>用户应在作答后的24小时内支付咨询费。</span>
-                </div>
-                <div> 
-                  <span>逾时不支付的，您可在作答24小时后至48小时内打电话给用户向他/她追讨。</span>
-                </div>
-                <div> 
-                  <span>用户将通过你的微信收款二维码向你直接支付，不经过本小程序。</span>
-                </div>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">服务时间:</div>
-              <div class="item_content">
-                <span>平台默认的服务时间为每天早上8:00点至晚上8:00点。您可随时在我的状态里更改。</span>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">介绍问候:</div>
-              <div class="item_content">
-                <span>在正式提问前，用户可向您发出不计费的即时聊天，方便相互介绍和问候。</span>
-              </div>
-            </li>
-
-            <li class="other_explain">
-              <div class="mt5">注一：</div>
-              <div>修改订单</div>
-              <div>在看到问题后，如您觉得有需要调整作答时间或费用的，可向用户提出修改订单。在征得用户同意调整后，按修改后订单作答。</div>
-              <div class="mt5">注二：</div>
-              <div>免单优惠</div>
-              <div>这是您向用户提供优惠的一种方式。如果您认为有需要，可在确认收费前免除用户该次咨询收费。</div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="panle_block" v-if="openConsultExplain && i18n.LANGTYPE == 'en'">
-          <ul class="form_list">
-            <li class="form_item textarea_item no_paddingtop">
-              <div class="item_name">Advisory:</div>
-              <div class="item_content">
-                <div> 
-                  <span>Upon completion of registration, you would be able to offer services of answering questions of users for pay.</span>
-                </div>
-                <div> 
-                  <span>We shall not be responsible for any matters in relation to your services (including service fee).  All issues (including but not limited complaints, outstanding fees) arising from your services shall be accountable by yourself.</span>
-                </div>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">Order:</div>
-              <div class="item_content">
-                <div> 
-                  <span>During service hours, you may receive orders of query from users.</span>
-                </div>
-                <div> 
-                  <span>You shall response within your preset time whether you will accept the order.  You can also revert with change order (see note 1).</span>
-                </div>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">Answer:</div>
-              <div class="item_content">
-                <div> 
-                  <span>When you agree to accept the order, you shall answer the query within your preset time.</span>
-                </div>
-                <div> 
-                  <span>You shall be blacklisted and not be able to use this app, if you cannot answer within your preset time.</span>
-                </div>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">Review:</div>
-              <div class="item_content">
-                <div> 
-                  <span>After user receives your answer, he/she can give rating of  “good”, “so-so” or ”not good” in his/her review.  He/she can also give written comments and share them with his/her friends and you.</span>
-                </div>
-                <div> 
-                  <span>Reasons shall be given if the user rates “not good”.  You can call the user to mitigate the issues within 48 hours after giving your answer.</span>
-                </div>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">Payment:</div>
-              <div class="item_content">
-                <div> 
-                  <span>User shall pay you the fee within 24 hours after sending the answer.</span>
-                </div>
-                <div> 
-                  <span>If not, you can call the user for payment within 48 hours of sending the answer.</span>
-                </div>
-                <div> 
-                  <span>User shall pay you through your WeChat QR receipt code, not via this app.</span>
-                </div>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">Service Hour:</div>
-              <div class="item_content">
-                <span>The default service hour is 8:00am to 8:00pm each day.  You can switch your service status at anytime.</span>
-              </div>
-            </li>
-
-            <li class="form_item textarea_item">
-              <div class="item_name">Chat:</div>
-              <div class="item_content">
-                <span>Before the user submits an order of query, he/she can introduce himself/herself and chat with you for free.</span>
-              </div>
-            </li>
-
-            <li class="other_explain">
-              <div class="mt5">Note 1：</div>
-              <div>Change order</div>
-              <div>After reviewing the query, you can request for change order of the time and/or fee to answer.  If agreed to by the user, the order shall change as requested</div>
-              <div class="mt5">Note 2：</div>
-              <div>Fee waiver</div>
-              <div>You can promote business by offering users fee waiver.  After you give the answer but before you confirm the fee on it, there is an option you can choose to waive the fee.</div>
-            </li>
-          </ul>
-          </div>
-          
-        </div>
-
-          <div class="panle_block">
-            <div class="block_title">{{i18n.advisory_settings}}</div>
-            <ul class="form_list">
-              <li class="form_item required tags_item textarea_item">
-                <div class="item_name">{{i18n.response_time}}</div>
-                <div class="item_content">
-                  <div class="item_tags">
-                    <span class="tag_item" v-for="(item,index) in responseTime" :key="index" :class="{'active':item.flag}" @click="singleChange('responseTime',index)">{{item.name}}</span>
-                  </div>
-                </div>
-              </li>
-              <li class="form_item required tags_item textarea_item">
-                <div class="item_name">{{i18n.answer_time}}</div>
-                <div class="item_content">
-                  <div class="item_tags">
-                    <span class="tag_item" v-for="(item,index) in answeringTime" :key="index" :class="{'active':item.flag}" @click="singleChange('answeringTime',index)">{{item.name}}</span>
-                  </div>
-                </div>
-              </li>
-    
-              <li class="form_item required textarea_item">
-                <div class="item_name">{{i18n.LANGTYPE == 'cn_j'?'每次收费人民币(元)':'consultancy fees'}}</div>
-                <div class="item_content">
-                  <input v-model="oneOfCost" type="digit" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入每节收费金额':'please enter'" :disabled="isChecked == 'Y'">
-                </div>
-              </li>
-              <li class="explain_item">{{i18n.LANGTYPE == 'cn_j'?'咨询按此收费。每次所需时间由您自行决定，建议不超过30分钟。':'the fees of per advisory'}}</li>
-            </ul>
-          </div>
+            </div>
+          </li>
+          <li class="form_item required textarea_item">
+            <div class="item_name">{{i18n.LANGTYPE == 'cn_j'?'每次收费人民币(元)':'consultancy fees'}}</div>
+            <div class="item_content">
+              <input v-model="oneOfCost" type="digit" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入每节收费金额':'please enter'" :disabled="isChecked == 'Y'">
+            </div>
+          </li>
+          <li class="explain_item">{{i18n.LANGTYPE == 'cn_j'?'咨询按此收费。每次所需时间由您自行决定，建议不超过30分钟。':'the fees of per advisory'}}</li>
+        </ul>
+      </div>
 
       <div class="panle_block hb nb">
         <div class="block_title">{{i18n.wechat_receipt_QR_Code}}</div>
