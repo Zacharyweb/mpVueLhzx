@@ -6,59 +6,30 @@
     </div>
 
     <div class="order_form_panel">
-      <!-- <div class="panle_block nb">
-        <div class="block_title">结算信息</div>
-        <div class="pay_detail">
-          <div class="tips1">专家已为您完成作答，订单结算如下：</div>
-          <ul class="detail_list">
-            <li class="detail_item">
-              <span class="item_name">费用：</span>
-              <span class="item_content">{{amount}}元/次</span>
-            </li>
-            <li class="detail_item">
-              <span class="item_name">次数：</span>
-              <span class="item_content">{{quantity}}次</span>
-            </li>
-            <li class="detail_item">
-              <span class="item_name">合计：</span>
-              <span class="item_content">{{amount}}元</span>
-            </li>
-          </ul>
-          <div class="tips2">{{i18n.LANGTYPE == 'cn_j'?'咨询费将由用户通过二维码直接支付给专家。':'Fee shall be paid to advisor directly via his/her WeChat QR Code'}}</div>
-        </div>
-      </div> -->
-
       <div class="panle_block nb">
         <div class="pay_detail">
-          <div class="tips1">{{i18n.LANGTYPE == 'cn_j'?'咨询费将由用户通过二维码直接支付给专家。':'Fee shall be paid to advisor directly via his/her WeChat QR Code'}}</div>
+          <div class="tips1">{{i18n.LANGTYPE == 'cn_j'?'长按下方图片保存专家收款二维码直接付款给专家。':'Fee shall be paid to advisor directly via his/her WeChat QR Code'}}</div>
+        </div>
+        <div class="pay_QRcode_img">
+            <img src="../../../static/img/pay_step1.jpg" @longtap='saveImg' mode="widthFix">
         </div>
       </div>
     
       <div class="panle_block npb">
         <div class="block_title">{{i18n.LANGTYPE == 'cn_j'?'支付操作如下':'Steps'}}</div>
-        <!-- <div class="problem_content">
-          <div class="files_group">
-            <span class="title">转账截图</span>
-            <div class="img_file_item"  v-for="(item,index) in photosList" :key="index">
-              <img class="img_file" :src="item">
-              <img class="delete_icon" src="../../../static/img/delete_icon3.png" @click="deletePhoto(index)">
-            </div>
-            <img class="add_files_icon" src="../../../static/img/add_files_icon.png"  v-show="photosList.length < 1" @click="upLoadPhoto">
-
-          </div>
-        </div> -->
+       
         <div class="pay_step" v-if="i18n.LANGTYPE == 'cn_j'">
-          <div class="step_text">1、点击下面“发送二维码”按钮</div>
-          <div class="step_sub_tetx">二维码将通过平台的公众号将专家的收款二维码发送给您</div>
+          <div class="step_text">1、保存收款二维码图片</div>
+          <div class="step_sub_tetx">长按上方收款二维码图片并保存图片到相册,如需授权请点击允许</div>
           
 
-          <div class="step_text">2、从公众号消息打开二维码</div>
-          <div class="step_sub_tetx">上面注有专家的昵称和咨询费金额</div>
+          <div class="step_text">2、识别收款二维码</div>
+          <div class="step_sub_tetx">打开微信"扫一扫"功能，从相册中选中保存的收款二维码图片</div>
 
-          <div class="step_text">3、长按二维码选择“识别图中二维码”</div>
-          <div class="step_sub_tetx"> </div>
+          <div class="step_text">3、输入支付金额，完成支付</div>
+          <div class="step_sub_tetx">在金额中输入本次咨询所需的费用金额，点击付款完成支付</div>
 
-          <div class="step_text">4、支付</div>
+          <div class="step_text">4、专家确认收款</div>
           <div class="step_sub_tetx">请在作答后24小时内支付，逾时的专家可打您电话查询</div>
         </div>
 
@@ -84,9 +55,9 @@
       </div>
     </div>
 
-    <div class="btn_block">
+    <!-- <div class="btn_block">
       <div class="btn green large" @click="postPayMsg">{{i18n.send_QR_Code}}</div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -138,91 +109,66 @@ export default {
         }
       })
     },
-    upLoadPhoto(){
-      let that = this;
-      wx.chooseImage({
-        count: 1 - that.photosList.length,
+
+    /****长按保存图片 */
+    saveImg: function () {
+      let that=this
+      wx.getSetting({
         success(res) {
-          wx.showLoading({
-            title: '图片上传中',
-            mask: true
-          })
-
-          let tempFilePaths = res.tempFilePaths;
-          let dataList = [];
-
-          for(let i = 0;i < tempFilePaths.length; i++){
-            let dotSplit = tempFilePaths[i].split('.');
-            let l = dotSplit.length;
-            let suffix = dotSplit[l-1];
-            let fileName = (+new Date()) + (Math.random()*1000).toFixed(0) + '.'+ suffix;
-            //同步方法
-            let base64 = wx.getFileSystemManager().readFileSync(res.tempFilePaths[i], 'base64');
-            dataList.push({ type: "image",filename: fileName,base64String: base64 })
-          }
- 
-          that.$http.request({
-            url:'UploadFile',
-            data:dataList,
-            flyConfig:{
-              method: 'post'
-            }
-          }).then(result => {
-            if(result.code == 1){
-              let data = result.data;
-              let imgList = [];
-              for(let i = 0;i < data.length; i++){
-                if(data[i].uploadCode == 1){
-                   imgList.push(data[i].data.originalurl);
-                }
+          //未授权 先授权 然后保存
+          if (!res.authSetting['scope.writePhotosAlbum']) {
+            wx.authorize({
+              scope: 'scope.writePhotosAlbum',
+              success(re) {
+                that.saveToBlum();
               }
-              that.photosList = [...that.photosList,...imgList];
+            })
+          }else{
+           //已授 直接调用保存到相册方法
+            that.saveToBlum();
+          }
+        }
+      })  
+    },
+
+    //保存到相册方法
+    //  saveToBlum:function(){
+    //    let imgUrl = '非网络图片';
+    //    wx.getImageInfo({
+    //      src: imgUrl,
+    //      success: function (ret) {
+    //        var path = ret.path;
+    //        wx.saveImageToPhotosAlbum({
+    //          filePath: path,
+    //          success(result) {
+    //            wx.showToast({
+    //              title: '保存成功',
+    //              icon: 'success'
+    //            })
+    //          },
+    //        })
+    //      }
+    //    })
+    // },
+
+    //保存网络图片到相册方法
+    saveToBlum:function(){
+      wx.downloadFile({
+        url: 'https://xianchaosectrade.oss-cn-hangzhou.aliyuncs.com/online/bf7d421f5c4d4014.jpeg',
+        success: function (res) {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success(result) {
+              wx.showToast({
+                title: '保存成功',
+                icon: 'success'
+              })
             }
-           
-            wx.hideLoading();
           })
         }
-      });
-    },
-
-    deletePhoto(index){
-      this.photosList.splice(index,1);
-    },
-
-    submitPhoto(){
-      if(this.photosList.length == 0){
-        this.showToast('请上传支付凭证');
-        return;
-      };
-      let userFiles  = [];
-      if(this.photosList.length > 0){
-         this.photosList.forEach((item)=>{
-           userFiles.push({userId:this.userData.userId,orderId: this.orderId,fileUrl:item})
-         })
-      }
-
-
-      this.$http.request({
-        url:'PaymentVoucher',
-        data:  {
-          userId: this.userData.userId,
-          orderId: this.orderId,
-          fileUrl: userFiles
-        },
-        flyConfig:{
-          method: 'post'
-        }
-      }).then(res => {
-        if(res.code == 1){
-            this.showToast('提交成功，请等待专家确认');
-            setTimeout(()=>{
-              this.$router.go(-1);
-            },1500)
-        } 
       })
-
     },
-   
+
   },
   onShow(){
    
@@ -235,6 +181,7 @@ export default {
   background-color: #fff;
   padding-bottom: 20px;
 }
+
 .btn_block{
   margin-top: 10px;
   display: flex;
@@ -289,95 +236,20 @@ export default {
     color: #333;
     .tips1{
       margin-bottom: 10px;
-
-    }
-    .detail_list{
-      .detail_item{
-        display: flex;
-         margin-bottom: 8px;
-      
-        .item_name{
-         width: 45px;
-        }
-        .item_content{
-          margin-left: 5px;
-
-        }
-
-      }
-    }
-    .tips2{
-      margin-top: 10px;
     }
   }
-
-
-  .class_num_block{
+  .pay_QRcode_img{
     display: flex;
-    align-items: flex-end;
-    .cost_tips{
-      font-size: 14px;
-      margin-left: 10px;
-      color: #666;
-      span{
-        color: #1fb7b6;
-      }
+    justify-content: center;
+    img{
+      width: 700px;
+
     }
   }
 
-  .problem_content{
-    textarea{
-      border:1px solid #eee;
-      background-color: #fefefe;
-      border-radius: 4px;
-      width: 100%;
-      height: 100px;
-      padding:15px;
-      box-sizing: border-box;
-      font-size: 14px;
-      color: #666;
-      line-height: 1.5;
-    }
-    .files_group{
-      padding-left: 65px;
-      display: flex;
-      flex-wrap: wrap;
-      position: relative;
-      .title{
-        position: absolute;
-        font-size: 14px;
-        color: #666;
-        left: 0;
-        top:12px;
-      }
-      .add_files_icon{
-        width: 54px;
-        height: 54px;
-        margin-top: 10px;
-      }
-      .img_file_item{
-        height: 54px;
-        width: 54px;
-        margin-right: 15px;
-        margin-top: 10px;
-        position: relative;
-        .img_file{
-          height: 54px;
-          width: 54px;
-        }
-        .delete_icon{
-          position: absolute;
-          width: 14px;
-          height: 14px;
-          right: -9px;
-          top:-9px;
-        }
-      }
-    }
-  }
 }
+
 .pay_step{
-  
   .step_text{
     font-size: 13px;
     color: #333;

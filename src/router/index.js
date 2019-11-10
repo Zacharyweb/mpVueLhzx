@@ -1,4 +1,5 @@
 module.exports = [
+
   // 首页
   {
     path: 'pages/index/index',
@@ -284,6 +285,19 @@ module.exports = [
       }
     }
   },
+
+  // 成为专家概述
+  {
+    path: 'pages/becomeExpertPre/index',
+    config: {
+      navigationBarTitleText: '成为专家概述',
+      usingComponents: {
+        "van-steps": "/static/vant/steps/index",
+        "van-area": "/static/vant/area/index"
+      }
+    }
+  },
+
   // 专家信息
   {
     path: 'pages/becomeExpert/index',

@@ -14,6 +14,12 @@
             <input type="text" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入昵称，用于平台展示':'please enter'" v-model="nickName">
           </div>
         </li>
+        <li class="form_item">
+          <div class="item_name">手机号</div>
+          <div class="item_content">
+            <input type="number" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入手机号':'please enter'" v-model="mobile">
+          </div>
+        </li>
         <li class="form_item textarea_item">
           <div class="item_name">{{i18n.Introduction}}</div>
           <div class="item_content">
@@ -26,7 +32,7 @@
         <div class="btn large green" @click="updateUserBaseInfo">{{i18n.Confirm}}</div>
       </div>
       <div class="btn_block2">
-        <div class="btn large green plain" @click="linkTo('/pages/becomeExpert/index')">{{i18n.Advisor_registration}}</div>
+        <div class="btn large green plain" @click="linkTo('/pages/becomeExpertPre/index')">{{i18n.Advisor_registration}}</div>
       </div>
     </div>
     <!-- <div class="change_mobile">
@@ -43,6 +49,7 @@ export default {
     return {
        avatarUrl:'',
        nickName:'',
+       mobile:'',
        aboutUserDesc:''
     }
   },
@@ -112,6 +119,7 @@ export default {
           this.avatarUrl = this.userData? this.userData.avatarUrl:'';
         }
         this.nickName = result.nickName;
+        this.mobile = result.phoneNumber;
         this.aboutUserDesc = result.aboutUserDesc;
       })
     },
@@ -121,6 +129,7 @@ export default {
         data:{
           userId: this.userData.userId,
           nickName: this.nickName,
+          phoneNumber:this.mobile,
           avatarUrl: this.avatarUrl,
           aboutUserDesc: this.aboutUserDesc
         },
