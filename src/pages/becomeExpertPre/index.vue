@@ -134,6 +134,7 @@
     <div class="btn_block">
       <div class="btn green large" :class="{'disabled':btnDisabled}" @click="toBecomeExpert">填写专家资料</div>
     </div>
+    <div class="to_know_more" @click="linkTo('/pages/userHelp/index')">需要了解更多的</div>
   </div>
 </template>
 <script>
@@ -184,7 +185,15 @@ export default {
     },
     toggleRadio(index){
       this.radioList[index].flag =  !this.radioList[index].flag;
-    }
+    },
+    linkTo(path){
+      this.$router.push({
+        path:path,
+        query:{
+          flag:1
+        }
+      });
+    }, 
   },
 }
 </script>
@@ -206,6 +215,13 @@ export default {
       border:1px solid #ccc;
     }
   }
+}
+.to_know_more{
+  margin-top: 8px;
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+  text-decoration: underline;
 }
 .text_list{
   padding: 0 15px;

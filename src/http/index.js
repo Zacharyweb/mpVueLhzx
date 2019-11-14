@@ -18,14 +18,11 @@ let loadingTimer = [] // loading的定时器
 function handleRequest(rqConfig){
     Config.loading.loadingShow()
     // rqConfig.isLoading && clearTimeout(loadingTimer);
-
     // loadingTimer = setTimeout(() => {
     //    rqConfig.isLoading && Config.loading.loadingShow();
     // }, Config.loading.limitTime);
-
     // Promise.all(promises).then(data => {
     //     if (data.length !== promises.length) return
-
     //     promises = [] // 所有请求完后清除promise数组
     //     clearTimeout(loadingTimer) // 当请求在xxxms内完成则直接清除loading计时器
     // })
@@ -34,8 +31,6 @@ function handleRequest(rqConfig){
     //     clearTimeout(loadingTimer) // 请求异常则直接清除loading计时器
     // })
 }
-
-
 // 重写request方法，
 Flyio.request = function(obj){
     let urlName = obj.url || '';
@@ -79,9 +74,8 @@ Flyio.request = function(obj){
            return res;
        }
     }).catch(err => {
-        console.log(err);
         Config.loading.loadingHide();
-        if(err.response.status == 401){
+        if(err.response.status == 401 || err.status == 401){
             wx.navigateTo({
               url: '/pages/login/index'
             })

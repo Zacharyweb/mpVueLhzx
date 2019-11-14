@@ -101,7 +101,7 @@ export default {
   },
   onShareAppMessage(obj){
       return {
-        title: this.i18n.LANGTYPE == 'cn_j'?'您的好友邀请您加入咨询堂':'Your friends invite you to join the Advisory',
+        title: this.i18n.LANGTYPE == 'cn_j'?'您的好友邀请您加入问税易':'Your friends invite you to join the Advisory',
         path:'/pages/login/index?userId=' + this.userData.userId + '&fromType=3',
         // imageUrl:'/static/img/share_test_img.png'
       }
@@ -164,6 +164,7 @@ export default {
           hideMsg:true
         }
       }).then(res => {
+        wx.stopPullDownRefresh();
         if(res.code == 1){
           res.data.forEach(item => {
             item.extend = false;
@@ -183,6 +184,7 @@ export default {
           hideMsg:true
         }
       }).then(res => {
+        wx.stopPullDownRefresh();
         if(res.code == 1){
           let list = [];
           res.data.forEach((item,index)=>{
@@ -229,6 +231,13 @@ export default {
     }else{
       this.getUserFriendsList();
     }
+  },
+  onPullDownRefresh () {
+    if(this.currentTab == 1){
+      this.getUserNewFriendsList();
+    }else{
+      this.getUserFriendsList();
+    };
   }
 }
 </script>

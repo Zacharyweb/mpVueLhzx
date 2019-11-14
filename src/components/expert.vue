@@ -3,31 +3,32 @@
     <div class="top_block">
       <img class="experts_avatar" :src="expertData.avatarUrl">
       <div class="top_block_right">
+
         <div class="experts_msg1">
           <div class="experts_name">
             <span class="experts_nickname">{{expertData.nickName}}</span>
-            <span class="experts_experience">{{expertData.majorYearsDesc}}{{i18n.experience}}</span>
+            <span class="experts_experience">{{expertData.majorYearsDesc}}</span>
           </div>
           <span class="status" v-if="expertData.workStatus == 1">{{i18n.Open}}</span>
           <span class="status grey" v-else>{{i18n.Closed}}</span>
-
           <!-- <span class="consult_msg">{{expertData.relationCount}}位关系户已咨询过</span> -->
         </div>
+        
         <div class="experts_msg2">
-          <span class="experts_position">{{expertData.companyPosition}}{{expertData.companyName?'（' + expertData.companyName + '）':''}}</span>
+          <span class="experts_position">{{expertData.companyPosition}}{{expertData.companyName?' | ' + expertData.companyName:''}}</span>
         </div>
        
         <div class="experts_msg3">
           <div class="experts_location">
-            <img src="../../static/img/hy_icon.png">{{expertData.businessArea}}
+            <img src="../../static/img/hy_icon.png">{{expertData.businessArea}}-{{expertData.goodAtBusiness}}
           </div>
           <span class="devide_line"></span>
           <div class="experts_experience">
-            <img src="../../static/img/zy_icon.png">{{expertData.goodAtBusiness}}
+            <img src="../../static/img/location_icon.png">{{expertData.companyAddress}}
           </div>
 
-          <div class="has_relation" @click.stop="linkTo('/pages/expertDetail/index',1)">
-            <img src="../../static/img/index_relation_icon1.png">
+          <div class="has_relation" @click.stop="linkTo('/pages/expertDetail/index',1)" v-if="expertData.relationCount > 0">
+            <img src="../../static/img/center_icon2.png">
           </div>
         </div>
       </div>
@@ -73,15 +74,21 @@ export default {
 <style lang="less" scoped>
  .experts_item{
     // height: 183px;
-    // .top_block{
-    //    height: 128px;
-    //   .experts_avatar{
-    //     width: 90px;
-    //     height: 90px;
-    //   }
-    //   .top_block_right{
-    //   }
-    // }
+    .top_block{
+        //  min-height: 108px;
+         min-height: 86px;
+         display: flex;
+        //  align-items: center;
+         padding: 11px 0;
+        .experts_avatar{
+          margin-top: 8px;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          border: 3px solid #e6e8eb; 
+          margin-right: 10px;
+        }
+    }
     .bottom_block{
       // flex-direction: column;
       // justify-content: center;

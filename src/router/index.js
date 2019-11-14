@@ -1,10 +1,9 @@
 module.exports = [
-
   // 首页
   {
     path: 'pages/index/index',
     config: {
-      navigationBarTitleText: '咨询堂',
+      navigationBarTitleText: '问税易',
       usingComponents: {
         "van-search": "/static/vant/search/index",
         "van-tag": "/static/vant/tag/index",
@@ -14,32 +13,14 @@ module.exports = [
       }
     }
   },
-  
   // 登录
   {
     path: 'pages/login/index',
     config: {
       navigationBarTitleText: '登录',
-      usingComponents: {
-
-      }
     }
   },
 
-  // 使用说明
-  {
-    path: 'pages/useNotice/index',
-    config: {
-      navigationBarTitleText: '使用说明',
-      usingComponents: {
-        "van-steps": "/static/vant/steps/index",
-        "van-field":"/static/vant/field/index",
-        "van-cell-group":"/static/vant/cell-group/index",
-        "van-dialog": "/static/vant/dialog/index"
-      }
-    }
-  },
-  
   // 搜索页面
   {
     path: 'pages/search/index',
@@ -78,10 +59,9 @@ module.exports = [
   {
     path: 'pages/chatRoom/index',
     config: {
-      navigationBarTitleText: '咨询室',
+      navigationBarTitleText: '问候聊天',
       usingComponents: {
-        // "van-field":"/static/vant/field/index",
-        // "van-stepper": "/static/vant/stepper/index"
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },
@@ -126,7 +106,7 @@ module.exports = [
   {
     path: 'pages/consult/index',
     config: {
-      navigationBarTitleText: '咨询订单',
+      navigationBarTitleText: '问答',
       usingComponents: {
         "van-tag": "/static/vant/tag/index",
         "van-action-sheet": "/static/vant/action-sheet/index"
@@ -138,7 +118,7 @@ module.exports = [
   {
     path: 'pages/consultDetail/index',
     config: {
-      navigationBarTitleText: '咨询详情',
+      navigationBarTitleText: '问答详情',
       usingComponents: {
         "van-stepper": "/static/vant/stepper/index",
         "van-datetime-picker": "/static/vant/datetime-picker/index",
@@ -216,17 +196,7 @@ module.exports = [
     }
   },
 
-  // 选择好友(好像没什么用现在)
-  // {
-  //   path: 'pages/selectFriend/index',
-  //   config: {
-  //     navigationBarTitleText: '选择好友',
-  //     usingComponents: {
-  //       "van-tab": "/static/vant/tab/index",
-  //       "van-tabs": "/static/vant/tabs/index"
-  //     }
-  //   }
-  // },
+
  
   // 个人中心
   {
@@ -243,7 +213,7 @@ module.exports = [
    {
     path: 'pages/baseMsg/index',
     config: {
-      navigationBarTitleText: '基础信息',
+      navigationBarTitleText: '本人',
       usingComponents: {
       
       }
@@ -254,7 +224,8 @@ module.exports = [
    {
     path: 'pages/myRelation/index',
     config: {
-      navigationBarTitleText: '我的关系',
+      navigationBarTitleText: '关系',
+      enablePullDownRefresh: true,
       usingComponents: {
         "van-dialog": "/static/vant/dialog/index",
         "van-tab": "/static/vant/tab/index",
@@ -266,7 +237,7 @@ module.exports = [
   {
     path: 'pages/myCustomer/index',
     config: {
-      navigationBarTitleText: '我的客户',
+      navigationBarTitleText: '客户',
       usingComponents: {
         "van-tab": "/static/vant/tab/index",
         "van-tabs": "/static/vant/tabs/index",
@@ -278,7 +249,7 @@ module.exports = [
   {
     path: 'pages/myExpert/index',
     config: {
-      navigationBarTitleText: '我的专家',
+      navigationBarTitleText: '专家',
       usingComponents: {
         "van-tab": "/static/vant/tab/index",
         "van-tabs": "/static/vant/tabs/index",
@@ -286,11 +257,11 @@ module.exports = [
     }
   },
 
-  // 成为专家概述
+  // 专家注册概述
   {
     path: 'pages/becomeExpertPre/index',
     config: {
-      navigationBarTitleText: '成为专家概述',
+      navigationBarTitleText: '专家注册概述',
       usingComponents: {
         "van-steps": "/static/vant/steps/index",
         "van-area": "/static/vant/area/index"
@@ -298,18 +269,17 @@ module.exports = [
     }
   },
 
-  // 专家信息
+  // 专家注册
   {
     path: 'pages/becomeExpert/index',
     config: {
-      navigationBarTitleText: '专家信息',
+      navigationBarTitleText: '专家注册',
       usingComponents: {
         "van-steps": "/static/vant/steps/index",
         "van-area": "/static/vant/area/index"
       }
     }
   },
-
 
   // 设置
   {
@@ -323,100 +293,30 @@ module.exports = [
     }
   },
 
-  // 我的订单
-  // {
-  //   path: 'pages/myOrders/index',
-  //   config: {
-  //     navigationBarTitleText: '我的订单',
-  //     usingComponents: {
-  //     "van-tag": "/static/vant/tag/index"
-  //     }
-  //   }
-  // },
+  // 帮助
+  {
+    path: 'pages/helpCenter/index',
+    config: {
+      navigationBarTitleText: '帮助',
+    }
+  },
 
-  // 订单详情
-  // {
-  //   path: 'pages/orderDetail/index',
-  //   config: {
-  //     navigationBarTitleText: '订单详情',
-  //     usingComponents: {
-  //       "van-tag": "/static/vant/tag/index"
-  //     }
-  //   }
-  // },
-
-  // 账单明细
-  // {
-  //   path: 'pages/billList/index',
-  //   config: {
-  //     navigationBarTitleText: '账单明细',
-  //     usingComponents: {
-  //       "van-tab": "/static/vant/tab/index",
-  //       "van-tabs": "/static/vant/tabs/index",
-  //       "van-datetime-picker": "/static/vant/datetime-picker/index"
-  //     }
-  //   }
-  // },
-
-  // 账单详情
-  // {
-  //   path: 'pages/billDetail/index',
-  //   config: {
-  //     navigationBarTitleText: '账单详情',
-  //     usingComponents: {
-    
-  //     }
-  //   }
-  // },
-
-  // 提现
-  // {
-  //   path: 'pages/cash/index',
-  //   config: {
-  //     navigationBarTitleText: '提现',
-  //     usingComponents: {
-  //       "van-field":"/static/vant/field/index"
-        
-  //     }
-  //   }
-  // },
-
-  // 修改手机
-  // {
-  //   path: 'pages/editMobile1/index',
-  //   config: {
-  //     navigationBarTitleText: '修改手机号',
-  //     usingComponents: {
-  //       "van-field":"/static/vant/field/index",
-  //       "van-cell-group":"/static/vant/cell-group/index",
-  //       "van-dialog": "/static/vant/dialog/index"
-  //     }
-  //   }
-  // },
-
-  // 修改手机
-  // {
-  //   path: 'pages/editMobile2/index',
-  //   config: {
-  //     navigationBarTitleText: '修改手机号',
-  //     usingComponents: {
-  //       "van-field":"/static/vant/field/index",
-  //       "van-cell-group":"/static/vant/cell-group/index",
-  //       "van-dialog": "/static/vant/dialog/index"
-  //     }
-  //   }
-  // },
-
-  // 银行卡
-  // {
-  //   path: 'pages/bankCard/index',
-  //   config: {
-  //     navigationBarTitleText: '银行卡',
-  //     usingComponents: {
-  //       "van-field":"/static/vant/field/index",
-  //       "van-cell-group":"/static/vant/cell-group/index",
-  //       "van-dialog": "/static/vant/dialog/index"
-  //     }
-  //   }
-  // } 
+  {
+    path: 'pages/useNotice/index',
+    config: {
+      navigationBarTitleText: '使用说明',
+    }
+  },
+  {
+    path: 'pages/userHelp/index',
+    config: {
+      navigationBarTitleText: '常见问题',
+    }
+  },
+  {
+    path: 'pages/userProtocol/index',
+    config: {
+      navigationBarTitleText: '用户协议',
+    }
+  },
 ]

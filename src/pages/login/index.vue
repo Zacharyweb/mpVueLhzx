@@ -288,19 +288,19 @@ export default {
         });
     }
   },
-  created() {},
-  mounted() {},
+
   onLoad(options) {
+    console.log('login')
     this.fromType = options.fromType || 0;
     this.fromUserId = options.userId || 0;
     this.shareExpertId = options.expertId || 0;
-
     this.mobile = "";
     this.vcode = "";
     this.showLoginPage = false;
     this.checkIfLogin();
   },
   onShow() {
+    console.log('login Show')
     this.status = 1;
     this.time = 60;
     this.timeText = "60";

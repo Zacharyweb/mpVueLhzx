@@ -11,7 +11,7 @@
         <li class="form_item">
           <div class="item_name">{{i18n.user_name}}</div>
           <div class="item_content">
-            <input type="text" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入昵称，用于平台展示':'please enter'" v-model="nickName">
+            <input type="text" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入你希望使用的昵称':'please enter'" v-model="nickName">
           </div>
         </li>
         <li class="form_item">
@@ -23,7 +23,7 @@
         <li class="form_item textarea_item">
           <div class="item_name">{{i18n.Introduction}}</div>
           <div class="item_content">
-            <textarea class="more_height" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入自我介绍信息':'please enter'"  maxlength='-1' v-model="aboutUserDesc"></textarea>
+            <textarea class="more_height" :placeholder="i18n.LANGTYPE == 'cn_j'?'请介绍一下你自己，让专家能对你有所了解，便于接单和作答':'please enter'"  maxlength='-1' v-model="aboutUserDesc"></textarea>
           </div>
         </li>
       </ul>
@@ -32,7 +32,7 @@
         <div class="btn large green" @click="updateUserBaseInfo">{{i18n.Confirm}}</div>
       </div>
       <div class="btn_block2">
-        <div class="btn large green plain" @click="linkTo('/pages/becomeExpertPre/index')">{{i18n.Advisor_registration}}</div>
+        <div class="btn large green plain" @click="becomeExpert">{{i18n.Advisor_registration}}</div>
       </div>
     </div>
     <!-- <div class="change_mobile">
@@ -160,6 +160,14 @@ export default {
     },
     linkTo(path){
       this.$router.push(path);
+    },
+    becomeExpert(){
+      this.$router.push('/pages/becomeExpertPre/index');
+      // if(this.userData && this.userData.isExpert == 1){
+      //   this.$router.push('/pages/becomeExpert/index');
+      // }else{
+      //   this.$router.push('/pages/becomeExpertPre/index');
+      // }
     }
   },
   onLoad(){

@@ -119,7 +119,7 @@ export default {
         },
         {
           targetId:2,
-          name: '固定',
+          name: '自由',
           subname:  '打开后自主切换营业和休息状态',
         }
       ],

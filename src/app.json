@@ -2,7 +2,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "咨询堂/Advisory",
+    "navigationBarTitleText": "问税易/Advisory",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -19,7 +19,7 @@
       },
       {
         "pagePath": "pages/consult/index",
-        "text": "咨询",
+        "text": "问答",
         "iconPath": "static/img/chat.png",
         "selectedIconPath": "static/img/chat2.png"
       },

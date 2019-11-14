@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="mine_top_block">
-      <!-- <img class="bg_img" src="../../../static/img/center_bg.png"> -->
       <div class="msg_icon_box" v-if="userData && userData.accessToken">
         <img class="msg_icon" src="../../../static/img/msg_icon.png" @click="toMsgList">
         <span class="new_msg_dot"></span>
@@ -9,21 +8,17 @@
       
       <img class="bg_img" src="../../../static/img/center_bg2.png">
       <div class="mine_msg">
- 
         <img class="mine_avatar" v-if="userData && userData.avatarUrl" :src="userData.avatarUrl">
         <img class="mine_avatar" v-else src="../../../static/img/df_avatar.jpg">
-        <!-- <img class="right_arrow" @click="linkTo('/pages/baseMsg/index')" src="../../../static/img/arrow_right2.png"> -->
         <div class="login_block" v-if="!userData || !userData.accessToken">
           <div class="no_login_tip">{{i18n.not_logged_in}}</div>
           <div class="action_btn" @click="toLoginPage">{{i18n.login_or_register}}</div>
-          <!-- <button class="action_btn" @getuserinfo="onGotUserInfo" open-type="getUserInfo">登录/注册</button> -->
         </div>
 
         <div class="mine_txt_msg" v-if="userData && userData.accessToken">
           <div v-if="userData.isExpert == 1">
             <div class="mine_txt_line">
                <span class="mine_nick">{{userData.nickName}}</span>
-               <!-- <span class="mine_position" v-show="mineData.companyPositio">{{mineData.companyPosition}}</span> -->
             </div>
             <div class="mine_txt_line mt-10"  @click="linkTo('/pages/set/index')" v-show="userData.workStatus">
               <span class="mine_status" v-if="userData.workStatus == 1">{{i18n.Open}}</span>
@@ -32,6 +27,7 @@
               <img class="arrow_icon" src="../../../static/img/arrow_down.png">
             </div>
           </div>
+
           <div v-else>
             <div class="mine_txt_line">
                <span class="mine_nick">{{userData.nickName}}</span>
@@ -46,9 +42,6 @@
       <form  @submit="addUserFormId" :report-submit="true" v-if="userData && userData.accessToken">
         <div class="mine_account">
             <div class="mine_amount">
-              <!-- <div class="amount">
-                {{noticeNum}}<span>次</span>
-              </div> -->
               <div class="item_name">{{i18n.LANGTYPE == 'cn_j'?'剩余推送消息通知次数':'Number of Remaining Push Message Notifications'}}<span class="amount">{{noticeNum}}</span></div>
             </div>
             <div class="action_btns">
@@ -57,74 +50,64 @@
             </div>
         </div>
       </form>
-
     </div>
 
     <ul class="router_list">
-      <li class="router_item" @click="linkTo('/pages/baseMsg/index')">
+      <li class="router_item" @click="linkTo('/pages/baseMsg/index',true)">
         <div class="item_left">
           <img src="../../../static/img/center_icon6.png">
-          {{i18n.me}}
+          本人
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/myRelation/index')">
+      <li class="router_item" @click="linkTo('/pages/myRelation/index',true)">
         <div class="item_left">
           <img src="../../../static/img/center_icon2.png">
-          {{i18n.friends}}
+          关系
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/myExpert/index')">
+      <li class="router_item" @click="linkTo('/pages/myExpert/index',true)">
         <div class="item_left">
           <img src="../../../static/img/center_icon1.png">
-          {{i18n.advisors}}
+          专家
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
 
-      <li class="router_item" @click="linkTo('/pages/myCustomer/index')" v-if="userData && userData.isExpert == 1">
+      <li class="router_item" @click="linkTo('/pages/myCustomer/index',true)" v-if="userData && userData.isExpert == 1">
         <div class="item_left">
           <img src="../../../static/img/center_icon2.png">
-          {{i18n.clients}}
+          客户
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
 
-      <!-- <li class="router_item" @click="linkTo('/pages/becomeExpert/index')">
-        <div class="item_left">
-          <img src="../../../static/img/center_icon4.png">
-          {{ userData && userData.isExpert == 1 ?'修改专业信息':'成为专家'}}
-        </div>
-        <div class="item_right">
-          <img  src="../../../static/img/arrow_right.png">
-        </div>
-      </li> -->
-
-      <li class="router_item" @click="linkTo('/pages/set/index')">
+  
+      <li class="router_item" @click="linkTo('/pages/set/index',true)">
         <div class="item_left">
           <img src="../../../static/img/center_icon5.png">
-          {{i18n.settings}}
+          设置
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
       
-      <li class="router_item" @click="linkTo('/pages/useNotice/index',true)">
+      <li class="router_item" @click="linkTo('/pages/helpCenter/index')">
         <div class="item_left">
           <img src="../../../static/img/center_icon7.png">
-           {{i18n.user_guide}}
+           帮助
         </div>
         <div class="item_right">
           <img  src="../../../static/img/arrow_right.png">
@@ -149,7 +132,6 @@ import { setTimeout } from 'timers';
 export default {
  data () {
     return {
-      loginStatus:'Y',
       mineData:{},
       noticeNum:0
     }
@@ -195,22 +177,25 @@ export default {
       })
     },
 
-    linkTo(path,notNeedLogin){
-      if(notNeedLogin || this.loginStatus == 'Y'){
-        this.$router.push(path);
+    linkTo(path,needLogin){
+      if(needLogin){
+        if(this.userData && this.userData.accessToken){
+          this.$router.push(path);
+        }else{
+          wx.showToast({
+            title: '请先完成登录',
+            icon: 'none',
+            duration: 1500
+          })
+        }
       }else{
-        wx.showToast({
-          title: '请先完成登录',
-          icon: 'none',
-          duration: 1500
-        })
+        this.$router.push(path);
       }
     },
     toLoginPage(){
       this.$router.push({path:'/pages/login/index'});
     },
     toMsgList(){
-      console.log('111111111111');
       this.$router.push({path:'/pages/msgList/index'});
     },
     toLoginByWX(){

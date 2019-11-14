@@ -11,24 +11,19 @@
         <img class="sx_icon" v-show="selectedHy || selectedKs" src="../../../static/img/sx_active.png" @click="sxPanelShow = true;">
         <img class="sx_icon" v-show="!selectedHy && !selectedKs" src="../../../static/img/sx_grey.png" @click="sxPanelShow = true;">
     </div>
-    <div class="tab_fix_wrap" v-show="tabFixedFlag">
+
+    <!-- <div class="tab_fix_wrap" v-show="tabFixedFlag">
        <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
           <van-tab v-for="(item,index) in tagsList" :key="index" :title="item"></van-tab>
         </van-tabs>
-        <!-- <div class="top_tips" @click="toConsultList">
-           <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
-        </div> -->
     </div>
 
     <div id="tabStaticWrap">
       <van-tabs color="#1fb7b6" :active="currentTab" @change="onTabsChange">
         <van-tab  v-for="(item,index) in tagsList" :key="index" :title="item"></van-tab>
       </van-tabs>
-    </div>
-
-    <!-- <div class="top_tips" @click="toConsultList">
-       <img src="../../../static/img/notice_icon.png">您有咨询订单状态已更新，请及时查看。
     </div> -->
+
 
     <div class="experts_list" v-if="expertsList.length > 0">
       <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
@@ -169,7 +164,8 @@ export default {
         if(res && res.code == 1){
           that.tagsList = res.data;
           that.currentTab = 0;
-          that.major = res.data[0];
+          // that.major = res.data[0];
+          that.major = '税务';
           that.expertsList = [];
           that.getAllExperts();
         }
@@ -219,6 +215,9 @@ export default {
     getAllExperts () {
       let that = this;
       that.isLoading = true;
+      if(!this.major){
+        this.major = '税务';
+      };
       that.$http.request({
         url:'GetExpertList',
         data: {
@@ -238,7 +237,7 @@ export default {
           that.isNomore = true;
         }else{
           res.data.forEach(item => {
-            // item.companyAddress = item.companyAddress.split('-')[1] || item.companyAddress.split('市')[0] + '市';
+            item.companyAddress = item.companyAddress ? item.companyAddress.split('-')[1] :'未知';
           });
         }
         if(that.pageIndex == 0){
@@ -468,20 +467,7 @@ export default {
   left: 0;
   z-index: 2;
 }
-.top_tips{
-  background-color: #f3fbfb;
-  height: 28px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  padding:0 15px;
-  color: #1fb7b6;
-  img{
-    margin-right: 10px;
-    width: 16px;
-    height: 16px;
-  }
-}
+
 .experts_list{
   
 }

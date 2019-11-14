@@ -147,7 +147,7 @@ export default {
 
     toSelectOtherExpert(){
       if(this.friendsList.length == 0){
-        this.showToast(this.i18n.LANGTYPE == 'cn_j'?'没有可选择的专家好友':'no relevant data');
+        this.showToast('没有可选择的专家好友');
         return;
       }
       this.friendsListShow = true;
@@ -185,12 +185,12 @@ export default {
     submit(){
       let closeDesc;
       if(this.rejectResonId == 1){
-        closeDesc = this.i18n.LANGTYPE == 'cn_j'?'不好意思，最近忙不过来，希望下次能再为你服务。':'Sorry,too busy to work on this.Hope that Ican be of service next time';
+        closeDesc = '不好意思，最近忙不过来，希望下次能再为你服务。';
       }else if(this.rejectResonId == 2){
-        closeDesc = this.i18n.LANGTYPE == 'cn_j'?'不好意思，这个问题不在我的专业领域，希望下次能再为你服务。':'Sorry,this question is beyond my area of expertise.Hope that Ican be of servise next time';
+        closeDesc = '不好意思，这个问题不在我的专业领域，希望下次能再为你服务。';
       }else{
         if(!this.closeDesc){
-           this.showToast(this.i18n.LANGTYPE == 'cn_j'?'请填写其他原因':'please enter other reason');
+           this.showToast('请填写其他原因');
            return;
         }else{
           closeDesc = this.closeDesc;
@@ -198,9 +198,8 @@ export default {
       }
       Dialog.confirm({
         title: this.i18n.Confirm_decline,
-        message: this.i18n.LANGTYPE == 'cn_j'?'您确定取消该订单吗？':'Are you sure close this order?'
+        message: '您确定取消该订单吗？'
       }).then(() => {
-    
         this.$http.request({
           url:'ExpertClosed',
           data:{

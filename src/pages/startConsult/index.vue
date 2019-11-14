@@ -8,34 +8,25 @@
             <div class="experts_msg1">
               <div class="experts_name">
                 <span class="experts_nickname">{{expertData.nickName}}</span>
-                <!-- <span class="sub_position_text">{{expertData.companyPosition}}</span> -->
               </div>
             </div>
-            <!-- <div class="experts_msg2">
-            <span class="respond_time"><span>{{expertData.responseTime}}</span>分钟内回应，<span>{{expertData.answeringTime/60}}</span>小时内作答</span>
-            </div>-->
+          
             <div class="experts_msg3">
               <div class="experts_location">
-                <!-- <img src="../../../static/img/location_icon.png"> -->
-                {{expertData.companyPosition}}
-              </div>
-              <span class="devide_line"></span>
-              <div class="experts_experience">
-                {{expertData.companyName}}
-                <!-- <img src="../../../static/img/time_icon.png">{{expertData.majorYearsDesc}}工作经验 -->
+                {{expertData.companyPosition}}&nbsp;|&nbsp;{{expertData.companyName}}
               </div>
             </div>
           </div>
         </div>
         <div class="cost_tips">
-          <span class="cost_text">￥{{expertData.oneOfCost}}</span>
+          <!-- <span class="cost_text">￥{{expertData.oneOfCost}}</span> -->
+          <span class="cost_text">￥35</span>
+
         </div>
       </div>
 
       <div class="order_form_panel">
-        <!-- <div class="panle_block">
-        <div class="block_title mb0">预计费用&nbsp;<span class="cost_text">{{expertData.oneOfCost}}</span>&nbsp;元</div>
-        </div>-->
+      
         <div class="panle_block">
           <div class="block_title">{{i18n.Introduction}}</div>
           <div class="problem_content">
@@ -168,7 +159,7 @@ export default {
         wx.showToast({
           title:
             this.i18n.LANGTYPE == "cn_j"
-              ? "请填写咨询费用"
+              ? "请填写咨询的问题"
               : "please enter query",
           icon: "none",
           duration: 1500
@@ -193,7 +184,8 @@ export default {
             expertId: this.expertId,
             userDesc: this.orderUserDesc,
             questionRemark: this.questionRemark,
-            price: this.expertData.oneOfCost,
+            // price: this.expertData.oneOfCost,
+            price: 35,
             formId: e.mp.detail.formId
             // quantity: 1,
             // orderUserDesc: this.orderUserDesc,
@@ -215,7 +207,7 @@ export default {
               duration: 1500
             });
             setTimeout(() => {
-              this.updateConsultListTab(0);
+              this.updateConsultListTab(1);
               wx.switchTab({
                 url: "/pages/consult/index"
               });

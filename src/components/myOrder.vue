@@ -43,8 +43,8 @@
 
     </div>
     <div class="other_msg_block" v-if="orderData.status == 0">
-      <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">专家会在 <span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span>分钟内接单</span>
-      <span class="other_msg" v-else>addvisor will respond in <span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span> minutes</span>
+      <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">专家会在 <span class="other_msg_text">{{orderData.responseTime}}</span>分钟内接单</span>
+      <span class="other_msg" v-else>addvisor will respond in <span class="other_msg_text">{{orderData.responseTime}}</span> minutes</span>
     </div>
 
     <div class="other_msg_block" v-if="orderData.status == 1">

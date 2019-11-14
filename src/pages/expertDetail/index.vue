@@ -30,7 +30,8 @@
       </div>
 
       <div class="absolute_msg">
-        <div class="query_fee">每次￥{{expertData.oneOfCost}}</div>
+        <!-- <div class="query_fee">每次￥{{expertData.oneOfCost}}</div> -->
+        <div class="query_fee">每次￥35</div>
         <div class="work_status">
           <span class="status" v-if="expertData.workStatus == 1">{{i18n.Open}}</span>
           <span class="status grey" v-else>{{i18n.Closed}}</span>
@@ -68,12 +69,12 @@
           <span class="msg_content">{{expertData.goodAtBusiness}}</span>
         </div>
         <div class="base_msg">
-          <span class="msg_name">工作介绍：</span>
-          <span class="msg_content">{{expertData.lifeAndFeelDesc}}</span>
+          <span class="msg_name">服务特长：</span>
+          <span class="msg_content">{{expertData.policyInterpretation}}</span>
         </div>
         <div class="base_msg">
-          <span class="msg_name">政策解读：</span>
-          <span class="msg_content">{{expertData.policyInterpretation}}</span>
+          <span class="msg_name">专业背景：</span>
+          <span class="msg_content">{{expertData.workDesc}}</span>
         </div>
 
         <div class="base_msg">
@@ -155,7 +156,7 @@
         <div class="chat_text">{{i18n.chat}}</div>
       </div>
       <div class="query_btn flex_btn" :class="{'disabled': expertData.workStatus != 1}">
-        <span @click="toContact" v-if="expertData.workStatus == 1">{{i18n.Ask}}</span>
+        <span @click="toContact" v-if="expertData.workStatus == 1">发起提问</span>
         <span v-else>{{i18n.Closed}}</span>
       </div>
     </div>
@@ -216,25 +217,7 @@ export default {
       imgSwiperShow: false,
       swiperCurrent: 2,
       expertData: null,
-      // expertData:{
-      //   avatarUrl:'',
-      //   nickName:'朱两边',
-      //   workStatus:1,
-      //   companyPosition:'工程师',
-      //   companyName:'阿拉丁',
-      //   address:'杭州',
-      //   majorYearsDesc:'10-15年',
-      //   followCount:'10',
-      //   consultedCount:'20',
-      //   businessArea:'国内挂科',
 
-      //   goodAtBusiness:'内科',
-      //   responseTime:'5',
-      //   lifeAndFeelDesc:'三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是三顿饭看萨达科室萨达是',
-      //   outLink:[{name:'作品1',link:'www.baidu.com'},{name:'作品2',link:'www.baidu.com'},{name:'作品333333',link:'www.baidu.com'},],
-      //   photosList:['https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=320178652,790985626&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3974834430,2578081919&fm=26&gp=0.jpg','https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=320178652,790985626&fm=26&gp=0.jpg',],
-      //   policyInterpretation:'萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达萨达sad哈萨克的速度快和萨达',
-      // },
       userId:"0",
       expertId: "",
       commentData: [],
@@ -273,7 +256,7 @@ export default {
   mounted() {},
   onShareAppMessage(obj) {
     return {
-      title: "您的好友" + this.userData.nickName + "向你推荐一位咨询堂专家",
+      title: "您的好友" + this.userData.nickName + "向你推荐一位问税易专家",
       path:
         "/pages/login/index?userId=" +
         this.userId +
@@ -296,10 +279,17 @@ export default {
     },
     toContact() {
       // this.actionSheetShow = true;
-      this.$router.push({
-        path: "/pages/startConsult/index",
-        query: { expertId: this.expertId }
-      });
+      if(this.userData && this.userData.accessToken){
+        this.$router.push({
+          path: "/pages/startConsult/index",
+          query: { expertId: this.expertId }
+        });
+      }else{
+        this.toLoginPage();
+      }
+    },
+    toLoginPage(){
+      this.$router.push({path:'/pages/login/index'});
     },
     onCloseActionSheet() {
       this.actionSheetShow = false;
@@ -312,14 +302,18 @@ export default {
       this.actionSheetShow = false;
     },
     toChatRoom() {
-      this.$router.push({
-        path: "/pages/chatRoom/index",
-        query: {
-          userId: this.userId,
-          expertId: this.expertId,
-          cost: this.expertData.oneOfCost
-        }
-      });
+      if(this.userData && this.userData.accessToken){
+        this.$router.push({
+          path: "/pages/chatRoom/index",
+          query: {
+            userId: this.userId,
+            expertId: this.expertId,
+            cost: this.expertData.oneOfCost
+          }
+        });
+      }else{
+        this.toLoginPage();
+      }
     },
     showImgSwiper(index) {
       this.swiperCurrent = index;
@@ -327,11 +321,7 @@ export default {
     },
     getInitData(id) {
       let url = API["GetUserDetail"] + id;
-      this.$http
-        .request({
-          url: url
-        })
-        .then(res => {
+      this.$http.request({url: url}).then(res => {
           let expertData = {};
 
           let result = res.data;
@@ -503,7 +493,7 @@ export default {
       color: #1fb7b6;
     }
     .work_status {
-      margin-top: 5px;
+      margin-top: 10px;
       .status {
         font-size: 12px;
         color: #1fb7b6;

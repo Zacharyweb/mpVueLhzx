@@ -3,7 +3,7 @@
     <div class="chat_room" :class="{'isX':isX}"> 
       <div class="consult_tips_panel" @click="toContact">
         <span class="tips_text">初步咨询满意的话可下单咨询哦~</span>
-        <span class="consule_btn">马上咨询 {{cost}}元/次</span>
+        <span class="consule_btn">马上咨询 35元/次</span>
       </div>
 
       <scroll-view scroll-y  :scroll-top="sTop" class="chat_content">
@@ -34,11 +34,13 @@
         </div>
       </div>
     </div>
+    <van-dialog id="van-dialog"/>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex';
+import Dialog from '../../../static/vant/dialog/dialog';
 import util from '../../utils/index.js'
 export default {
   data(){
@@ -70,6 +72,7 @@ export default {
     this.userId = options.userId;
     this.expertId = options.expertId;
     this.cost = options.cost;
+    this.getExpertIfOline();
     this.getChatData();
   },
   methods: {
@@ -97,21 +100,41 @@ export default {
         url: '/pages/index/index'
       });
     },
+    getExpertIfOline(){
+      let online = true;
+      if(online){
+        Dialog.alert({
+          title: '提示',
+          message: '专家在线，发起问候后专家随即进入聊天室',
+          confirmButtonText:'知道了',
+        }).then(() => {
+          // on close
+        });
+      }else{
+        Dialog.alert({
+          title: '提示',
+          message: '请在聊天室留言专家会随后回复的',
+          confirmButtonText:'知道了',
+        }).then(() => {
+          // on close
+        });
+      }
+    },
     getChatData(){
-      this.$http.request({
-        url:'GetChatData',
-        data:{
-          userId: this.userId,
-          isExpert: this.expertId
-        },
-        flyConfig:{
-          method: 'post'
-        }
-      }).then(res => {
-        if(res.code == 1){
-          this.loopGetData();
-        }
-      })
+      // this.$http.request({
+      //   url:'GetChatData',
+      //   data:{
+      //     userId: this.userId,
+      //     isExpert: this.expertId
+      //   },
+      //   flyConfig:{
+      //     method: 'post'
+      //   }
+      // }).then(res => {
+      //   if(res.code == 1){
+      //     this.loopGetData();
+      //   }
+      // })
     },
     toContact(){
       this.$router.push({

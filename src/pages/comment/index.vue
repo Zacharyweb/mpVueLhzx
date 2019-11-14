@@ -255,7 +255,7 @@ export default {
   },
   onShareAppMessage(obj){
       return {
-        title: '您的好友' + this.userData.nickName + '邀请您加入咨询堂',
+        title: '您的好友' + this.userData.nickName + '邀请您加入问税易',
         path:'/pages/login/index?userId=' + this.userData.userId + '&expertId=' + this.expertId + '&fromType=2',
         // imageUrl:'/static/img/share_test_img.png'
       }
@@ -396,8 +396,6 @@ export default {
       }else{
         this.commitComment();
       }
-      
-
       // let list = [];
       // if(this.friendsVisible == 2){
       //   if(this.visibleFriendsList.length == 0){

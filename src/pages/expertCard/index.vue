@@ -37,7 +37,7 @@
         </div>
         <div class="bottom">
           <div class="action_btn" @click="linkTo('/pages/expertDetail/index?id=' + expertId)">查看专家详情</div>
-          <div class="action_btn2" @click="toIndex">进入咨询堂</div>
+          <div class="action_btn2" @click="toIndex">进入问税易</div>
         </div>
         
       </div>

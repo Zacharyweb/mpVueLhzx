@@ -82,15 +82,15 @@
           </li>
 
           <li class="form_item required">
-            <div class="item_name">{{i18n.position}}</div>
+            <div class="item_name">职位</div>
             <div class="item_content">
-              <input v-model="companyPosition" type="text" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入职务':'please enter'" :disabled="isChecked == 'Y'">
+              <input v-model="companyPosition" type="text" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入职位':'please enter'" :disabled="isChecked == 'Y'">
             </div>
           </li>
           <li class="form_item no_border required textarea_item">
-            <div class="item_name">{{i18n.About_your_work}}</div>
+            <div class="item_name">专业背景</div>
             <div class="item_content">
-              <textarea class="more_height" v-model="workDesc" :placeholder="i18n.LANGTYPE == 'cn_j'?'介绍一下与专业工作相关的方方面面，比如：专业的培训、在单位部门的贡献、解决税务争议的窍门、处理涉税问题的心得等':'please enter'" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" v-model="workDesc" :placeholder="i18n.LANGTYPE == 'cn_j'?'请介绍一下你的专业背景情况，比如教育培训、资质考试、职责职务、专业方面的贡献等':'please enter'" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
         </ul>
@@ -169,16 +169,16 @@
           </li> -->
 
           <li class="form_item required textarea_item">
-            <div class="item_name">{{i18n.In_one_line}}</div>
+            <div class="item_name">一句话</div>
             <div class="item_content">
-              <textarea v-model="lifeAndFeelDesc" class="more_height" :placeholder="i18n.LANGTYPE == 'cn_j'?'关于您最擅长的业务或最强的优势，比如，专攻股票税收':'please enter'"  maxlength='30' :disabled="isChecked == 'Y'"></textarea>
+              <textarea v-model="lifeAndFeelDesc" class="more_height" :placeholder="i18n.LANGTYPE == 'cn_j'?'请用一句话告诉用户你最擅长的业务、你最强的能力或你最大的优势，以便用户能快速找到他们需要最好的资源。（限24个字）':'please enter'"  maxlength='24' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
           <li class="form_item required textarea_item">
-            <div class="item_name">{{i18n.policy_commentary}}</div>
+            <div class="item_name">服务特长</div>
             <div class="item_content">
-              <textarea class="more_height" v-model="policyInterpretation" :placeholder="i18n.LANGTYPE == 'cn_j'?'分享您对个别税收问题的解读，比如，政策出台的背景、对业务的的影响和应对的方法等':'please enter'" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
+              <textarea class="more_height" v-model="policyInterpretation" :placeholder="i18n.LANGTYPE == 'cn_j'?'请描述你最拿手的业务或你最希望提供的服务，比如申请税收优惠':'please enter'" maxlength='-1' :disabled="isChecked == 'Y'"></textarea>
             </div>
           </li>
 
@@ -212,7 +212,7 @@
             <div class="block_title">
               <span>{{i18n.upload_photos}}</span>
               <div class="more_explain">
-                <p>{{i18n.LANGTYPE == 'cn_j'?'专业证照、单位合影等':'such as professional license'}}</p>
+                <p>{{i18n.LANGTYPE == 'cn_j'?'专业证照、行业合影等与你专业有关的照片':'such as professional license'}}</p>
               </div>
             </div>
             <div class="problem_content">
@@ -236,10 +236,13 @@
      
     <div v-show="stepFlag == 2 || stepFlag == 3">
       <div class="panle_block">
-        <div class="block_title">{{i18n.advisory_settings}}</div>
+        <div class="block_title">
+          <span>{{i18n.advisory_settings}}</span>
+          
+        </div>
         <ul class="form_list">
           <li class="form_item required tags_item textarea_item">
-            <div class="item_name">{{i18n.response_time}}</div>
+            <div class="item_name">{{i18n.response_time}}<span>(收到订单后到回复是否接单的时间)</span></div>
             <div class="item_content">
               <div class="item_tags">
                 <span class="tag_item" v-for="(item,index) in responseTime" :key="index" :class="{'active':item.flag}" @click="singleChange('responseTime',index)">{{item.name}}</span>
@@ -247,7 +250,7 @@
             </div>
           </li>
           <li class="form_item required tags_item textarea_item">
-            <div class="item_name">{{i18n.answer_time}}</div>
+            <div class="item_name">{{i18n.answer_time}}<span>(接单后直至回复作答的时间)</span></div>
             <div class="item_content">
               <div class="item_tags">
                 <span class="tag_item" v-for="(item,index) in answeringTime" :key="index" :class="{'active':item.flag}" @click="singleChange('answeringTime',index)">{{item.name}}</span>
@@ -255,17 +258,17 @@
             </div>
           </li>
           <li class="form_item required textarea_item">
-            <div class="item_name">{{i18n.LANGTYPE == 'cn_j'?'每次收费人民币(元)':'consultancy fees'}}</div>
-            <div class="item_content">
+            <div class="item_name">每次收费人民币：{{oneOfCost}}元</div>
+            <!-- <div class="item_content">
               <input v-model="oneOfCost" type="digit" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入每节收费金额':'please enter'" :disabled="isChecked == 'Y'">
-            </div>
+            </div> -->
           </li>
-          <li class="explain_item">{{i18n.LANGTYPE == 'cn_j'?'咨询按此收费。每次所需时间由您自行决定，建议不超过30分钟。':'the fees of per advisory'}}</li>
+          <li class="explain_item">看到提问订单后，需要提价的，可要求修改订单，征得用户同意后生效。</li>
         </ul>
       </div>
 
       <div class="panle_block hb nb">
-        <div class="block_title">{{i18n.wechat_receipt_QR_Code}}</div>
+        <div class="block_title">上传二维码</div>
         <div class="problem_content">
           <div class="files_group">
               <span class="title required">{{i18n.QR_Code}}</span>
@@ -276,7 +279,11 @@
               <img  class="add_files_icon" src="../../../static/img/add_files_icon.png" v-show="paymentCodeList.length < 1" @click="upLoadPaymentCode">
           </div>
         </div>
-        <div class="explain_item" v-if="i18n.LANGTYPE == 'cn_j'">我>支付>收付款>二维码收款>保存收款码>打开相册>截图>上传</div>
+        <div class="explain_item">
+          <p>打开微信后，请按下面操作：</p>
+          <p>我 -> 支付 -> 收付款 -> 二维码收款 -> </p>
+          <p>保存收款码 -> 打开相册 -> WeChat 相簿 -> 上传二维码</p>
+        </div>
       </div>
 
       <div class="panle_block" v-show="stepFlag == 3">
@@ -285,15 +292,21 @@
         </div>
         <ul class="form_list" v-if="i18n.LANGTYPE == 'cn_j'">
            <li class="form_item tags_item all_text_item">
-              <p>平台与您不存在任何雇佣或劳务关系。</p>
-              <p>您通过平台给予的作答或意见，只作户参考之用。</p>
-              <p>平台对您的一切作答或意见均不承担任何责任。</p>
-              <p>任何用户因采用了您的作答或意见而产生的后果一律与平台无关。</p>
-              <p>你因使用小程序而与其他用户发生的任何债务一律与本小程序无关，应由你自行解决。</p>
-              <p>如用户需要您发表监（见）证意见，请另行与用户商议。</p>
-              <p>不得通过平台进行任何有违国家法律法规的操作，包括但不限于各种在平台上的非法违规问答和支付。</p>
-              <p>如有发现违法违规行为，请及时举报。</p>
-              <p>申诉和举报的电邮地址：xxxxxxxx</p>
+              <p>《问税易》是由我们（杭州联询商务信息咨询有限公司）开发和运营的一款应用。这应用仅作为工具让你能联系到用户。</p>
+
+              <p class="mt5">我们与你不存在任何雇佣或劳务关系。</p>
+              <p>你以个人身份为用户提供服务。</p>
+              <p>一切你为用户提供的服务与我们无关。</p>
+
+              <p class="mt5">你通过《问税易》给用户的作答或建意，只供参考之用。</p>
+              <p>我们对你所有的作答或表述均不承担任何责任。</p>
+              <p>任何用户因采用了你的作答或表述而产生的后果一律与我们无关。</p>
+              <p>如除了作答外，用户需要你为他们发表监证意见或提供更多的服务，请另行与用户商议。</p>
+
+              <p class="mt5">使用这款应用即代表你同意《问税易》用户协议，并承诺不通过《问税易》进行任何有违国家法律法规的操作，包括但不限于各种非法违规的问答或建议。</p>
+            
+              <p class="mt5">如有发现违法违规行为，请及时举报。</p>
+              <p>客服邮箱：advisorymadeeasy@163.com</p>
           </li>
         </ul>
         <ul class="form_list" v-else>
@@ -320,8 +333,8 @@
         <div class="btn green large plain" v-show="stepFlag == 2" @click="toNextStep(1)">{{i18n.Prev}}</div>
         <div class="btn green large" v-show="stepFlag == 2"  @click="toNextStep(3)">{{i18n.Next}}</div>
         <div class="btn grey large" v-show="stepFlag == 3 && isChecked == 'Y'" >{{i18n.LANGTYPE == 'cn_j'?'审核中,请等待':'please wait for auditing'}}</div>
-        <div class="btn green large plain" v-show="stepFlag == 3" @click="toNextStep(2)">{{i18n.Prev}}</div>
-        <div class="btn green large" v-show="stepFlag == 3 && isChecked != 'Y'" @click="submitMsg">{{i18n.LANGTYPE == 'cn_j'?'确认提交':'Submit for Approval'}}</div> 
+        <div class="btn green large plain" v-show="stepFlag == 3 && userData.isExpert != 1" @click="toNextStep(2)">{{i18n.Prev}}</div>
+        <div class="btn green large" v-show="stepFlag == 3 && isChecked != 'Y'" @click="submitMsg">{{userData.isExpert != 1?'确认提交':'确认修改'}}</div> 
       </div>
       <div class="check_time_tips"  v-show="stepFlag == 3">{{i18n.LANGTYPE == 'cn_j'?'提交信息后平台将在24小时内完成验证。':'The platform will be validated within 24 hours after submitting information.'}}</div>
     </div> 
@@ -351,22 +364,14 @@ export default {
       nickName:'',
       workPhoneNumber:'',
       emailAddress:'',
-      // language:[
-      //   {name:'汉语',type:'cn',flag:false},
-      //   {name:'英语',type:'en',flag:false}
-      // ],
+     
       provice:'',
       city:'',
       companyName:'',
       companyPosition:'',
       workDesc:'',
       major:[],
-      // majorYearsDesc:[
-      //   {name:'5-10年',type:'1',flag:false},
-      //   {name:'10-15年',type:'2',flag:false},
-      //   {name:'15-20年',type:'3',flag:false},
-      //   {name:'20年以上',type:'4',flag:false},
-      // ],
+    
       businessArea:[ ],
       gootAtList:['','','','',''],
       goodAtBusiness:[],
@@ -376,52 +381,17 @@ export default {
     
       photosList:[],
       realName:'',
-      // certType:[
-      //   {name:'身份证',type:'1',flag:false},
-      //   {name:'护照',type:'2',flag:false},
-      //   {name:'通行证',type:'3',flag:false},
-      // ],
+    
       certNum:'',
-      oneOfCost:'',
+      oneOfCost:35,
       paymentCodeList:[],
-      // responseTime:[
-      //   {name:'1分钟',type:'1',flag:false},
-      //   {name:'5分钟',type:'5',flag:false},
-      //   {name:'15分钟',type:'15',flag:false},
-      //   {name:'30分钟',type:'30',flag:false},
-      //   {name:'1小时',type:'60',flag:false},
-      //   {name:'2小时',type:'120',flag:false},
-      //   {name:'4小时',type:'240',flag:false}
-      // ],
-      // answeringTime:[
-      //   {name:'30分钟',type:'30',flag:false},
-      //   {name:'1小时',type:'60',flag:false},
-      //   {name:'2小时',type:'120',flag:false},
-      //   {name:'4小时',type:'240',flag:false},
-      //   {name:'8小时',type:'480',flag:false},
-      //   {name:'12小时',type:'720',flag:false},
-      //   {name:'24小时',type:'1440',flag:false},
-      //   {name:'48小时',type:'2880',flag:false}
-      // ],
+     
       isReadSelect:true,
       areaList:AreaList,
       areaSelectPanelShow:false,
       isChecked:'N', // 当前是否是超级管理员审核状态
       isUploadingFile:false,
-      // fillSteps:[
-      //   {
-      //     text: '基础信息'
-      //   },
-      //   {
-      //     text: '专业信息'
-      //   },
-      //   {
-      //     text: '咨询设置'
-      //   },
-      //   {
-      //     text: '确认提交'
-      //   }
-      // ],
+ 
       stepFlag:0,
       openConsultExplain:false
     }
@@ -444,6 +414,7 @@ export default {
         ]
       }
     },
+
     majorYearsDesc:function(){
       if(this.i18n.LANGTYPE == 'cn_j'){
         return [
@@ -460,8 +431,8 @@ export default {
           {name:'more than 20 years',name2:'20年以上',type:'4',flag:false},
         ]  
       }
-     
     },
+
     certType:function(){
       if(this.i18n.LANGTYPE == 'cn_j'){
         return [
@@ -480,23 +451,17 @@ export default {
     responseTime:function(){
       if(this.i18n.LANGTYPE == 'cn_j'){
         return [
-          {name:'1分钟',type:'1',flag:false},
           {name:'5分钟',type:'5',flag:false},
           {name:'15分钟',type:'15',flag:false},
           {name:'30分钟',type:'30',flag:false},
-          {name:'1小时',type:'60',flag:false},
-          {name:'2小时',type:'120',flag:false},
-          {name:'4小时',type:'240',flag:false}
+          {name:'1小时',type:'60',flag:false}
         ]  
       }else{
         return [
-          {name:'1 minute',type:'1',flag:false},
           {name:'5 minutes',type:'5',flag:false},
-          {name:'1 minutes',type:'15',flag:false},
+          {name:'15 minutes',type:'15',flag:false},
           {name:'30 minutes',type:'30',flag:false},
-          {name:'1 hour',type:'60',flag:false},
-          {name:'2 hours',type:'120',flag:false},
-          {name:'4 hours',type:'240',flag:false}
+          {name:'1 hour',type:'60',flag:false}
         ]  
       }
       
@@ -504,68 +469,45 @@ export default {
     answeringTime:function(){
       if(this.i18n.LANGTYPE == 'cn_j'){
         return [
-          {name:'30分钟',type:'30',flag:false},
           {name:'1小时',type:'60',flag:false},
-          {name:'2小时',type:'120',flag:false},
           {name:'4小时',type:'240',flag:false},
-          {name:'8小时',type:'480',flag:false},
           {name:'12小时',type:'720',flag:false},
           {name:'24小时',type:'1440',flag:false},
-          {name:'48小时',type:'2880',flag:false}
         ]  
       }else{
         return [
-          {name:'30 minutes',type:'30',flag:false},
           {name:'1 hour',type:'60',flag:false},
-          {name:'2 hours',type:'120',flag:false},
           {name:'4 hours',type:'240',flag:false},
-          {name:'8 hours',type:'480',flag:false},
           {name:'12 hours',type:'720',flag:false},
-          {name:'24 hours',type:'1440',flag:false},
-          {name:'48 hours',type:'2880',flag:false}
+          {name:'24 hours',type:'1440',flag:false}
         ] 
       }
     },
 
     fillSteps:function(){
-      if(this.i18n.LANGTYPE == 'cn_j'){
         return [
           {
             text: '基础信息'
           },
           {
-            text: '专业信息'
+            text: '业务信息'
           },
           {
-            text: '咨询设置'
+            text: '营业设置'
           },
           {
             text: '确认提交'
           }
         ]  
-      }else{
-        return [
-          {
-            text: 'general'
-          },
-          {
-            text: 'professional'
-          },
-          {
-            text: 'settings'
-          },
-          {
-            text: 'reconfirm'
-          }
-        ]  
-      }
-      
     },
   },
   mounted(){
   
   },
   onLoad(){
+    if(this.userData &&  this.userData.isExpert == 1){
+      this.stepFlag = 3;
+    }
     this.major = [];
     this.businessArea = [];
     this.getAllMajor();
@@ -810,7 +752,9 @@ export default {
         this.workDesc = result.workDesc;
         this.realName = result.realName;
         this.certNum = result.certNum;
-        this.oneOfCost = result.oneOfCost;
+        // this.oneOfCost = result.oneOfCost;
+        this.oneOfCost = 35;
+
         this.paymentCodeList = [result.paymentCode];
  
         let photosList = [];
@@ -1321,6 +1265,13 @@ export default {
        input{
          width: 75px;
        }
+       span{
+          font-size: 12px;
+          color: #666;
+          margin-left: 10px;
+          font-weight: normal;
+          padding-top: 2px;
+       }
     }
     &.no_border{
       border-bottom: 0;
@@ -1408,8 +1359,15 @@ export default {
     }
     &.all_text_item{
       flex-direction: column;
-      padding: 10px;
+      padding: 10px 0;
       padding-bottom: 20px;
+      p{
+        font-size: 13px;
+        color: #666;
+        &.mt5{
+          margin-top: 5px;
+        }
+      }
     }
   }
 
