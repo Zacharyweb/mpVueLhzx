@@ -480,6 +480,10 @@ export default {
   },
   onShow(){
 
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

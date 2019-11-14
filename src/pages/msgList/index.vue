@@ -131,6 +131,10 @@ export default {
   },
   onHide(){
   
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

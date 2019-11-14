@@ -467,6 +467,10 @@ export default {
 
   onShow() {
     // this.currentTab = 0;
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 };
 </script>

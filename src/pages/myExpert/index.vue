@@ -188,6 +188,10 @@ export default {
   },
   created () {
    
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

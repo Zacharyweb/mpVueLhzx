@@ -108,6 +108,10 @@ export default {
         wx.hideLoading();
       })
     }
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

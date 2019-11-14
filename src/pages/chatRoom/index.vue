@@ -152,6 +152,10 @@ export default {
   },
   onHide(){
     clearTimeout(this.timer);
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

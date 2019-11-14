@@ -42,8 +42,6 @@
         <span>{{i18n.No_relevant_data}}</span>
       </div>
     </div>
-
-    
   </div>
 </template>
 <script>
@@ -77,9 +75,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('counter', [
-      'updateConsultListTab'
-    ]),
+    ...mapActions("counter", ["updateConsultListTab"]),
     changeTab(num) {
       if (this.currentTab == num) {
         return;
@@ -133,42 +129,40 @@ export default {
         this.userId = this.userData.userId;
 
         let url = API["ExpertOrderList"] + this.userId;
-        this.$http.request({url: url}).then(res => {
-            this.isLoading = false;
-            if (res.code == 1) {
-              res.data = res.data || [];
-              res.data.forEach(item => {
-                item.creationTime = util.formatTime(
-                  new Date(item.creationTime)
-                );
-                item.leaveReceiptTime = Math.ceil(
-                  (+new Date(item.lastReceiptTime) - +new Date()) / 1000
-                );
-                item.lastReceiptTime = util.formatTime(
-                  new Date(item.lastReceiptTime)
-                );
-                item.leaveAnswerTime = Math.ceil(
-                  (+new Date(item.lastAnswerTime) - +new Date()) / 1000
-                );
-                item.lastAnswerTime = util.formatTime(
-                  new Date(item.lastAnswerTime)
-                );
-              });
-              this.customerOrders = res.data;
-            }
-          });
+        this.$http.request({ url: url }).then(res => {
+          this.isLoading = false;
+          if (res.code == 1) {
+            res.data = res.data || [];
+            res.data.forEach(item => {
+              item.creationTime = util.formatTime(new Date(item.creationTime));
+              item.leaveReceiptTime = Math.ceil(
+                (+new Date(item.lastReceiptTime) - +new Date()) / 1000
+              );
+              item.lastReceiptTime = util.formatTime(
+                new Date(item.lastReceiptTime)
+              );
+              item.leaveAnswerTime = Math.ceil(
+                (+new Date(item.lastAnswerTime) - +new Date()) / 1000
+              );
+              item.lastAnswerTime = util.formatTime(
+                new Date(item.lastAnswerTime)
+              );
+            });
+            this.customerOrders = res.data;
+          }
+        });
       }
     },
-    toLoginPage(){
-      this.$router.push({path:'/pages/login/index'});
-    },
+    toLoginPage() {
+      this.$router.push({ path: "/pages/login/index" });
+    }
   },
   onShow() {
     if (this.userData && this.userData.isExpert == 1) {
       this.currentTab = this.consultListTab;
-      if(this.consultListTab == 1){
+      if (this.consultListTab == 1) {
         this.getUserOrderList();
-      }else{
+      } else {
         this.getExpertOrderList();
       }
     } else {
@@ -176,8 +170,17 @@ export default {
       this.getUserOrderList();
     }
   },
-  onHide(){
+  onHide() {
     this.updateConsultListTab(this.currentTab);
+  },
+  onPullDownRefresh() {
+    //to do
+    if (this.consultListTab == 1) {
+      this.getUserOrderList();
+    } else {
+      this.getExpertOrderList();
+    }
+    wx.stopPullDownRefresh();
   }
 };
 </script>
@@ -190,12 +193,12 @@ export default {
   right: 0;
   z-index: 10;
 }
-.noLogin{
+.noLogin {
   padding-top: 20px;
-  .login_btn{
+  .login_btn {
     display: flex;
     justify-content: center;
-    .to_login_btn{
+    .to_login_btn {
       height: 30px;
       display: flex;
       align-items: center;
@@ -208,5 +211,4 @@ export default {
     }
   }
 }
-
 </style>

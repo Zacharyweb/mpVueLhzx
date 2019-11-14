@@ -255,6 +255,10 @@ export default {
       
       }
     },
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

@@ -172,6 +172,10 @@ export default {
   },
   onLoad(){
     this.getInitData();
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

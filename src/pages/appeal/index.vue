@@ -80,6 +80,10 @@ export default {
   onLoad(options){
     this.orderId = options.orderId;
    
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

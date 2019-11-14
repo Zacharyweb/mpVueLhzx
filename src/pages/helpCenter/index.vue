@@ -64,6 +64,10 @@ export default {
     linkTo(path){
       this.$router.push(path);
     }, 
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

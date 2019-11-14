@@ -384,7 +384,11 @@ export default {
       this.pageIndex++;
       this.getAllExperts();
     };
-  }
+  },
+  onPullDownRefresh() {
+  this.getAllExperts();
+  wx.stopPullDownRefresh();
+  } 
 }
 </script>
 

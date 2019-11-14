@@ -782,6 +782,10 @@ export default {
     clearInterval(this.timer);
     this.showCount = false;
   },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
+  }
 }
 </script>
 <style lang="less" scoped>

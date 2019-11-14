@@ -290,6 +290,10 @@ export default {
       this.photosList = [];
       this.getExpertMsgData();
     }
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 };
 </script>

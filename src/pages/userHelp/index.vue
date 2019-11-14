@@ -192,6 +192,10 @@ export default {
   },
   onLoad(options){
     this.flag = options.flag || '';
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

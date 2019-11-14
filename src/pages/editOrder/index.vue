@@ -193,6 +193,10 @@ export default {
   onShow(){
 
   },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
+  }
 }
 </script>
 <style lang="less" scoped>

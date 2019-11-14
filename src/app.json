@@ -1,8 +1,9 @@
 {
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "问税易/Advisory",
+    "enablePullDownRefresh": true,
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

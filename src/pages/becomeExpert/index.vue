@@ -1127,7 +1127,12 @@ export default {
         scrollTop: 0
       })
     }
-  },
+   ,
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
+  } 
+  }
 }
 
 

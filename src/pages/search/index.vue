@@ -174,6 +174,10 @@ export default {
       this.pageIndex++;
       this.getExpertList();
     };
+  },
+  onPullDownRefresh() {
+  //to do
+  wx.stopPullDownRefresh();
   }
 }
 </script>

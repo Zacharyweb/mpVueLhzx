@@ -232,12 +232,13 @@ export default {
       this.getUserFriendsList();
     }
   },
-  onPullDownRefresh () {
+  onPullDownRefresh() {
     if(this.currentTab == 1){
       this.getUserNewFriendsList();
     }else{
       this.getUserFriendsList();
     };
+    wx.stopPullDownRefresh();
   }
 }
 </script>
