@@ -276,8 +276,8 @@
             <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">用户已提交支付，请及时确认~</span>
             <span class="other_msg" v-else>please confirm receipt after checking your WeChat payment record</span>
             <div class="action_btn_bar">
-                <span class="action_btn2" @click="toPayAppeal">{{i18n.Paid}}</span>
-                <span class="action_btn" @click="expertPaySure">{{i18n.Unpaid}}</span>
+                <span class="action_btn2" @click="toPayAppeal">{{i18n.Unpaid}}</span>
+                <span class="action_btn" @click="expertPaySure">{{i18n.Paid}}</span>
             </div>
           </div>
 

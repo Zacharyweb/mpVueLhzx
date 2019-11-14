@@ -96,6 +96,7 @@ export default {
             url: url
           })
           .then(res => {
+            wx.stopPullDownRefresh();
             this.isLoading = false;
             if (res.code == 1) {
               res.data = res.data || [];
@@ -129,28 +130,31 @@ export default {
         this.userId = this.userData.userId;
 
         let url = API["ExpertOrderList"] + this.userId;
-        this.$http.request({ url: url }).then(res => {
-          this.isLoading = false;
-          if (res.code == 1) {
-            res.data = res.data || [];
-            res.data.forEach(item => {
-              item.creationTime = util.formatTime(new Date(item.creationTime));
-              item.leaveReceiptTime = Math.ceil(
-                (+new Date(item.lastReceiptTime) - +new Date()) / 1000
-              );
-              item.lastReceiptTime = util.formatTime(
-                new Date(item.lastReceiptTime)
-              );
-              item.leaveAnswerTime = Math.ceil(
-                (+new Date(item.lastAnswerTime) - +new Date()) / 1000
-              );
-              item.lastAnswerTime = util.formatTime(
-                new Date(item.lastAnswerTime)
-              );
-            });
-            this.customerOrders = res.data;
-          }
-        });
+        this.$http.request({url: url}).then(res => {
+            wx.stopPullDownRefresh();
+            this.isLoading = false;
+            if (res.code == 1) {
+              res.data = res.data || [];
+              res.data.forEach(item => {
+                item.creationTime = util.formatTime(
+                  new Date(item.creationTime)
+                );
+                item.leaveReceiptTime = Math.ceil(
+                  (+new Date(item.lastReceiptTime) - +new Date()) / 1000
+                );
+                item.lastReceiptTime = util.formatTime(
+                  new Date(item.lastReceiptTime)
+                );
+                item.leaveAnswerTime = Math.ceil(
+                  (+new Date(item.lastAnswerTime) - +new Date()) / 1000
+                );
+                item.lastAnswerTime = util.formatTime(
+                  new Date(item.lastAnswerTime)
+                );
+              });
+              this.customerOrders = res.data;
+            }
+          });
       }
     },
     toLoginPage() {

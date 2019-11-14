@@ -334,7 +334,7 @@
         <div class="btn green large" v-show="stepFlag == 2"  @click="toNextStep(3)">{{i18n.Next}}</div>
         <div class="btn grey large" v-show="stepFlag == 3 && isChecked == 'Y'" >{{i18n.LANGTYPE == 'cn_j'?'审核中,请等待':'please wait for auditing'}}</div>
         <div class="btn green large plain" v-show="stepFlag == 3 && userData.isExpert != 1" @click="toNextStep(2)">{{i18n.Prev}}</div>
-        <div class="btn green large" v-show="stepFlag == 3 && isChecked != 'Y'" @click="submitMsg">{{userData.isExpert != 1?'确认提交':'确认修改'}}</div> 
+        <div class="btn green large" v-show="stepFlag == 3 && isChecked != 'Y'" @click="submitMsg">{{userData.isExpert != 1?'确认提交':'确认更新'}}</div> 
       </div>
       <div class="check_time_tips"  v-show="stepFlag == 3">{{i18n.LANGTYPE == 'cn_j'?'提交信息后平台将在24小时内完成验证。':'The platform will be validated within 24 hours after submitting information.'}}</div>
     </div> 

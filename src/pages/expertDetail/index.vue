@@ -134,6 +134,10 @@
         <span>{{i18n.No_relevant_data}}</span>
       </div>
     </div>
+    <div class="to_help" @click="linkTo('/pages/useNotice/index')">
+      <span>了解更多</span>
+    </div>
+
 
     <div class="bottom_fixed" :class="{'isX':isX}">
       <div class="follow_btn flex_btn">
@@ -462,6 +466,11 @@ export default {
           });
         }
       });
+    },
+    linkTo(path){
+      this.$router.push({
+        path:path
+      });
     }
   },
 
@@ -738,7 +747,7 @@ export default {
     span {
       padding: 15px;
     }
-    .disabled {
+    &.disabled {
       background-color: #cccccc;
     }
   }
@@ -792,6 +801,17 @@ export default {
       border-bottom: none;
       color: #1fb7b6;
     }
+  }
+}
+.to_help{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span{
+    font-size: 12px;
+    color: #999;
+    text-decoration: underline;
   }
 }
 </style>

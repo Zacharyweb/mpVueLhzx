@@ -32,7 +32,7 @@
         <div class="btn large green" @click="updateUserBaseInfo">{{i18n.Confirm}}</div>
       </div>
       <div class="btn_block2">
-        <div class="btn large green plain" @click="becomeExpert">{{i18n.Advisor_registration}}</div>
+        <div class="btn large green plain" @click="becomeExpert">{{userData && userData.isExpert == 1?'专家进入登记':'专家信息更新'}}</div>
       </div>
     </div>
     <!-- <div class="change_mobile">

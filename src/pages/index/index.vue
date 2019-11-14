@@ -233,6 +233,7 @@ export default {
         }
       }).then(res => {
         that.isLoading = false;
+        wx.stopPullDownRefresh();
         if(res.data.length == 0){
           that.isNomore = true;
         }else{
@@ -319,15 +320,15 @@ export default {
     query.select('#tabStaticWrap').boundingClientRect()
     query.exec((res) => {
       //res就是 该元素的信息 数组
-      if(res[0].top <= 0){
-        if(!this.tabFixedFlag){
-          this.tabFixedFlag = true;
-        }
-      }else{
-        if(this.tabFixedFlag){
-          this.tabFixedFlag = false;
-        }
-      }
+      // if(res[0].top <= 0){
+      //   if(!this.tabFixedFlag){
+      //     this.tabFixedFlag = true;
+      //   }
+      // }else{
+      //   if(this.tabFixedFlag){
+      //     this.tabFixedFlag = false;
+      //   }
+      // }
     })
   },
   onShow(){
@@ -385,10 +386,13 @@ export default {
       this.getAllExperts();
     };
   },
-  onPullDownRefresh() {
-  this.getAllExperts();
-  wx.stopPullDownRefresh();
-  } 
+   onPullDownRefresh () {
+    this.isNomore = false;
+    this.isLoading = false;
+    this.pageIndex = 0;
+    this.getAllExperts();
+    wx.stopPullDownRefresh();
+  }
 }
 </script>
 
