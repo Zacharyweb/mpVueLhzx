@@ -4,6 +4,7 @@ module.exports = [
     path: 'pages/index/index',
     config: {
       navigationBarTitleText: '问税易',
+      enablePullDownRefresh: true,
       usingComponents: {
         "van-search": "/static/vant/search/index",
         "van-tag": "/static/vant/tag/index",
@@ -107,6 +108,7 @@ module.exports = [
     path: 'pages/consult/index',
     config: {
       navigationBarTitleText: '问答',
+      enablePullDownRefresh: true,
       usingComponents: {
         "van-tag": "/static/vant/tag/index",
         "van-action-sheet": "/static/vant/action-sheet/index"

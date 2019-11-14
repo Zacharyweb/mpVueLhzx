@@ -100,6 +100,7 @@ export default {
             url: url
           })
           .then(res => {
+            wx.stopPullDownRefresh();
             this.isLoading = false;
             if (res.code == 1) {
               res.data = res.data || [];
@@ -134,6 +135,7 @@ export default {
 
         let url = API["ExpertOrderList"] + this.userId;
         this.$http.request({url: url}).then(res => {
+            wx.stopPullDownRefresh();
             this.isLoading = false;
             if (res.code == 1) {
               res.data = res.data || [];
@@ -178,6 +180,13 @@ export default {
   },
   onHide(){
     this.updateConsultListTab(this.currentTab);
+  },
+  onPullDownRefresh () {
+    if(this.currentTab == 1){
+      this.getUserOrderList();
+    }else{
+      this.getExpertOrderList();
+    };
   }
 };
 </script>
