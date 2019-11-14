@@ -132,7 +132,7 @@
     </ul>
       
     <div class="btn_block">
-      <div class="btn green large" :class="{'disabled':btnDisabled}" @click="toBecomeExpert">填写专家资料</div>
+      <div class="btn green large" :class="{'disabled':btnDisabled}" @click="toBecomeExpert">{{userData && userData.isExpert == 1?'填写专家资料':'更新专家资料'}}</div>
     </div>
     <div class="to_know_more" @click="linkTo('/pages/userHelp/index')">需要了解更多的</div>
   </div>
@@ -168,8 +168,32 @@ export default {
 
   },
 
-  onLoad(){
- 
+  onShow(){
+    if(this.userData && this.userData.isExpert == 1){
+      this.radioList = [
+          {flag:true},
+          {flag:true},
+          {flag:true},
+          {flag:true},
+          {flag:true},
+          {flag:true},
+          {flag:true},
+          {flag:true},
+          {flag:true}
+      ]
+    }else{
+      this.radioList = [
+          {flag:false},
+          {flag:false},
+          {flag:false},
+          {flag:false},
+          {flag:false},
+          {flag:false},
+          {flag:false},
+          {flag:false},
+          {flag:false}
+      ]
+    }
   },
   methods: {
     toBecomeExpert(){

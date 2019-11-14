@@ -69,7 +69,7 @@ module.exports = [
   {
     path: 'pages/msgList/index',
     config: {
-      navigationBarTitleText: '消息列表',
+      navigationBarTitleText: '问候列表',
       usingComponents: {
          "van-dialog": "/static/vant/dialog/index"
       }
