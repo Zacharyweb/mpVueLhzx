@@ -74,7 +74,8 @@ const API = {
   'UserDoSure':'/api/LhzxOrderClient/UserDoSure',  // 用户确认并填写满意度（超过最后确认时间还未操作会自动确认且为满意） 当满意度为不满意时，会自动讲用户的手机号发送给专家
   'UserPaying':'/api/LhzxOrderClient/Paying', // 发送二维码，获取专家二维码支付（操作后系统将专家的收款二维码以模板消息发送给用户）
 
-
+  'GetMyClient':'/api/LhzxOrderExpert/GetMyClient/',//咨询过我的
+  'GetMyFollow':'/api/LhzxOrderExpert/GetMyFollow/',//关注过我的
 
   'ExpertOrderList':'/api/LhzxOrderExpert/ExpertOrderList/', // 专家的客户咨询
   'ExpertOrderListDetail':'/api/LhzxOrderExpert/ExpertOrderListDetail/', // 专家的客户咨询的详细信息
