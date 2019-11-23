@@ -207,6 +207,7 @@ module.exports = [
       navigationBarTitleText: '我的',
       usingComponents: {
         "van-action-sheet": "/static/vant/action-sheet/index",
+        "van-dialog": "/static/vant/dialog/index"
       }
     }
   },

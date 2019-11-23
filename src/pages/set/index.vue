@@ -59,7 +59,7 @@
       </li> -->
 
     </ul>
-    <div class="log_out_btn" @click="logout">{{i18n.Logout}}</div>
+
     <van-dialog id="van-dialog"/>
     <van-action-sheet
       :show="actionSheetShow"
@@ -270,21 +270,6 @@ export default {
         }
       })
     },
-
-    logout(){
-      Dialog.confirm({
-        title: '确认退出',
-        message: '确认是否退出当前账号？'
-      }).then(() => {
-        wx.removeStorageSync('userData');
-        this.updateUserMsg(null);
-        this.$router.push('/pages/login/index')
-      }).catch(() => {
-        
-      });
-    },
- 
-    
   },
   onPullDownRefresh() {
   //to do
@@ -344,18 +329,5 @@ export default {
    
   }
 }
-.log_out_btn{
-  width: 195px;
-  height: 40px;
-  border-radius: 20px;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fa3200;
-  background-color: #fff;
-  position: fixed;
-  bottom: 50px;
-  left: 90px;
-}
+
 </style>

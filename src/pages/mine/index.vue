@@ -94,7 +94,7 @@
       </li>
 
   
-      <li class="router_item" @click="linkTo('/pages/set/index',true)">
+      <li class="router_item" @click="linkTo('/pages/set/index',true)" v-if="userData && userData.isExpert == 1">
         <div class="item_left">
           <img src="../../../static/img/center_icon5.png">
           设置
@@ -115,6 +115,9 @@
       </li>
     </ul>
 
+    <van-dialog id="van-dialog"/>
+    <div class="log_out_btn" @click="logout" v-if="userData && userData.accessToken">{{i18n.Logout}}</div>
+
     <van-action-sheet
       :show="actionSheetShow"
       :actions="actions"
@@ -129,6 +132,7 @@
 import { mapState, mapActions } from 'vuex'
 import {API, BASE_URL} from  '../../http/api.js'
 import { setTimeout } from 'timers';
+import Dialog from '../../../static/vant/dialog/dialog';
 export default {
  data () {
     return {
@@ -254,6 +258,19 @@ export default {
       } else {
       
       }
+    },
+
+    logout(){
+      Dialog.confirm({
+        title: '确认退出',
+        message: '确认是否退出当前账号？'
+      }).then(() => {
+        wx.removeStorageSync('userData');
+        this.updateUserMsg(null);
+        this.$router.push('/pages/login/index')
+      }).catch(() => {
+        
+      });
     },
   },
   onPullDownRefresh() {
@@ -438,5 +455,20 @@ export default {
       }
     }
   }
+}
+.log_out_btn{
+  width: 195px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fa3200;
+  background-color: #fff;
+  margin:15px auto;
+  // position: fixed;
+  // bottom: 50px;
+  // left: 90px;
 }
 </style>
