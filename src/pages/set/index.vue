@@ -227,10 +227,10 @@ export default {
 
     onSelectAction3(data){
       let setWorkMode;
-      if(data.mp.detail.targetId == 2){
-        setWorkMode = 2;
+      if(data.mp.detail.targetId == 1){
+        setWorkMode = 1;
       }else if(data.mp.detail.targetId == 2){
-        setWorkMode = 3;
+        setWorkMode = 2;
       }
       this.setWorkMode(setWorkMode);
       this.actionSheet3Show = false;
@@ -239,9 +239,9 @@ export default {
     onSelectAction4(data){
       let setChatMode;
       if(data.mp.detail.targetId == 1){
-        setChatMode = 2;
+        setChatMode = 1;
       }else if(data.mp.detail.targetId == 2){
-        setChatMode = 3;
+        setChatMode = 2;
       }
       this.setChatMode(setChatMode);
       this.actionSheet4Show = false;
