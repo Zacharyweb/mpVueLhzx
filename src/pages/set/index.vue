@@ -6,15 +6,15 @@
         <div class="router_top">
           <div class="item_left">模式</div>
           <div class="item_right">
-            <span class="status_text" v-if="userData && userData.mode == 1">固定</span>
-            <span class="status_text" v-else-if="userData && userData.mode == 2">自由</span>
+            <span class="status_text" v-if="userData && userData.workMode == 1">固定</span>
+            <span class="status_text" v-else-if="userData && userData.workMode == 2">自由</span>
             <span class="status_text" v-else>{{i18n.Loaidng}}</span>
             <img  src="../../../static/img/arrow_right.png">
           </div>
         </div>
         <div class="router_bottom">每天早上8:00-晚上8:00默认为营业状态</div>
-        <div class="router_bottom" v-if="userData && userData.mode == 1">每天早上8:00-晚上8:00默认为营业状态</div>
-        <div class="router_bottom" v-else-if="userData && userData.mode == 2">打开后自主切换营业和休息状态</div>
+        <div class="router_bottom" v-if="userData && userData.workMode == 1">每天早上8:00-晚上8:00默认为营业状态</div>
+        <div class="router_bottom" v-else-if="userData && userData.workMode == 2">打开后自主切换营业和休息状态</div>
       </li>
 
       <li class="router_item" v-if="userData && userData.isExpert == 1"  @click="actionSheetShow = true">
@@ -37,14 +37,14 @@
         <div class="router_top">
           <div class="item_left">问候</div>
           <div class="item_right">
-            <span class="status_text" v-if="userData && userData.chatType == 1">即时回应</span>
-            <span class="status_text" v-else-if="userData && userData.chatType == 2">不即时回应</span>
+            <span class="status_text" v-if="userData && userData.chatMode == 1">即时回应</span>
+            <span class="status_text" v-else-if="userData && userData.chatMode == 2">不即时回应</span>
             <span class="status_text" v-else>{{i18n.Loaidng}}</span>
             <img  src="../../../static/img/arrow_right.png">
           </div>
         </div>
-        <div class="router_bottom" v-if="userData && userData.chatType == 1">用户期待你能尽快进入聊天室</div>
-        <div class="router_bottom" v-else-if="userData && userData.chatType == 2">用户将在聊天室给你留言</div>
+        <div class="router_bottom" v-if="userData && userData.chatMode == 1">用户期待你能尽快进入聊天室</div>
+        <div class="router_bottom" v-else-if="userData && userData.chatMode == 2">用户将在聊天室给你留言</div>
       </li>
 
 
@@ -145,7 +145,7 @@ export default {
       i18n: state => state.counter.i18n
     }),
     actions:function(){
-      if(this.userData && this.userData.mode == 2){
+      if(this.userData && this.userData.workStatus == 2){
         return [
           {
             targetId:1,
@@ -226,22 +226,24 @@ export default {
     },
 
     onSelectAction3(data){
-      let workStatus;
+      let setWorkMode;
       if(data.mp.detail.targetId == 2){
-        workStatus = 2;
+        setWorkMode = 2;
       }else if(data.mp.detail.targetId == 2){
-        workStatus = 3;
+        setWorkMode = 3;
       }
+      this.setWorkMode(setWorkMode);
       this.actionSheet3Show = false;
     },
 
     onSelectAction4(data){
-      let workStatus;
+      let setChatMode;
       if(data.mp.detail.targetId == 1){
-        workStatus = 2;
+        setChatMode = 2;
       }else if(data.mp.detail.targetId == 2){
-        workStatus = 3;
+        setChatMode = 3;
       }
+      this.setChatMode(setChatMode);
       this.actionSheet4Show = false;
     },
 
@@ -270,6 +272,57 @@ export default {
         }
       })
     },
+    setWorkMode(setWorkMode){
+      if(this.userData.setWorkMode == setWorkMode){
+        return;
+      }
+      this.$http.request({
+        url:'SetWorkMode',
+        data:{
+          id: this.userData.userId,
+          setWorkMode: setWorkMode
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          let data = this.userData || {};
+          this.updateUserMsg({...data,setWorkMode:setWorkMode});
+          wx.showToast({
+            title: '工作状态切换成功',
+            icon: 'none',
+            duration: 1500
+          });
+        }
+      })
+    },
+    setChatMode(setChatMode){
+      if(this.userData.setChatMode == setChatMode){
+        return;
+      }
+      this.$http.request({
+        url:'SetChatMode',
+        data:{
+          id: this.userData.userId,
+          setChatMode: setChatMode
+        },
+        flyConfig:{
+          method: 'post'
+        }
+      }).then(res => {
+        if(res.code == 1){
+          let data = this.userData || {};
+          this.updateUserMsg({...data,setChatMode:setChatMode});
+          wx.showToast({
+            title: '聊天状态切换成功',
+            icon: 'none',
+            duration: 1500
+          });
+        }
+      })
+    }
+
   },
   onPullDownRefresh() {
   //to do

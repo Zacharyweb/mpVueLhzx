@@ -20,7 +20,9 @@ const API = {
   'AddUserFollow':'/api/LhzxFollow/AddUserFollow', //添加关注
   'DeleteUserFollow':'/api/LhzxFollow/DeleteUserFollow', //取消关注
   'UploadFile':'/api/LhzxFile/Post', //上传文件
-  'SetWorkStatus':'/api/Users/SetWorkStatus', // 更新工作状态
+  'SetWorkMode':'/api/Users/SetWorkMode', // 更新工作状态
+  'SetWorkStatus':'/api/Users/SetWorkStatus', // 更新工作模式
+  'SetChatMode':'/api/Users/SetChatMode',//更新聊天模式
   'GetSearchHistory':'/api/LhzxSearchHistory/Get/', // 搜索记录
   'DeleteSearchHistory':'/api/LhzxSearchHistory/Delete/', //清空记录
 
