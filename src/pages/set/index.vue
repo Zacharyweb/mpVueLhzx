@@ -12,9 +12,10 @@
             <img  src="../../../static/img/arrow_right.png">
           </div>
         </div>
-        <div class="router_bottom">每天早上8:00-晚上8:00默认为营业状态</div>
+        
         <div class="router_bottom" v-if="userData && userData.workMode == 1">每天早上8:00-晚上8:00默认为营业状态</div>
         <div class="router_bottom" v-else-if="userData && userData.workMode == 2">打开后自主切换营业和休息状态</div>
+        <div class="router_bottom" v-else>每天早上8:00-晚上8:00默认为营业状态</div>
       </li>
 
       <li class="router_item" v-if="userData && userData.isExpert == 1"  @click="actionSheetShow = true">
@@ -212,6 +213,7 @@ export default {
       }else{
         workStatus = 1;
       }
+       console.log(data.mp.detail.targetId);
       this.setWorkStatus(workStatus);
       this.actionSheetShow = false;
     },
@@ -232,6 +234,7 @@ export default {
       }else if(data.mp.detail.targetId == 2){
         setWorkMode = 2;
       }
+      console.log(data.mp.detail.targetId);
       this.setWorkMode(setWorkMode);
       this.actionSheet3Show = false;
     },
@@ -243,6 +246,7 @@ export default {
       }else if(data.mp.detail.targetId == 2){
         setChatMode = 2;
       }
+       console.log(data.mp.detail.targetId);
       this.setChatMode(setChatMode);
       this.actionSheet4Show = false;
     },
@@ -273,14 +277,14 @@ export default {
       })
     },
     setWorkMode(setWorkMode){
-      if(this.userData.setWorkMode == setWorkMode){
+      if(this.userData.workMode == setWorkMode){
         return;
       }
       this.$http.request({
         url:'SetWorkMode',
         data:{
           id: this.userData.userId,
-          setWorkMode: setWorkMode
+          workMode: setWorkMode
         },
         flyConfig:{
           method: 'post'
@@ -288,7 +292,7 @@ export default {
       }).then(res => {
         if(res.code == 1){
           let data = this.userData || {};
-          this.updateUserMsg({...data,setWorkMode:setWorkMode});
+          this.updateUserMsg({...data,workMode:setWorkMode});
           wx.showToast({
             title: '工作状态切换成功',
             icon: 'none',
@@ -298,14 +302,14 @@ export default {
       })
     },
     setChatMode(setChatMode){
-      if(this.userData.setChatMode == setChatMode){
+      if(this.userData.chatMode == setChatMode){
         return;
       }
       this.$http.request({
         url:'SetChatMode',
         data:{
           id: this.userData.userId,
-          setChatMode: setChatMode
+          chatMode: setChatMode
         },
         flyConfig:{
           method: 'post'
@@ -313,7 +317,7 @@ export default {
       }).then(res => {
         if(res.code == 1){
           let data = this.userData || {};
-          this.updateUserMsg({...data,setChatMode:setChatMode});
+          this.updateUserMsg({...data,chatMode:setChatMode});
           wx.showToast({
             title: '聊天状态切换成功',
             icon: 'none',
