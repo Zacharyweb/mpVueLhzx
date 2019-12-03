@@ -18,7 +18,6 @@
 
         <div class="router_bottom" v-if="userData && userData.workMode == 1">每天早上8:00-晚上8:00默认为营业状态</div>
         <div class="router_bottom" v-else-if="userData && userData.workMode == 2">打开后自主切换营业和休息状态</div>
-        
       </li>
 
       <li
@@ -160,7 +159,6 @@ export default {
         }
       ],
       userId: "0"
-
     };
   },
   computed: {
@@ -215,7 +213,7 @@ export default {
     }
   },
   onLoad(options) {
- console.log(this.userData)
+    console.log(this.userData);
   },
   methods: {
     ...mapActions("counter", ["updateUserMsg", "updateLanguage"]),
@@ -360,17 +358,21 @@ export default {
       let data = this.userData || {};
       let url = API["GetUserDetail"] + id;
       this.$http.request({ url: url }).then(res => {
-        let result = res.data; 
-        let userDataStr = JSON.stringify({ ...data, ...res.data });
-        wx.setStorageSync("userData", userDataStr);
-       
+        let result = res.data;
+
+        this.updateUserMsg({
+          ...data,
+          workStatus: result.workStatus,
+          workMode: result.workMode,
+          chatMode: setChatMode
+        });
       });
     }
   },
   onPullDownRefresh() {
     //to do
     this.getInitData(this.userId);
-     console.log(this.userData)
+    console.log(this.userData);
     wx.stopPullDownRefresh();
   }
 };

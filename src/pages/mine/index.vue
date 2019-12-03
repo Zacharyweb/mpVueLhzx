@@ -172,6 +172,8 @@ export default {
         this.updateUserMsg({
           ...data,
           workStatus:result.workStatus,
+          chatMode:result.chatMode,
+          workMode:result.workMode,
           nickName:result.nickName,
           avatarUrl:result.avatarUrl,
           isExpert: result.isExpert,
