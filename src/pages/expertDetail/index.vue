@@ -31,7 +31,7 @@
 
       <div class="absolute_msg">
         <!-- <div class="query_fee">每次￥{{expertData.oneOfCost}}</div> -->
-        <div class="query_fee">每次￥35</div>
+        <!-- <div class="query_fee">每次￥35</div> -->
         <div class="work_status">
           <span class="status" v-if="expertData.workStatus == 1">{{i18n.Open}}</span>
           <span class="status grey" v-else>{{i18n.Closed}}</span>
@@ -135,7 +135,7 @@
       </div>
     </div>
     <div class="to_help" @click="linkTo('/pages/useNotice/index')">
-      <span>了解更多</span>
+      <span>使用说明</span>
     </div>
 
 
@@ -160,7 +160,7 @@
         <div class="chat_text">{{i18n.chat}}</div>
       </div>
       <div class="query_btn flex_btn" :class="{'disabled': expertData.workStatus != 1}">
-        <span @click="toContact" v-if="expertData.workStatus == 1">发起提问</span>
+        <span @click="toContact" v-if="expertData.workStatus == 1">提问￥35</span>
         <span v-else>{{i18n.Closed}}</span>
       </div>
     </div>
@@ -486,6 +486,9 @@ export default {
 
 <style lang="less">
 .container {
+  min-height: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
   padding-bottom: 50px;
   &.m_bottom {
     padding-bottom: 82px;
@@ -506,9 +509,9 @@ export default {
       color: #1fb7b6;
     }
     .work_status {
-      margin-top: 10px;
+      // margin-top: 10px;
       .status {
-        font-size: 12px;
+        font-size: 14px;
         color: #1fb7b6;
         padding: 1px 3px;
         border: 1px solid #1fb7b6;
@@ -743,7 +746,7 @@ export default {
     width: 40%;
     background-color: #1fb7b6;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     span {
       padding: 15px;
     }
@@ -809,7 +812,7 @@ export default {
   align-items: center;
   justify-content: center;
   span{
-    font-size: 12px;
+    font-size: 13px;
     color: #999;
     text-decoration: underline;
   }

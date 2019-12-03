@@ -77,11 +77,11 @@ module.exports = [
     }
   },
 
-  // 发起咨询
+  // 发起提问
   {
     path: 'pages/startConsult/index',
     config: {
-      navigationBarTitleText: '发起咨询',
+      navigationBarTitleText: '发起提问',
       usingComponents: {
         "van-field":"/static/vant/field/index",
         "van-stepper": "/static/vant/stepper/index"

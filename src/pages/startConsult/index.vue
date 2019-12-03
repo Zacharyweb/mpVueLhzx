@@ -34,7 +34,7 @@
               cols="30"
               rows="10"
               v-model="orderUserDesc"
-              :placeholder="i18n.LANGTYPE == 'cn_j'?'可填写相关介绍一下，例如您的自我介绍信息，让专家更了解您或您的问题。':'please enter'"
+              :placeholder="i18n.LANGTYPE == 'cn_j'?'请自我介绍一下，促进相互了解。':'please enter'"
             ></textarea>
           </div>
         </div>
@@ -49,7 +49,7 @@
               cols="30"
               rows="10"
               v-model="questionRemark"
-              :placeholder="i18n.LANGTYPE == 'cn_j'?'请先写上您问题的标题，随后详细描述您问题。比如：股权转让税收, 我公司从事房地产开发，大股东将出让一部分股权，请问有什么税收吗？':'please state your questions beginning with a heading followed with details.For example, tax on equity transfer, our company shareholder is disposing his shares, we would like to learn about the tax implications.'"
+              :placeholder="i18n.LANGTYPE == 'cn_j'?'请先起一个标题，然后详细描述你的问题，使专家能更有针对性地为你作答。':'please enter'"
             ></textarea>
           </div>
         </div>
