@@ -304,6 +304,16 @@ module.exports = [
     }
   },
 
+   // 成为专家审核
+   {
+    path: 'pages/checkBecomeExpert/index',
+    config: {
+      navigationBarTitleText: '审核',
+      usingComponents: {
+        "van-dialog": "/static/vant/dialog/index"
+      }
+    }
+  }, 
   {
     path: 'pages/useNotice/index',
     config: {

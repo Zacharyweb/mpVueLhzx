@@ -113,6 +113,17 @@
           <img  src="../../../static/img/arrow_right.png">
         </div>
       </li>
+
+      <li class="router_item" @click="linkTo('/pages/checkBecomeExpert/index',true)" v-if="userData && (userData.userId == 27 ||userData.userId == 32)">
+        <div class="item_left">
+          <img src="../../../static/img/check.png">
+          成为专家审核
+        </div>
+        <div class="item_right">
+          <img  src="../../../static/img/arrow_right.png">
+        </div>
+      </li>
+
     </ul>
 
     <van-dialog id="van-dialog"/>
