@@ -1,338 +1,175 @@
 <template>
   <div class="container">
-    <div class="experts_list" v-if="expertsList.length > 0">
-      <expert v-for="(item,index) in expertsList" :key="index" :expert-data="item"></expert>
-    </div>
+    <div class="experts_list type1_list">
+      <div class="experts_item" v-for="(item,index) in CheckList" :key="index">
+        <div class="top_block">
+          <img class="experts_avatar" :src="item.avatarUrl" />
+          <div class="top_block_right">
+            <div class="experts_msg1">
+              <span class="experts_name">{{item.nickName}}</span>
+            </div>
+            <div class="experts_msg2">
+              <span class="customer_info">身份证：{{item.certNum}}</span>
+            </div>
+            <div class="experts_msg2">
+              <span class="customer_info">手机号：{{item.phoneNumber}}</span>
+            </div>
+          </div>
+          <van-button
+            v-if="item.isExpert == 0"
+            @click="BecomeExpertPass(item.id)"
+            class="checkBtn"
+          >审核</van-button>
+          <img class="pass" v-if="item.isExpert == 1" src="../../../static/img/pass.png" />
+        </div>
+      </div>
 
-    <div class="no_data_tips" v-if="expertsList.length == 0 && !isLoading">
-      <img class="no_data_img" src="../../../static/img/no_data_tips.png">
-      <span>{{i18n.No_relevant_data}}</span>
-    </div> 
+      <div class="no_data_tips" v-if="CheckList.length == 0">
+        <img class="no_data_img" src="../../../static/img/no_data_tips.png" />
+        <span>{{i18n.No_relevant_data}}</span>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import expert from '@/components/expert'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from "vuex";
+import { API, BASE_URL } from "../../http/api.js";
+import util from "../../utils/index.js";
 export default {
-  data () {
+  data() {
     return {
+      CheckList: [],
+      userId:0
+    };
+  },
+  computed: {
+    ...mapState({
+      isX: state => state.counter.isX,
+      userData: state => state.counter.userData,
+      i18n: state => state.counter.i18n
+    })
+  },
 
-    }
-  },
-  computed:{
-  },
-  components: {
-    expert
-  },
+  components: {},
 
   methods: {
-
+    GetBecomeExpertList() {
     // 获取专家列表
-    getAllExperts () {
       let that = this;
-      that.isLoading = true;
-      if(!this.major){
-        this.major = '税务';
-      };
       that.$http.request({
-        url:'GetExpertList',
-        data: {
-          businessArea: this.selectedHy,
-          goodAtBusiness: this.selectedKs,
-          address: this.city == '全国'? '':this.city,
-          major: this.major,
-          keyword: '',
-          pageIndex: this.pageIndex,
-        },
+        url:'GetBecomeExpertList',
         flyConfig:{
           method: 'post'
         }
       }).then(res => {
-        that.isLoading = false;
-        wx.stopPullDownRefresh();
-        if(res.data.length == 0){
-          that.isNomore = true;
-        }else{
-          res.data.forEach(item => {
-            item.companyAddress = item.companyAddress ? item.companyAddress.split('-')[1] :'未知';
-          });
-        }
-        if(that.pageIndex == 0){
-          that.expertsList = [...res.data];
-        }else{
-          that.expertsList = [...that.expertsList,...res.data];
-        }
-     
+          this.CheckList=res.data;
       })
-    }
+    },
+    BecomeExpertPass(id){
+      let url = API['BecomeExpertPass'] + id;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+          if(res.code==1)
+          {
+              wx.showToast({
+              title: "审核通过",
+              icon: "none",
+              duration: 1500
+            });
+             this.GetBecomeExpertList();
+          }else{
+              wx.showToast({
+              title: "审核异常请联系管理员"+res.data,
+              icon: "none",
+              duration: 1500
+               });
+          }
+    })
+  }
   },
-  onPageScroll() {
-
+  onLoad(options) {
+    this.userId=this.userData.userId
   },
-  onShow(){
-
+  created() {},
+  onShow() {
+      this.GetBecomeExpertList();
   },
-  created () {
-    
-  },
-   onPullDownRefresh () {
-       
+  onPullDownRefresh() {
+    //to do
+    this.GetBecomeExpertList();
     wx.stopPullDownRefresh();
   }
 }
 </script>
 
 <style lang="less" scoped>
-.relation_experts_block{
-  display: flex;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: #fff;
-  margin-bottom:  10px;
+.pass {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  width: 60px;
+  height: 60px;
 }
-.relation_expert{
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .expert_num{
-    position: relative;
-  
-    .num_text{
-      position: absolute;
-      left: 35px;
-      top:-10px;
-    }
-    img{
-      width: 46px;
-      height: 46px;
-    }
-  }
-  .expert_cate{
-    font-size: 12px;
-    color: #000;
-
-  }
+.checkBtn {
+  color: #fff;
+  background-color: #1989fa;
+  border: 1px solid #1989fa;
+  border-radius: 5px;
+  line-height: 30px;
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  width: 60px;
+  text-align: center;
+  height: 30px;
 }
 
-.msg_block{
+.experts_item {
+  padding: 14px 15px;
   font-size: 14px;
-  padding:0 15px;
   background-color: #fff;
   margin-bottom: 10px;
-  .block_top{
-    padding: 10px 0;
-    display: flex;
-    img{
-      width: 20px;
-      height: 20px;
-      padding-right: 5px;
-    }
-    span{
-     color: #333;
-    }
-  }
-  .new_msg{
-    padding-bottom:10px;
-    .msg_content{
-      width: 100%;
-      padding: 10px 15px;
-      padding-right: 0;
-      border-top: 1px solid #eee;
-      box-sizing: border-box;
-      span{
-        font-weight: bold;
-        font-size: 16px;
-      }
-    }
-    .msg_time{
-       font-size: 12px;
-       text-align: center;
-       color: #999;
-    }
-  }
-}
-.tab_fix_wrap{
-  position: fixed;
-  width: 100%;
-  height: 16px;
-  top:0;
-  left: 0;
-  z-index: 2;
-}
-
-.experts_list{
-  
-}
-
-.top_bar{
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 0 15px;
-  .location_select{
+  position: relative;
+  .top_block {
+    //  height: 78px;
+    height: auto;
     display: flex;
     align-items: center;
-    // margin-right: 10px;
-    .location_icon{
-      width: 20px;
-      height: 20px;
-      margin-right: 5px;
+    .experts_avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid #e6e8eb;
+      margin-right: 10px;
     }
-    span{
-      font-size: 12px;
-      color: #999;
-    }
-  }
-  .search_wrap{
-    flex: 1;
-  }
-  .sx_icon{
-    width: 20px;
-    height: 20px;
-    // margin-left: 10px;
-  }
-}
-
-
-.sx_panel{
-  position: fixed;
-  top:0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: #fff;
-  z-index: 10;
-  transform: translateX(100%);
-  transition: all 0.3s;
-  &.show{
-    transform: translateX(0);
-  }
-  .sx_top_bar{
-    display: flex;
-    align-items: center;
-    height: 40px;
-    padding:0 10px;
-    border-bottom: 1px solid #e6e8eb;
-    .cancel_btn{
-      width: 60px;
-      font-size: 13px;
-      color: #333;
-    }
-    .panel_title{
-      flex: 1;
-      font-size: 15px;
-      text-align: center;
-      color: #333;
-    }
-    .confirm_btn{
-      width: 60px;
-      height: 24px;
-      border-radius: 3px;
-      font-size: 13px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #1fb7b6;
-    }
-  }
-  .sx_tabs{
-    display: flex;
-    align-items: center;
-    height: 40px;
-    padding:0 15px;
-    .tab_item{
-      display: flex;
-      flex: 1;
-      align-items: center;
-      .tab_name{
-        font-size: 14px;
-        margin-right: 10px;
-      }
-      .tab_content{
-        font-size: 14px;
-        color: #999;
-        &.active{
-          color: #666;
+    .top_block_right {
+      //   flex: 1;
+      .experts_msg1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .experts_name {
+          font-size: 16px;
+          color: #333;
         }
       }
-      .arrow_icon{
-        margin-left: 5px;
-        width: 12px;
-        height: 9px;
-      }
-    }
-
-  }
-  .btns_wrap{
-    display: flex;
-    justify-content: space-between;
-    padding:0 20px;
-    .clean_btn{
-      width: 150px;
-      height: 36px;
-      border-radius: 3px;
-      font-size: 14px;
-      color: #1fb7b6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border:1px solid #1fb7b6;
-    }
-    .submit_btn{
-      width: 150px;
-      height: 36px;
-      border-radius: 3px;
-      font-size: 14px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #1fb7b6;
-    }
-  }
-}
-
-.sx_body{
-   padding:10px 15px;
-   font-size: 14px;
-    min-height: 230px;
-  .body_top{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    span{
-      color: #666;
-      font-weight: bold;
-    }
-    img{
-      height: 18px;
-      width: 18px;
-    }
-  }
-  .tags_list{
-    display: flex;
-    flex-wrap: wrap;
-    .list_item{
-      margin-right: 5px;
-      margin-top: 5px;
-      background-color: #f8f8f8;
-      color: #666;
-      font-size: 12px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      padding:0 15px;
-      border-radius: 16px; 
-      &.active{
-        color: #fff;
-        background-color: #1fb7b6;
+      .experts_msg2 {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #333;
+        display: flex;
+        justify-content: space-between;
+        .customer_info {
+          font-size: 13px;
+          color: #666;
+          width: 250px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
       }
     }
   }
-
 }
-
 </style>

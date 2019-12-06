@@ -94,6 +94,9 @@ const API = {
   'ExpertGetUserPhoneNum':'/api/LhzxOrderExpert/GetUserPhoneNum/', // 专家获取用户手机号
   'ExpertReceived':'/api/LhzxOrderExpert/Received/',  // 专家操作已到账
 
+  'GetBecomeExpertList':'/api/Users/GetBecomeExpertList',//获取专家审核列表
+  'BecomeExpertPass':'/api/Users/BecomeExpertPass/',//审核通过成为专家
+
   'AddUserFormId':'/api/Users/SetUserFormId'  // 批量插入用户FormId
 }
 
