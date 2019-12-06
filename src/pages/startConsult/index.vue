@@ -69,12 +69,14 @@
         </div>-->
 
         <div class="agreement_block">
-          <div class="agreement_title">咨询须知：</div>
+          <div class="agreement_title">提问须知：</div>
           <div class="agreement_content">
-            <p>您咨询的专家只是平台的一名用户，和本平台不存在任何雇佣或劳务关系。</p>
-            <p>您的咨询费将通过微信直接支付给专家，不经过平台。</p>
-            <p>专家的作答只供您作参考之用，如需专家出具监证意见，请与专家另行商议。</p>
-            <p>一切因为您采取专家的作答而产生的后果一律与平台无关。</p>
+            <p>你提问的专家只是我们《问税易》的一名用户，和我们不存在任何雇佣或劳务关系。</p>
+            <p>专家以个人身份为你提供服务，我们不参与其中。费用也不经过我们，由你直接支付专家。</p>
+            <p>专家给你的作答或建意，只供参考之用。</p>
+            <p>我们对专家的作答或表述均不承担任何责任。</p>
+            <p>任何因采用了专家的作答或表述而产生的后果一律与我们无关。</p>
+            <p>如你需要专家出具鉴证意见或提供更多其他服务，请另行与专家商议。</p>
           </div>
         </div>
       </div>
@@ -85,7 +87,7 @@
           :class="{'active':agreeRule}"
           @click="agreeRule = !agreeRule"
           style="margin-right:20px;"
-        >{{i18n.LANGTYPE == 'cn_j'?'阅读并同意专家的使用规则':'I have read and agreed to the requirements of being registered as an advisor'}}</span>
+        >阅读并同意用户使用协议</span>
       </div>
 
       <div class="btn_block">
