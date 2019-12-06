@@ -6,7 +6,7 @@
         <span class="new_msg_dot"></span>
       </div>
       
-      <img class="bg_img" src="../../../static/img/center_bg2.png">
+      <img class="bg_img" src="../../../static/img/center_bg3.png">
       <div class="mine_msg">
         <img class="mine_avatar" v-if="userData && userData.avatarUrl" :src="userData.avatarUrl">
         <img class="mine_avatar" v-else src="../../../static/img/df_avatar.jpg">
