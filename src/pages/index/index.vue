@@ -238,7 +238,7 @@ export default {
           that.isNomore = true;
         }else{
           res.data.forEach(item => {
-            item.companyAddress = item.companyAddress ? item.companyAddress.split('-')[1] :'未知';
+            item.companyAddress = item.address ? item.address.split('-')[1] :'未知';
           });
         }
         if(that.pageIndex == 0){
