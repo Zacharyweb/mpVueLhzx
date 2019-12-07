@@ -68,7 +68,7 @@
         <!-- 专家/用户取消订单 -->
         <div class="bottom_block" v-if="orderData.status == 9 && orderData.closeDesc && !orderData.otherExpertId">
           <div class="question">
-              <span class="question_title">{{i18n.order_closed}}：</span>{{i18n.reason}}：{{orderData.closeDesc}}
+              <span class="question_title">{{i18n.order_closed}}：</span>{{orderData.closeDesc}}
           </div>
           <div class="order_time">{{i18n.Close_at}}：{{orderData.closerTime}}</div>
         </div>
@@ -141,7 +141,7 @@
            <!-- 待接单时客户的操作 -->
            <div class="other_msg_block" v-if="orderData.status == 0">
              <div class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">
-               <div>专家将在{{orderData.responseTime}}分钟内接单</div>
+               <div>专家将在{{orderData.responseTime}}分钟内回应</div>
                <div>在专家接单前，您可取消订单哦</div>
              </div>
              <div class="other_msg" v-else>
@@ -164,8 +164,8 @@
              </div>
 
              <div class="inner_block">
-                <span class="action_btn2" @click="userNotSureOrderInfo">{{i18n.Decline}}</span>
-                <span class="action_btn" @click="userResureOrder">{{i18n.Accept}}</span>
+                <span class="action_btn2" @click="userNotSureOrderInfo">不接受</span>
+                <span class="action_btn" @click="userResureOrder">接受</span>
              </div>
            </div>
 
@@ -178,8 +178,8 @@
            <!-- 专家回答后用户可进行的操作 -->
            <div class="other_msg_block" v-if="orderData.status == 4 && !orderData.satisfactionDegreeDesc">
               <div class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">
-                <div>请评价服务并在24小时内支付费用</div>
-                <div>逾期未支付专家将直接联系您</div>
+                <div>请在24小时内评价和支付费用</div>
+                <div>逾时的专家可通过手机号联系你</div>
               </div>
               <div class="other_msg" v-else>
                 <div>Please make payment in 24 hours following the reply.</div>
@@ -194,8 +194,8 @@
            <!-- 专家回答后用户可进行的操作 -->
            <div class="other_msg_block" v-if="orderData.status == 4  && orderData.satisfactionDegreeDesc">
               <div class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">
-                <div>请24小时内完成本次费用支付</div>
-                <div>逾期未支付专家将直接联系您</div>
+                <div>请在24小时内支付费用</div>
+                <div>逾时的专家可通过手机号联系你</div>
               </div>
               <div class="other_msg" v-else>
                 <div>Please make payment in 24 hours following the reply.</div>
@@ -242,13 +242,13 @@
           <!-- 待接单时专家的操作 -->
           <div class="other_msg_block" v-if="orderData.status == 0">
 
-              <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">请在<span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span>分钟内接单</span>
+              <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">请在<span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span>分钟内回应</span>
               <span class="other_msg" v-else>please respond in <span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span> minutes</span>
 
               <div class="action_btn_bar">
                 <span class="action_btn2"  @click="toEditOrder">{{i18n.Change}}</span>
-                <span class="action_btn2" @click="toRejectOrder">{{i18n.Decline}}</span>
-                <span class="action_btn" @click="receiptOrder">{{i18n.Accept}}</span>
+                <span class="action_btn2" @click="toRejectOrder">不接单</span>
+                <span class="action_btn" @click="receiptOrder">接单</span>
               </div>
            </div>
   
@@ -266,8 +266,13 @@
           </div>
 
           <!-- 已作答等待用户支付 -->
-          <div class="ex_action_block" v-if="orderData.status == 4">
+          <div class="ex_action_block" v-if="orderData.status == 4 && !orderData.satisfactionDegree">
             <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">已作答，请等待用户审阅并为本次服务点评和支付</span>
+            <span class="other_msg" v-else>query has been answered,please wait user to review and pay</span>
+          </div>
+
+          <div class="ex_action_block" v-if="orderData.status == 4 && orderData.satisfactionDegree">
+            <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">用户已审阅,请等待用户支付</span>
             <span class="other_msg" v-else>query has been answered,please wait user to review and pay</span>
           </div>
 
@@ -488,8 +493,8 @@ export default {
     // 用户取消订单
     userCloseOrder(){
       Dialog.confirm({
-        title: this.i18n.LANGTYPE == 'cn_j'?'确认关闭订单？':'Close order?',
-        message: this.i18n.LANGTYPE == 'cn_j'?'点击确认后将关闭订单 ':'Order will be closed if click Confirm',
+        title: '确认取消订单？',
+        message: ' ',
         confirmButtonText:this.i18n.Confirm,
         cancelButtonText: this.i18n.Cancel,
       }).then(() => {

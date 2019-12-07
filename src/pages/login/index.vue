@@ -213,7 +213,7 @@ export default {
             that.updateUserMsg({ ...data, ...that.originalData });
             let userDataStr = JSON.stringify({ ...data, ...that.originalData });
             wx.setStorageSync("userData", userDataStr);
-
+            clearInterval(this.timer);
             if (this.fromType == 1) {
               this.shareExpert();
             } else if (this.fromType == 2) {

@@ -86,8 +86,9 @@
           class="custom_checkbox"
           :class="{'active':agreeRule}"
           @click="agreeRule = !agreeRule"
-          style="margin-right:20px;"
-        >阅读并同意用户使用协议</span>
+          style="margin-right:5px;"
+        ></span>
+        <span class="agree_text" @click="agreeRule = !agreeRule">阅读并同意<i @click.stop="toProtocol">《用户使用协议》</i></span>
       </div>
 
       <div class="btn_block">
@@ -276,6 +277,9 @@ export default {
 
     deletePhoto(index) {
       this.photosList.splice(index, 1);
+    },
+    toProtocol(){
+      this.$router.push('/pages/userProtocol/index');
     }
   },
 
@@ -549,6 +553,14 @@ export default {
 .agree_bar {
   padding: 0 20px;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  .agree_text{
+    display: flex;
+    align-items: center;
+  }
+
 }
 
 .agreement_block {

@@ -37,7 +37,7 @@
      
         <div class="edit_item alt">
           <span class="item_name">修改原因：</span>
-          <textarea class="text_area" placeholder="请输入修改原因" v-model="closeDesc"></textarea>
+          <textarea v-if="!modalShow" class="text_area" placeholder="请输入修改原因" v-model="closeDesc"></textarea>
         </div>
 
         <div class="edit_item">
@@ -50,7 +50,7 @@
             step="1"
             @change="onAmountChange"
           /> -->
-          <input class="amount_input" v-model="amount" type="number">
+          <input class="amount_input" v-model="amount" type="number" maxlength="3">
           <span class="item_unit">元</span>
         </div>
 
@@ -109,7 +109,8 @@ export default {
       userName:'',
       orderUserDesc:'',
       responseTime:'',
-      closeDesc:''
+      closeDesc:'',
+      modalShow:false
     }
   },
   computed: {
@@ -142,11 +143,12 @@ export default {
         this.showToast('请填写修改原因');
         return;
       };
-
+      this.modalShow = true;
       Dialog.confirm({
         title: '确认修改',
         message: '您对订单做出了修改,确定修改吗？'
       }).then(() => {
+        this.modalShow = false;
         this.$http.request({
           url:'ExpertModifyOrder',
           data:{
@@ -167,7 +169,7 @@ export default {
           }
         })
       }).catch(() => {
-        
+         this.modalShow = false;
       });
     }
   },
@@ -175,11 +177,12 @@ export default {
    
   },
   onLoad: function (options) {
+     this.modalShow = false;
     this.orderId = options.orderId;
 
     let orderData = wx.getStorageSync('orderData');
     this.oldAmount = orderData.amount;
-    this.amount = orderData.amount || '0';
+    this.amount = orderData.amount || '35';
     this.lastAnswerTime = orderData.lastAnswerTime;
     this.newLastAnswerTime = util.formatTime(new Date(orderData.lastAnswerTime));
     this.currentDate = new Date(orderData.lastAnswerTime).getTime();

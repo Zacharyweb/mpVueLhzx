@@ -260,11 +260,11 @@ module.exports = [
     }
   },
 
-  // 专家注册概述
+  // 专家须知
   {
     path: 'pages/becomeExpertPre/index',
     config: {
-      navigationBarTitleText: '专家注册概述',
+      navigationBarTitleText: '专家须知',
       usingComponents: {
         "van-steps": "/static/vant/steps/index",
         "van-area": "/static/vant/area/index"

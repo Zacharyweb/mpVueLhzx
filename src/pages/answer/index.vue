@@ -39,7 +39,7 @@
       <div class="panle_block nb">
         <div class="block_title">作答内容</div>
         <div class="problem_content">
-          <textarea  maxlength="2000" placeholder="请输入作答内容" v-model="answer"></textarea>
+          <textarea v-if="!modalShow" maxlength="2000" placeholder="请输入作答内容" v-model="answer"></textarea>
         </div>
       </div>
       <!-- <div class="panle_block npb">
@@ -77,8 +77,8 @@ export default {
       amount:'',
       photosList:[],
       orderNo:'',
-      orderData:''
-     
+      orderData:'',
+      modalShow:false
     }
   },
   computed: {
@@ -153,11 +153,12 @@ export default {
           userFiles.push({userId:this.userData.userId,fileUrl:item,orderId:this.orderId})
         })
       };
-
+      this.modalShow = true;
       Dialog.confirm({
         title: '确认提交',
         message: '确认提交作答内容',
       }).then(() => {
+        this.modalShow = false;
         this.$http.request({
           url:'ExpertAnswer',
           data: {
@@ -171,17 +172,21 @@ export default {
         }).then(res => {
            this.chooseIfFreeOrder()
         })
+      }).catch(() => {
+        this.modalShow = false;
       });
     },
 
     chooseIfFreeOrder(){
+       this.modalShow = true;
       Dialog.confirm({
         title: '谢谢作答！',
         message: '本次咨询费'+ this.amount +'元',
         confirmButtonText:'去收款',
         cancelButtonText:'给免单'
       }).then(() => {
-         this.noFreeOrder();
+        this.modalShow = false;
+        this.noFreeOrder();
       }).catch(() => {
         Dialog.confirm({
           title: '提示',
@@ -189,7 +194,10 @@ export default {
           cancelButtonText:this.i18n.cancel,
           confirmButtonText:'确定'
         }).then(() => {
+          this.modalShow = false;
           this.freeOrder()
+        }).catch(() => {
+          this.modalShow = false;
         });
       });
     },
@@ -203,12 +211,14 @@ export default {
           }
         }).then(res => {
           if(res.code == 1){
+            this.modalShow = true;
             Dialog.alert({
               title: '提示',
               message: '已通知用户支付，请在24小时内查看微信收款确认到账',
               confirmButtonText:'我知道了'
             }).then(() => {
-               this.$router.go(-1);
+              this.modalShow = false;
+              this.$router.go(-1);
             });
           }
         });
@@ -223,12 +233,14 @@ export default {
         }
       }).then(res => {
         if(res.code == 1){
+          this.modalShow = true;
           Dialog.alert({
             title: '免单成功！',
             message: '已通知客户',
             confirmButtonText:'我知道了'
           }).then(() => {
-             this.$router.go(-1);
+            this.modalShow = false;
+            this.$router.go(-1);
           });
         }
       });
@@ -238,6 +250,7 @@ export default {
   },
 
   onLoad(options){
+    this.modalShow = false;
     this.orderId = options.orderId*1;
     this.amount = options.amount;
     this.answer = '';

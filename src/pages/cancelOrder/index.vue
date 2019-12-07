@@ -46,14 +46,14 @@
       </div>
 
       <div class="input_block" v-if="rejectResonId == 4">
-        <textarea class="text_area" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入其他原因':'please enter other reason'" v-model="closeDesc"></textarea>
+        <textarea v-if="!modalShow" class="text_area" :placeholder="i18n.LANGTYPE == 'cn_j'?'请输入其他原因':'please enter other reason'" v-model="closeDesc"></textarea>
       </div>
 
 
       <div class="quick_reson_list">
         <div class="reson_item" >
-          <span class="reson_text">{{i18n.LANGTYPE == 'cn_j'?'推荐同业好友':'recommend other advisors'}}</span>
-          <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId == 0">{{i18n.LANGTYPE == 'cn_j'?'去选择专家好友 ':'choose from "my friends"'}}</span>
+          <span class="reson_text bold">{{i18n.LANGTYPE == 'cn_j'?'推荐同业好友':'recommend other advisors'}}&nbsp;</span>
+          <span class="item_content blue" @click="toSelectOtherExpert" v-show="otherExpertId == 0">{{i18n.LANGTYPE == 'cn_j'?'去选择专家好友 ':'choose from "my friends"'}}</span>
           <span class="item_content" @click="toSelectOtherExpert" v-show="otherExpertId != 0">{{i18n.LANGTYPE == 'cn_j'?'已选择专家':'advisors you want to be recommend'}}-{{selectedOtherExpertName}}</span>
         </div>
       </div>
@@ -106,7 +106,8 @@ export default {
       amount: this.amount*1,
      
 
-      orderData:{}
+      orderData:{},
+      modalShow:false
      
     }
   },
@@ -196,10 +197,13 @@ export default {
           closeDesc = this.closeDesc;
         }
       }
+
+      this.modalShow = true;
       Dialog.confirm({
         title: this.i18n.Confirm_decline,
         message: '您确定取消该订单吗？'
       }).then(() => {
+        this.modalShow = false;
         this.$http.request({
           url:'ExpertClosed',
           data:{
@@ -213,6 +217,7 @@ export default {
             method: 'post'
           }
         }).then(res => {
+          this.modalShow = false;
           if(res.code == 1){
             this.showToast(this.i18n.LANGTYPE == 'cn_j'?'订单已取消':'Order closed');
             setTimeout(()=>{
@@ -221,7 +226,7 @@ export default {
           }
         })
       }).catch(() => {
-        
+        this.modalShow = false;
       });
     }
   },
@@ -229,6 +234,7 @@ export default {
    
   },
   onLoad: function (options) {
+    this.modalShow = false;
     this.orderId = options.orderId;
     this.otherExpertId = 0;
     this.amount = options.amount;
@@ -298,10 +304,16 @@ export default {
           margin-right: 0;
         }
         .reson_text{
+          &.bold{
+            font-weight: bold;
+          }
           font-size: 13px;
           line-height: 1.5;
         }
         .item_content{
+          &.bule{
+            color: #0c6ad4;
+          }
           font-size: 14px;
           color: #666;
           margin-right: 10px;
