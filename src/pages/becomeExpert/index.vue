@@ -355,9 +355,10 @@
 
 <script>
 
-import { mapState, mapActions } from 'vuex'
-import {API, BASE_URL} from  '../../http/api.js'
+import { mapState, mapActions } from 'vuex';
+import {API, BASE_URL} from  '../../http/api.js';
 import AreaList from '../../../static/js/area.js';
+import util from "../../utils/index.js";
 export default {
   data(){
     return{
@@ -584,7 +585,7 @@ export default {
         success(res) {
           that.isUploadingFile = false;
           wx.showLoading({
-            title: this.i18n.uploading,
+            title: '上传中',
             mask: true
           })
 
@@ -638,7 +639,7 @@ export default {
         success(res) {
           that.isUploadingFile = false;
           wx.showLoading({
-            title: this.i18n.uploading,
+            title: '上传中',
             mask: true
           })
           let tempFilePaths = res.tempFilePaths;

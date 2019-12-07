@@ -11,7 +11,7 @@
           <div class="tips1">{{i18n.LANGTYPE == 'cn_j'?'长按下方图片保存专家收款二维码直接付款给专家。':'Fee shall be paid to advisor directly via his/her WeChat QR Code'}}</div>
         </div>
         <div class="pay_QRcode_img">
-            <img src="../../../static/img/pay_step1.jpg" @longtap='saveImg' mode="widthFix">
+            <img :src="payCodeImg" @longtap='saveImg' mode="widthFix">
         </div>
       </div>
     
@@ -63,6 +63,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import { API, BASE_URL } from "../../http/api.js";
 export default {
   data(){
     return{
@@ -70,7 +71,9 @@ export default {
       amount:0,
       price:'',
       quantity:'',
-      photosList:[]
+      photosList:[],
+      userId:0,
+      payCodeImg:''
     }
   },
   computed: {
@@ -87,6 +90,7 @@ export default {
     this.price = options.price;
     this.amount = options.amount;
     this.quantity = options.quantity || 1;
+    this.userId = this.userData.userId;
     // this.postPayMsg();
   },
   methods: {
@@ -154,7 +158,7 @@ export default {
     //保存网络图片到相册方法
     saveToBlum:function(){
       wx.downloadFile({
-        url: 'https://xianchaosectrade.oss-cn-hangzhou.aliyuncs.com/online/bf7d421f5c4d4014.jpeg',
+        url:this.payCodeImg,
         success: function (res) {
           wx.saveImageToPhotosAlbum({
             filePath: res.tempFilePath,
@@ -168,13 +172,25 @@ export default {
         }
       })
     },
+    GetUserPayCodeImg(){
+      let url = API['GetUserPayCodeImg'] + this.userId;
+      this.$http.request({
+        url:url,
+      }).then(res => {
+        if(res.code==1)
+        {
+         this.payCodeImg= res.data.paymentCode;
+        }
+    })
+  } 
 
   },
   onShow(){
-   
+   this.GetUserPayCodeImg();
   },
   onPullDownRefresh() {
   //to do
+  this.GetUserPayCodeImg();
   wx.stopPullDownRefresh();
   }
 }
