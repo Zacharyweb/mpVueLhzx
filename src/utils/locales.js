@@ -154,7 +154,7 @@ export default {
       'reason':'原因',
       'orderNo':'订单号',
       'to_be_confirmed':'待接单',
-      'to_be_reconfirmed':'待重新确认',
+      'to_be_reconfirmed':'修改待确认',
       'submitted_at':'提交时间',
       'cancel':'取消',
       'confirm_cancel':'确认取消',

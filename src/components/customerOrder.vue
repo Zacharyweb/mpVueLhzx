@@ -40,7 +40,7 @@
     </div>
 
     <div class="other_msg_block" v-if="orderData.status == 0">
-      <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">请在<span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span>分钟内接单</span>
+      <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">请在<span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span>分钟内回应</span>
       <span class="other_msg" v-else>please respond in <span class="other_msg_text">{{orderData.lastReceiptTimeOfMinute}}</span> minutes</span>
       <span class="action_btn">{{i18n.Details}}</span>
     </div>
@@ -64,8 +64,8 @@
     <div class="other_msg_block" v-if="orderData.status == 9">
 
       <span class="other_msg" v-if="orderData.closeType==0" >{{i18n.LANGTYPE == 'cn_j'?'系统关闭':'closed by system'}}{{orderData.remark?','+orderData.remark:""}}</span>
-      <span class="other_msg" v-if="orderData.closeType==1" >{{i18n.LANGTYPE == 'cn_j'?'用户关闭':'closed by user'}}{{orderData.remark?','+orderData.remark:""}}</span>
-      <span class="other_msg" v-if="orderData.closeType==2" >{{i18n.LANGTYPE == 'cn_j'?'专家关闭':'closed by advisor'}}{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==1" >{{i18n.LANGTYPE == 'cn_j'?'用户取消订单':'closed by user'}}{{orderData.remark?','+orderData.remark:""}}</span>
+      <span class="other_msg" v-if="orderData.closeType==2" >{{i18n.LANGTYPE == 'cn_j'?'专家取消订单':'closed by advisor'}}{{orderData.remark?','+orderData.remark:""}}</span>
       
     </div>
   </div>

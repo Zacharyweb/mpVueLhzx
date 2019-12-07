@@ -13,7 +13,7 @@
       </div>
 
       <div class="input_block">
-        <textarea class="text_area" placeholder="请输入评价内容或评价理由" v-model="commentContent" v-if="!visiblePanelShow && !addViewPanelShow"></textarea>
+        <textarea  class="text_area" placeholder="说说你对专家的印象，点击下方“我的专家”公开给你的关系户见" v-model="commentContent" v-if="!visiblePanelShow && !addViewPanelShow && !modalShow"></textarea>
       </div>
 
       <div class="visible">
@@ -210,7 +210,8 @@ export default {
 
       visibleFriendsList:[],
       notVisibleFriendsList:[],
-      commentType:0
+      commentType:0,
+      modalShow:false
     }
   },
   computed:{
@@ -370,29 +371,34 @@ export default {
         return;
       };
       if(this.commentType == 3 && !this.commentContent){
+        this.modalShow = true;
         Dialog.alert({
           title: '提示',
           message: '请填写不满的理由，以便专家了解改进',
           confirmButtonText:'我知道了'
         }).then(() => {
-          
+          this.modalShow = false;
         });
       }
 
-      if(!this.commentContent){
-        this.showToast('请输入评价内容');
-        return;
-      };
+      // if(!this.commentContent){
+      //   this.showToast('请输入评价内容');
+      //   return;
+      // };
 
       if(this.commentType == 3){
+          this.modalShow = true;
           Dialog.confirm({
             title: '提示',
             message: '为便于专家与您联系协商，您的手机号将会同时发送给专家。',
             confirmButtonText:'同意发送',
             cancelButtonText:this.i18n.cancel
           }).then(() => {
+            this.modalShow = false;
             this.commitComment();
-          })
+          }).catch(() => {
+            this.modalShow = false;
+          });
       }else{
         this.commitComment();
       }
@@ -442,12 +448,14 @@ export default {
       }).then(res => {
         if(res.code == 1){
           if(this.commentType == 3){
+            this.modalShow = true;
             Dialog.alert({
               title: '提示',
               message: '申诉已提交，专家到时可能会联系您进行协商，请留意。',
               confirmButtonText:'我知道了'
             }).then(() => {
-                this.$router.go(-1);   
+               this.modalShow = false;
+               this.$router.go(-1);   
             });
           }else{
             this.$router.go(-1);
@@ -471,6 +479,7 @@ export default {
    
   },
   onLoad(options){
+    this.modalShow = false;
     this.visiblePanelShow = false;
     this.orderId= options.orderId;
     this.expertId = options.expertId;
