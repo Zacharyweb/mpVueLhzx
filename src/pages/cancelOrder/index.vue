@@ -461,7 +461,7 @@ export default {
         color: #fa3200;
       }
       .status.blue{
-        color: #2d8cf0;
+        color: #1fb7b6;
       }
     }
   }
