@@ -370,7 +370,9 @@ export default {
         this.showToast('请选择是否满意');
         return;
       };
+
       if(this.commentType == 3 && !this.commentContent){
+        
         this.modalShow = true;
         Dialog.alert({
           title: '提示',
@@ -379,6 +381,7 @@ export default {
         }).then(() => {
           this.modalShow = false;
         });
+        return;
       }
 
       // if(!this.commentContent){

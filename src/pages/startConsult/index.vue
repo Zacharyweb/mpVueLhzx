@@ -151,7 +151,7 @@ export default {
         wx.showToast({
           title:
             this.i18n.LANGTYPE == "cn_j"
-              ? "请先阅读并同意专家的使用规则"
+              ? "请先阅读并同意用户使用协议"
               : "please read and agree to the expert's rules of use first",
           icon: "none",
           duration: 1500

@@ -7,6 +7,7 @@
         <span class="status_text" v-if="orderData.status == 1">{{i18n.to_be_reconfirmed}}</span>
         <span class="status_text" v-if="orderData.status == 2">{{i18n.to_be_answer}}</span>   
         <span class="status_text" v-if="orderData.status == 4">{{i18n.to_be_paid}}</span>  
+        <span class="status_text" v-if="orderData.status == 5">待专家确认收款</span>  
         <span class="status_text" v-if="orderData.status == 6">{{i18n.to_be_receipt}}</span>
         <span class="status_text grey" v-if="orderData.status == 7">{{i18n.completed}}</span> 
         <span class="status_text red" v-if="orderData.status == 8">{{i18n.to_be_resolved}}</span>   
@@ -34,8 +35,8 @@
       <div class="order_time" v-if="orderData.status == 0 || orderData.status == 1">{{i18n.Asked_at}}：{{orderData.creationTime}}</div>
       <div class="order_time" v-if="orderData.status == 2">{{i18n.accepted_at}}：{{orderData.actualReceiptTime}}</div>
       <div class="order_time" v-if="orderData.status == 4 || orderData.status == 8">{{i18n.replied_at}}：{{orderData.actualAnswerTime}}</div>
-      <div class="order_time" v-if="orderData.status == 6">{{i18n.QR_Code_sent_at}}：{{orderData.Confirm1Datetime}}</div>
-      <div class="order_time" v-if="orderData.status == 7">{{i18n.paid_at}}：{{orderData.Confirm3Datetime}}</div>
+      <div class="order_time" v-if="orderData.status == 6">{{i18n.QR_Code_sent_at}}：{{orderData.confirm1Datetime}}</div>
+      <div class="order_time" v-if="orderData.status == 7">{{i18n.paid_at}}：{{orderData.confirm3Datetime}}</div>
       <div class="order_time" v-if="orderData.status == 9">{{i18n.Close_at}}：{{orderData.closerTime}}</div>
     </div>
 

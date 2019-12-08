@@ -8,6 +8,7 @@
         <span class="status" v-if="orderData.status == 1">{{i18n.to_be_reconfirmed}}</span>
         <span class="status" v-if="orderData.status == 2">{{i18n.to_be_answer}}</span>   
         <span class="status" v-if="orderData.status == 4">{{i18n.to_be_paid}}</span>
+        <span class="status" v-if="orderData.status == 5">待专家确认收款</span>  
         <span class="status" v-if="orderData.status == 6">{{i18n.to_be_receipt}}</span> 
         <span class="status" v-if="orderData.status == 7">{{i18n.completed}}</span>
         <span class="status red" v-if="orderData.status == 8">{{i18n.to_be_resolved}}</span>   
@@ -117,20 +118,20 @@
           <div class="order_time">{{i18n.replied_at}}：{{orderData.actualAnswerTime}}</div>
         </div>
 
-        <div class="bottom_block" v-if="(orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8 ) && orderData.satisfactionDegreeDesc">
+        <div class="bottom_block" v-if="(orderData.status == 4 || orderData.status == 6 || orderData.status == 7 || orderData.status == 8 ) && orderData.satisfactionDegree">
           <div class="question" style="padding-bottom:6px;">
               <span class="question_title">{{i18n.rating}}：</span>
               <span class="satisfaction_degree" v-if="orderData.satisfactionDegree=='满意'">{{i18n.good}}</span>
               <span class="satisfaction_degree" v-if="orderData.satisfactionDegree=='一般'">{{i18n.so_so}}</span>
               <span class="satisfaction_degree" v-if="orderData.satisfactionDegree=='不满意'">{{i18n.no_good}}</span>
           </div>          
-          <div class="question">
+          <div class="question" v-if="orderData.satisfactionDegreeDesc">
               <span class="question_title">{{i18n.comment}}：</span>{{orderData.satisfactionDegreeDesc}}
           </div>
           <div class="order_time">{{i18n.comment_at}}：{{orderData.satisfactionDegreeTime}}</div>
         </div>
 
-        <div class="bottom_block" v-if="orderData.status == 5 && '免单'">
+        <div class="bottom_block" v-if="orderData.status == 5 && orderData.amount*1===0">
           <div class="question">
             <span class="question_title">{{i18n.fee_required}}：￥0</span>
           </div>
@@ -223,12 +224,17 @@
              </div>
            </div>
 
-          <!-- 用户申诉待协商 -->
+          <!-- 用户申诉待协商 -->      
           <div class="other_msg_block" v-if="orderData.status == 8 && orderData.satisfactionDegree == '不满意'">
-            <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">您不满此次作答并拒绝支付费用，专家可能会联系您进行协商处理~</span>
-            <span class="other_msg" v-else>User dissatisfied.Advisor may contact you to address your concerns</span>
-
-          </div>
+              <div class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">
+                <div>您不满此次作答并拒绝支付费用，</div>
+                <div>专家可能会联系您进行协商处理~</div>
+              </div>
+              <div class="inner_block">
+                
+                  <span class="action_btn" @click="toPay">继续支付</span>
+              </div>
+           </div>
 
           <div class="other_msg_block" v-if="orderData.status == 8 && orderData.satisfactionDegree =='专家未到账'">
             <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">专家未收到您支付的费用，可能会联系您进行协商处理~</span>
@@ -573,6 +579,7 @@ export default {
 
     // 不满意去申诉
     toAppeal(){
+      
       this.$router.push({path:'/pages/appeal/index',query:{orderId:this.orderId}})
     },
 
@@ -584,7 +591,10 @@ export default {
           message: this.i18n.LANGTYPE == 'cn_j'?'不写点评，直接去支付吗？':'making payment without giving any comments?'
         }).then(() => {
            this.toPayPage();
-        })
+        }).catch(()=>{
+          console.log("请重启小程序")
+        }
+        );
       }else{
          this.toPayPage();
       }
@@ -596,7 +606,8 @@ export default {
             orderId:this.orderId*1,
             amount:this.orderData.amount,
             price:this.orderData.price,
-            quantity:this.orderData.quantity
+            quantity:this.orderData.quantity,
+            expertId:this.orderData.expertId
         }})
     },
 
@@ -607,7 +618,7 @@ export default {
     // 用户去追问
     toAskMore(flag){
       if(flag == 1){
-        this.showToast(this.i18n.LANGTYPE == 'cn_j'?'请先完成支付~':'please pay for the answer first');
+        this.showToast(this.i18n.LANGTYPE == 'cn_j'?'请等待专家先确认收款~':'please pay for the answer first');
         return;
       }
       this.$router.push({path:'/pages/startConsult/index',name:'toAskMore',query:{expertId:this.orderData.expertId,parentOrderId:this.orderData.id}});
