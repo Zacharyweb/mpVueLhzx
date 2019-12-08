@@ -364,7 +364,7 @@ export default {
           ...data,
           workStatus: result.workStatus,
           workMode: result.workMode,
-          chatMode: setChatMode
+          chatMode: result.setChatMode
         });
       });
     }

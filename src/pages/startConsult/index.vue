@@ -284,6 +284,7 @@ export default {
   },
 
   onLoad(options) {
+     console.log(options);
     if (this.userData == null) {
       wx.redirectTo({
         url:"/pages/login/index"

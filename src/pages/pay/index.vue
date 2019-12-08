@@ -116,6 +116,7 @@ export default {
 
     /****长按保存图片 */
     saveImg: function () {
+      this.postPayMsg();
       let that=this
       wx.getSetting({
         success(res) {

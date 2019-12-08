@@ -35,7 +35,7 @@ const API = {
   'UserResureOrder':'/api/LhzxOrder/DoSureOrderInfo', //用户重新确认订单
   'AnswerOrder':'/api/LhzxOrder/Answer', //专家作答
   'UserDoSureAnswer':'/api/LhzxOrder/UserDoSure', // 用户确认（超过最后确认时间还未操作会自动确认）
-  // 'UserPaying':'/api/LhzxOrder/Paying',//  用户支付订单（操作后系统将专家的收款二维码以模板消息发送给用户）
+  'UserPaying':'/api/LhzxOrderClient/Paying',//  用户支付订单（操作后系统将专家的收款二维码以模板消息发送给用户）
   'PaymentVoucher':'/api/LhzxOrder/PaymentVoucher', // 用户提交支付凭证
   'ExpertPaySure':'/api/LhzxOrder/PaySure', // 专家确认订单（操作后系统将订单完成的消息推送给用户）
   'UseComment':'/api/LhzxOrder/OrderComment', //用户评价(超过最后评价时间后系统将自动好评)
@@ -93,6 +93,8 @@ const API = {
   'ExpertFreeOrder':'/api/LhzxOrderExpert/FreeOrder/', // 专家免单操作
   'ExpertGetUserPhoneNum':'/api/LhzxOrderExpert/GetUserPhoneNum/', // 专家获取用户手机号
   'ExpertReceived':'/api/LhzxOrderExpert/Received/',  // 专家操作已到账
+
+  'GetExpertOfMyFriendListToDisplay':'/api/LhzxFriend/GetExpertOfMyFriendListToDisplay',//
 
   'GetBecomeExpertList':'/api/Users/GetBecomeExpertList',//获取专家审核列表
   'BecomeExpertPass':'/api/Users/BecomeExpertPass/',//审核通过成为专家

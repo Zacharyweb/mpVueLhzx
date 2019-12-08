@@ -230,7 +230,7 @@
 
           </div>
 
-          <div class="other_msg_block" v-if="orderData.status == 8 && '专家未到账'">
+          <div class="other_msg_block" v-if="orderData.status == 8 && orderData.satisfactionDegree =='专家未到账'">
             <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">专家未收到您支付的费用，可能会联系您进行协商处理~</span>
             <span class="other_msg" v-else>No payment confirmation.Advisor may contact you to address your concerns</span>
           </div>
@@ -277,6 +277,15 @@
           </div>
 
           <!-- 用户支付完成后专家可进行的操作 -->
+          <div class="other_msg_block" v-if="orderData.status == 5">
+            <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">用户已提交支付，请及时确认~</span>
+            <span class="other_msg" v-else>please confirm receipt after checking your WeChat payment record</span>
+            <div class="action_btn_bar">          
+                <span class="action_btn" @click="expertPaySure">{{i18n.Paid}}</span>
+            </div>
+          </div>          
+
+          <!-- 用户支付完成后专家可进行的操作 -->
           <div class="other_msg_block" v-if="orderData.status == 6">
             <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">用户已提交支付，请及时确认~</span>
             <span class="other_msg" v-else>please confirm receipt after checking your WeChat payment record</span>
@@ -301,7 +310,7 @@
              </div>
           </div>
 
-          <div class="other_msg_block" v-if="orderData.status == 8 && '专家未到账'">
+          <div class="other_msg_block" v-if="orderData.status == 8 && orderData.satisfactionDegree =='专家未到账'">
               <div class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">
                   <div>您未收到用户支付的费用</div>
                   <div>可联系用户进行协商</div>
@@ -601,7 +610,7 @@ export default {
         this.showToast(this.i18n.LANGTYPE == 'cn_j'?'请先完成支付~':'please pay for the answer first');
         return;
       }
-      this.$router.push({path:'/pages/startConsult/index',query:{expertId:this.orderData.expertId,parentOrderId:this.orderData.id}});
+      this.$router.push({path:'/pages/startConsult/index',name:'toAskMore',query:{expertId:this.orderData.expertId,parentOrderId:this.orderData.id}});
     },
     showQuestionImgsSwiper(index){
       this.questionImgsSwiperShow = true;
