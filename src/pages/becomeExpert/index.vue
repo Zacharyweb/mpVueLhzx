@@ -394,7 +394,35 @@ export default {
       isUploadingFile:false,
  
       stepFlag:0,
-      openConsultExplain:false
+      openConsultExplain:false,
+
+      certType: [
+        {name:'身份证',name2:'Identity Card',type:'1',flag:false},
+        {name:'护照',name2:'Passport',type:'2',flag:false},
+        {name:'通行证',name2:'Permit',type:'3',flag:false},
+      ],
+      language:[
+        {name:'汉语',name2:'Chinese',type:'cn',flag:false},
+        {name:'英语',name2:'English',type:'en',flag:false}
+      ],
+      majorYearsDesc:[
+          {name:'5-10年',name2:'5-10 years',type:'1',flag:false},
+          {name:'10-15年',name2:'10-15 years',type:'2',flag:false},
+          {name:'15-20年',name2:'15-20 years',type:'3',flag:false},
+          {name:'20年以上',name2:'more than 20 years',type:'4',flag:false},
+      ],
+      responseTime:[
+          {name:'5分钟',type:'5',flag:false},
+          {name:'15分钟',type:'15',flag:false},
+          {name:'30分钟',type:'30',flag:false},
+          {name:'1小时',type:'60',flag:false}
+      ],
+      answeringTime:[
+        {name:'1小时',type:'60',flag:false},
+        {name:'4小时',type:'240',flag:false},
+        {name:'12小时',type:'720',flag:false},
+        {name:'24小时',type:'1440',flag:false},
+      ] 
     }
   },
   computed: {
@@ -402,89 +430,7 @@ export default {
       userData: state => state.counter.userData,
       i18n: state => state.counter.i18n
     }),
-    language:function(){
-      if(this.i18n.LANGTYPE == 'cn_j'){
-        return [
-          {name:'汉语',name2:'Chinese',type:'cn',flag:false},
-          {name:'英语',name2:'English',type:'en',flag:false}
-        ]
-      }else{
-        return [
-          {name:'Chinese',name2:'汉语',type:'cn',flag:false},
-          {name:'English',name2:'英语',type:'en',flag:false}
-        ]
-      }
-    },
-
-    majorYearsDesc:function(){
-      if(this.i18n.LANGTYPE == 'cn_j'){
-        return [
-          {name:'5-10年',name2:'5-10 years',type:'1',flag:false},
-          {name:'10-15年',name2:'10-15 years',type:'2',flag:false},
-          {name:'15-20年',name2:'15-20 years',type:'3',flag:false},
-          {name:'20年以上',name2:'more than 20 years',type:'4',flag:false},
-        ]  
-      }else{
-        return [
-          {name:'5-10 years',name2:'5-10年',type:'1',flag:false},
-          {name:'10-15 years',name2:'10-15年',type:'2',flag:false},
-          {name:'15-20 years',name2:'15-20年',type:'3',flag:false},
-          {name:'more than 20 years',name2:'20年以上',type:'4',flag:false},
-        ]  
-      }
-    },
-
-    certType:function(){
-      if(this.i18n.LANGTYPE == 'cn_j'){
-        return [
-          {name:'身份证',name2:'Identity Card',type:'1',flag:false},
-          {name:'护照',name2:'Passport',type:'2',flag:false},
-          {name:'通行证',name2:'Permit',type:'3',flag:false},
-        ]  
-      }else{
-        return [
-          {name:'Identity Card',name2:'身份证',type:'1',flag:false},
-          {name:'Passport',name2:'护照',type:'2',flag:false},
-          {name:'Permit',name2:'通行证',type:'3',flag:false},
-        ]  
-      }
-    },
-    responseTime:function(){
-      if(this.i18n.LANGTYPE == 'cn_j'){
-        return [
-          {name:'5分钟',type:'5',flag:false},
-          {name:'15分钟',type:'15',flag:false},
-          {name:'30分钟',type:'30',flag:false},
-          {name:'1小时',type:'60',flag:false}
-        ]  
-      }else{
-        return [
-          {name:'5 minutes',type:'5',flag:false},
-          {name:'15 minutes',type:'15',flag:false},
-          {name:'30 minutes',type:'30',flag:false},
-          {name:'1 hour',type:'60',flag:false}
-        ]  
-      }
-      
-    },
-    answeringTime:function(){
-      if(this.i18n.LANGTYPE == 'cn_j'){
-        return [
-          {name:'1小时',type:'60',flag:false},
-          {name:'4小时',type:'240',flag:false},
-          {name:'12小时',type:'720',flag:false},
-          {name:'24小时',type:'1440',flag:false},
-        ]  
-      }else{
-        return [
-          {name:'1 hour',type:'60',flag:false},
-          {name:'4 hours',type:'240',flag:false},
-          {name:'12 hours',type:'720',flag:false},
-          {name:'24 hours',type:'1440',flag:false}
-        ] 
-      }
-    },
-
+   
     fillSteps:function(){
         return [
           {
@@ -511,11 +457,21 @@ export default {
     }
     this.major = [];
     this.businessArea = [];
+    this.clearSelected(this.certType);
+    this.clearSelected(this.language);
+    this.clearSelected(this.majorYearsDesc);
+    this.clearSelected(this.responseTime);
+    this.clearSelected(this.answeringTime);
     this.getAllMajor();
     this.getLhzxBusinessAreas();
     this.getLhzxGoodAtBusiness();
   },
   methods: {
+    clearSelected(arr){
+      arr.forEach((item)=>{
+        item.flag = false;
+      })
+    },
     checkedStatus(){
        if(this.isChecked == 'Y'){
           wx.showToast({
