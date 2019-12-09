@@ -11,12 +11,12 @@
           <div class="content_item" v-for="(item,index) in chatList" :key="index">
             <div class="content_time">{{item.time}}</div>
             <div v-if="item.type == 'e'" class="content_body">
-               <img class="user_avatar" :src="item.AvatarUrl">
+               <img class="user_avatar" :src="item.avatarUrl">
                <div class="content_panel">{{item.content}}</div>
             </div>
             <div v-else class="content_body right">
                 <div class="content_panel">{{item.content}}</div>
-                <img class="user_avatar" :src="item.AvatarUrl">
+                <img class="user_avatar" :src="item.avatarUrl">
             </div>
           </div>
         </div>
@@ -41,7 +41,8 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import Dialog from '../../../static/vant/dialog/dialog';
-import util from '../../utils/index.js'
+import util from '../../utils/index.js';
+import { API, BASE_URL } from "../../http/api.js";
 export default {
   data(){
     return{
@@ -144,20 +145,17 @@ export default {
       }
     },
     getChatData(){
-      // this.$http.request({
-      //   url:'GetChatData',
-      //   data:{
-      //     userId: this.userId,
-      //     isExpert: this.expertId
-      //   },
-      //   flyConfig:{
-      //     method: 'post'
-      //   }
-      // }).then(res => {
-      //   if(res.code == 1){
-      //     this.loopGetData();
-      //   }
-      // })
+      let url = API["GetUserChatListAsync"] + this.userId;
+      this.$http.request({
+        url:url
+      }).then(res => {
+        if(res.code == 1){
+          
+          this.chatList = res.data;
+          this.chatRoomSlideToBottom();
+          //this.loopGetData();
+        }
+      })
     },
     toContact(){
       this.$router.push({
