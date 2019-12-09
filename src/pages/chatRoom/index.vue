@@ -11,12 +11,12 @@
           <div class="content_item" v-for="(item,index) in chatList" :key="index">
             <div class="content_time">{{item.time}}</div>
             <div v-if="item.type == 'e'" class="content_body">
-               <img class="user_avatar" src="../../../static/img/avatar.jpeg">
+               <img class="user_avatar" :src="item.AvatarUrl">
                <div class="content_panel">{{item.content}}</div>
             </div>
             <div v-else class="content_body right">
                 <div class="content_panel">{{item.content}}</div>
-                <img class="user_avatar" src="../../../static/img/avatar.jpeg">
+                <img class="user_avatar" :src="item.AvatarUrl">
             </div>
           </div>
         </div>
@@ -83,11 +83,34 @@ export default {
       if(!this.inputVal){
         return;
       };
-      let that = this;
-      let time = util.formatTime(new Date());
-      this.chatList = [...this.chatList,{type:'u',content:this.inputVal,time:time}];
-      this.chatRoomSlideToBottom();
-      this.inputVal = '';
+
+      this.$http
+        .request({
+          url: "InsertUserChat",
+          data: {
+            fromUserId: this.userId,
+            toUserId:this.expertId,
+            msgContent: this.inputVal
+          },
+          flyConfig: {
+            method: "post"
+          }
+        })
+        .then(res => {
+          if (res.code == 1) {
+            let that = this;
+            let time = util.formatTime(new Date());
+            this.chatList = [...this.chatList,{type:'u',content:this.inputVal,time:time}];
+            this.chatRoomSlideToBottom();
+            this.inputVal = '';
+          }else{
+            wx.showToast({
+              title: "服务异常",
+              icon: "none",
+              duration: 1500
+            });
+          }
+        });
     },
     chatRoomSlideToBottom(){
       let that = this;

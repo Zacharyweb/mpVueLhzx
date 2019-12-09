@@ -99,7 +99,7 @@ const API = {
   'GetBecomeExpertList':'/api/Users/GetBecomeExpertList',//获取专家审核列表
   'BecomeExpertPass':'/api/Users/BecomeExpertPass/',//审核通过成为专家
   'GetUserPayCodeImg':'/api/Users/GetUserPayCodeImg/',//获取用户的支付二维码
-
+  'InsertUserChat':'/api/LhzxChat/InsertUserChat',//发送聊天消息
 
   'AddUserFormId':'/api/Users/SetUserFormId'  // 批量插入用户FormId
 }
