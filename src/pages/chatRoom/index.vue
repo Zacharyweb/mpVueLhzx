@@ -43,7 +43,6 @@ import { mapState, mapActions } from 'vuex';
 import Dialog from '../../../static/vant/dialog/dialog';
 import util from '../../utils/index.js';
 import { API, BASE_URL } from "../../http/api.js";
-import Config from './config';
 export default {
   data(){
     return{
@@ -86,7 +85,6 @@ export default {
       if(!this.inputVal){
         return;
       };
-      Config.loading.loadingHide();
       this.$http
         .post({
           url: "InsertUserChat",
@@ -147,7 +145,6 @@ export default {
       }
     },
     getChatData(){
-      Config.loading.loadingHide();
       this.$http.post({
           url: 'GetUserChatListAsync',
           data: {
