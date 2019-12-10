@@ -39,7 +39,8 @@
       <div class="order_time" v-if="orderData.status == 2">{{i18n.accepted_at}}：{{orderData.actualReceiptTime}}</div>
       <div class="order_time" v-if="orderData.status == 4 || orderData.status == 8">{{i18n.replied_at}}：{{orderData.actualAnswerTime}}</div>
       <div class="order_time" v-if="orderData.status == 6">{{i18n.QR_Code_sent_at}}：{{orderData.confirm1Datetime}}</div>
-      <div class="order_time" v-if="orderData.status == 7">{{i18n.paid_at}}：{{orderData.confirm3Datetime}}</div>
+      <div class="order_time" v-if="orderData.status == 7 && orderData.amount>0">{{i18n.paid_at}}：{{orderData.confirm3Datetime}}</div>
+      <div class="order_time" v-if="orderData.status == 7 && orderData.amount==0">免单时间：{{orderData.lastModificationTime}}</div>   
       <div class="order_time" v-if="orderData.status == 9">{{i18n.Close_at}}：{{orderData.closerTime}}</div>
 
     </div>
@@ -67,7 +68,7 @@
       <span class="action_btn">{{i18n.To_pay}}</span>
     </div>
 
-    <div class="other_msg_block" v-if="orderData.status == 8">
+    <div class="other_msg_block" v-if="orderData.status == 8||orderData.status == 7">
       <span class="other_msg">{{orderData.remark}}</span>
     </div>
     <div class="other_msg_block" v-if="orderData.status == 9">

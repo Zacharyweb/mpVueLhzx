@@ -11,12 +11,12 @@
           <div class="content_item" v-for="(item,index) in chatList" :key="index">
             <div class="content_time">{{item.time}}</div>
             <div v-if="item.type == 'e'" class="content_body">
-               <img class="user_avatar" :src="item.AvatarUrl">
+               <img class="user_avatar" :src="item.avatarUrl">
                <div class="content_panel">{{item.content}}</div>
             </div>
             <div v-else class="content_body right">
                 <div class="content_panel">{{item.content}}</div>
-                <img class="user_avatar" :src="item.AvatarUrl">
+                <img class="user_avatar" :src="item.avatarUrl">
             </div>
           </div>
         </div>
@@ -41,7 +41,9 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import Dialog from '../../../static/vant/dialog/dialog';
-import util from '../../utils/index.js'
+import util from '../../utils/index.js';
+import { API, BASE_URL } from "../../http/api.js";
+import Config from './config';
 export default {
   data(){
     return{
@@ -60,6 +62,7 @@ export default {
   },
   computed: {
     ...mapState({
+      userData: state => state.counter.userData,
       isX: state => state.counter.isX,
       i18n: state => state.counter.i18n
     })
@@ -83,9 +86,9 @@ export default {
       if(!this.inputVal){
         return;
       };
-
+      Config.loading.loadingHide();
       this.$http
-        .request({
+        .post({
           url: "InsertUserChat",
           data: {
             fromUserId: this.userId,
@@ -100,7 +103,7 @@ export default {
           if (res.code == 1) {
             let that = this;
             let time = util.formatTime(new Date());
-            this.chatList = [...this.chatList,{type:'u',content:this.inputVal,time:time}];
+            this.chatList = [...this.chatList,{type:'u',content:this.inputVal,time:time,avatarUrl:this.userData.avatarUrl}];
             this.chatRoomSlideToBottom();
             this.inputVal = '';
           }else{
@@ -144,20 +147,24 @@ export default {
       }
     },
     getChatData(){
-      // this.$http.request({
-      //   url:'GetChatData',
-      //   data:{
-      //     userId: this.userId,
-      //     isExpert: this.expertId
-      //   },
-      //   flyConfig:{
-      //     method: 'post'
-      //   }
-      // }).then(res => {
-      //   if(res.code == 1){
-      //     this.loopGetData();
-      //   }
-      // })
+      Config.loading.loadingHide();
+      this.$http.post({
+          url: 'GetUserChatListAsync',
+          data: {
+            fromUserId: this.userId,
+            toUserId:this.expertId
+          },
+          flyConfig: {
+            method: "post"
+          }
+        }).then(res => {
+        if(res.code == 1){
+          
+          this.chatList = res.data;
+          this.chatRoomSlideToBottom();
+          this.loopGetData();
+        }
+      })
     },
     toContact(){
       this.$router.push({
@@ -167,14 +174,17 @@ export default {
       );
     },
     loopGetData(){
-      clearTimeout(this.timer);
-      this.timer = setTimeout(()=>{
+      clearInterval(this.timer);
+      this.timer = setInterval(()=>{
         this.getChatData();
       },5000)
     }
   },
   onHide(){
-    clearTimeout(this.timer);
+    clearInterval(this.timer);
+  },
+  onUnload(){
+    clearInterval(this.timer);
   },
   onPullDownRefresh() {
   //to do

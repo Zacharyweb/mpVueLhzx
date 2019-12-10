@@ -215,13 +215,17 @@
            </div>
    
            <!-- 用户支付完成后可进行的操作 -->
-           <div class="other_msg_block" v-if="orderData.status == 7">
+           <div class="other_msg_block" v-if="orderData.status == 7 && orderData.amount*1>0">
              <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">您已完成支付，可进行追问~</span>
              <span class="other_msg" v-else>You have completed the payment and can be follow on</span>
 
              <div class="action_btn_bar">
                  <span class="action_btn2" @click="toAskMore(2)">{{i18n.follow_on}}</span>
              </div>
+           </div>
+
+           <div class="other_msg_block" v-if="orderData.status == 7 && orderData.amount*1===0">
+             <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">{{orderData.remark}}</span>
            </div>
 
           <!-- 用户申诉待协商 -->      
@@ -300,6 +304,11 @@
                 <span class="action_btn" @click="expertPaySure">{{i18n.Paid}}</span>
             </div>
           </div>
+
+          <!-- 已完成 -->
+          <div class="other_msg_block" v-if="orderData.status == 7">
+            <span class="other_msg" v-if="i18n.LANGTYPE == 'cn_j'">{{orderData.remark}}</span>        
+          </div>          
 
           <!-- 用户申诉待协商 -->
           <div class="other_msg_block" v-if="orderData.status == 8 && orderData.satisfactionDegree == '不满意'">

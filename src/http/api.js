@@ -100,7 +100,8 @@ const API = {
   'BecomeExpertPass':'/api/Users/BecomeExpertPass/',//审核通过成为专家
   'GetUserPayCodeImg':'/api/Users/GetUserPayCodeImg/',//获取用户的支付二维码
   'InsertUserChat':'/api/LhzxChat/InsertUserChat',//发送聊天消息
-
+  'GetUserChatListAsync':'/api/LhzxChat/GetUserChatListAsync/',//获取用户聊天数据
+  
   'AddUserFormId':'/api/Users/SetUserFormId'  // 批量插入用户FormId
 }
 
