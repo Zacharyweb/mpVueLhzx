@@ -1,14 +1,21 @@
 <template>
   <div class="container">
     <div class="user_avatar_panel">
-      <img class="user_avatar" :src="originalData.avatarUrl" />
+      <img class="user_avatar" v-if="userData && userData.avatarUrl" :src="userData.avatarUrl" />
+      <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg" />
       <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
     </div>
-    <div class="base_msg_panel">{{originalData.nickName}}</div>
+    <div class="base_msg_panel" v-if="userData && userData.nickName">{{userData.nickName}}</div>
+
     <div class="base_msg_panel">
       <div class="btn_block">
-        <button class="btn large green" v-if="buttonVisible" open-type="getUserInfo" @getuserinfo="bindGetUserInfo">获取权限</button>
-        <button class="btn large green" v-if="!buttonVisible" @click="Login">授权登录</button>
+        <button
+          class="btn large green"
+          v-if="!userData"
+          open-type="getUserInfo"
+          @getuserinfo="bindGetUserInfo"
+        >授权登录</button>
+       
       </div>
     </div>
   </div>
@@ -19,9 +26,11 @@ export default {
   data() {
     return {
       userInfo: {},
-      buttonVisible:false,
       originalData: {},
-      userData:{}
+      fromType: 0, // 1:来自专家详情 2：来自评价选择好友 3：来自添加关系户
+      fromUserId: 0,
+      shareExpertId: 0,
+      code: ""
     };
   },
   computed: {
@@ -35,9 +44,9 @@ export default {
     const self = this;
     wx.login({
       success(res) {
+        console.log(self.userData);
         if (res.code) {
           self.code = res.code;
-          self.wxGetUserInfo(res.code);
         }
       }
     });
@@ -47,50 +56,12 @@ export default {
     toUseNotice() {
       this.$router.push("/pages/useNotice/index");
     },
-    Login(){
+    Login() {
       console.log("登录");
     },
-    wxGetUserInfo(code) {
-      const self = this;
-      wx.getUserInfo({
-        withCredentials: true,
-        success(res) {
-          let { encryptedData, userInfo, iv } = res;
-          let data = self.userData || {};
-          self.originalData = { ...data, ...res.userInfo };
-          self.$http
-                .request({
-                  url: "AuthorizedLoginByWx",
-                  data: {
-                    Code: code,
-                    NickName: self.originalData.nickName,
-                    AvatarUrl: self.originalData.avatarUrl,
-                    EncryptedData:encryptedData,
-                    IV:iv
-                  },
-                  flyConfig: {
-                    headers: {
-                      "content-type": "application/x-www-form-urlencoded"
-                    },
-                    method: "post"
-                  }
-                })
-                .then(res => {
-                  self.originalData = { ...self.originalData, ...res.data };
-                  console.log(self.originalData);
-                });
 
-            
-        },
-        fail(err) {
-          console.log("自动wx.getUserInfo失败:", err);
-          // 显示主动授权的button
-          self.buttonVisible = true;
-        }
-      });
-    },
     bindGetUserInfo(e) {
-      // console.log('回调事件后触发')
+      console.log("回调事件后触发");
       const self = this;
       if (e.mp.detail.userInfo) {
         console.log("用户按了允许授权按钮");
@@ -98,35 +69,108 @@ export default {
         let data = self.userData || {};
         self.originalData = { ...data, ...e.mp.detail.userInfo };
         self.$http
-              .request({
-                url: "AuthorizedLoginByWx",
-                data: {
-                    Code: code,
-                    NickName: self.originalData.nickName,
-                    AvatarUrl: self.originalData.avatarUrl,
-                    EncryptedData:encryptedData,
-                    IV:iv
-                },
-                flyConfig: {
-                  headers: {
-                    "content-type": "application/x-www-form-urlencoded"
-                  },
-                  method: "post"
-                }
-              })
-              .then(res => {
-                self.originalData = { ...self.originalData, ...res.data };
-                console.log(self.originalData);
-              });
+          .request({
+            url: "AuthorizedLoginByWx",
+            data: {
+              Code: self.code,
+              NickName: self.originalData.nickName,
+              AvatarUrl: self.originalData.avatarUrl,
+              EncryptedData: encryptedData,
+              IV: iv
+            },
+            flyConfig: {
+              headers: {
+                "content-type": "application/x-www-form-urlencoded"
+              },
+              method: "post"
+            }
+          })
+          .then(res => {
+            self.originalData = { ...self.originalData, ...res.data };
+            self.updateUserMsg({ ...data, ...self.originalData });
+            let userDataStr = JSON.stringify({ ...data, ...self.originalData });
+            wx.setStorageSync("userData", userDataStr);
 
+            if (self.fromType == 1) {
+              self.shareExpert();
+            } else if (self.fromType == 2) {
+              self.addUserFriend();
+            } else if (self.fromType == 3) {
+              self.addUserFriend();
+            } else {
+              wx.switchTab({
+                url: "/pages/mine/index"
+              });
+            }
+          });
       } else {
         //用户按了拒绝按钮
         console.log("用户按了拒绝按钮");
       }
+    },
+    addUserFriend() {
+      this.$http
+        .request({
+          url: "AddUserFriend",
+          data: {
+            userId: this.fromUserId,
+            friendId: this.userData.userId,
+            remark: ""
+          },
+          flyConfig: {
+            method: "post"
+          }
+        })
+        .then(res => {
+          wx.redirectTo({
+            url: "/pages/myRelation/index?tab=1"
+          });
+        });
+    },
+    shareExpert() {
+      this.$http
+        .request({
+          url: "ShareExpert",
+          data: {
+            userId: this.fromUserId,
+            shareUserId: this.userData.userId,
+            expertId: this.shareExpertId
+          },
+          flyConfig: {
+            method: "post"
+          }
+        })
+        .then(res => {
+          wx.redirectTo({
+            url: "/pages/expertDetail/index?id=" + this.shareExpertId
+          });
+        });
+    },
+    checkIfLogin() {
+      if (this.userData && this.userData.accessToken) {
+        if (this.fromType == 1) {
+          this.shareExpert();
+        } else if (this.fromType == 2) {
+          this.addUserFriend();
+        } else if (this.fromType == 3) {
+          this.addUserFriend();
+        } else {
+          wx.switchTab({
+            url: "/pages/index/index"
+          });
+        }
+      } else {
+        this.showLoginPage = true;
+      }
     }
   },
 
-  onLoad(options) {},
+  onLoad(options) {
+    this.fromType = options.fromType || 0;
+    this.fromUserId = options.userId || 0;
+    this.shareExpertId = options.expertId || 0;
+    this.checkIfLogin();
+  },
   onShow() {},
   onHide() {}
 };
