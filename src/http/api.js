@@ -1,5 +1,5 @@
 // API
-const BASE_URL = 'https://api.yuelinshe.com';
+const BASE_URL = 'http://localhost:11439/';
 const API = {
   // 公共服务
   'getProvince': '/hzui/static/data/province.json', // 获取省市

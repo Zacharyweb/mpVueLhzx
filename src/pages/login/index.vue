@@ -11,11 +11,16 @@
       <div class="btn_block">
         <button
           class="btn large green"
+          open-type="getPhoneNumber"
+          @getphonenumber="GetPhoneNumber"
+        >获取手机号</button>
+
+        <button
+          class="btn large green"
           v-if="!userData"
           open-type="getUserInfo"
-          @getuserinfo="bindGetUserInfo"
+          @getuserinfo="GetUserInfo"
         >授权登录</button>
-       
       </div>
     </div>
   </div>
@@ -30,7 +35,9 @@ export default {
       fromType: 0, // 1:来自专家详情 2：来自评价选择好友 3：来自添加关系户
       fromUserId: 0,
       shareExpertId: 0,
-      code: ""
+      code: "",
+      encryptedData: null,
+      iv: null
     };
   },
   computed: {
@@ -56,16 +63,19 @@ export default {
     toUseNotice() {
       this.$router.push("/pages/useNotice/index");
     },
-    Login() {
-      console.log("登录");
+
+    GetPhoneNumber(e) {
+      if (e.mp.detail.errMsg == "getPhoneNumber:ok") {
+        this.encryptedData = e.mp.detail.encryptedData;
+        this.iv = e.mp.detail.iv;
+      }
     },
 
-    bindGetUserInfo(e) {
+    GetUserInfo(e) {
       console.log("回调事件后触发");
       const self = this;
       if (e.mp.detail.userInfo) {
         console.log("用户按了允许授权按钮");
-        let { encryptedData, userInfo, iv } = e.mp.detail;
         let data = self.userData || {};
         self.originalData = { ...data, ...e.mp.detail.userInfo };
         self.$http
@@ -75,8 +85,8 @@ export default {
               Code: self.code,
               NickName: self.originalData.nickName,
               AvatarUrl: self.originalData.avatarUrl,
-              EncryptedData: encryptedData,
-              IV: iv
+              EncryptedData: self.encryptedData,
+              IV: self.iv
             },
             flyConfig: {
               headers: {
