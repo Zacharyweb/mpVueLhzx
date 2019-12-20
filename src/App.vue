@@ -54,7 +54,7 @@ export default {
       let userData = JSON.parse(userDataStr);
       that.updateUserMsg(userData);
     }else{
-      // that.getSetting();
+
     }
     
   },
@@ -64,33 +64,6 @@ export default {
       'updateUserMsg',
       'updateLanguage'
     ]),
-    
-    // 检测用户是否已授权
-    // getSetting(){
-    //   let that = this;
-    //   wx.getSetting({
-    //     success: function(res){
-    //       if (res.authSetting['scope.userInfo']) {
-    //         wx.getUserInfo({
-    //           success: function(res) {
-    //             let data = that.userData || {};
-    //             that.updateUserMsg({...data,...res.userInfo});
-    //           }
-    //         })
-    //       }
-    //     }
-    //   })
-    // },
   }
 }
 </script>
-
-<style>
-/* this rule will be remove */
-/* * {
-  transition: width 2s;
-  -moz-transition: width 2s;
-  -webkit-transition: width 2s;
-  -o-transition: width 2s;
-} */
-</style>

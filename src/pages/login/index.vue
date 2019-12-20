@@ -1,26 +1,26 @@
 <template>
   <div class="container">
     <div class="user_avatar_panel">
-      <img class="user_avatar" v-if="userData && userData.avatarUrl" :src="userData.avatarUrl" />
-      <img class="user_avatar" v-else src="../../../static/img/df_avatar.jpg" />
+      <open-data class="user_avatar" type="userAvatarUrl"></open-data>
       <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
     </div>
-    <div class="base_msg_panel" v-if="userData && userData.nickName">{{userData.nickName}}</div>
-
+    <div class="base_msg_panel"><open-data type="userNickName"></open-data></div>
+    <div class="base_msg_panel" v-if="userData && userData.phoneNumber">{{userData.phoneNumber}}</div>
     <div class="base_msg_panel">
       <div class="btn_block">
         <button
+          v-if="encryptedData==null"
           class="btn large green"
           open-type="getPhoneNumber"
           @getphonenumber="GetPhoneNumber"
-        >获取手机号</button>
+        >获取授权</button>
 
         <button
           class="btn large green"
-          v-if="!userData"
+          v-if="encryptedData!=null && userData==null"
           open-type="getUserInfo"
           @getuserinfo="GetUserInfo"
-        >授权登录</button>
+        >登录</button>
       </div>
     </div>
   </div>
@@ -176,12 +176,14 @@ export default {
   },
 
   onLoad(options) {
+    console.log(this.encryptedData);
+    console.log(this.userData);
     this.fromType = options.fromType || 0;
     this.fromUserId = options.userId || 0;
     this.shareExpertId = options.expertId || 0;
     this.checkIfLogin();
   },
-  onShow() {},
+  onShow() {this.encryptedData=null;},
   onHide() {}
 };
 </script>
