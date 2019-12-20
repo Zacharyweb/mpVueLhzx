@@ -48,10 +48,7 @@ export default {
     return{
       inputVal:'',
       sTop:0,
-      chatList:[
-        {type:'e',content:'你好我是专家',time:'2019-03-12 16:20:56'},
-        {type:'u',content:'你好我是用户',time:'2019-03-12 16:21:56'}
-      ],
+      chatList:[],
       userId:'',
       expertId:'',
       cost:'',
@@ -85,33 +82,33 @@ export default {
       if(!this.inputVal){
         return;
       };
-      this.$http
-        .post({
-          url: "InsertUserChat",
-          data: {
-            fromUserId: this.userId,
-            toUserId:this.expertId,
-            msgContent: this.inputVal
-          },
-          flyConfig: {
-            method: "post"
-          }
-        })
-        .then(res => {
-          if (res.code == 1) {
-            let that = this;
-            let time = util.formatTime(new Date());
-            this.chatList = [...this.chatList,{type:'u',content:this.inputVal,time:time,avatarUrl:this.userData.avatarUrl}];
-            this.chatRoomSlideToBottom();
-            this.inputVal = '';
-          }else{
-            wx.showToast({
-              title: "服务异常",
-              icon: "none",
-              duration: 1500
-            });
-          }
-        });
+      // this.$http
+      //   .post({
+      //     url: "InsertUserChat",
+      //     data: {
+      //       fromUserId: this.userId,
+      //       toUserId:this.expertId,
+      //       msgContent: this.inputVal
+      //     },
+      //     flyConfig: {
+      //       method: "post"
+      //     }
+      //   })
+      //   .then(res => {
+      //     if (res.code == 1) {
+      //       let that = this;
+      //       let time = util.formatTime(new Date());
+      //       this.chatList = [...this.chatList,{type:'u',content:this.inputVal,time:time,avatarUrl:this.userData.avatarUrl}];
+      //       this.chatRoomSlideToBottom();
+      //       this.inputVal = '';
+      //     }else{
+      //       wx.showToast({
+      //         title: "服务异常",
+      //         icon: "none",
+      //         duration: 1500
+      //       });
+      //     }
+      //   });
     },
     chatRoomSlideToBottom(){
       let that = this;
@@ -145,23 +142,23 @@ export default {
       }
     },
     getChatData(){
-      this.$http.post({
-          url: 'GetUserChatListAsync',
-          data: {
-            fromUserId: this.userId,
-            toUserId:this.expertId
-          },
-          flyConfig: {
-            method: "post"
-          }
-        }).then(res => {
-        if(res.code == 1){
+      // this.$http.post({
+      //     url: 'GetUserChatListAsync',
+      //     data: {
+      //       fromUserId: this.userId,
+      //       toUserId:this.expertId
+      //     },
+      //     flyConfig: {
+      //       method: "post"
+      //     }
+      //   }).then(res => {
+      //   if(res.code == 1){
           
-          this.chatList = res.data;
-          this.chatRoomSlideToBottom();
-          this.loopGetData();
-        }
-      })
+      //     this.chatList = res.data;
+      //     this.chatRoomSlideToBottom();
+      //     this.loopGetData();
+      //   }
+      // })
     },
     toContact(){
       this.$router.push({

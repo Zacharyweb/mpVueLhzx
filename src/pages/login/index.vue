@@ -4,7 +4,9 @@
       <open-data class="user_avatar" type="userAvatarUrl"></open-data>
       <span class="change_avatar_btn" @click="toUseNotice">使用说明</span>
     </div>
-    <div class="base_msg_panel"><open-data type="userNickName"></open-data></div>
+    <div class="base_msg_panel">
+      <open-data type="userNickName"></open-data>
+    </div>
     <div class="base_msg_panel" v-if="userData && userData.phoneNumber">{{userData.phoneNumber}}</div>
     <div class="base_msg_panel">
       <div class="btn_block">
@@ -101,6 +103,8 @@ export default {
             let userDataStr = JSON.stringify({ ...data, ...self.originalData });
             wx.setStorageSync("userData", userDataStr);
 
+            initWebSocket();
+
             if (self.fromType == 1) {
               self.shareExpert();
             } else if (self.fromType == 2) {
@@ -172,6 +176,28 @@ export default {
       } else {
         this.showLoginPage = true;
       }
+    },
+    initWebSocket(userid) {
+      let wsUrl = "wss://api.yuelinshe.com/ws?sid=" + userid;
+      const wsOptions = {
+        url: wsUrl,
+        header: {
+          "content-type": "application/json"
+        },
+        // protocols: ['protocol1'],
+        method: "GET"
+      };
+      this.websocket = wx.connectSocket(wsOptions);
+      let self = this;
+
+      wx.onSocketOpen(function(res) {
+        console.log("系统消息:WebSocket连接成功");
+      });
+      wx.onSocketError(function(res) {
+        console.log("WebSocket 连接打开失败，请检查！");
+      });
+
+      console.log(this.websocket);
     }
   },
 
@@ -183,7 +209,9 @@ export default {
     this.shareExpertId = options.expertId || 0;
     this.checkIfLogin();
   },
-  onShow() {this.encryptedData=null;},
+  onShow() {
+    this.encryptedData = null;
+  },
   onHide() {}
 };
 </script>

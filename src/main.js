@@ -19,10 +19,9 @@ Vue.prototype.showToast = function(txt,duration){
     })
 };
 Vue.config.productionTip = false
+Vue.prototype.$store = store
+Vue.prototype.websocket=null
 App.mpType = 'app'
 
-const app = new Vue({
-    store,
-    ...App
-})
+const app = new Vue(App)
 app.$mount()
