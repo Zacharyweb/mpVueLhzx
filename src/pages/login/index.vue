@@ -103,7 +103,7 @@ export default {
             let userDataStr = JSON.stringify({ ...data, ...self.originalData });
             wx.setStorageSync("userData", userDataStr);
 
-            initWebSocket();
+            self.initWebSocket(userDataStr.userId);
 
             if (self.fromType == 1) {
               self.shareExpert();
